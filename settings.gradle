@@ -1,0 +1,2 @@
+include ':app', ':certlibs'
+rootProject.name='tokentmCertAndroid'
