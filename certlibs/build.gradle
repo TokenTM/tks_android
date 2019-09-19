@@ -30,5 +30,5 @@ dependencies {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
         exclude module: 'rxjava'
     }
-    compileOnly 'com.github.NBXXF:xxf_android_http:2.4.0'
+    compileOnly 'com.github.NBXXF:xxf_android_http:2.4.4'
 }
