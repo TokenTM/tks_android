@@ -12,4 +12,8 @@
     implementation 'com.google.code.gson:gson:2.8.5' 
     
    ```
-   
+#### 初始化
+  ```
+//初始化
+ CertClient.init(this);
+  ```

@@ -1,4 +1,57 @@
 apply plugin: 'com.android.library'
+//读取module配置文件
+def readConfig(def buildType) {
+    def configFileName;
+    com.android.build.gradle.internal.dsl.BuildType buildTypeJava = buildType;
+    buildTypeJava.setMinifyEnabled(false);
+    switch (buildTypeJava.name) {
+        case "debug":
+            configFileName = 'config_dev.properties';
+            buildTypeJava.versionNameSuffix(String.format("_%s_%s", releaseFormatTime(), buildType.name));
+            break;
+        case "innertest":
+            configFileName = 'config_test.properties';
+            buildTypeJava.versionNameSuffix(String.format("_%s_%s", releaseFormatTime(), buildType.name));
+            break;
+        case "release":
+            configFileName = 'config_release.properties';
+            break;
+        default:
+            configFileName = 'config_release.properties';
+            break
+    }
+    Properties properties = new Properties()
+    InputStream inputStream = project.file(configFileName)
+            .newDataInputStream();
+    properties.load(inputStream);
+
+    properties.stringPropertyNames().each() { element ->
+        def value = properties.getProperty(element);
+        def startStr = String.valueOf("(");
+        def endStr = String.valueOf(")");
+        def start = value.indexOf(startStr);
+        if (start >= 0) {
+            def valueType = value.substring(start, value.indexOf(endStr));
+            valueType = valueType.replaceAll("\\(", "");
+            value = value.substring(value.indexOf(endStr) + endStr.length());
+            if (valueType == "String") {
+                buildTypeJava.buildConfigField(valueType, element.toUpperCase(), "\"${value}\"");
+            } else {
+                buildTypeJava.buildConfigField(valueType, element.toUpperCase(), "${value}");
+            }
+        }
+    }
+    buildTypeJava.buildConfigField("String", "APK_RELEASE_TIME", "\"${releaseTime()}\"");
+    return properties;
+}
+// 定义打包时间戳
+def releaseTime() {
+    return new Date().getTime();
+}
+//定义打包时间格式化
+def releaseFormatTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
+}
 
 android {
     compileSdkVersion 28
@@ -9,18 +62,27 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
 
     buildTypes {
+        debug {
+            readConfig(it);
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        innertest {
+            readConfig(it);
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            readConfig(it);
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -31,4 +93,7 @@ dependencies {
         exclude module: 'rxjava'
     }
     compileOnly 'com.github.NBXXF:xxf_android_http:2.4.4'
+    compileOnly 'io.reactivex.rxjava2:rxjava:2.2.12'
+    compileOnly 'com.squareup.retrofit2:retrofit:2.6.1'
+    compileOnly 'com.google.code.gson:gson:2.8.5'
 }
