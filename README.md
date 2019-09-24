@@ -1,4 +1,9 @@
-# tokentm Android 认证服务SDK
+# tokentm Android 服务SDK
+##### 服务分类
+1.  登陆注册
+2.  上链
+3.  认证
+4.  私有数据管理
 
 ##### 编译环境
 *  JDK  >=1.8
