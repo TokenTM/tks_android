@@ -13,6 +13,12 @@
             android:orientation="vertical"
             tools:context=".demo.MainActivity">
 
+            <Button
+                android:id="@+id/bt_load_so_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="load so文件"
+                tools:ignore="MissingConstraints" />
 
             <Button
                 android:id="@+id/bt_cert_by_idcard"
