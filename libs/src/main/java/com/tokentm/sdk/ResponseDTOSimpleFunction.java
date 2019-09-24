@@ -1,4 +1,4 @@
-package com.tokentm.cert;
+package com.tokentm.sdk;
 
 import io.reactivex.functions.Function;
 

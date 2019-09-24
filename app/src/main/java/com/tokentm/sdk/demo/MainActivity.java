@@ -1,13 +1,13 @@
-package com.tokentm.cert.demo;
+package com.tokentm.sdk.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.tokentm.cert.BackupChunkDTO;
-import com.tokentm.cert.CertDataSource;
-import com.tokentm.cert.demo.databinding.ActivityMainBinding;
+import com.tokentm.sdk.BackupChunkDTO;
+import com.tokentm.sdk.CertDataSource;
+import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 
 import io.reactivex.functions.Consumer;
 

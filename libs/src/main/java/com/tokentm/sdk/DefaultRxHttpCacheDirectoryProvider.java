@@ -1,4 +1,4 @@
-package com.tokentm.cert;
+package com.tokentm.sdk;
 
 import com.xxf.arch.http.cache.HttpCacheDirectoryProvider;
 
@@ -18,7 +18,7 @@ public class DefaultRxHttpCacheDirectoryProvider implements HttpCacheDirectoryPr
 
     @Override
     public String getDirectory() {
-        File file = new File(CertClient.get_application().getCacheDir(), "rxHttpCache");
+        File file = new File(TokenTmClient.get_application().getCacheDir(), "rxHttpCache");
         if (!file.exists()) {
             file.mkdirs();
         }

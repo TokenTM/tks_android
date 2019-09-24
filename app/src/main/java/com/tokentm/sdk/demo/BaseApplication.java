@@ -1,9 +1,9 @@
-package com.tokentm.cert.demo;
+package com.tokentm.sdk.demo;
 
 import android.app.Application;
 import android.util.Log;
 
-import com.tokentm.cert.CertClient;
+import com.tokentm.sdk.TokenTmClient;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -19,6 +19,6 @@ public class BaseApplication extends Application {
             }
         });
         //初始化
-        CertClient.init(this);
+        TokenTmClient.init(this);
     }
 }

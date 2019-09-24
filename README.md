@@ -1,5 +1,9 @@
 # tokentm Android 认证服务SDK
 
+##### 编译环境
+*  JDK  >=1.8
+*  Android SDK  >=21
+
 ##### 快速接入
   ```
    implementation('org.web3j:core:3.3.1-android') {

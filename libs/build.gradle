@@ -96,4 +96,9 @@ dependencies {
     compileOnly 'io.reactivex.rxjava2:rxjava:2.2.12'
     compileOnly 'com.squareup.retrofit2:retrofit:2.6.1'
     compileOnly 'com.google.code.gson:gson:2.8.5'
+
+//    implementation("com.token.card:web3j-gm:1.0") {
+//        //exclude group: 'org.web3j'
+//    }
+
 }

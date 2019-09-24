@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.tokentm.cert.demo"
+        applicationId "com.tokentm.sdk.demo"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -28,7 +28,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(path: ':certlibs')
+    implementation project(path: ':libs')
     implementation('org.web3j:core:3.3.1-android') {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
         exclude module: 'rxjava'
