@@ -1,2 +1,2 @@
 include ':app', ':libs'
-rootProject.name='tokentmCertAndroid'
+rootProject.name = 'tokentm_sdk_android'
