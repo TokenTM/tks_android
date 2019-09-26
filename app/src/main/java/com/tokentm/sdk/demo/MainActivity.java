@@ -11,19 +11,14 @@ import com.tokentm.sdk.BackupChunkDTO;
 import com.tokentm.sdk.CertDataSource;
 import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 
-import org.spongycastle.jcajce.provider.digest.SM3;
+import org.bouncycastle.jcajce.provider.digest.SM3;
 import org.web3j.utils.Numeric;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.MessageDigest;
 
+import hello.Hello;
 import io.reactivex.functions.Consumer;
+
 
 public class MainActivity extends Activity {
 
@@ -38,24 +33,14 @@ public class MainActivity extends Activity {
         initView();
     }
 
-    public static void copyStream(InputStream in, OutputStream out) throws IOException {
-        if (in != null && out != null) {
-            int resetSize = in.available();
-            int bufferSize = resetSize < 1024 ? resetSize : 1024;
-            byte[] buffer = new byte[bufferSize];
-            boolean var5 = true;
-
-            int len;
-            while ((len = in.read(buffer, 0, bufferSize)) != -1) {
-                out.write(buffer, 0, len);
-            }
-
-        }
-        in.close();
-        out.close();
-    }
 
     private void initView() {
+        binding.btLoadGoAar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testArr();
+            }
+        });
         binding.btLoadSoFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +60,16 @@ public class MainActivity extends Activity {
                         });
             }
         });
+    }
+
+    private void testArr() {
+        try {
+            String ssss = Hello.greetings("ssss");
+            Toast.makeText(this, "res:" + ssss, Toast.LENGTH_LONG).show();
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Toast.makeText(this, "error:" + Log.getStackTraceString(e), Toast.LENGTH_LONG).show();
+        }
     }
 
     private void loadSoFile() {
