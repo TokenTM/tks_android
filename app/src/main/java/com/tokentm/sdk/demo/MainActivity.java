@@ -4,20 +4,29 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.token.card.utils.gm.SM2Signer;
 import com.tokentm.sdk.BackupChunkDTO;
 import com.tokentm.sdk.CertDataSource;
 import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 
-import org.bouncycastle.jcajce.provider.digest.SM3;
+import org.spongycastle.jcajce.provider.digest.SM3;
 import org.web3j.utils.Numeric;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends Activity {
+
 
     ActivityMainBinding binding;
 
@@ -27,6 +36,23 @@ public class MainActivity extends Activity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
+    }
+
+    public static void copyStream(InputStream in, OutputStream out) throws IOException {
+        if (in != null && out != null) {
+            int resetSize = in.available();
+            int bufferSize = resetSize < 1024 ? resetSize : 1024;
+            byte[] buffer = new byte[bufferSize];
+            boolean var5 = true;
+
+            int len;
+            while ((len = in.read(buffer, 0, bufferSize)) != -1) {
+                out.write(buffer, 0, len);
+            }
+
+        }
+        in.close();
+        out.close();
     }
 
     private void initView() {
@@ -62,16 +88,19 @@ public class MainActivity extends Activity {
             String message = Numeric.toHexString(rlpBytes);
 
             SM2Signer sm2Signer = new SM2Signer("crypto");
-           // SM2Signer  sm2Signer = new SM2Signer("crypto.so");
 
             SM2Signer.Signature signature = sm2Signer.signature(rlpBytes, Numeric.hexStringToByteArray(privateKey));
             System.out.println("=====>" + signature.getRHex());
             System.out.println("======>" + signature.getSHex());
+            Toast.makeText(this, "yes", Toast.LENGTH_LONG).show();
             // NativeGoCrypto.INSTANCE.C_Sign(new GoString(message), new GoString(privateKey));
 
             //System.out.println(Numeric.toHexString(sm2Signer.privateKeyToPublicKey(privateKey)));
         } catch (Throwable e) {
             e.printStackTrace();
+            Toast.makeText(this, "error:" + Log.getStackTraceString(e), Toast.LENGTH_LONG).show();
         }
     }
+
+
 }

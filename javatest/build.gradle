@@ -1,0 +1,10 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api("com.token.card:web3j-gm:1.0") {
+    }
+}
+
+sourceCompatibility = "8"
+targetCompatibility = "8"
