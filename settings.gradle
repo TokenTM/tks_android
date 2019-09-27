@@ -1,2 +1,2 @@
-include ':app', ':libs', ':javatest'
+include ':app', ':libs'
 rootProject.name = 'tokentm_sdk_android'

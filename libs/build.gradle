@@ -103,22 +103,17 @@ repositories {
     }
 }
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api fileTree(include: ['*.aar'], dir: 'aars')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'aars')
     api 'com.github.NBXXF:xxf_android_http:2.4.4'
     api 'io.reactivex.rxjava2:rxjava:2.2.12'
     api 'com.squareup.retrofit2:retrofit:2.6.1'
     api 'com.google.code.gson:gson:2.8.5'
 
-//    api('org.web3j:core:4.2.0-android') {
-//        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-//        exclude module: 'rxjava'
-//    }
-
-
-    api("com.token.card:web3j-gm:1.0") {
+    api('org.web3j:core:4.2.0-android') {
         exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+        exclude group: 'org.web3j', module: 'utils'// 替换Hash.java文件
         exclude module: 'rxjava'
-        //exclude group: 'org.web3j'
     }
+    api 'org.bouncycastle:bcprov-jdk15on:1.60'
 }
