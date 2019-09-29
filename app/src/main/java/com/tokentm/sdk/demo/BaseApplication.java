@@ -3,8 +3,6 @@ package com.tokentm.sdk.demo;
 import android.app.Application;
 import android.util.Log;
 
-import com.tokentm.sdk.TokenTmClient;
-
 import io.reactivex.functions.Consumer;
 import io.reactivex.plugins.RxJavaPlugins;
 

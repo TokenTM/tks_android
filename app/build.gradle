@@ -41,5 +41,5 @@ dependencies {
     api fileTree(include: ['*.aar'], dir: 'aars')
 
     //加载依赖库
-    implementation project(path: ':libs')
+    implementation project(path: ':lib')
 }
