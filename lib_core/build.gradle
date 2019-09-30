@@ -1,0 +1,100 @@
+apply plugin: 'com.android.library'
+//读取module配置文件
+def readConfig(def buildType) {
+    def configFileName;
+    com.android.build.gradle.internal.dsl.BuildType buildTypeJava = buildType;
+    buildTypeJava.setMinifyEnabled(false);
+    switch (buildTypeJava.name) {
+        case "debug":
+            configFileName = 'config_dev.properties';
+            buildTypeJava.versionNameSuffix(String.format("_%s_%s", releaseFormatTime(), buildType.name));
+            break;
+        case "innertest":
+            configFileName = 'config_test.properties';
+            buildTypeJava.versionNameSuffix(String.format("_%s_%s", releaseFormatTime(), buildType.name));
+            break;
+        case "release":
+            configFileName = 'config_release.properties';
+            break;
+        default:
+            configFileName = 'config_release.properties';
+            break
+    }
+    Properties properties = new Properties()
+    InputStream inputStream = project.file(configFileName)
+            .newDataInputStream();
+    properties.load(inputStream);
+
+    properties.stringPropertyNames().each() { element ->
+        def value = properties.getProperty(element);
+        def startStr = String.valueOf("(");
+        def endStr = String.valueOf(")");
+        def start = value.indexOf(startStr);
+        if (start >= 0) {
+            def valueType = value.substring(start, value.indexOf(endStr));
+            valueType = valueType.replaceAll("\\(", "");
+            value = value.substring(value.indexOf(endStr) + endStr.length());
+            if (valueType == "String") {
+                buildTypeJava.buildConfigField(valueType, element.toUpperCase(), "\"${value}\"");
+            } else {
+                buildTypeJava.buildConfigField(valueType, element.toUpperCase(), "${value}");
+            }
+        }
+    }
+    buildTypeJava.buildConfigField("String", "APK_RELEASE_TIME", "\"${releaseTime()}\"");
+    return properties;
+}
+// 定义打包时间戳
+def releaseTime() {
+    return new Date().getTime();
+}
+//定义打包时间格式化
+def releaseFormatTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
+}
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false//true开启混淆配置，false关闭
+            readConfig(it);
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        innertest {
+            minifyEnabled false//true开启混淆配置，false关闭
+            readConfig(it);
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false//true开启混淆配置，false关闭
+            readConfig(it);
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'aars')
+    api rootProject.ext.dependencies.xxf_android
+    implementation project(path: ':lib_api')
+    api project(path: ':lib_web3j_sm2')
+}
+repositories {
+    mavenCentral()
+}

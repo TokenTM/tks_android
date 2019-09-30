@@ -1,14 +1,25 @@
+apply from: "config.gradle"
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
     repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/central'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
         jcenter()
         maven { url "https://jitpack.io" }
         google()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
-        
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -16,9 +27,38 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url 'https://maven.aliyun.com/repository/jcenter'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/central'
+        }
+        maven {
+            url 'https://maven.aliyun.com/repository/google'
+        }
         jcenter()
         maven { url "https://jitpack.io" }
         google()
+        mavenCentral()
+    }
+    configurations.all {
+        resolutionStrategy.force rootProject.ext.dependencies.supportV4
+        resolutionStrategy.force rootProject.ext.dependencies.appcompatV7
+        resolutionStrategy.force rootProject.ext.dependencies.supportV4fragment
+        resolutionStrategy.force rootProject.ext.dependencies.design
+        resolutionStrategy.force rootProject.ext.dependencies.recyclerview
+        resolutionStrategy.force rootProject.ext.dependencies.supportTestEspresso
+        resolutionStrategy.force rootProject.ext.dependencies.supportAnnotations
+
+        resolutionStrategy.force rootProject.ext.dependencies.lifecycleExt
+        resolutionStrategy.force rootProject.ext.dependencies.lifecycleVm
+        resolutionStrategy.force rootProject.ext.dependencies.lifecycleLd
+        resolutionStrategy.force rootProject.ext.dependencies.lifecycleRt
+        resolutionStrategy.force rootProject.ext.dependencies.lifecycleRx
+        resolutionStrategy.force rootProject.ext.dependencies.lifecycleCP
+        resolutionStrategy.force rootProject.ext.dependencies.okhttp
+        resolutionStrategy.force rootProject.ext.dependencies.rxJava
+        resolutionStrategy.force rootProject.ext.dependencies.rxAndroid
     }
 }
 

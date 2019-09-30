@@ -1,2 +1,2 @@
-include ':app', ':lib_implements', ':lib', ':lib_definition', ':web3j_sm2'
+include ':demo', ':lib_core', ':tks', ':lib_api', ':lib_web3j_sm2', ':lib_identity_pwd', ':tks_components'
 rootProject.name = 'tokentm_sdk_android'

@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+repositories {
+    flatDir {
+        dirs 'aars'
+    }
+    mavenCentral()
+}
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api fileTree(include: ['*.aar'], dir: 'aars')
+    api('org.web3j:core:4.2.0-android') {
+        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
+        exclude group: 'org.web3j', module: 'utils'// 替换国密Hash.java文件
+        exclude module: 'rxjava'
+    }
+    api 'org.bouncycastle:bcprov-jdk15on:1.60'
+}
