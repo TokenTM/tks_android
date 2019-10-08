@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- AlphaTitle tablyout 去除阴影 加分割线 -->
+    <style name="ArchTitleAppBarLayout" parent="Widget.Design.AppBarLayout">
+        <item name="elevation">0dp</item>
+        <item name="android:height">49dp</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:divider">@drawable/arch_divider_comm</item>
+        <item name="android:showDividers">end</item>
+    </style>
+
+    <style name="ArchTitleLinearLayout">
+        <item name="android:elevation">0dp</item>
+        <item name="android:height">49dp</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:divider">@drawable/arch_divider_comm</item>
+        <item name="android:showDividers">end</item>
+    </style>
+</resources>

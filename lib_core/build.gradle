@@ -91,9 +91,9 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation fileTree(include: ['*.aar'], dir: 'aars')
-    api rootProject.ext.dependencies.xxf_android
+    implementation rootProject.ext.dependencies.xxf_android
     implementation project(path: ':lib_api')
-    api project(path: ':lib_web3j_sm2')
+    implementation project(path: ':lib_web3j_sm2')
 }
 repositories {
     mavenCentral()

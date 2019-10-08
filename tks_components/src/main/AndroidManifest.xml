@@ -1,2 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tokentm.sdk.components" />
+    package="com.tokentm.sdk.components">
+
+    <application>
+        <activity android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionReSetActivity" />
+        <activity android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionSetActivity" />
+        <activity android:name=".identitypwd.UserIdentityPwdDecryptedBySecurityQuestionActivity" />
+        <activity android:name=".identitypwd.UserIdentityPwdReSetActivity" />
+        <activity android:name=".identitypwd.UserIdentityPwdUpdateActivity" />
+    </application>
+</manifest>

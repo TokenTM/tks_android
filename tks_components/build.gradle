@@ -17,4 +17,8 @@ android {
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation rootProject.ext.dependencies.design
+    implementation project(path: ':tks')
+    api 'org.xxtea:xxtea-java:1.0.5'
+
 }

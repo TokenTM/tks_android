@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 默认是密文 不要修改!!!! -->
+    <item android:drawable="@mipmap/base_ic_eye_close" android:state_selected="false" />
+    <item android:drawable="@mipmap/base_ic_eye_open" android:state_selected="true" />
+
+
+</selector>
