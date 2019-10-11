@@ -8,8 +8,8 @@ import com.tokentm.sdk.source.BackupDataSource;
 import com.tokentm.sdk.source.BackupRepositoryImpl;
 import com.tokentm.sdk.source.ChainDataSource;
 import com.tokentm.sdk.source.ChainRepositoryImpl;
-import com.tokentm.sdk.source.ConfigDataSource;
-import com.tokentm.sdk.source.ConfigRepositoryImpl;
+import com.tokentm.sdk.source.DidDataSource;
+import com.tokentm.sdk.source.DidRepositoryImpl;
 import com.tokentm.sdk.source.RepoService;
 
 import java.util.Objects;
@@ -56,7 +56,7 @@ public class TokenTmClient {
     private static void registerService() {
         SERVICE_MAP.put(BackupDataSource.class, BackupRepositoryImpl.getInstance());
         SERVICE_MAP.put(ChainDataSource.class, ChainRepositoryImpl.getInstance());
-        SERVICE_MAP.put(ConfigDataSource.class, ConfigRepositoryImpl.getInstance());
+        SERVICE_MAP.put(DidDataSource.class, DidRepositoryImpl.getInstance());
     }
 
 

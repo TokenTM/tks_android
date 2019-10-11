@@ -17,7 +17,7 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.model.BackupPwdSecurityQuestionDTO;
 import com.tokentm.sdk.model.SecurityQuestionDTO;
-import com.tokentm.sdk.source.ConfigDataSource;
+import com.tokentm.sdk.source.DidDataSource;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
@@ -237,7 +237,7 @@ public class UserIdentityPwdAndSecurityQuestionSetActivity extends BaseTitleBarA
 
     @SuppressLint("CheckResult")
     private void loadData() {
-        TokenTmClient.getService(ConfigDataSource.class)
+        TokenTmClient.getService(DidDataSource.class)
                 .getSecurityQuestionTemplate()
                 .map(new Function<List<SecurityQuestionDTO>, List<SecurityQuestionDTO>>() {
                     @Override

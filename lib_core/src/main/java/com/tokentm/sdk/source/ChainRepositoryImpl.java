@@ -1,7 +1,5 @@
 package com.tokentm.sdk.source;
 
-import android.util.SparseArray;
-
 import com.tokentm.sdk.api.ChainApiService;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
 import com.xxf.arch.http.XXFHttp;
@@ -32,18 +30,4 @@ public class ChainRepositoryImpl implements ChainDataSource {
                 .getNonce(address)
                 .map(new ResponseDTOSimpleFunction<Long>());
     }
-
-    @Override
-    public Observable<String> createDID(String identityPwd, SparseArray<String> securityQuestionAnswers) {
-        //创建
-//        JsonObject jsonObject = new JsonObject();
-//        jsonObject.addProperty("pubKey", pubicKey);
-//        jsonObject.addProperty("sign", sign);
-//        jsonObject.addProperty("timeStamp", System.currentTimeMillis());
-//        return XXFHttp.getApiService(ChainApiService.class)
-//                .createDID(jsonObject)
-//                .map(new ResponseDTOSimpleFunction<String>());
-        return Observable.just("");
-    }
-
 }

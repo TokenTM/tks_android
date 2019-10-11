@@ -1,6 +1,9 @@
 package com.tokentm.sdk.source;
 
-import android.util.SparseArray;
+import com.tokentm.sdk.model.SecurityQuestionDTO;
+
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -11,14 +14,29 @@ import io.reactivex.Observable;
 public interface DidDataSource extends RepoService {
 
     /**
+     * 获取身份密码模版
+     *
+     * @return
+     */
+    Observable<List<SecurityQuestionDTO>> getSecurityQuestionTemplate();
+
+    /**
      * 生成DID
      *
      * @param identityPwd             身份密码
-     * @param securityQuestionAnswers 身份密码安全问题与答案
-     * @return did 链上唯一标识
+     * @param securityQuestionAnswers 身份密码安全问题id与答案 key==id,value==答案
+     * @return 返回did
      */
-    Observable<String> createDID(String identityPwd, SparseArray<String> securityQuestionAnswers);
+    Observable<String> createDID(String identityPwd, Map<Long, String> securityQuestionAnswers);
 
+
+    /**
+     * 获取创建did设置的安全问题
+     *
+     * @param DID
+     * @return
+     */
+    Observable<List<SecurityQuestionDTO>> getSecurityQuestions(String DID);
 
     /**
      * 解密身份密码
@@ -37,7 +55,7 @@ public interface DidDataSource extends RepoService {
      * @param securityQuestionAnswers 身份密码安全问题与答案
      * @return
      */
-    Observable<Boolean> decrypt(String DID, SparseArray<String> securityQuestionAnswers);
+    Observable<Boolean> decrypt(String DID, Map<Long, String> securityQuestionAnswers);
 
 
     /**
@@ -58,7 +76,7 @@ public interface DidDataSource extends RepoService {
      * @param newSecurityQuestionAnswers
      * @return
      */
-    Observable<Boolean> reset(String DID, SparseArray<String> oldSecurityQuestionAnswers, SparseArray<String> newSecurityQuestionAnswers);
+    Observable<Boolean> reset(String DID, Map<Long, String> oldSecurityQuestionAnswers, Map<Long, String> newSecurityQuestionAnswers);
 
 
     /**
@@ -69,6 +87,6 @@ public interface DidDataSource extends RepoService {
      * @param newIdentityPwd
      * @return
      */
-    Observable<Boolean> reset(String DID, SparseArray<String> oldSecurityQuestionAnswers, String newIdentityPwd);
+    Observable<Boolean> reset(String DID, Map<Long, String> oldSecurityQuestionAnswers, String newIdentityPwd);
 }
 

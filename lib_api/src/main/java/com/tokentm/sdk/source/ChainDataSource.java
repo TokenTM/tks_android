@@ -1,7 +1,5 @@
 package com.tokentm.sdk.source;
 
-import android.util.SparseArray;
-
 import io.reactivex.Observable;
 
 /**
@@ -20,13 +18,5 @@ public interface ChainDataSource extends RepoService {
     Observable<Long> getNonce(String address);
 
 
-    /**
-     * 生成DID
-     *
-     * @param identityPwd             身份密码
-     * @param securityQuestionAnswers 身份密码安全问题与答案
-     * @return
-     */
-    Observable<String> createDID(String identityPwd, SparseArray<String> securityQuestionAnswers);
 }
 
