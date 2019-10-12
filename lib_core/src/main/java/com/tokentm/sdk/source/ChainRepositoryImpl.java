@@ -10,12 +10,12 @@ import io.reactivex.Observable;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class ChainRepositoryImpl implements ChainDataSource {
-    private static volatile ChainDataSource INSTANCE;
+public class ChainRepositoryImpl implements ChainService {
+    private static volatile ChainService INSTANCE;
 
-    public static ChainDataSource getInstance() {
+    public static ChainService getInstance() {
         if (INSTANCE == null) {
-            synchronized (ChainDataSource.class) {
+            synchronized (ChainService.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new ChainRepositoryImpl();
                 }

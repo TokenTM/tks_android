@@ -1,9 +1,7 @@
 package com.tokentm.sdk.wallet;
 
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.token.card.utils.gm.NativeGoCryptoImpl;
 
 import org.web3j.crypto.CipherException;
 import org.web3j.crypto.ECKeyPair;
@@ -18,6 +16,8 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
+import sm_crypto.Sm_crypto;
+
 public class WalletUtils {
     /**
      * 创建钱包
@@ -31,16 +31,11 @@ public class WalletUtils {
      * @throws CipherException
      * @throws IOException
      */
-    public static WalletResult _createWallet(final String password, File file)
-            throws InvalidAlgorithmParameterException,
-            NoSuchAlgorithmException,
-            NoSuchProviderException,
-            CipherException,
-            IOException {
+    public static WalletResult _createWallet(final String password, File file) throws Exception {
         // key pair --> ec key pair
         //ECKeyPair ecKeyPair = Keys.createEcKeyPair();
         //⚠️ 替换成国密的sdk youxuan
-        ECKeyPair ecKeyPair = ECKeyPair.create(Numeric.hexStringToByteArray(NativeGoCryptoImpl.INSTANCE.c_GeneratePrivateKey()));
+        ECKeyPair ecKeyPair = ECKeyPair.create(Numeric.hexStringToByteArray(Sm_crypto.c_GenerateKey()));
         // wallet
         WalletFile wallet = Wallet.create(password, ecKeyPair, 1024, 1);
         // write local file
@@ -60,7 +55,7 @@ public class WalletUtils {
      * @throws IOException
      * @throws CipherException
      */
-    public static WalletResult _openWallet(final String password, File file) throws IOException, CipherException {
+    public static WalletResult _openWallet(final String password, File file) throws Exception {
         ObjectMapper mapper = ObjectMapperFactory.getObjectMapper();
         // read wallet from local file
         WalletFile wallet = mapper.readValue(file, WalletFile.class);
@@ -68,6 +63,5 @@ public class WalletUtils {
         ECKeyPair ecKeyPair = Wallet.decrypt(password, wallet);
         return new WalletResult(ecKeyPair, wallet, file);
     }
-
 
 }

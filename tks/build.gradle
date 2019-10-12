@@ -21,9 +21,8 @@ dependencies {
     api rootProject.ext.dependencies.xxf_android
     api project(path: ':lib_api')
     //隐藏实现细节
-    implementation project(path: ':lib_core')
-
-    //api project(path: ':lib_core')
+   // implementation project(path: ':lib_core')
+    api project(path: ':lib_core')
 }
 repositories {
     mavenCentral()

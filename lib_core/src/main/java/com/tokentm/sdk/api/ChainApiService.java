@@ -27,17 +27,6 @@ import retrofit2.http.Path;
 @RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
 public interface ChainApiService {
 
-
-    /**
-     * 创建DID
-     *
-     * @param jsonObject
-     * @return
-     */
-    @GET("chain/did/create")
-    Observable<ResponseDTO<String>> createDID(@Body JsonObject jsonObject);
-
-
     /**
      * 获取 Nonce
      *

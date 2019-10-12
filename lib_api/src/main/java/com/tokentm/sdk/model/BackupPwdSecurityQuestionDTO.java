@@ -10,7 +10,6 @@ public class BackupPwdSecurityQuestionDTO {
     /**
      * 不传递到网络上去
      */
-    public transient String secretKey;
     public String pwdEncryptedSecretKey;
     public String securityQuestionEncryptedSecretKey;
     public List<Long> securityQuestionIds;
@@ -18,18 +17,12 @@ public class BackupPwdSecurityQuestionDTO {
     public BackupPwdSecurityQuestionDTO() {
     }
 
-    public BackupPwdSecurityQuestionDTO(String secretKey, String pwdEncryptedSecretKey, String securityQuestionEncryptedSecretKey, List<Long> securityQuestionIds) {
-        this.secretKey = secretKey;
+    public BackupPwdSecurityQuestionDTO(String pwdEncryptedSecretKey, String securityQuestionEncryptedSecretKey, List<Long> securityQuestionIds) {
         this.pwdEncryptedSecretKey = pwdEncryptedSecretKey;
         this.securityQuestionEncryptedSecretKey = securityQuestionEncryptedSecretKey;
         this.securityQuestionIds = securityQuestionIds;
     }
-
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
+    
 
     public String getPwdEncryptedSecretKey() {
         return pwdEncryptedSecretKey;

@@ -7,7 +7,7 @@ package com.tokentm.sdk.model;
 public final class BackupChunkDTO {
     private String data;
 
-    private String itemId;
+    private String dataId;
 
     private String type;
 
@@ -24,12 +24,12 @@ public final class BackupChunkDTO {
         this.data = data;
     }
 
-    public String getItemId() {
-        return itemId;
+    public String getdataId() {
+        return dataId;
     }
 
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    public void setdataId(String dataId) {
+        this.dataId = dataId;
     }
 
     public String getType() {
@@ -56,9 +56,9 @@ public final class BackupChunkDTO {
         this.version = version;
     }
 
-    public BackupChunkDTO(String data, String itemId, String type, String userId, long version) {
+    public BackupChunkDTO(String data, String dataId, String type, String userId, long version) {
         this.data = data;
-        this.itemId = itemId;
+        this.dataId = dataId;
         this.type = type;
         this.userId = userId;
         this.version = version;

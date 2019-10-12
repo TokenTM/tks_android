@@ -4,11 +4,11 @@ import android.app.Application;
 import android.content.Context;
 
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
-import com.tokentm.sdk.source.BackupDataSource;
-import com.tokentm.sdk.source.BackupRepositoryImpl;
-import com.tokentm.sdk.source.ChainDataSource;
+import com.tokentm.sdk.source.StoreService;
+import com.tokentm.sdk.source.StoreRepositoryImpl;
+import com.tokentm.sdk.source.ChainService;
 import com.tokentm.sdk.source.ChainRepositoryImpl;
-import com.tokentm.sdk.source.DidDataSource;
+import com.tokentm.sdk.source.DidService;
 import com.tokentm.sdk.source.DidRepositoryImpl;
 import com.tokentm.sdk.source.RepoService;
 
@@ -54,9 +54,9 @@ public class TokenTmClient {
      * 注册数据服务
      */
     private static void registerService() {
-        SERVICE_MAP.put(BackupDataSource.class, BackupRepositoryImpl.getInstance());
-        SERVICE_MAP.put(ChainDataSource.class, ChainRepositoryImpl.getInstance());
-        SERVICE_MAP.put(DidDataSource.class, DidRepositoryImpl.getInstance());
+        SERVICE_MAP.put(StoreService.class, StoreRepositoryImpl.getInstance());
+        SERVICE_MAP.put(ChainService.class, ChainRepositoryImpl.getInstance());
+        SERVICE_MAP.put(DidService.class, DidRepositoryImpl.getInstance());
     }
 
 

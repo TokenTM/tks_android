@@ -11,7 +11,7 @@ import io.reactivex.Observable;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public interface DidDataSource extends RepoService {
+public interface DidService extends RepoService {
 
     /**
      * 获取身份密码模版

@@ -1,10 +1,11 @@
 package com.tokentm.sdk.api;
 
-import com.tokentm.sdk.model.BackupChunkDTO;
 import com.tokentm.sdk.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
+import com.tokentm.sdk.model.BackupChunkDTO;
+import com.tokentm.sdk.model.StorePostBodyDTO;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
@@ -24,17 +25,17 @@ import retrofit2.http.Query;
 @BaseUrl(BuildConfig.API_URL)
 @GsonInterceptor(GlobalGsonConvertInterceptor.class)
 @RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
-public interface BackApiService {
+public interface StoreApiService {
 
 
     /**
-     * 备份
+     * 云端存储
      *
-     * @param backupChunkDTO
+     * @param body
      * @return
      */
-    @POST("backup")
-    Observable<ResponseDTO<Long>> backupData(@Body BackupChunkDTO backupChunkDTO);
+    @POST("store")
+    Observable<ResponseDTO<Long>> store(@Body StorePostBodyDTO body);
 
 
     /**

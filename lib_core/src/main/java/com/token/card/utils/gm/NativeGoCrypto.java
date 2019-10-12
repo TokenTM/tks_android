@@ -2,9 +2,7 @@ package com.token.card.utils.gm;
 
 public interface NativeGoCrypto {
 
-    String c_FromPrvKey(String privateKey);
-
-    String c_GeneratePrivateKey();
+    String C_GeneratePrivateKey();
 
     String C_Sign(String message, String privateKey);
 

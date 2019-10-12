@@ -10,12 +10,7 @@ public class NativeGoCryptoImpl implements NativeGoCrypto {
     public static volatile NativeGoCryptoImpl INSTANCE = new NativeGoCryptoImpl();
 
     @Override
-    public String c_FromPrvKey(String privateKey) {
-        return Sm_crypto.c_FromPrvKey(privateKey);
-    }
-
-    @Override
-    public String c_GeneratePrivateKey() {
+    public String C_GeneratePrivateKey() {
         return Sm_crypto.c_GenerateKey();
     }
 
