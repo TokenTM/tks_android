@@ -32,12 +32,12 @@ public class BaseApplication extends Application {
 
             @Override
             public void d(String msg) {
-
+                Log.d("=======>", msg);
             }
 
             @Override
             public void d(String msg, Throwable tr) {
-
+                Log.d("=======>", msg + Log.getStackTraceString(tr));
             }
 
             @Override

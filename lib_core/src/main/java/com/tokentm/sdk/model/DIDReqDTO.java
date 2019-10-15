@@ -1,6 +1,6 @@
 package com.tokentm.sdk.model;
 
-public class DIDRequestDTO {
+public class DIDReqDTO {
 
     /**
      * chainAddress : string

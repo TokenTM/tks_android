@@ -12,20 +12,22 @@ import io.reactivex.Observable;
  */
 public interface StoreService extends RepoService {
 
+    /**
+     * 云端存储
+     *
+     * @param storeItem
+     * @return
+     */
+    Observable<Long> store(StoreItem storeItem);
+
 
     /**
      * 云端存储
      *
-     * @param did
-     * @param dataType
-     * @param data
-     * @param version
-     * @return 最新的version
+     * @param storeItems
+     * @return
      */
-    Observable<Long> store(String did,
-                           String dataType,
-                           String data,
-                           long version);
+    Observable<List<Long>> store(List<StoreItem> storeItems);
 
 
     /**
@@ -36,13 +38,18 @@ public interface StoreService extends RepoService {
      * @param dataId
      * @return
      */
-    Observable<StoreItem> getStore(String did, String dataType, String dataId);
+    Observable<StoreItem> getStore(String did,
+                                   String dataType,
+                                   String dataId);
 
     /**
-     * 批量云端存储
+     * 批量 云端存储
      *
      * @param did
+     * @param dataType
      * @return
      */
-    Observable<List<StoreItem>> getStore(String did);
+    Observable<List<StoreItem>> getStore(String did,
+                                         String dataType
+    );
 }

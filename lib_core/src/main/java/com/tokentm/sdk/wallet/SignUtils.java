@@ -1,5 +1,8 @@
 package com.tokentm.sdk.wallet;
 
+import org.web3j.utils.Numeric;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
@@ -13,10 +16,10 @@ public class SignUtils {
      * 得到摘要值：[X]，之后对[X]使用数据私钥进行国密签名。
      *
      * @param map
-     * @param dataPublicKey
+     * @param key
      * @return
      */
-    public static String sign(Map<String, String> map, String dataPublicKey) {
+    public static String sign(Map<String, String> map, String key) {
         //去除:value和key为null的情况
         Hashtable<String, String> filterNullTable = new Hashtable<>(map);
         //排序:自然升序
@@ -27,7 +30,13 @@ public class SignUtils {
             stringBuilder.append(String.format("&%s=%s", entry.getKey(), entry.getValue()));
         }
         String data = stringBuilder.toString().replaceFirst("&", "");
-        String sha3Data = Sm_crypto.c_Hash256Bysha3(data);
-        return Sm_crypto.c_Sign(sha3Data, dataPublicKey);
+
+        String sha3Data = Sm_crypto.c_Hash256Bysha3(Numeric.toHexString(data.getBytes(StandardCharsets.UTF_8)));
+        String sign = Sm_crypto.c_Sign(sha3Data, key);
+
+//        XXF.getLogger().d("========>data=" + data);
+//        XXF.getLogger().d("========>sha3Data=" + sha3Data);
+//        XXF.getLogger().d("========>sign=" + sign);
+        return sign;
     }
 }

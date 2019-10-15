@@ -1,33 +1,15 @@
 package com.tokentm.sdk.model;
 
-import com.google.gson.annotations.JsonAdapter;
-import com.tokentm.sdk.common.encrypt.AutoEncryptionDecryptionJsonTypeAdapter;
-
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class StorePostBodyDTO {
-    //注入自动加解密
-    @JsonAdapter(AutoEncryptionDecryptionJsonTypeAdapter.class)
-    private String data;
-
+public class StoreQueryReqBodyDTO {
     private String dataId;
-    private String dataSign;
     private String dataType;
     private String did;
     private String sign;
     private long timestamp;
-    private long version;
-
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
 
     public String getDataId() {
         return dataId;
@@ -35,14 +17,6 @@ public class StorePostBodyDTO {
 
     public void setDataId(String dataId) {
         this.dataId = dataId;
-    }
-
-    public String getDataSign() {
-        return dataSign;
-    }
-
-    public void setDataSign(String dataSign) {
-        this.dataSign = dataSign;
     }
 
     public String getDataType() {
@@ -75,13 +49,5 @@ public class StorePostBodyDTO {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
     }
 }

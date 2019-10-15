@@ -4,8 +4,10 @@ import com.tokentm.sdk.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
-import com.tokentm.sdk.model.BackupChunkDTO;
-import com.tokentm.sdk.model.StorePostBodyDTO;
+import com.tokentm.sdk.model.StoreQueryByTypeReqBodyDTO;
+import com.tokentm.sdk.model.StoreQueryReqBodyDTO;
+import com.tokentm.sdk.model.StoreReqBodyDTO;
+import com.tokentm.sdk.model.DecryptedStoreItem;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
@@ -16,7 +18,6 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -35,38 +36,23 @@ public interface StoreApiService {
      * @return
      */
     @POST("store")
-    Observable<ResponseDTO<Long>> store(@Body StorePostBodyDTO body);
+    Observable<ResponseDTO<List<Long>>> store(@Body List<StoreReqBodyDTO> body);
 
 
     /**
-     * 备份 批量
+     * 获取 云端存储
      *
-     * @param backupChunkDTOS
      * @return
      */
-    @POST("backup/list")
-    Observable<ResponseDTO<Long>> backupDatas(@Body List<BackupChunkDTO> backupChunkDTOS);
+    @GET("store")
+    Observable<ResponseDTO<DecryptedStoreItem>> getStore(@Body StoreQueryReqBodyDTO body);
 
 
     /**
-     * 获取备份
+     * 按类型查询 云端存储
      *
-     * @param version
      * @return
      */
-    @GET("backup")
-    Observable<ResponseDTO<List<BackupChunkDTO>>> getBackupDatas(@Query("version") long version);
-
-
-    /**
-     * 获取备份 按类别查询
-     *
-     * @param type
-     * @param version
-     * @return
-     */
-    @GET("backup/type")
-    Observable<ResponseDTO<List<BackupChunkDTO>>> getBackupDatas(@Query("type") String type, @Query("version") long version);
-
-
+    @GET("store/data_type")
+    Observable<ResponseDTO<List<DecryptedStoreItem>>> getStoreByType(@Body StoreQueryByTypeReqBodyDTO body);
 }

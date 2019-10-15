@@ -9,6 +9,7 @@ import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.source.ChainService;
 import com.tokentm.sdk.source.DidService;
 import com.xxf.arch.XXF;
+import com.xxf.arch.utils.ToastUtils;
 
 import java.util.HashMap;
 
@@ -45,7 +46,7 @@ public class MainActivity extends Activity {
                         .subscribe(new Consumer<String>() {
                             @Override
                             public void accept(String did) throws Exception {
-
+                                ToastUtils.showToast("did:" + did);
                             }
                         });
             }

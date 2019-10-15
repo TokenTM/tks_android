@@ -14,7 +14,7 @@ import io.reactivex.Observable;
 public interface DidService extends RepoService {
 
     /**
-     * 获取身份密码模版
+     * 获取身份密码安全问题模版
      *
      * @return
      */

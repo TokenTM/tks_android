@@ -4,7 +4,7 @@ import com.tokentm.sdk.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
-import com.tokentm.sdk.model.DIDRequestDTO;
+import com.tokentm.sdk.model.DIDReqDTO;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
@@ -27,5 +27,5 @@ public interface DIDApiService {
      * @return
      */
     @POST("did")
-    Observable<ResponseDTO<String>> createDID(@Body DIDRequestDTO body);
+    Observable<ResponseDTO<String>> createDID(@Body DIDReqDTO body);
 }

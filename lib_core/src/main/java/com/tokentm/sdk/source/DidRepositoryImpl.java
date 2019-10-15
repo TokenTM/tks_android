@@ -1,11 +1,13 @@
 package com.tokentm.sdk.source;
 
+import com.tokentm.sdk.Config;
 import com.tokentm.sdk.api.ConfigApiService;
 import com.tokentm.sdk.api.DIDApiService;
 import com.tokentm.sdk.common.CacheUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
-import com.tokentm.sdk.model.DIDRequestDTO;
+import com.tokentm.sdk.model.DIDReqDTO;
 import com.tokentm.sdk.model.SecurityQuestionDTO;
+import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.wallet.SignUtils;
 import com.tokentm.sdk.wallet.WalletResult;
 import com.tokentm.sdk.wallet.WalletUtils;
@@ -13,6 +15,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.http.XXFHttp;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,32 +67,77 @@ public class DidRepositoryImpl implements DidService {
                         //时间戳
                         long timestamp = System.currentTimeMillis();
 
+                        XXF.getLogger().d("========>privateKey=" + walletResult.getPrivateKey());
+                        String publicKey = Sm_crypto.c_FromPrvKey(walletResult.getPrivateKey());
+                        XXF.getLogger().d("========>publicKey=" + publicKey);
+
                         //数据验证签名的密钥对
                         String dataPrivateKey = Sm_crypto.c_GenerateKey();
                         String dataPublicKey = Sm_crypto.c_FromPrvKey(dataPrivateKey);
+
+
+                        XXF.getLogger().d("========>dataPrivateKey=" + dataPrivateKey);
+                        XXF.getLogger().d("========>dataPublicKey=" + dataPublicKey);
+
 
                         Map<String, String> signMap = new HashMap<>();
                         signMap.put("timestamp", String.valueOf(timestamp));
                         signMap.put("chainAddress", walletResult.getCredentials().getAddress());
 
-                        DIDRequestDTO didRequestDTO = new DIDRequestDTO();
-                        didRequestDTO.setTimestamp(timestamp);
-                        didRequestDTO.setChainAddress(walletResult.getCredentials().getAddress());
-                        didRequestDTO.setChainPrvSign(SignUtils.sign(signMap, walletResult.getPrivateKey()));
-                        didRequestDTO.setData(null);
-                        didRequestDTO.setDataPubKey(dataPublicKey);
-                        didRequestDTO.setSign(SignUtils.sign(signMap, dataPrivateKey));
+                        DIDReqDTO didReqDTO = new DIDReqDTO();
+                        didReqDTO.setTimestamp(timestamp);
+                        didReqDTO.setChainAddress(walletResult.getCredentials().getAddress());
+                        didReqDTO.setChainPrvSign(SignUtils.sign(signMap, walletResult.getPrivateKey()));
+                        didReqDTO.setChainPubKey(publicKey);
+                        didReqDTO.setData(null);
+                        didReqDTO.setDataPubKey(dataPublicKey);
+                        didReqDTO.setSign(SignUtils.sign(signMap, dataPrivateKey));
+
 
                         return XXF.getApiService(DIDApiService.class)
-                                .createDID(didRequestDTO)
+                                .createDID(didReqDTO)
                                 .map(new ResponseDTOSimpleFunction<String>())
                                 .flatMap(new Function<String, ObservableSource<String>>() {
                                     @Override
                                     public ObservableSource<String> apply(String did) throws Exception {
-                                        //备份keystore
-                                        //备份身份密码
+                                        //1.备份身份密码
+                                        //2.备份keystore
+                                        //3.备份数据密钥
+                                        StoreItem identityPwdStoreItem = new StoreItem();
+                                        identityPwdStoreItem.setDid(did);
+                                        identityPwdStoreItem.setDataId(did);
+                                        identityPwdStoreItem.setDataType(Config.BackupType.TYPE_BACK_UP_SECRETKEY.getValue());
+                                        //TODO 身份密码存储模型 转json
+                                        //identityPwdStoreItem.setData();
 
-                                        return null;
+                                        StoreItem keyStoreItem = new StoreItem();
+                                        keyStoreItem.setDid(did);
+                                        keyStoreItem.setDataId(did);
+                                        keyStoreItem.setDataType(Config.BackupType.TYPE_USER_KEY_STORE.getValue());
+                                        keyStoreItem.setData(walletResult.getKeyStoreFileContent());
+
+
+                                        StoreItem dataPrivateKeyStoreItem = new StoreItem();
+                                        dataPrivateKeyStoreItem.setDid(did);
+                                        dataPrivateKeyStoreItem.setDataId(did);
+                                        dataPrivateKeyStoreItem.setDataType(Config.BackupType.TYPE_USER_SIGN_PRIVATE_KEY.getValue());
+                                        dataPrivateKeyStoreItem.setData(dataPrivateKey);
+
+                                        List<StoreItem> storeList = Arrays.asList(
+                                                identityPwdStoreItem,
+                                                keyStoreItem,
+                                                dataPrivateKeyStoreItem
+                                        );
+
+                                        return StoreRepositoryImpl
+                                                .getInstance()
+                                                .store(storeList)
+                                                .map(new Function<List<Long>, String>() {
+                                                    @Override
+                                                    public String apply(List<Long> longs) throws Exception {
+                                                        return did;
+                                                    }
+                                                });
                                     }
                                 });
                     }
