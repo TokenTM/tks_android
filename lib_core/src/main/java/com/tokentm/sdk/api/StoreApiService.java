@@ -4,10 +4,11 @@ import com.tokentm.sdk.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
+import com.tokentm.sdk.model.StoreDecryptedItem;
+import com.tokentm.sdk.model.StoreEncryptedItem;
+import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.model.StoreQueryByTypeReqBodyDTO;
 import com.tokentm.sdk.model.StoreQueryReqBodyDTO;
-import com.tokentm.sdk.model.StoreReqBodyDTO;
-import com.tokentm.sdk.model.DecryptedStoreItem;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
@@ -36,8 +37,17 @@ public interface StoreApiService {
      * @return
      */
     @POST("store")
-    Observable<ResponseDTO<List<Long>>> store(@Body List<StoreReqBodyDTO> body);
+    Observable<ResponseDTO<List<Long>>> store(@Body List<StoreItem<String>> body);
 
+
+    /**
+     * 云端存储 自动加密
+     *
+     * @param encryptBody
+     * @return
+     */
+    @POST("store")
+    Observable<ResponseDTO<List<Long>>> storeEncrypt(@Body List<StoreEncryptedItem> encryptBody);
 
     /**
      * 获取 云端存储
@@ -45,14 +55,34 @@ public interface StoreApiService {
      * @return
      */
     @GET("store")
-    Observable<ResponseDTO<DecryptedStoreItem>> getStore(@Body StoreQueryReqBodyDTO body);
+    Observable<ResponseDTO<StoreItem<String>>> getStore(@Body StoreQueryReqBodyDTO body);
 
+
+    /**
+     * 获取 云端存储  自动解密
+     *
+     * @param body
+     * @return
+     */
+    @GET("store")
+    Observable<ResponseDTO<StoreDecryptedItem>> getStoreDecrypted(@Body StoreQueryReqBodyDTO body);
 
     /**
      * 按类型查询 云端存储
      *
+     * @param body
      * @return
      */
     @GET("store/data_type")
-    Observable<ResponseDTO<List<DecryptedStoreItem>>> getStoreByType(@Body StoreQueryByTypeReqBodyDTO body);
+    Observable<ResponseDTO<List<StoreItem<String>>>> getStoreByType(@Body StoreQueryByTypeReqBodyDTO body);
+
+
+    /**
+     * 按类型查询 云端存储  自动解密
+     *
+     * @param body
+     * @return
+     */
+    @GET("store/data_type")
+    Observable<ResponseDTO<List<StoreDecryptedItem>>> getStoreByTypeDecrypted(@Body StoreQueryByTypeReqBodyDTO body);
 }

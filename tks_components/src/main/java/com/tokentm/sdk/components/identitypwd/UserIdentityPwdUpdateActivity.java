@@ -11,7 +11,9 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdUpdateBinding;
+import com.tokentm.sdk.source.DidService;
 import com.xxf.arch.utils.ToastUtils;
 
 
@@ -138,6 +140,8 @@ public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity {
         if (!checkInputLegal()) {
             return;
         }
+        TokenTmClient.getService(DidService.class)
+                .reset()
         //TODO youxuan
         // 密码 来解密-- 密钥！！！！
 //        String originalPwd = binding.identityOriginalPwdEt.getText().toString().trim();

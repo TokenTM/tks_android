@@ -1,6 +1,7 @@
 package com.tokentm.sdk.components.identitypwd;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdSetBinding;
-import com.tokentm.sdk.model.BackupPwdSecurityQuestionDTO;
 import com.tokentm.sdk.model.SecurityQuestionDTO;
 import com.tokentm.sdk.source.DidService;
 import com.xxf.arch.XXF;
@@ -25,6 +25,7 @@ import com.xxf.arch.utils.ToastUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -122,63 +123,33 @@ public class UserIdentityPwdAndSecurityQuestionSetActivity extends BaseTitleBarA
         });
     }
 
-    /**
-     * 创建身份密钥
-     * 随机生成
-     *
-     * @return
-     */
-    protected String onCreateIdentitySecretKey() {
-        return UUIDUtils.generateUUID();
-    }
-
     @SuppressLint("CheckResult")
     private void submit() {
         if (!checkInputLegal()) {
             return;
         }
-        String secretKey = onCreateIdentitySecretKey();
-        //密码加密
-        String pwd = binding.backupPwdEt.getText().toString().trim();
-        String pwdEncryptedSecretKey = EncryptionUtils.encodeString(secretKey, pwd);
-        //问题答案加密
-        String securityQuestions = new StringBuilder()
-                .append(binding.backUpQuestionAnswer1.getText().toString().trim())
-                .append(binding.backUpQuestionAnswer2.getText().toString().trim())
-                .append(binding.backUpQuestionAnswer3.getText().toString().trim())
-                .toString()
-                .trim();
-        String securityQuestionEncryptedSecretKey = EncryptionUtils.encodeString(secretKey, securityQuestions);
+        String identityPwd = binding.backupPwdEt.getText().toString().trim();
+        LinkedHashMap<Long, String> securityQuestionAnswers = new LinkedHashMap<>();
+        securityQuestionAnswers.put(((SecurityQuestionDTO) binding.backupSpinnerQuestion1.getSelectedItem()).id, binding.backUpQuestionAnswer1.getText().toString().trim());
+        securityQuestionAnswers.put(((SecurityQuestionDTO) binding.backupSpinnerQuestion2.getSelectedItem()).id, binding.backUpQuestionAnswer2.getText().toString().trim());
+        securityQuestionAnswers.put(((SecurityQuestionDTO) binding.backupSpinnerQuestion3.getSelectedItem()).id, binding.backUpQuestionAnswer3.getText().toString().trim());
 
-        List<Long> ids = Arrays.asList(
-                ((SecurityQuestionDTO) binding.backupSpinnerQuestion1.getSelectedItem()).id,
-                ((SecurityQuestionDTO) binding.backupSpinnerQuestion2.getSelectedItem()).id,
-                ((SecurityQuestionDTO) binding.backupSpinnerQuestion3.getSelectedItem()).id);
-
-        add2ServerAndLocal(new BackupPwdSecurityQuestionDTO(secretKey, pwdEncryptedSecretKey, securityQuestionEncryptedSecretKey, ids));
+        TokenTmClient.getService(DidService.class)
+                .createDID(identityPwd, securityQuestionAnswers)
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(XXF.<String>bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .compose(XXF.<String>bindToLifecycle(this))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String did) throws Exception {
+                        //返回did
+                        getIntent().putExtra(KEY_ACTIVITY_RESULT, did);
+                        setResult(Activity.RESULT_OK, getIntent());
+                        finish();
+                    }
+                });
     }
 
-    /**
-     * 更新到云端 并插入本地
-     *
-     * @param backupPwdSecurityQuestionDTO
-     */
-    @SuppressLint("CheckResult")
-    private void add2ServerAndLocal(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) {
-        //TODO 备份到云端
-//        UserInfoBackupRepositoryImpl
-//                .getInstance()
-//                .addIdentityPwdToServerAndLocal(backupPwdSecurityQuestionDTO)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .compose(XXF.<BackupPwdSecurityQuestionDTO>bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-//                .subscribe(new Consumer<BackupPwdSecurityQuestionDTO>() {
-//                    @Override
-//                    public void accept(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO1) throws Exception {
-//                        setResult(Activity.RESULT_OK);
-//                        finish();
-//                    }
-//                });
-    }
 
     private boolean checkInputLegal() {
         if (TextUtils.isEmpty(binding.backupPwdEt.getText())) {

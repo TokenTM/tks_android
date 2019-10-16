@@ -1,14 +1,16 @@
 package com.tokentm.sdk.source;
 
+import com.google.gson.reflect.TypeToken;
 import com.tokentm.sdk.api.StoreApiService;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
+import com.tokentm.sdk.model.StoreDecryptedItem;
+import com.tokentm.sdk.model.StoreEncryptedItem;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.model.StoreQueryByTypeReqBodyDTO;
 import com.tokentm.sdk.model.StoreQueryReqBodyDTO;
-import com.tokentm.sdk.model.StoreReqBodyDTO;
-import com.tokentm.sdk.model.DecryptedStoreItem;
 import com.tokentm.sdk.wallet.SignUtils;
 import com.xxf.arch.http.XXFHttp;
+import com.xxf.arch.json.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,62 +70,74 @@ public class StoreRepositoryImpl implements StoreService {
     }
 
     @Override
+    public Observable<Long> storeEncrypt(StoreItem storeItem) {
+        return this.storeEncrypt(Arrays.asList(storeItem))
+                .map(new Function<List<Long>, Long>() {
+                    @Override
+                    public Long apply(List<Long> longs) throws Exception {
+                        return longs.get(0);
+                    }
+                });
+    }
+
+    @Override
     public Observable<List<Long>> store(List<StoreItem> storeItems) {
         return Observable
-                .fromCallable(new Callable<List<StoreReqBodyDTO>>() {
+                .fromCallable(new Callable<List<StoreItem<String>>>() {
                     @Override
-                    public List<StoreReqBodyDTO> call() throws Exception {
-                        List<StoreReqBodyDTO> storeReqBodyDTOList = new ArrayList<>();
-                        //时间戳
-                        long timestamp = System.currentTimeMillis();
-
+                    public List<StoreItem<String>> call() throws Exception {
                         for (StoreItem storeItem : storeItems) {
-                            StoreReqBodyDTO storeReqBodyDTO = new StoreReqBodyDTO();
-                            storeReqBodyDTO.setDid(storeItem.getDid());
-                            storeReqBodyDTO.setDataId(storeItem.getDataId());
-                            storeReqBodyDTO.setDataType(storeItem.getDataType());
-                            storeReqBodyDTO.setData(storeItem.getData());
-                            storeReqBodyDTO.setVersion(storeItem.getVersion());
-                            storeReqBodyDTO.setTimestamp(timestamp);
-
-                            //data sign
-                            Map<String, String> dataSignMap = new HashMap<>();
-                            dataSignMap.put("data", storeReqBodyDTO.getData());
-                            String dataSign = SignUtils.sign(dataSignMap, _getDataPrivateKey(storeReqBodyDTO.getDid()));
-                            storeReqBodyDTO.setDataSign(dataSign);
-
-
-                            // api sign
-                            Map<String, String> signMap = new HashMap<>();
-                            signMap.put("data", storeReqBodyDTO.getData());
-                            signMap.put("dataId", storeReqBodyDTO.getDataId());
-                            signMap.put("dataSign", storeReqBodyDTO.getDataSign());
-                            signMap.put("dataType", storeReqBodyDTO.getDataType());
-                            signMap.put("did", storeReqBodyDTO.getDid());
-                            signMap.put("timestamp", String.valueOf(storeReqBodyDTO.getTimestamp()));
-                            signMap.put("version", String.valueOf(storeReqBodyDTO.getVersion()));
-
-                            String sign = SignUtils.sign(signMap, _getDataPrivateKey(storeReqBodyDTO.getDid()));
-                            storeReqBodyDTO.setSign(sign);
-
-                            // add to list
-                            storeReqBodyDTOList.add(storeReqBodyDTO);
+                            storeItem.setData(JsonUtils.toJsonString(storeItem.getData()));
                         }
-                        return storeReqBodyDTOList;
+                        //转化json
+                        String listJson = JsonUtils.toJsonString(storeItems);
+                        List<StoreItem<String>> storeStringItems = JsonUtils.toBeanList(listJson, new TypeToken<List<StoreItem<String>>>() {
+                        });
+                        return storeStringItems;
                     }
                 })
-                .flatMap(new Function<List<StoreReqBodyDTO>, ObservableSource<List<Long>>>() {
+                .flatMap(new Function<List<StoreItem<String>>, ObservableSource<List<Long>>>() {
                     @Override
-                    public ObservableSource<List<Long>> apply(List<StoreReqBodyDTO> storeReqBodyDTOS) throws Exception {
+                    public ObservableSource<List<Long>> apply(List<StoreItem<String>> storeItems) throws Exception {
                         return storeApiService
-                                .store(storeReqBodyDTOS)
+                                .store(storeItems)
                                 .map(new ResponseDTOSimpleFunction<List<Long>>());
                     }
                 });
     }
 
     @Override
-    public Observable<StoreItem> getStore(String did, String dataType, String dataId) {
+    public Observable<List<Long>> storeEncrypt(List<StoreItem> storeItems) {
+        return Observable
+                .fromCallable(new Callable<List<StoreEncryptedItem>>() {
+                    @Override
+                    public List<StoreEncryptedItem> call() throws Exception {
+                        for (StoreItem storeItem : storeItems) {
+                            storeItem.setData(JsonUtils.toJsonString(storeItem.getData()));
+                        }
+                        //转化json
+                        String listJson = JsonUtils.toJsonString(storeItems);
+                        //json 转化自动加解密的模型
+                        List<StoreEncryptedItem> storeEncryptedItems = JsonUtils.toBeanList(listJson, new TypeToken<List<StoreEncryptedItem>>() {
+                        });
+                        return storeEncryptedItems;
+                    }
+                })
+                .flatMap(new Function<List<StoreEncryptedItem>, ObservableSource<List<Long>>>() {
+                    @Override
+                    public ObservableSource<List<Long>> apply(List<StoreEncryptedItem> storeItems) throws Exception {
+                        return storeApiService
+                                .storeEncrypt(storeItems)
+                                .map(new ResponseDTOSimpleFunction<List<Long>>());
+                    }
+                });
+    }
+    @Override
+    public  <T extends StoreItem> Observable<T> getStore(Class<T> t,
+                                                         String did,
+                                                         String dataType,
+                                                         String dataId)
+    {
         return Observable
                 .fromCallable(new Callable<StoreQueryReqBodyDTO>() {
                     @Override
@@ -148,17 +162,73 @@ public class StoreRepositoryImpl implements StoreService {
 
                         return body;
                     }
-                }).flatMap(new Function<StoreQueryReqBodyDTO, ObservableSource<StoreItem>>() {
+                })
+                .flatMap(new Function<StoreQueryReqBodyDTO, ObservableSource<StoreItem<String>>>() {
                     @Override
-                    public ObservableSource<StoreItem> apply(StoreQueryReqBodyDTO bodyDTO) throws Exception {
-                        return storeApiService.getStore(bodyDTO)
-                                .map(new ResponseDTOSimpleFunction<DecryptedStoreItem>());
+                    public ObservableSource<StoreItem<String>> apply(StoreQueryReqBodyDTO bodyDTO) throws Exception {
+                        return storeApiService
+                                .getStore(bodyDTO)
+                                .map(new ResponseDTOSimpleFunction<StoreItem<String>>());
+                    }
+                })
+                .map(new Function<StoreItem<String>, T>() {
+                    @Override
+                    public T apply(StoreItem<String> stringStoreItem) throws Exception {
+                        //范型解析
+                        String jsonString = JsonUtils.toJsonString(stringStoreItem);
+                        return JsonUtils.toBean(jsonString, t);
                     }
                 });
     }
 
     @Override
-    public Observable<List<StoreItem>> getStore(String did, String dataType) {
+    public <T> Observable<StoreItem<T>> getStoreDecrypted(Class<StoreItem<T>> t, String did, String dataType, String dataId) {
+        return Observable
+                .fromCallable(new Callable<StoreQueryReqBodyDTO>() {
+                    @Override
+                    public StoreQueryReqBodyDTO call() throws Exception {
+                        long timestamp = System.currentTimeMillis();
+
+                        StoreQueryReqBodyDTO body = new StoreQueryReqBodyDTO();
+                        body.setDid(did);
+                        body.setDataType(dataType);
+                        body.setDataId(dataId);
+                        body.setTimestamp(timestamp);
+
+                        // api sign
+                        Map<String, String> signMap = new HashMap<>();
+                        signMap.put("dataId", body.getDataId());
+                        signMap.put("dataType", body.getDataType());
+                        signMap.put("did", body.getDid());
+                        signMap.put("timestamp", String.valueOf(body.getTimestamp()));
+
+                        String sign = SignUtils.sign(signMap, _getDataPrivateKey(body.getDid()));
+                        body.setSign(sign);
+
+                        return body;
+                    }
+                })
+                .flatMap(new Function<StoreQueryReqBodyDTO, ObservableSource<StoreDecryptedItem>>() {
+
+                    @Override
+                    public ObservableSource<StoreDecryptedItem> apply(StoreQueryReqBodyDTO bodyDTO) throws Exception {
+                        return storeApiService
+                                .getStoreDecrypted(bodyDTO)
+                                .map(new ResponseDTOSimpleFunction<StoreDecryptedItem>());
+                    }
+                })
+                .map(new Function<StoreItem<String>, StoreItem<T>>() {
+                    @Override
+                    public StoreItem<T> apply(StoreItem<String> stringStoreItem) throws Exception {
+                        //范型解析
+                        String jsonString = JsonUtils.toJsonString(stringStoreItem);
+                        return JsonUtils.toBean(jsonString, t);
+                    }
+                });
+    }
+
+    @Override
+    public <T> Observable<List<StoreItem<T>>> getStore(Class<StoreItem<T>> t, String did, String dataType) {
         return Observable
                 .fromCallable(new Callable<StoreQueryByTypeReqBodyDTO>() {
                     @Override
@@ -181,19 +251,68 @@ public class StoreRepositoryImpl implements StoreService {
                         body.setSign(sign);
                         return body;
                     }
-                }).flatMap(new Function<StoreQueryByTypeReqBodyDTO, ObservableSource<List<StoreItem>>>() {
+                }).flatMap(new Function<StoreQueryByTypeReqBodyDTO, ObservableSource<List<StoreItem<String>>>>() {
                     @Override
-                    public ObservableSource<List<StoreItem>> apply(StoreQueryByTypeReqBodyDTO storeQueryByTypeReqBodyDTO) throws Exception {
+                    public ObservableSource<List<StoreItem<String>>> apply(StoreQueryByTypeReqBodyDTO storeQueryByTypeReqBodyDTO) throws Exception {
                         return storeApiService
                                 .getStoreByType(storeQueryByTypeReqBodyDTO)
-                                .map(new ResponseDTOSimpleFunction<List<DecryptedStoreItem>>())
-                                .map(new Function<List<DecryptedStoreItem>, List<StoreItem>>() {
-                                    @Override
-                                    public List<StoreItem> apply(List<DecryptedStoreItem> decryptedStoreItems) throws Exception {
-                                        return new ArrayList<StoreItem>(decryptedStoreItems);
-                                    }
-                                });
+                                .map(new ResponseDTOSimpleFunction<List<StoreItem<String>>>());
+                    }
+                }).map(new Function<List<StoreItem<String>>, List<StoreItem<T>>>() {
+                    @Override
+                    public List<StoreItem<T>> apply(List<StoreItem<String>> storeItems) throws Exception {
+                        //范型解析
+                        String jsonString = JsonUtils.toJsonString(storeItems);
+                        return JsonUtils.toBeanList(jsonString, t);
                     }
                 });
     }
+
+    @Override
+    public <T> Observable<List<StoreItem<T>>> getStoreDecrypted(Class<StoreItem<T>> t, String did, String dataType) {
+        return Observable
+                .fromCallable(new Callable<StoreQueryByTypeReqBodyDTO>() {
+                    @Override
+                    public StoreQueryByTypeReqBodyDTO call() throws Exception {
+                        long timestamp = System.currentTimeMillis();
+
+                        StoreQueryByTypeReqBodyDTO body = new StoreQueryByTypeReqBodyDTO();
+                        body.setDid(did);
+                        body.setDataType(dataType);
+                        body.setTimestamp(timestamp);
+
+
+                        // api sign
+                        Map<String, String> signMap = new HashMap<>();
+                        signMap.put("dataType", body.getDataType());
+                        signMap.put("did", body.getDid());
+                        signMap.put("timestamp", String.valueOf(body.getTimestamp()));
+
+                        String sign = SignUtils.sign(signMap, _getDataPrivateKey(body.getDid()));
+                        body.setSign(sign);
+                        return body;
+                    }
+                }).flatMap(new Function<StoreQueryByTypeReqBodyDTO, ObservableSource<List<StoreItem<String>>>>() {
+                    @Override
+                    public ObservableSource<List<StoreItem<String>>> apply(StoreQueryByTypeReqBodyDTO storeQueryByTypeReqBodyDTO) throws Exception {
+                        return storeApiService
+                                .getStoreByTypeDecrypted(storeQueryByTypeReqBodyDTO)
+                                .map(new ResponseDTOSimpleFunction<List<StoreDecryptedItem>>())
+                                .map(new Function<List<StoreDecryptedItem>, List<StoreItem<String>>>() {
+                                    @Override
+                                    public List<StoreItem<String>> apply(List<StoreDecryptedItem> storeDecryptedItems) throws Exception {
+                                        return new ArrayList<StoreItem<String>>(storeDecryptedItems);
+                                    }
+                                });
+                    }
+                }).map(new Function<List<StoreItem<String>>, List<StoreItem<T>>>() {
+                    @Override
+                    public List<StoreItem<T>> apply(List<StoreItem<String>> storeItems) throws Exception {
+                        //范型解析
+                        String jsonString = JsonUtils.toJsonString(storeItems);
+                        return JsonUtils.toBeanList(jsonString, t);
+                    }
+                });
+    }
+
 }

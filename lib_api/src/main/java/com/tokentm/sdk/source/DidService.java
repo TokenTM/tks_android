@@ -1,9 +1,10 @@
 package com.tokentm.sdk.source;
 
+import com.tokentm.sdk.model.BackupPwdSecurityQuestionDTO;
 import com.tokentm.sdk.model.SecurityQuestionDTO;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -27,8 +28,16 @@ public interface DidService extends RepoService {
      * @param securityQuestionAnswers 身份密码安全问题id与答案 key==id,value==答案
      * @return 返回did
      */
-    Observable<String> createDID(String identityPwd, Map<Long, String> securityQuestionAnswers);
+    Observable<String> createDID(String identityPwd, LinkedHashMap<Long, String> securityQuestionAnswers);
 
+
+    /**
+     * 获取设置的身份密码与安全稳日
+     *
+     * @param DID
+     * @return
+     */
+    Observable<BackupPwdSecurityQuestionDTO> getPwdSecurityQuestions(String DID);
 
     /**
      * 获取创建did设置的安全问题
@@ -55,7 +64,7 @@ public interface DidService extends RepoService {
      * @param securityQuestionAnswers 身份密码安全问题与答案
      * @return
      */
-    Observable<Boolean> decrypt(String DID, Map<Long, String> securityQuestionAnswers);
+    Observable<Boolean> decrypt(String DID, LinkedHashMap<Long, String> securityQuestionAnswers);
 
 
     /**
@@ -76,7 +85,7 @@ public interface DidService extends RepoService {
      * @param newSecurityQuestionAnswers
      * @return
      */
-    Observable<Boolean> reset(String DID, Map<Long, String> oldSecurityQuestionAnswers, Map<Long, String> newSecurityQuestionAnswers);
+    Observable<Boolean> reset(String DID, LinkedHashMap<Long, String> oldSecurityQuestionAnswers, LinkedHashMap<Long, String> newSecurityQuestionAnswers);
 
 
     /**
@@ -87,6 +96,6 @@ public interface DidService extends RepoService {
      * @param newIdentityPwd
      * @return
      */
-    Observable<Boolean> reset(String DID, Map<Long, String> oldSecurityQuestionAnswers, String newIdentityPwd);
+    Observable<Boolean> reset(String DID, LinkedHashMap<Long, String> oldSecurityQuestionAnswers, String newIdentityPwd);
 }
 

@@ -7,27 +7,25 @@ import java.util.List;
  * @Description
  */
 public class BackupPwdSecurityQuestionDTO {
-    /**
-     * 不传递到网络上去
-     */
-    public String pwdEncryptedSecretKey;
-    public String securityQuestionEncryptedSecretKey;
-    public List<Long> securityQuestionIds;
+
+    private String pwdEncryptedSecretKey;
+    private String securityQuestionEncryptedSecretKey;
+    private List<Long> securityQuestionIds;
 
     public BackupPwdSecurityQuestionDTO() {
     }
 
-    public BackupPwdSecurityQuestionDTO(String pwdEncryptedSecretKey, String securityQuestionEncryptedSecretKey, List<Long> securityQuestionIds) {
+    public BackupPwdSecurityQuestionDTO(String pwdEncryptedSecretKey,
+                                        String securityQuestionEncryptedSecretKey,
+                                        List<Long> securityQuestionIds) {
         this.pwdEncryptedSecretKey = pwdEncryptedSecretKey;
         this.securityQuestionEncryptedSecretKey = securityQuestionEncryptedSecretKey;
         this.securityQuestionIds = securityQuestionIds;
     }
-    
 
     public String getPwdEncryptedSecretKey() {
         return pwdEncryptedSecretKey;
     }
-
 
     public String getSecurityQuestionEncryptedSecretKey() {
         return securityQuestionEncryptedSecretKey;
@@ -35,5 +33,17 @@ public class BackupPwdSecurityQuestionDTO {
 
     public List<Long> getSecurityQuestionIds() {
         return securityQuestionIds;
+    }
+
+    public void setPwdEncryptedSecretKey(String pwdEncryptedSecretKey) {
+        this.pwdEncryptedSecretKey = pwdEncryptedSecretKey;
+    }
+
+    public void setSecurityQuestionEncryptedSecretKey(String securityQuestionEncryptedSecretKey) {
+        this.securityQuestionEncryptedSecretKey = securityQuestionEncryptedSecretKey;
+    }
+
+    public void setSecurityQuestionIds(List<Long> securityQuestionIds) {
+        this.securityQuestionIds = securityQuestionIds;
     }
 }

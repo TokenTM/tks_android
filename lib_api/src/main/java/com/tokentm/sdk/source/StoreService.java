@@ -22,6 +22,14 @@ public interface StoreService extends RepoService {
 
 
     /**
+     * 云端存储 自动加密
+     *
+     * @param storeItem
+     * @return
+     */
+    Observable<Long> storeEncrypt(StoreItem storeItem);
+
+    /**
      * 云端存储
      *
      * @param storeItems
@@ -31,25 +39,67 @@ public interface StoreService extends RepoService {
 
 
     /**
+     * 云端存储
+     *
+     * @param storeItems 自动加密
+     * @return
+     */
+    Observable<List<Long>> storeEncrypt(List<StoreItem> storeItems);
+
+    /**
      * 获取云端存储
      *
+     * @param t        解析的data类型
      * @param did
      * @param dataType
      * @param dataId
      * @return
      */
-    Observable<StoreItem> getStore(String did,
-                                   String dataType,
-                                   String dataId);
+    <T extends StoreItem> Observable<T> getStore(Class<T> t,
+                                          String did,
+                                          String dataType,
+                                          String dataId);
+
+
+    /**
+     * 获取云端存储  自动解密
+     *
+     * @param t        解析的data类型
+     * @param did
+     * @param dataType
+     * @param dataId
+     * @return
+     */
+    <T> Observable<StoreItem<T>> getStoreDecrypted(Class<StoreItem<T>> t,
+                                                   String did,
+                                                   String dataType,
+                                                   String dataId);
 
     /**
      * 批量 云端存储
      *
+     * @param t        解析的data类型
      * @param did
      * @param dataType
      * @return
      */
-    Observable<List<StoreItem>> getStore(String did,
-                                         String dataType
+    <T> Observable<List<StoreItem<T>>> getStore(
+            Class<StoreItem<T>> t,
+            String did,
+            String dataType
+    );
+
+    /**
+     * 批量 云端存储
+     *
+     * @param t        解析的data类型
+     * @param did
+     * @param dataType
+     * @return
+     */
+    <T> Observable<List<StoreItem<T>>> getStoreDecrypted(
+            Class<StoreItem<T>> t,
+            String did,
+            String dataType
     );
 }

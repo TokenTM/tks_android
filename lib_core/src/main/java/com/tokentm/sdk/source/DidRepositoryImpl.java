@@ -1,13 +1,19 @@
 package com.tokentm.sdk.source;
 
+import android.text.TextUtils;
+
 import com.tokentm.sdk.Config;
 import com.tokentm.sdk.api.ConfigApiService;
 import com.tokentm.sdk.api.DIDApiService;
 import com.tokentm.sdk.common.CacheUtils;
+import com.tokentm.sdk.common.SDKsp;
+import com.tokentm.sdk.common.encrypt.EncryptionUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
+import com.tokentm.sdk.model.BackupPwdSecurityQuestionDTO;
 import com.tokentm.sdk.model.DIDReqDTO;
 import com.tokentm.sdk.model.SecurityQuestionDTO;
 import com.tokentm.sdk.model.StoreItem;
+import com.tokentm.sdk.model.StorePwdSecurityQuestionItem;
 import com.tokentm.sdk.wallet.SignUtils;
 import com.tokentm.sdk.wallet.WalletResult;
 import com.tokentm.sdk.wallet.WalletUtils;
@@ -15,14 +21,16 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.http.XXFHttp;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import sm_crypto.Sm_crypto;
 
@@ -52,8 +60,25 @@ public class DidRepositoryImpl implements DidService {
     }
 
 
+    private BackupPwdSecurityQuestionDTO generate(String secretKey, String identityPwd, LinkedHashMap<Long, String> securityQuestionAnswers) {
+        String pwdEncryptedSecretKey = EncryptionUtils.encodeString(secretKey, identityPwd);
+
+        StringBuffer questionAnswers = new StringBuffer();
+        List<Long> securityQuestionIds = new ArrayList<>();
+        for (Map.Entry<Long, String> entry : securityQuestionAnswers.entrySet()) {
+            securityQuestionIds.add(entry.getKey());
+            questionAnswers.append(entry.getValue());
+        }
+        String securityQuestionEncryptedSecretKey = EncryptionUtils.encodeString(secretKey, questionAnswers.toString());
+
+        return new BackupPwdSecurityQuestionDTO(
+                pwdEncryptedSecretKey,
+                securityQuestionEncryptedSecretKey,
+                securityQuestionIds);
+    }
+
     @Override
-    public Observable<String> createDID(String identityPwd, Map<Long, String> securityQuestionAnswers) {
+    public Observable<String> createDID(String identityPwd, LinkedHashMap<Long, String> securityQuestionAnswers) {
         return Observable
                 .fromCallable(new Callable<WalletResult>() {
                     @Override
@@ -100,41 +125,37 @@ public class DidRepositoryImpl implements DidService {
                                 .flatMap(new Function<String, ObservableSource<String>>() {
                                     @Override
                                     public ObservableSource<String> apply(String did) throws Exception {
+                                        new BackupPwdSecurityQuestionDTO();
                                         //1.备份身份密码
-                                        //2.备份keystore
-                                        //3.备份数据密钥
-                                        StoreItem identityPwdStoreItem = new StoreItem();
+                                        StoreItem<BackupPwdSecurityQuestionDTO> identityPwdStoreItem = new StoreItem<BackupPwdSecurityQuestionDTO>();
                                         identityPwdStoreItem.setDid(did);
                                         identityPwdStoreItem.setDataId(did);
                                         identityPwdStoreItem.setDataType(Config.BackupType.TYPE_BACK_UP_SECRETKEY.getValue());
-                                        //TODO 身份密码存储模型 转json
-                                        //identityPwdStoreItem.setData();
+                                        identityPwdStoreItem.setData(generate(dataPrivateKey, identityPwd, securityQuestionAnswers));
 
-                                        StoreItem keyStoreItem = new StoreItem();
+                                        //2.备份keystore
+                                        StoreItem<String> keyStoreItem = new StoreItem<String>();
                                         keyStoreItem.setDid(did);
                                         keyStoreItem.setDataId(did);
                                         keyStoreItem.setDataType(Config.BackupType.TYPE_USER_KEY_STORE.getValue());
                                         keyStoreItem.setData(walletResult.getKeyStoreFileContent());
 
+                                        //put dpk
+                                        SDKsp.getInstance()._putDPK(did, dataPrivateKey);
 
-                                        StoreItem dataPrivateKeyStoreItem = new StoreItem();
-                                        dataPrivateKeyStoreItem.setDid(did);
-                                        dataPrivateKeyStoreItem.setDataId(did);
-                                        dataPrivateKeyStoreItem.setDataType(Config.BackupType.TYPE_USER_SIGN_PRIVATE_KEY.getValue());
-                                        dataPrivateKeyStoreItem.setData(dataPrivateKey);
-
-                                        List<StoreItem> storeList = Arrays.asList(
-                                                identityPwdStoreItem,
-                                                keyStoreItem,
-                                                dataPrivateKeyStoreItem
-                                        );
-
-                                        return StoreRepositoryImpl
-                                                .getInstance()
-                                                .store(storeList)
-                                                .map(new Function<List<Long>, String>() {
+                                        return Observable.zip(
+                                                //TODO 不加密
+                                                StoreRepositoryImpl
+                                                        .getInstance()
+                                                        .storeEncrypt(identityPwdStoreItem),
+                                                //加密
+                                                StoreRepositoryImpl
+                                                        .getInstance()
+                                                        .storeEncrypt(keyStoreItem),
+                                                new BiFunction<Long, Long, String>() {
                                                     @Override
-                                                    public String apply(List<Long> longs) throws Exception {
+                                                    public String apply(Long aLong, Long aLong2) throws Exception {
+                                                        //返回didi
                                                         return did;
                                                     }
                                                 });
@@ -145,39 +166,106 @@ public class DidRepositoryImpl implements DidService {
     }
 
     @Override
-    public Observable<List<SecurityQuestionDTO>> getSecurityQuestions(String DID) {
-        return getSecurityQuestionTemplate()
-                .flatMap(new Function<List<SecurityQuestionDTO>, ObservableSource<List<SecurityQuestionDTO>>>() {
+    public Observable<BackupPwdSecurityQuestionDTO> getPwdSecurityQuestions(String DID) {
+        return StoreRepositoryImpl
+                .getInstance()
+                .getStore(StorePwdSecurityQuestionItem.class, DID, Config.BackupType.TYPE_BACK_UP_SECRETKEY.getValue(), DID)
+                .map(new Function<StorePwdSecurityQuestionItem, BackupPwdSecurityQuestionDTO>() {
                     @Override
-                    public ObservableSource<List<SecurityQuestionDTO>> apply(List<SecurityQuestionDTO> securityQuestionTemplates) throws Exception {
-                        //查找设置的安全问题ids
-                        return null;
+                    public BackupPwdSecurityQuestionDTO apply(StorePwdSecurityQuestionItem storePwdSecurityQuestionItem) throws Exception {
+                        return storePwdSecurityQuestionItem.getData();
+                    }
+                });
+    }
+
+    @Override
+    public Observable<List<SecurityQuestionDTO>> getSecurityQuestions(String DID) {
+        return Observable.zip(
+                this.getSecurityQuestionTemplate(),
+                this.getPwdSecurityQuestions(DID),
+                new BiFunction<List<SecurityQuestionDTO>, BackupPwdSecurityQuestionDTO, List<SecurityQuestionDTO>>() {
+                    @Override
+                    public List<SecurityQuestionDTO> apply(List<SecurityQuestionDTO> securityQuestionDTOS, BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
+                        List<SecurityQuestionDTO> list = new ArrayList<>();
+                        for (SecurityQuestionDTO securityQuestionDTO : securityQuestionDTOS) {
+                            if (backupPwdSecurityQuestionDTO.getSecurityQuestionIds().contains(securityQuestionDTO.id)) {
+                                list.add(securityQuestionDTO);
+                            }
+                        }
+                        return list;
                     }
                 });
     }
 
     @Override
     public Observable<Boolean> decrypt(String DID, String identityPwd) {
-        return null;
+        return this.getPwdSecurityQuestions(DID)
+                .map(new Function<BackupPwdSecurityQuestionDTO, Boolean>() {
+                    @Override
+                    public Boolean apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
+                        String dpk = EncryptionUtils.decodeString(backupPwdSecurityQuestionDTO.getPwdEncryptedSecretKey(), identityPwd);
+                        return !TextUtils.isEmpty(dpk);
+                    }
+                });
     }
 
     @Override
-    public Observable<Boolean> decrypt(String DID, Map<Long, String> securityQuestionAnswers) {
-        return null;
+    public Observable<Boolean> decrypt(String DID, LinkedHashMap<Long, String> securityQuestionAnswers) {
+        return this.getPwdSecurityQuestions(DID)
+                .map(new Function<BackupPwdSecurityQuestionDTO, Boolean>() {
+                    @Override
+                    public Boolean apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (Map.Entry<Long, String> entry : securityQuestionAnswers.entrySet()) {
+                            stringBuilder.append(entry.getValue());
+                        }
+                        String dpk = EncryptionUtils.decodeString(backupPwdSecurityQuestionDTO.getSecurityQuestionEncryptedSecretKey(), stringBuilder.toString());
+                        return !TextUtils.isEmpty(dpk);
+                    }
+                });
     }
 
     @Override
     public Observable<Boolean> reset(String DID, String oldIdentityPwd, String newIdentityPwd) {
+        return this.getPwdSecurityQuestions(DID)
+                .flatMap(new Function<BackupPwdSecurityQuestionDTO, ObservableSource<Boolean>>() {
+                    @Override
+                    public ObservableSource<Boolean> apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
+                        String dpk = EncryptionUtils.decodeString(backupPwdSecurityQuestionDTO.getPwdEncryptedSecretKey(), oldIdentityPwd);
+                        if (TextUtils.isEmpty(dpk)) {
+                            throw new RuntimeException("旧密码不正确");
+                        }
+                        //用新密码加密密钥
+                        String pwdEncryptedSecretKey = EncryptionUtils.encodeString(dpk, newIdentityPwd);
+                        backupPwdSecurityQuestionDTO.setPwdEncryptedSecretKey(pwdEncryptedSecretKey);
+
+                        //1.备份身份密码
+                        StoreItem<BackupPwdSecurityQuestionDTO> identityPwdStoreItem = new StoreItem<BackupPwdSecurityQuestionDTO>();
+                        identityPwdStoreItem.setDid(DID);
+                        identityPwdStoreItem.setDataId(DID);
+                        identityPwdStoreItem.setDataType(Config.BackupType.TYPE_BACK_UP_SECRETKEY.getValue());
+                        identityPwdStoreItem.setData(backupPwdSecurityQuestionDTO);
+                        //TODO 不加密
+                        return StoreRepositoryImpl
+                                .getInstance()
+                                .storeEncrypt(identityPwdStoreItem)
+                                .map(new Function<Long, Boolean>() {
+                                    @Override
+                                    public Boolean apply(Long aLong) throws Exception {
+                                        return true;
+                                    }
+                                });
+                    }
+                });
+    }
+
+    @Override
+    public Observable<Boolean> reset(String DID, LinkedHashMap<Long, String> oldSecurityQuestionAnswers, LinkedHashMap<Long, String> newSecurityQuestionAnswers) {
         return null;
     }
 
     @Override
-    public Observable<Boolean> reset(String DID, Map<Long, String> oldSecurityQuestionAnswers, Map<Long, String> newSecurityQuestionAnswers) {
-        return null;
-    }
-
-    @Override
-    public Observable<Boolean> reset(String DID, Map<Long, String> oldSecurityQuestionAnswers, String newIdentityPwd) {
+    public Observable<Boolean> reset(String DID, LinkedHashMap<Long, String> oldSecurityQuestionAnswers, String newIdentityPwd) {
         return null;
     }
 }

@@ -10,11 +10,6 @@ public interface Config {
 
     enum BackupType {
 
-        /**
-         * 数据私钥
-         */
-        @SerializedName("_tks_data_sign_private_key")
-        TYPE_USER_SIGN_PRIVATE_KEY("_tks_data_sign_private_key"),
 
         /**
          * 当前用户 个人实名keystore同步(一个用户只有一个)
