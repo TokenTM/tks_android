@@ -2,10 +2,20 @@
     package="com.tokentm.sdk.components">
 
     <application>
-        <activity android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionReSetActivity" />
-        <activity android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionSetActivity" />
-        <activity android:name=".identitypwd.UserIdentityPwdDecryptedBySecurityQuestionActivity" />
-        <activity android:name=".identitypwd.UserIdentityPwdReSetActivity" />
-        <activity android:name=".identitypwd.UserIdentityPwdUpdateActivity" />
+        <activity
+            android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionReSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".identitypwd.UserIdentityPwdDecryptedBySecurityQuestionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".identitypwd.UserIdentityPwdReSetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".identitypwd.UserIdentityPwdUpdateActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

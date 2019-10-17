@@ -51,20 +51,20 @@ public interface DidService extends RepoService {
      * 解密身份密码
      *
      * @param DID         did 链上唯一标识
-     * @param identityPwd
+     * @param oldIdentityPwd
      * @return
      */
-    Observable<Boolean> decrypt(String DID, String identityPwd);
+    Observable<Boolean> decrypt(String DID, String oldIdentityPwd);
 
 
     /**
      * 解密身份密码
      *
      * @param DID                     did 链上唯一标识
-     * @param securityQuestionAnswers 身份密码安全问题与答案
+     * @param oldSecurityQuestionAnswers 身份密码安全问题与答案
      * @return
      */
-    Observable<Boolean> decrypt(String DID, LinkedHashMap<Long, String> securityQuestionAnswers);
+    Observable<Boolean> decrypt(String DID, LinkedHashMap<Long, String> oldSecurityQuestionAnswers);
 
 
     /**
@@ -97,5 +97,17 @@ public interface DidService extends RepoService {
      * @return
      */
     Observable<Boolean> reset(String DID, LinkedHashMap<Long, String> oldSecurityQuestionAnswers, String newIdentityPwd);
+
+
+
+    /**
+     * 重置身份密码安全问题,通过旧的安全问题
+     *
+     * @param DID
+     * @param oldSecurityQuestionAnswers
+     * @param newSecurityQuestionAnswers
+     * @return
+     */
+    Observable<Boolean> reset(String DID, LinkedHashMap<Long, String> oldSecurityQuestionAnswers, LinkedHashMap<Long, String> newSecurityQuestionAnswers,String newIdentityPwd);
 }
 

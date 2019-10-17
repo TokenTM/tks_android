@@ -1,6 +1,7 @@
 package com.tokentm.sdk.components.identitypwd;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +12,16 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdResetBinding;
+import com.tokentm.sdk.source.DidService;
+import com.xxf.arch.XXF;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
+
+import java.util.LinkedHashMap;
+
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -20,17 +29,22 @@ import com.xxf.arch.utils.ToastUtils;
  * @Description 重置用户身份密码
  */
 public class UserIdentityPwdReSetActivity extends BaseTitleBarActivity {
+    private static final String KEY_DID = "did";
+    private static final String KEY_OLD_SECURITY_QUESTION_ANSWERS = "oldSecurityQuestionAnswers";
 
-
-    public static void launch(Context context) {
-        context.startActivity(getLauncher(context));
+    public static void launch(Context context, String did, LinkedHashMap<Long, String> oldSecurityQuestionAnswers) {
+        context.startActivity(getLauncher(context, did, oldSecurityQuestionAnswers));
     }
 
-    public static Intent getLauncher(Context context) {
-        return new Intent(context, UserIdentityPwdReSetActivity.class);
+    public static Intent getLauncher(Context context, String did, LinkedHashMap<Long, String> oldSecurityQuestionAnswers) {
+        return new Intent(context, UserIdentityPwdReSetActivity.class)
+                .putExtra(KEY_DID, did)
+                .putExtra(KEY_OLD_SECURITY_QUESTION_ANSWERS, oldSecurityQuestionAnswers);
     }
 
     UserActivityIdentityPwdResetBinding binding;
+    LinkedHashMap<Long, String> oldSecurityQuestionAnswers;
+    String did;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +55,9 @@ public class UserIdentityPwdReSetActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
+        did = getIntent().getStringExtra(KEY_DID);
+        oldSecurityQuestionAnswers = (LinkedHashMap<Long, String>) getIntent().getSerializableExtra(KEY_OLD_SECURITY_QUESTION_ANSWERS);
+
         getTitleBar().setTitleBarTitle("重置身份密码");
         //长度限制
         binding.identityPwdEt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(UserConfig.MAX_LENTH_PWD)});
@@ -105,7 +122,7 @@ public class UserIdentityPwdReSetActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 UserIdentityPwdAndSecurityQuestionReSetActivity
-                        .launch(getActivity());
+                        .launch(getActivity(), did, oldSecurityQuestionAnswers);
                 finish();
             }
         });
@@ -132,47 +149,17 @@ public class UserIdentityPwdReSetActivity extends BaseTitleBarActivity {
         if (!checkInputLegal()) {
             return;
         }
-        //TODO YX
-//        // 密码 来解密-- 密钥！！！！
-//        String pwd = binding.identityPwdEt.getText().toString().trim();
-//        //重置身份密码,本地一定有身份密钥
-//        UserInfoBackupRepositoryImpl.getInstance()
-//                .queryIdentityPwdFromLocal()
-//                .map(new Function<BackupPwdSecurityQuestionDTO, BackupPwdSecurityQuestionDTO>() {
-//                    @Override
-//                    public BackupPwdSecurityQuestionDTO apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        if (TextUtils.isEmpty(backupPwdSecurityQuestionDTO.secretKey)) {
-//                            throw new RuntimeException("本地 secretKey 为null");
-//                        }
-//                        return backupPwdSecurityQuestionDTO;
-//                    }
-//                })
-//                .map(new Function<BackupPwdSecurityQuestionDTO, BackupPwdSecurityQuestionDTO>() {
-//                    @Override
-//                    public BackupPwdSecurityQuestionDTO apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        //用新密码加密密钥
-//                        String pwdEncryptedSecretKey = EncryptionUtils.encodeString(backupPwdSecurityQuestionDTO.secretKey, pwd);
-//                        backupPwdSecurityQuestionDTO.pwdEncryptedSecretKey = pwdEncryptedSecretKey;
-//                        return backupPwdSecurityQuestionDTO;
-//                    }
-//                })
-//                .flatMap(new Function<BackupPwdSecurityQuestionDTO, ObservableSource<BackupPwdSecurityQuestionDTO>>() {
-//                    @Override
-//                    public ObservableSource<BackupPwdSecurityQuestionDTO> apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        //备份到云端 pwdEncryptedSecretKey
-//                        return UserInfoBackupRepositoryImpl
-//                                .getInstance()
-//                                .addIdentityPwdToServerAndLocal(backupPwdSecurityQuestionDTO);
-//                    }
-//                })
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .compose(XXF.<BackupPwdSecurityQuestionDTO>bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-//                .subscribe(new Consumer<BackupPwdSecurityQuestionDTO>() {
-//                    @Override
-//                    public void accept(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        setResult(Activity.RESULT_OK);
-//                        finish();
-//                    }
-//                });
+        String newPwd = binding.identityPwdEt.getText().toString().trim();
+        TokenTmClient.getService(DidService.class)
+                .reset(did, oldSecurityQuestionAnswers, newPwd)
+                .compose(XXF.bindToLifecycle(this))
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean reseted) throws Exception {
+                        setResult(Activity.RESULT_OK);
+                        finish();
+                    }
+                });
     }
 }

@@ -1,6 +1,7 @@
 package com.tokentm.sdk.components.identitypwd;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,11 @@ import android.view.View;
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdUpdateBinding;
 import com.tokentm.sdk.source.DidService;
+import com.xxf.arch.XXF;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
+
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -22,15 +27,19 @@ import com.xxf.arch.utils.ToastUtils;
  * @Description 修改用户身份密码
  */
 public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity {
-    public static void launch(Context context) {
-        context.startActivity(getLauncher(context));
+    private static final String KEY_DID = "did";
+
+    public static void launch(Context context, String did) {
+        context.startActivity(getLauncher(context, did));
     }
 
-    public static Intent getLauncher(Context context) {
-        return new Intent(context, UserIdentityPwdUpdateActivity.class);
+    public static Intent getLauncher(Context context, String did) {
+        return new Intent(context, UserIdentityPwdUpdateActivity.class)
+                .putExtra(KEY_DID, did);
     }
 
     UserActivityIdentityPwdUpdateBinding binding;
+    String did;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +50,7 @@ public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
+        did = getIntent().getStringExtra(KEY_DID);
         getTitleBar().setTitleBarTitle("修改身份密码");
         //长度限制
         binding.identityOriginalPwdEt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(UserConfig.MAX_LENTH_PWD)});
@@ -140,52 +150,18 @@ public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity {
         if (!checkInputLegal()) {
             return;
         }
+        String originalPwd = binding.identityOriginalPwdEt.getText().toString().trim();
+        String newPwd = binding.identityPwdEt.getText().toString().trim();
         TokenTmClient.getService(DidService.class)
-                .reset()
-        //TODO youxuan
-        // 密码 来解密-- 密钥！！！！
-//        String originalPwd = binding.identityOriginalPwdEt.getText().toString().trim();
-//        String newPwd = binding.identityPwdEt.getText().toString().trim();
-//        UserInfoBackupRepositoryImpl
-//                .getInstance()
-//                .queryIdentityPwdFromServer()
-//                .map(new Function<List<BackupPwdSecurityQuestionDTO>, BackupPwdSecurityQuestionDTO>() {
-//                    @Override
-//                    public BackupPwdSecurityQuestionDTO apply(List<BackupPwdSecurityQuestionDTO> backupPwdSecurityQuestionDTOS) throws Exception {
-//                        return backupPwdSecurityQuestionDTOS.get(0);
-//                    }
-//                })
-//                .map(new Function<BackupPwdSecurityQuestionDTO, BackupPwdSecurityQuestionDTO>() {
-//                    @Override
-//                    public BackupPwdSecurityQuestionDTO apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        //旧密码解密
-//                        String decodeSecretKey = EncryptionUtils.decodeString(backupPwdSecurityQuestionDTO.pwdEncryptedSecretKey, originalPwd);
-//                        if (TextUtils.isEmpty(decodeSecretKey)) {
-//                            throw new RuntimeException("身份密码输入错误!");
-//                        }
-//                        //用新密码加密密钥
-//                        String pwdEncryptedSecretKey = EncryptionUtils.encodeString(decodeSecretKey, newPwd);
-//                        backupPwdSecurityQuestionDTO.secretKey = decodeSecretKey;
-//                        backupPwdSecurityQuestionDTO.pwdEncryptedSecretKey = pwdEncryptedSecretKey;
-//                        return backupPwdSecurityQuestionDTO;
-//                    }
-//                })
-//                .flatMap(new Function<BackupPwdSecurityQuestionDTO, ObservableSource<BackupPwdSecurityQuestionDTO>>() {
-//                    @Override
-//                    public ObservableSource<BackupPwdSecurityQuestionDTO> apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        //备份到云端 pwdEncryptedSecretKey
-//                        return UserInfoBackupRepositoryImpl
-//                                .getInstance()
-//                                .addIdentityPwdToServerAndLocal(backupPwdSecurityQuestionDTO);
-//                    }
-//                })
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .compose(XXF.<BackupPwdSecurityQuestionDTO>bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-//                .subscribe(new Consumer<BackupPwdSecurityQuestionDTO>() {
-//                    @Override
-//                    public void accept(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        finish();
-//                    }
-//                });
+                .reset(did, originalPwd, newPwd)
+                .compose(XXF.bindToLifecycle(this))
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean reseted) throws Exception {
+                        setResult(Activity.RESULT_OK);
+                        finish();
+                    }
+                });
     }
 }

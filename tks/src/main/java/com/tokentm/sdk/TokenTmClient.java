@@ -71,7 +71,7 @@ public class TokenTmClient {
      * @param <T>
      * @return
      */
-    public static <T> T getService(Class<T> repoService) {
+    public static <T extends RepoService> T getService(Class<T> repoService) {
         return (T) SERVICE_MAP.get(repoService);
     }
 }

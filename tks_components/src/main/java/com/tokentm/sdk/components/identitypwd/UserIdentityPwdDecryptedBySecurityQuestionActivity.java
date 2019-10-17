@@ -5,18 +5,22 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.UiThread;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdDecryptedBySecurityQuestionBinding;
-import com.tokentm.sdk.model.BackupPwdSecurityQuestionDTO;
 import com.tokentm.sdk.model.SecurityQuestionDTO;
+import com.tokentm.sdk.source.DidService;
+import com.xxf.arch.XXF;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -24,17 +28,20 @@ import java.util.Map;
  */
 public class UserIdentityPwdDecryptedBySecurityQuestionActivity extends BaseTitleBarActivity {
 
-    public static void launch(Context context) {
-        context.startActivity(getLauncher(context));
+    private static final String KEY_DID = "did";
+
+    public static void launch(Context context, String did) {
+        context.startActivity(getLauncher(context, did));
     }
 
-    public static Intent getLauncher(Context context) {
-        return new Intent(context, UserIdentityPwdDecryptedBySecurityQuestionActivity.class);
+    public static Intent getLauncher(Context context, String did) {
+        return new Intent(context, UserIdentityPwdDecryptedBySecurityQuestionActivity.class)
+                .putExtra(KEY_DID, did);
     }
 
     private UserActivityIdentityPwdDecryptedBySecurityQuestionBinding binding;
     final List<SecurityQuestionDTO> securityQuestionDTOList = new ArrayList<>();
-    private BackupPwdSecurityQuestionDTO lastBackupPwdSecurityQuestionDTO;
+    String did;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class UserIdentityPwdDecryptedBySecurityQuestionActivity extends BaseTitl
 
 
     private void initView() {
+        did = getIntent().getStringExtra(KEY_DID);
         getTitleBar().setTitleBarTitle("安全提示问题");
         binding.okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,30 +67,36 @@ public class UserIdentityPwdDecryptedBySecurityQuestionActivity extends BaseTitl
 
     @SuppressLint("CheckResult")
     private void submit() {
-        if (lastBackupPwdSecurityQuestionDTO == null) {
-            return;
-        }
         if (checkInputLegal()) {
-            //问题答案加密
-            String securityQuestions = new StringBuilder()
-                    .append(binding.identitySecurityQuestionQuestionAnswer1.getText().toString().trim())
-                    .append(binding.identitySecurityQuestionQuestionAnswer2.getText().toString().trim())
-                    .append(binding.identitySecurityQuestionQuestionAnswer3.getText().toString().trim())
-                    .toString()
-                    .trim();
-            String secretKey = EncryptionUtils.decodeString(lastBackupPwdSecurityQuestionDTO.securityQuestionEncryptedSecretKey, securityQuestions);
-            if (TextUtils.isEmpty(secretKey)) {
-                ToastUtils.showToast("问题回答错误,请重新输入");
-                return;
-            }
-            //解密校验成功
-            // !!注意必须返回 secretKey
-            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, secretKey));
-            finish();
+            LinkedHashMap<Long, String> oldSecurityQuestionAnswers = new LinkedHashMap<>();
+            oldSecurityQuestionAnswers.put(securityQuestionDTOList.get(0).id, binding.identitySecurityQuestionQuestionAnswer1.getText().toString().trim());
+            oldSecurityQuestionAnswers.put(securityQuestionDTOList.get(1).id, binding.identitySecurityQuestionQuestionAnswer2.getText().toString().trim());
+            oldSecurityQuestionAnswers.put(securityQuestionDTOList.get(2).id, binding.identitySecurityQuestionQuestionAnswer3.getText().toString().trim());
+
+            TokenTmClient.getService(DidService.class)
+                    .decrypt(did, oldSecurityQuestionAnswers)
+                    .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                    .compose(XXF.bindToLifecycle(this))
+                    .subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean decrypted) throws Exception {
+                            if (decrypted) {
+                                // !!注意必须返回
+                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, oldSecurityQuestionAnswers));
+                                finish();
+                            } else {
+                                ToastUtils.showToast("安全找回问题回答错误!");
+                            }
+                        }
+                    });
         }
     }
 
     private boolean checkInputLegal() {
+        if (securityQuestionDTOList.size() < UserConfig.IDENTITY_PWD_SET_QUESTION_COUNT) {
+            ToastUtils.showToast(String.format("问题数目小于%s!", UserConfig.IDENTITY_PWD_SET_QUESTION_COUNT));
+            return false;
+        }
         if (TextUtils.isEmpty(binding.identitySecurityQuestionQuestionAnswer1.getText())
                 || TextUtils.isEmpty(binding.identitySecurityQuestionQuestionAnswer2.getText())
                 || TextUtils.isEmpty(binding.identitySecurityQuestionQuestionAnswer3.getText())) {
@@ -95,61 +109,20 @@ public class UserIdentityPwdDecryptedBySecurityQuestionActivity extends BaseTitl
 
     @SuppressLint("CheckResult")
     private void loadData() {
-        //TODO youxuan
-//        Observable.zip(
-//                TokenTmClient
-//                        .getService(ConfigDataSource.class)
-//                        .getSecurityQuestionTemplate(),
-//
-//                UserInfoBackupRepositoryImpl
-//                        .getInstance()
-//                        .queryIdentityPwdFromServer()
-//                        .map(new Function<List<BackupPwdSecurityQuestionDTO>, BackupPwdSecurityQuestionDTO>() {
-//                            @Override
-//                            public BackupPwdSecurityQuestionDTO apply(List<BackupPwdSecurityQuestionDTO> backupPwdSecurityQuestionDTOS) throws Exception {
-//                                return backupPwdSecurityQuestionDTOS.get(0);
-//                            }
-//                        }),
-//                new BiFunction<List<SecurityQuestionDTO>, BackupPwdSecurityQuestionDTO, Object>() {
-//                    @Override
-//                    public Object apply(List<SecurityQuestionDTO> securityQuestionDTOS, BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        securityQuestionDTOList.clear();
-//                        securityQuestionDTOList.addAll(securityQuestionDTOS);
-//                        lastBackupPwdSecurityQuestionDTO = backupPwdSecurityQuestionDTO;
-//                        return backupPwdSecurityQuestionDTO;
-//                    }
-//                })
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-//                .subscribe(new Consumer<Object>() {
-//                    @Override
-//                    public void accept(Object o) throws Exception {
-//                        List<Long> securityQuestionIds = lastBackupPwdSecurityQuestionDTO.securityQuestionIds;
-//                        Map<Long, SecurityQuestionDTO> securityQuestionDTOMap = new HashMap<>();
-//                        for (SecurityQuestionDTO securityQuestionDTO : securityQuestionDTOList) {
-//                            securityQuestionDTOMap.put(securityQuestionDTO.id, securityQuestionDTO);
-//                        }
-//
-//                        SecurityQuestionDTO[] questionArray = new SecurityQuestionDTO[UserConfig.IDENTITY_PWD_SET_QUESTION_COUNT];
-//                        for (int i = 0; i < questionArray.length; i++) {
-//                            questionArray[i] = getUnsafeSecurityQuestion(securityQuestionDTOMap, securityQuestionIds.get(i));
-//                        }
-//                        binding.identitySecuritySpinnerQuestion1.setText(questionArray[0].question);
-//                        binding.identitySecuritySpinnerQuestion2.setText(questionArray[1].question);
-//                        binding.identitySecuritySpinnerQuestion3.setText(questionArray[2].question);
-//                    }
-//                });
-    }
+        TokenTmClient.getService(DidService.class)
+                .getSecurityQuestions(did)
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .compose(XXF.bindToLifecycle(getActivity()))
+                .subscribe(new Consumer<List<SecurityQuestionDTO>>() {
+                    @Override
+                    public void accept(List<SecurityQuestionDTO> securityQuestionDTOS) throws Exception {
+                        securityQuestionDTOList.clear();
+                        securityQuestionDTOList.addAll(securityQuestionDTOS);
 
-    @UiThread
-    private SecurityQuestionDTO getUnsafeSecurityQuestion(Map<Long, SecurityQuestionDTO> securityQuestionDTOMap, long id)
-            throws RuntimeException {
-        SecurityQuestionDTO securityQuestionDTO = securityQuestionDTOMap.get(id);
-        if (securityQuestionDTO == null) {
-            String log = "questionId=" + id + " is not found!";
-            ToastUtils.showToast(log);
-            throw new RuntimeException(log);
-        }
-        return securityQuestionDTO;
+                        binding.identitySecuritySpinnerQuestion1.setText(securityQuestionDTOS.get(0).question);
+                        binding.identitySecuritySpinnerQuestion2.setText(securityQuestionDTOS.get(1).question);
+                        binding.identitySecuritySpinnerQuestion3.setText(securityQuestionDTOS.get(2).question);
+                    }
+                });
     }
 }

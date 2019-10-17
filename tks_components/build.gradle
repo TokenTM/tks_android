@@ -6,7 +6,10 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion
     }
-
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
     buildTypes {
         release {
             minifyEnabled false
