@@ -20,7 +20,7 @@ import retrofit2.http.GET;
  * @Description 上链相关api
  */
 
-@BaseUrl(BuildConfig.API_URL)
+@BaseUrl(BuildConfig.API_URL_CONFIG)
 @GsonInterceptor(GlobalGsonConvertInterceptor.class)
 @RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
 public interface ConfigApiService {
@@ -29,6 +29,6 @@ public interface ConfigApiService {
      *
      * @return
      */
-    @GET("config/question")
+    @GET("question")
     Observable<ResponseDTO<List<SecurityQuestionDTO>>> getSecurityQuestionTemplate();
 }

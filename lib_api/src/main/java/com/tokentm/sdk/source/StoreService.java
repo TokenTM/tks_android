@@ -18,7 +18,7 @@ public interface StoreService extends RepoService {
      * @param storeItem
      * @return
      */
-    Observable<Long> store(StoreItem storeItem);
+    <T> Observable<Long> store(StoreItem<T> storeItem);
 
 
     /**
@@ -27,7 +27,7 @@ public interface StoreService extends RepoService {
      * @param storeItem
      * @return
      */
-    Observable<Long> storeEncrypt(StoreItem storeItem);
+    <T> Observable<Long> storeEncrypt(StoreItem<T> storeItem);
 
     /**
      * 云端存储
@@ -35,7 +35,7 @@ public interface StoreService extends RepoService {
      * @param storeItems
      * @return
      */
-    Observable<List<Long>> store(List<StoreItem> storeItems);
+    <T> Observable<List<Long>> store(List<StoreItem<T>> storeItems);
 
 
     /**
@@ -44,7 +44,7 @@ public interface StoreService extends RepoService {
      * @param storeItems 自动加密
      * @return
      */
-    Observable<List<Long>> storeEncrypt(List<StoreItem> storeItems);
+    <T> Observable<List<Long>> storeEncrypt(List<StoreItem<T>> storeItems);
 
     /**
      * 获取云端存储
@@ -56,9 +56,9 @@ public interface StoreService extends RepoService {
      * @return
      */
     <T extends StoreItem> Observable<T> getStore(Class<T> t,
-                                          String did,
-                                          String dataType,
-                                          String dataId);
+                                                 String did,
+                                                 String dataType,
+                                                 String dataId);
 
 
     /**

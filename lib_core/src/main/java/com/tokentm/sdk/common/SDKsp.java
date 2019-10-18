@@ -1,5 +1,7 @@
 package com.tokentm.sdk.common;
 
+import com.xxf.arch.XXF;
+
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
@@ -9,7 +11,7 @@ public class SDKsp extends SharedPreferenceWrapper {
     private static final String KEY_DPK_FORMAT = "_dpk_%s";
 
     private SDKsp() {
-        super("com.tokentm.sdk.common.SDKsp");
+        super(XXF.getApplication(), "com.tokentm.sdk.common.SDKsp");
     }
 
     public static SDKsp getInstance() {

@@ -1,11 +1,9 @@
 package com.tokentm.sdk.common;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.support.annotation.RequiresApi;
-
-import com.xxf.arch.XXF;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,8 +15,8 @@ public class SharedPreferenceWrapper {
     private Editor mEditor;
     private ArrayList<OnSharedPreferenceChangeListener> mListeners;
 
-    public SharedPreferenceWrapper(String fileName) {
-        this.mSharedPreferences = XXF.getApplication().getSharedPreferences(fileName, 0);
+    public SharedPreferenceWrapper(Context context, String fileName) {
+        this.mSharedPreferences = context.getApplicationContext().getSharedPreferences(fileName, 0);
         if (this.mListeners == null) {
             this.mListeners = new ArrayList();
         }
@@ -94,16 +92,12 @@ public class SharedPreferenceWrapper {
         this.mEditor.commit();
     }
 
-    @RequiresApi(
-            api = 11
-    )
+
     public Set<String> getStringSet(String key) {
         return this.mSharedPreferences.getStringSet(key, new HashSet());
     }
 
-    @RequiresApi(
-            api = 11
-    )
+
     public void putStringSet(String key, Set<String> values) {
         if (this.mEditor == null) {
             this.mEditor = this.mSharedPreferences.edit();

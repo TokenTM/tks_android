@@ -4,10 +4,12 @@ import com.tokentm.sdk.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
-import com.tokentm.sdk.model.StoreDecryptedItem;
-import com.tokentm.sdk.model.StoreEncryptedItem;
 import com.tokentm.sdk.model.StoreItem;
+import com.tokentm.sdk.model.StoreItemDecrypted;
+import com.tokentm.sdk.model.StoreItemEncrypted;
+import com.tokentm.sdk.model.StoreItemSigned;
 import com.tokentm.sdk.model.StoreQueryByTypeReqBodyDTO;
+import com.tokentm.sdk.model.StoreQueryLimitReqBodyDTO;
 import com.tokentm.sdk.model.StoreQueryReqBodyDTO;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
@@ -37,7 +39,7 @@ public interface StoreApiService {
      * @return
      */
     @POST("store")
-    Observable<ResponseDTO<List<Long>>> store(@Body List<StoreItem<String>> body);
+    Observable<ResponseDTO<List<Long>>> store(@Body List<StoreItemSigned> body);
 
 
     /**
@@ -47,7 +49,7 @@ public interface StoreApiService {
      * @return
      */
     @POST("store")
-    Observable<ResponseDTO<List<Long>>> storeEncrypt(@Body List<StoreEncryptedItem> encryptBody);
+    Observable<ResponseDTO<List<Long>>> storeEncrypt(@Body List<StoreItemEncrypted> encryptBody);
 
     /**
      * 获取 云端存储
@@ -65,7 +67,17 @@ public interface StoreApiService {
      * @return
      */
     @GET("store")
-    Observable<ResponseDTO<StoreDecryptedItem>> getStoreDecrypted(@Body StoreQueryReqBodyDTO body);
+    Observable<ResponseDTO<StoreItemDecrypted>> getStoreDecrypted(@Body StoreQueryReqBodyDTO body);
+
+
+    /**
+     * 获取 云端存储 次数限制的(1天一次),不建议使用!
+     *
+     * @param body
+     * @return
+     */
+    @GET("store/limited")
+    Observable<ResponseDTO<StoreItem<String>>> getStoreLimited(@Body StoreQueryLimitReqBodyDTO body);
 
     /**
      * 按类型查询 云端存储
@@ -84,5 +96,5 @@ public interface StoreApiService {
      * @return
      */
     @GET("store/data_type")
-    Observable<ResponseDTO<List<StoreDecryptedItem>>> getStoreByTypeDecrypted(@Body StoreQueryByTypeReqBodyDTO body);
+    Observable<ResponseDTO<List<StoreItemDecrypted>>> getStoreByTypeDecrypted(@Body StoreQueryByTypeReqBodyDTO body);
 }

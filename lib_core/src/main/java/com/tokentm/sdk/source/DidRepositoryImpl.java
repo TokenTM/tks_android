@@ -124,10 +124,9 @@ public class DidRepositoryImpl implements DidService {
                                         SDKsp.getInstance()._putDPK(did, dataPrivateKey);
 
                                         return Observable.zip(
-                                                //TODO 不加密
                                                 StoreRepositoryImpl
                                                         .getInstance()
-                                                        .storeEncrypt(storePwdSecurityQuestionItem),
+                                                        .store(storePwdSecurityQuestionItem),
                                                 //加密
                                                 StoreRepositoryImpl
                                                         .getInstance()
@@ -228,10 +227,9 @@ public class DidRepositoryImpl implements DidService {
 
                         //1.备份身份密码
                         StorePwdSecurityQuestionItem identityPwdStoreItem = new StorePwdSecurityQuestionItem(DID, backupPwdSecurityQuestionDTO);
-                        //TODO 不加密
                         return StoreRepositoryImpl
                                 .getInstance()
-                                .storeEncrypt(identityPwdStoreItem)
+                                .store(identityPwdStoreItem)
                                 .map(new Function<Long, Boolean>() {
                                     @Override
                                     public Boolean apply(Long aLong) throws Exception {
@@ -286,10 +284,9 @@ public class DidRepositoryImpl implements DidService {
 
                         //1.备份身份密码
                         StorePwdSecurityQuestionItem identityPwdStoreItem = new StorePwdSecurityQuestionItem(DID, backupPwdSecurityQuestionDTO);
-                        //TODO 不加密
                         return StoreRepositoryImpl
                                 .getInstance()
-                                .storeEncrypt(identityPwdStoreItem)
+                                .store(identityPwdStoreItem)
                                 .map(new Function<Long, Boolean>() {
                                     @Override
                                     public Boolean apply(Long aLong) throws Exception {
@@ -314,10 +311,9 @@ public class DidRepositoryImpl implements DidService {
 
                         //1.备份身份密码
                         StorePwdSecurityQuestionItem identityPwdStoreItem = new StorePwdSecurityQuestionItem(DID, backupPwdSecurityQuestionDTO);
-                        //TODO 不加密
                         return StoreRepositoryImpl
                                 .getInstance()
-                                .storeEncrypt(identityPwdStoreItem)
+                                .store(identityPwdStoreItem)
                                 .map(new Function<Long, Boolean>() {
                                     @Override
                                     public Boolean apply(Long aLong) throws Exception {
@@ -354,10 +350,9 @@ public class DidRepositoryImpl implements DidService {
 
                         //1.备份身份密码
                         StorePwdSecurityQuestionItem identityPwdStoreItem = new StorePwdSecurityQuestionItem(DID, backupPwdSecurityQuestionDTO);
-                        //TODO 不加密
                         return StoreRepositoryImpl
                                 .getInstance()
-                                .storeEncrypt(identityPwdStoreItem)
+                                .store(identityPwdStoreItem)
                                 .map(new Function<Long, Boolean>() {
                                     @Override
                                     public Boolean apply(Long aLong) throws Exception {
