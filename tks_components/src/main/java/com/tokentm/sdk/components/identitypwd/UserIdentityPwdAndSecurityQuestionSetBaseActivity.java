@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.common.ComponentUtils;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.model.SecurityQuestionDTO;
 import com.tokentm.sdk.source.DidService;

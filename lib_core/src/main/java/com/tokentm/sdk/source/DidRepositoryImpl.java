@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.tokentm.sdk.Config;
-import com.tokentm.sdk.api.ConfigApiService;
 import com.tokentm.sdk.api.DIDApiService;
+import com.tokentm.sdk.api.StoreApiService;
 import com.tokentm.sdk.common.CacheUtils;
 import com.tokentm.sdk.common.SDKsp;
 import com.tokentm.sdk.common.encrypt.EncryptionUtils;
@@ -55,7 +55,7 @@ public class DidRepositoryImpl implements DidService {
 
     @Override
     public Observable<List<SecurityQuestionDTO>> getSecurityQuestionTemplate() {
-        return XXFHttp.getApiService(ConfigApiService.class)
+        return XXFHttp.getApiService(StoreApiService.class)
                 .getSecurityQuestionTemplate()
                 .map(new ResponseDTOSimpleFunction<List<SecurityQuestionDTO>>());
     }

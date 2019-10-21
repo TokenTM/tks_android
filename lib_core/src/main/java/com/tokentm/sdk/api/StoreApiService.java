@@ -4,6 +4,7 @@ import com.tokentm.sdk.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
+import com.tokentm.sdk.model.SecurityQuestionDTO;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.model.StoreItemDecrypted;
 import com.tokentm.sdk.model.StoreItemEncrypted;
@@ -31,6 +32,12 @@ import retrofit2.http.POST;
 @RxHttpCacheProvider(DefaultRxHttpCacheDirectoryProvider.class)
 public interface StoreApiService {
 
+    /**
+     * 获取备份配置的安全问题
+     * @return
+     */
+    @GET("store/pub/questions")
+    Observable<ResponseDTO<List<SecurityQuestionDTO>>> getSecurityQuestionTemplate();
 
     /**
      * 云端存储

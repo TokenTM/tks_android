@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.common;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

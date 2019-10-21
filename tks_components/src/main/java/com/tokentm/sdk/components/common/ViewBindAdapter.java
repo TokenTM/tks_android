@@ -1,9 +1,8 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.common;
 
 import android.databinding.BindingAdapter;
 import android.databinding.adapters.ViewBindingAdapter;
 import android.view.View;
-import android.view.ViewGroup;
 
 import io.reactivex.functions.Action;
 

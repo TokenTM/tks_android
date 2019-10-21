@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.components.identitypwd.BaseTitleBarActivity;
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdAndSecurityQuestionSetActivity;
 import com.tokentm.sdk.demo.databinding.DidActivityBinding;
 import com.xxf.arch.XXF;
@@ -28,6 +29,9 @@ public class DidDemoActivity extends FragmentActivity {
     }
 
     private void initView() {
+        String did = DemoSp.getInstance().getString("did");
+        binding.didText.setText(TextUtils.isEmpty(did) ? "" : "did:" + did);
+
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

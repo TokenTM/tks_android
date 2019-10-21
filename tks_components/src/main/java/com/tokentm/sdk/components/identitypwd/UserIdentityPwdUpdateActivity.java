@@ -13,6 +13,8 @@ import android.text.TextWatcher;
 import android.view.View;
 
 import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.common.ComponentUtils;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdUpdateBinding;
 import com.tokentm.sdk.source.DidService;
 import com.xxf.arch.XXF;
