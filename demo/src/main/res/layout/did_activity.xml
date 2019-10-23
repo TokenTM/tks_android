@@ -6,17 +6,29 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/did_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Button" />
-
         <TextView
             android:id="@+id/did_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/did_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="创建新DID" />
+
+        <Button
+            android:id="@+id/update_pwd_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="修改密码" />
+
+        <Button
+            android:id="@+id/reset_pwd_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="重置密码" />
     </LinearLayout>
 </layout>

@@ -20,12 +20,16 @@
                 android:layout_height="wrap_content"
                 android:text="wallet"
                 tools:ignore="MissingConstraints" />
+
             <Button
                 android:id="@+id/bt_create_did"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="DID"
                 tools:ignore="MissingConstraints" />
+
             <Button
                 android:id="@+id/bt_cert_by_idcard"
                 android:layout_width="match_parent"

@@ -3,9 +3,13 @@ package com.tokentm.sdk.demo;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.tokentm.sdk.components.cert.CompanyCertActivity;
+import com.tokentm.sdk.components.cert.model.CertParams;
 import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
+import com.xxf.arch.utils.ToastUtils;
 
 
 public class MainActivity extends Activity {
@@ -21,6 +25,13 @@ public class MainActivity extends Activity {
         initView();
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String did = DemoSp.getInstance().getString("did");
+        binding.btCreateDid.setText(String.format("DID(%s)", did));
+    }
 
     private void initView() {
         binding.btCreateWallet.setOnClickListener(new View.OnClickListener() {
@@ -38,6 +49,19 @@ public class MainActivity extends Activity {
         binding.btBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+            }
+        });
+        binding.btCertCompany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String did = DemoSp.getInstance().getString("did");
+                if (TextUtils.isEmpty(did)) {
+                    ToastUtils.showToast("请先生成did");
+                    return;
+                }
+                CompanyCertActivity.launch(v.getContext(),
+                        new CertParams.Builder(did, "北京百度科技有限公司", "李彦宏")
+                                .build());
             }
         });
     }

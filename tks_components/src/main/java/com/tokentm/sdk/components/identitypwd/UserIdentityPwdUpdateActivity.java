@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -31,11 +32,11 @@ import io.reactivex.functions.Consumer;
 public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity {
     private static final String KEY_DID = "did";
 
-    public static void launch(Context context, String did) {
+    public static void launch(@NonNull Context context, @NonNull String did) {
         context.startActivity(getLauncher(context, did));
     }
 
-    public static Intent getLauncher(Context context, String did) {
+    public static Intent getLauncher(@NonNull Context context,@NonNull String did) {
         return new Intent(context, UserIdentityPwdUpdateActivity.class)
                 .putExtra(KEY_DID, did);
     }
@@ -155,7 +156,7 @@ public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity {
         String originalPwd = binding.identityOriginalPwdEt.getText().toString().trim();
         String newPwd = binding.identityPwdEt.getText().toString().trim();
         TokenTmClient.getService(DidService.class)
-                .reset(did, originalPwd, newPwd)
+                .resetPwd(did, originalPwd, newPwd)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
                 .subscribe(new Consumer<Boolean>() {

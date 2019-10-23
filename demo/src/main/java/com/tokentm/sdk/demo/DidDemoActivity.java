@@ -8,10 +8,13 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdAndSecurityQuestionSetActivity;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdUpdateActivity;
 import com.tokentm.sdk.demo.databinding.DidActivityBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
+import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -35,7 +38,7 @@ public class DidDemoActivity extends FragmentActivity {
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XXF.startActivityForResult(DidDemoActivity.this, new Intent(v.getContext(), UserIdentityPwdAndSecurityQuestionSetActivity.class), 101)
+                XXF.startActivityForResult(DidDemoActivity.this, new Intent(v.getContext(), UserIdentityPwdSetActivity.class), 101)
                         .filter(new Predicate<ActivityResult>() {
                             @Override
                             public boolean test(ActivityResult activityResult) throws Exception {
@@ -56,6 +59,27 @@ public class DidDemoActivity extends FragmentActivity {
                                 binding.didText.setText("did:" + did);
                             }
                         });
+            }
+        });
+
+        binding.updatePwdBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(did)) {
+                    ToastUtils.showToast("先创建did");
+                    return;
+                }
+                UserIdentityPwdUpdateActivity.launch(v.getContext(), did);
+            }
+        });
+        binding.resetPwdBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(did)) {
+                    ToastUtils.showToast("先创建did");
+                    return;
+                }
+                UserIdentityPwdReSetActivity.launch(v.getContext(), did, null);
             }
         });
     }

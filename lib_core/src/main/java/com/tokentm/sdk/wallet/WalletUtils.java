@@ -64,4 +64,31 @@ public class WalletUtils {
         return new WalletResult(ecKeyPair, wallet, file);
     }
 
+    /**
+     * 重置钱包
+     *
+     * @param oldPassword
+     * @param newPassword
+     * @param file
+     * @return
+     * @throws IOException
+     * @throws CipherException
+     */
+    public static WalletResult _resetWallet(final String oldPassword, final String newPassword, File file) throws IOException, CipherException {
+        ObjectMapper mapper = ObjectMapperFactory.getObjectMapper();
+        // read wallet from local file
+        WalletFile wallet = mapper.readValue(file, WalletFile.class);
+
+        // get old EC key pair
+        ECKeyPair ecKeyPair = Wallet.decrypt(oldPassword, wallet);
+
+        // gen new wallet file
+        wallet = Wallet.create(newPassword, ecKeyPair, 1024, 1);
+
+        // write local
+        mapper.writeValue(file, wallet);
+
+        // result wrapper
+        return new WalletResult(ecKeyPair, wallet, file);
+    }
 }

@@ -1,5 +1,7 @@
 package com.tokentm.sdk.wallet;
 
+import com.xxf.arch.XXF;
+
 import org.web3j.utils.Numeric;
 
 import java.nio.charset.StandardCharsets;
@@ -34,9 +36,9 @@ public class SignUtils {
         String sha3Data = Sm_crypto.c_Hash256Bysha3(Numeric.toHexString(data.getBytes(StandardCharsets.UTF_8)));
         String sign = Sm_crypto.c_Sign(sha3Data, key);
 
-//        XXF.getLogger().d("========>data=" + data);
-//        XXF.getLogger().d("========>sha3Data=" + sha3Data);
-//        XXF.getLogger().d("========>sign=" + sign);
+        XXF.getLogger().d("========>data=" + data);
+        XXF.getLogger().d("========>sha3Data=" + sha3Data);
+        XXF.getLogger().d("========>sign=" + sign);
         return sign;
     }
 }

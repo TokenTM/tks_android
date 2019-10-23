@@ -18,6 +18,8 @@ public class DIDReqDTO {
     private String data;
     private String dataPubKey;
     private String sign;
+    private String phone;
+    private String code;
     private long timestamp;
 
     public String getChainAddress() {
@@ -74,5 +76,21 @@ public class DIDReqDTO {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

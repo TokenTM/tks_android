@@ -6,6 +6,7 @@ import org.web3j.crypto.ECKeyPair;
 import org.web3j.crypto.WalletFile;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -21,10 +22,6 @@ public class WalletResult {
      */
     private File keyStoreFile;
 
-    /**
-     * key store文件内容
-     */
-    private String keyStoreFileContent;
 
     /**
      * 私钥
@@ -46,7 +43,6 @@ public class WalletResult {
         this.mWallet = walletFile;
         this.keyStoreFile = keyStoreFile;
         credentials = Credentials.create(mEcKeyPair);
-        keyStoreFileContent = new String(FileUtils.readBytes(keyStoreFile));
         privateKey = mEcKeyPair.getPrivateKey().toString(16);
     }
 
@@ -67,7 +63,8 @@ public class WalletResult {
      * @return
      */
     public String getKeyStoreFileContent() {
-        return keyStoreFileContent;
+        //及时查询吧！！！
+        return new String(FileUtils.readBytes(keyStoreFile), StandardCharsets.UTF_8);
     }
 
     /**
@@ -99,7 +96,6 @@ public class WalletResult {
                 "mEcKeyPair=" + mEcKeyPair +
                 ", mWallet=" + mWallet +
                 ", keyStoreFile=" + keyStoreFile +
-                ", keyStoreFileContent='" + keyStoreFileContent + '\'' +
                 ", privateKey='" + privateKey + '\'' +
                 ", credentials=" + credentials +
                 '}';

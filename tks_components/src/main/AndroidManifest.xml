@@ -3,15 +3,7 @@
 
     <application>
         <activity
-            android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionReSetActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".identitypwd.UserIdentityPwdAndSecurityQuestionSetActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".identitypwd.UserIdentityPwdDecryptedBySecurityQuestionActivity"
+            android:name=".identitypwd.UserIdentityPwdSetActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
@@ -20,6 +12,15 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".identitypwd.UserIdentityPwdUpdateActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".cert.CompanyCertActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".cert.CompanyCertSubmitFileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
