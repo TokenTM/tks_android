@@ -26,13 +26,6 @@ public class MainActivity extends Activity {
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        String did = DemoSp.getInstance().getString("did");
-        binding.btCreateDid.setText(String.format("DID(%s)", did));
-    }
-
     private void initView() {
         binding.btCreateWallet.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,12 +2,12 @@ package com.tokentm.sdk.source;
 
 import android.text.TextUtils;
 
-import com.google.gson.JsonElement;
 import com.tokentm.sdk.api.BasicApiService;
 import com.tokentm.sdk.common.SDKsp;
-import com.tokentm.sdk.http.ResponseDTO;
+import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
 import com.tokentm.sdk.wallet.SignUtils;
 import com.xxf.arch.XXF;
+import com.xxf.arch.http.ResponseException;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -72,10 +72,14 @@ public class BasicRepositoryImpl implements BasicService {
     public Observable<Boolean> sendSmsCode(String phone) {
         return XXF.getApiService(BasicApiService.class)
                 .sendSmsCode(phone)
-                .map(new Function<ResponseDTO<JsonElement>, Boolean>() {
+                .map(new ResponseDTOSimpleFunction<Boolean>())
+                .map(new Function<Boolean, Boolean>() {
                     @Override
-                    public Boolean apply(ResponseDTO<JsonElement> jsonElementResponseDTO) throws Exception {
-                        return true;
+                    public Boolean apply(Boolean sended) throws Exception {
+                        if (!sended) {
+                            throw new ResponseException(502, "服务器发送验证码失败!");
+                        }
+                        return sended;
                     }
                 });
     }

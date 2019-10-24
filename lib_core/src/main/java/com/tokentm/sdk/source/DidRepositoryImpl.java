@@ -4,11 +4,10 @@ import com.tokentm.sdk.Config;
 import com.tokentm.sdk.api.DIDApiService;
 import com.tokentm.sdk.common.CacheUtils;
 import com.tokentm.sdk.common.SDKsp;
+import com.tokentm.sdk.common.encrypt.EncryptionUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
-import com.tokentm.sdk.model.BackupPwdSecurityQuestionDTO;
 import com.tokentm.sdk.model.DIDReqDTO;
 import com.tokentm.sdk.model.StoreItem;
-import com.tokentm.sdk.model.StorePwdSecurityQuestionItem;
 import com.tokentm.sdk.wallet.SignUtils;
 import com.tokentm.sdk.wallet.WalletResult;
 import com.tokentm.sdk.wallet.WalletUtils;
@@ -16,7 +15,6 @@ import com.xxf.arch.XXF;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -97,34 +95,47 @@ public class DidRepositoryImpl implements DidService {
                                 .flatMap(new Function<String, ObservableSource<String>>() {
                                     @Override
                                     public ObservableSource<String> apply(String did) throws Exception {
-                                        new BackupPwdSecurityQuestionDTO();
-                                        //1.备份身份密码
-                                        StorePwdSecurityQuestionItem storePwdSecurityQuestionItem = new StorePwdSecurityQuestionItem(did, dataPrivateKey, identityPwd, new LinkedHashMap<>());
-
                                         //put dpk
                                         SDKsp.getInstance()._putDPK(did, dataPrivateKey);
 
                                         return Observable.zip(
-                                                StoreRepositoryImpl
-                                                        .getInstance()
-                                                        .store(storePwdSecurityQuestionItem),
-                                                //加密
+                                                //备份dpk
+                                                _storeDpk(did, dataPrivateKey, identityPwd),
+                                                //备份keystore
                                                 _storeUserKeyStore(did, walletResult.getKeyStoreFileContent()),
+
                                                 new BiFunction<Long, Long, String>() {
                                                     @Override
                                                     public String apply(Long aLong, Long aLong2) throws Exception {
                                                         //返回didi
                                                         return did;
                                                     }
-                                                })
-                                                //TODO 测试
-                                                .onErrorReturnItem(did);
+                                                });
                                     }
                                 });
                     }
                 });
     }
 
+
+    /**
+     * 备份dpk
+     *
+     * @param did
+     * @param dpk
+     * @param identityPwd
+     * @return
+     */
+    private Observable<Long> _storeDpk(String did, String dpk, String identityPwd) {
+        StoreItem<String> dpkStoreItem = new StoreItem<String>();
+        dpkStoreItem.setDid(did);
+        dpkStoreItem.setDataId(did);
+        dpkStoreItem.setDataType(Config.BackupType.TYPE_DPK.getValue());
+        dpkStoreItem.setData(EncryptionUtils.encodeString(dpk, identityPwd));
+        return StoreRepositoryImpl
+                .getInstance()
+                .store(dpkStoreItem);
+    }
 
     /**
      * 备份用户keystore
@@ -138,7 +149,7 @@ public class DidRepositoryImpl implements DidService {
         StoreItem<String> keyStoreItem = new StoreItem<String>();
         keyStoreItem.setDid(did);
         keyStoreItem.setDataId(did);
-        keyStoreItem.setDataType(Config.BackupType.TYPE_USER_KEY_STORE.getValue());
+        keyStoreItem.setDataType(Config.BackupType.TYPE_KEY_STORE.getValue());
         keyStoreItem.setData(keyStoreFileContent);
         return StoreRepositoryImpl
                 .getInstance()

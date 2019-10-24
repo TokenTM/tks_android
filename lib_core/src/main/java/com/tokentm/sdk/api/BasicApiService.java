@@ -1,6 +1,5 @@
 package com.tokentm.sdk.api;
 
-import com.google.gson.JsonElement;
 import com.tokentm.sdk.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
@@ -45,6 +44,6 @@ public interface BasicApiService {
     );
 
     @GET("basic/code/phone/{phone}")
-    Observable<ResponseDTO<JsonElement>> sendSmsCode(@Path("phone") String phone);
+    Observable<ResponseDTO<Boolean>> sendSmsCode(@Path("phone") String phone);
 
 }

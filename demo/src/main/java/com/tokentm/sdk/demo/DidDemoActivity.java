@@ -33,7 +33,7 @@ public class DidDemoActivity extends FragmentActivity {
 
     private void initView() {
         String did = DemoSp.getInstance().getString("did");
-        binding.didText.setText(TextUtils.isEmpty(did) ? "" : "did:" + did);
+        binding.didText.setText(TextUtils.isEmpty(did) ? "" : "已创建did:\n" + did);
 
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -10,18 +10,16 @@ public interface Config {
 
     enum BackupType {
 
-
         /**
          * 当前用户 个人实名keystore同步(一个用户只有一个)
          */
-        @SerializedName("_tks_user_keystore")
-        TYPE_USER_KEY_STORE("_tks_user_keystore"),
-
+        @SerializedName("_tks_keystore")
+        TYPE_KEY_STORE("_tks_keystore"),
         /**
-         * 用户备份密钥
+         * 备份私钥
          */
-        @SerializedName("_tks_user_backup_secretkey")
-        TYPE_BACK_UP_SECRETKEY("_tks_user_backup_secretkey");
+        @SerializedName("_tks_dpk")
+        TYPE_DPK("_tks_dpk");
 
         private String value;
 
