@@ -101,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:minHeight="150dp" />
+                tools:minHeight="150dp" />
 
             <TextView
                 android:id="@+id/upload_guide_notice_tv"

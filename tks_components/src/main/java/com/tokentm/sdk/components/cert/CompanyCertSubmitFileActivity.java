@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CertParams;
@@ -68,10 +69,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                 .map(new Function<InputStream, Bitmap>() {
                     @Override
                     public Bitmap apply(InputStream inputStream) throws Exception {
-                        BitmapFactory.Options options = new BitmapFactory.Options();
-                        options.inSampleSize = 2;
-                        options.inJustDecodeBounds = false;
-                        return BitmapFactory.decodeStream(inputStream, new Rect(), options);
+                        return BitmapFactory.decodeStream(inputStream);
                     }
                 })
                 .compose(XXF.bindToLifecycle(this))
@@ -79,6 +77,11 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                 .subscribe(new Consumer<Bitmap>() {
                     @Override
                     public void accept(Bitmap bitmap) throws Exception {
+                        //高度填满
+                        float height = binding.pdfView.getMeasuredWidth() * (bitmap.getHeight() * 1.0f / bitmap.getWidth());
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) height);
+                        binding.pdfView.setLayoutParams(layoutParams);
+
                         binding.pdfView.setImageBitmap(bitmap);
                     }
                 });
