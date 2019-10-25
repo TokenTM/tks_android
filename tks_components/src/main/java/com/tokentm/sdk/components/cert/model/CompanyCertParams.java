@@ -9,7 +9,19 @@ import java.util.Objects;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 认证参数
  */
-public class CertParams implements Serializable {
+public class CompanyCertParams implements Serializable {
+    @Override
+    public String toString() {
+        return "CompanyCertParams{" +
+                "uDid='" + uDid + '\'' +
+                ", companyType=" + companyType +
+                ", companyName='" + companyName + '\'' +
+                ", companyCreditCode='" + companyCreditCode + '\'' +
+                ", legalPersonName='" + legalPersonName + '\'' +
+                ", tag=" + tag +
+                '}';
+    }
+
     public static class Builder {
         private String uDid;
         private CompanyType companyType;
@@ -25,13 +37,13 @@ public class CertParams implements Serializable {
             this.legalPersonName = Objects.requireNonNull(legalPersonName);
         }
 
-        public Builder(CertParams certParams) {
-            this.uDid = certParams.uDid;
-            this.companyName = certParams.companyName;
-            this.companyCreditCode = certParams.companyCreditCode;
-            this.legalPersonName = certParams.legalPersonName;
-            this.companyType = certParams.companyType;
-            this.tag = certParams.tag;
+        public Builder(CompanyCertParams companyCertParams) {
+            this.uDid = companyCertParams.uDid;
+            this.companyName = companyCertParams.companyName;
+            this.companyCreditCode = companyCertParams.companyCreditCode;
+            this.legalPersonName = companyCertParams.legalPersonName;
+            this.companyType = companyCertParams.companyType;
+            this.tag = companyCertParams.tag;
         }
 
         public Builder setCompanyCreditCode(String companyCreditCode) {
@@ -49,8 +61,8 @@ public class CertParams implements Serializable {
             return this;
         }
 
-        public CertParams build() {
-            return new CertParams(uDid, companyType, companyName, companyCreditCode, legalPersonName, tag);
+        public CompanyCertParams build() {
+            return new CompanyCertParams(uDid, companyType, companyName, companyCreditCode, legalPersonName, tag);
         }
     }
 
@@ -90,7 +102,7 @@ public class CertParams implements Serializable {
         return companyName;
     }
 
-    private CertParams(String uDid, CompanyType companyType, String companyName, String companyCreditCode, String legalPersonName, Serializable tag) {
+    private CompanyCertParams(String uDid, CompanyType companyType, String companyName, String companyCreditCode, String legalPersonName, Serializable tag) {
         this.uDid = uDid;
         this.companyType = companyType;
         this.companyName = companyName;

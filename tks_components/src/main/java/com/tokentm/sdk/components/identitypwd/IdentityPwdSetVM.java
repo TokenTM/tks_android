@@ -1,6 +1,7 @@
 package com.tokentm.sdk.components.identitypwd;
 
 import android.app.Application;
+import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableLong;
@@ -22,20 +23,24 @@ public class IdentityPwdSetVM extends XXFViewModel {
     public ObservableField<String> reIdentityPwd = new ObservableField<>();
     public ObservableBoolean submitable = new ObservableBoolean();
 
+    private Observable.OnPropertyChangedCallback submitableCallback = new Observable.OnPropertyChangedCallback() {
+        @Override
+        public void onPropertyChanged(Observable sender, int propertyId) {
+            submitable.set(!TextUtils.isEmpty(phone.get())
+                    && !TextUtils.isEmpty(smsCode.get())
+                    && !TextUtils.isEmpty(reIdentityPwd.get())
+                    && TextUtils.equals(identityPwd.get(), reIdentityPwd.get())
+                    && reIdentityPwd.get().length() >= UserConfig.MINI_LENTH_PWD
+                    && reIdentityPwd.get().length() <= UserConfig.MAX_LENTH_PWD
+                    && UserConfig.PATTERN_PWD.matcher(reIdentityPwd.get()).matches());
+        }
+    };
 
     public IdentityPwdSetVM(@NonNull Application application) {
         super(application);
-        this.reIdentityPwd.addOnPropertyChangedCallback(new android.databinding.Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(android.databinding.Observable sender, int propertyId) {
-                submitable.set(!TextUtils.isEmpty(phone.get())
-                        && !TextUtils.isEmpty(smsCode.get())
-                        && !TextUtils.isEmpty(reIdentityPwd.get())
-                        && TextUtils.equals(identityPwd.get(), reIdentityPwd.get())
-                        && reIdentityPwd.get().length() >= UserConfig.MINI_LENTH_PWD
-                        && reIdentityPwd.get().length() <= UserConfig.MAX_LENTH_PWD
-                        && UserConfig.PATTERN_PWD.matcher(reIdentityPwd.get()).matches());
-            }
-        });
+        this.reIdentityPwd.addOnPropertyChangedCallback(submitableCallback);
+        this.identityPwd.addOnPropertyChangedCallback(submitableCallback);
+        this.phone.addOnPropertyChangedCallback(submitableCallback);
+        this.smsCode.addOnPropertyChangedCallback(submitableCallback);
     }
 }

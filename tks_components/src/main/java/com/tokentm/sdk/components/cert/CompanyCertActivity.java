@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.tokentm.sdk.components.cert.model.CertParams;
+import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.CompanyType;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.CompanyActivityCompanySelectTypeBinding;
@@ -20,19 +20,19 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
     /**
      * 认证参数
      */
-    private static final String KEY_CERT_PARAMS = "certParams";
+    private static final String KEY_CERT_PARAMS = "companyCertParams";
 
-    public static void launch(Context context, CertParams certParams) {
-        context.startActivity(getLauncher(context, certParams));
+    public static void launch(Context context, CompanyCertParams companyCertParams) {
+        context.startActivity(getLauncher(context, companyCertParams));
     }
 
-    public static Intent getLauncher(Context context, CertParams certParams) {
+    public static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
         return new Intent(context, CompanyCertActivity.class)
-                .putExtra(KEY_CERT_PARAMS, certParams);
+                .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }
 
     CompanyActivityCompanySelectTypeBinding binding;
-    CertParams certParams;
+    CompanyCertParams companyCertParams;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,12 +43,12 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
-        certParams = (CertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
+        companyCertParams = (CompanyCertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
         binding.llCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CompanyCertSubmitFileActivity.launch(getActivity(),
-                        new CertParams.Builder(certParams)
+                        new CompanyCertParams.Builder(companyCertParams)
                                 .setCompanyType(CompanyType.TYPE_COMPANY)
                                 .build());
             }
@@ -57,7 +57,7 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 CompanyCertSubmitFileActivity.launch(getActivity(),
-                        new CertParams.Builder(certParams)
+                        new CompanyCertParams.Builder(companyCertParams)
                                 .setCompanyType(CompanyType.TYPE_ORGANIZATION)
                                 .build());
             }

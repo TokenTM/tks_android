@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.tokentm.sdk.TokenTmClient;
-import com.tokentm.sdk.components.cert.model.CertParams;
+import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.CompanyActivityCompanySubmitFileBinding;
 import com.tokentm.sdk.source.BasicService;
@@ -30,19 +30,19 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
     /**
      * 认证参数
      */
-    private static final String KEY_CERT_PARAMS = "certParams";
+    private static final String KEY_CERT_PARAMS = "companyCertParams";
 
-    public static void launch(Context context, CertParams certParams) {
-        context.startActivity(getLauncher(context, certParams));
+    public static void launch(Context context, CompanyCertParams companyCertParams) {
+        context.startActivity(getLauncher(context, companyCertParams));
     }
 
-    public static Intent getLauncher(Context context, CertParams certParams) {
+    public static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
         return new Intent(context, CompanyCertSubmitFileActivity.class)
-                .putExtra(KEY_CERT_PARAMS, certParams);
+                .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }
 
     CompanyActivityCompanySubmitFileBinding binding;
-    CertParams certParams;
+    CompanyCertParams companyCertParams;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,17 +55,17 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
     private void initView() {
         setTitle("企业认证");
-        certParams = (CertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
+        companyCertParams = (CompanyCertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
 
-        binding.companyNameTv.setText(certParams.getCompanyName());
-        binding.companyCreditCodeTv.setText(certParams.getCompanyCreditCode());
-        binding.legalPersonNameTv.setText(certParams.getLegalPersonName());
+        binding.companyNameTv.setText(companyCertParams.getCompanyName());
+        binding.companyCreditCodeTv.setText(companyCertParams.getCompanyCreditCode());
+        binding.legalPersonNameTv.setText(companyCertParams.getLegalPersonName());
     }
 
     @SuppressLint("CheckResult")
     private void loadData() {
         TokenTmClient.getService(BasicService.class)
-                .getOrgLetterImage(certParams.getuDid(), certParams.getCompanyName(), "511324199010090695", certParams.getLegalPersonName())
+                .getOrgLetterImage(companyCertParams.getuDid(), companyCertParams.getCompanyName(), "511324199010090695", companyCertParams.getLegalPersonName())
                 .map(new Function<InputStream, Bitmap>() {
                     @Override
                     public Bitmap apply(InputStream inputStream) throws Exception {

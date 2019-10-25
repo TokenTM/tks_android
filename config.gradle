@@ -14,7 +14,7 @@ ext {
     ]
 
     dependencies = [
-            xxf_android               : "com.github.NBXXF:xxf_android:2.4.5",
+            xxf_android               : "com.github.NBXXF:xxf_android:2.4.7",
             //---------------bug 反馈----------------
             bugtags                   : "com.bugtags.metrics:bugtags-lib:3.0.0",
 

@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
-import com.tokentm.sdk.components.cert.model.CertParams;
+import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
+import com.tokentm.sdk.components.cert.model.CompanyCertParams;
+import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 import com.xxf.arch.utils.ToastUtils;
 
@@ -44,6 +46,22 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
             }
         });
+        binding.btCertByIdcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String did = DemoSp.getInstance().getString("did");
+                if (TextUtils.isEmpty(did)) {
+                    ToastUtils.showToast("请先生成did");
+                    return;
+                }
+                UserCertByIDCardActivity.launch(v.getContext(),
+                        new UserCertByIDCardParams.Builder(did)
+                                .setUserName("小炫风")
+                                .setUserIDCard("511324198901090148")
+                                .build()
+                );
+            }
+        });
         binding.btCertCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,8 +71,9 @@ public class MainActivity extends Activity {
                     return;
                 }
                 CompanyCertActivity.launch(v.getContext(),
-                        new CertParams.Builder(did, "北京百度科技有限公司", "李彦宏")
-                                .build());
+                        new CompanyCertParams.Builder(did, "北京百度科技有限公司", "李彦宏")
+                                .build()
+                );
             }
         });
     }

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="presenter"
+            type="com.tokentm.sdk.components.cert.UserCertByIDCardPresenter" />
+
+        <variable
+            name="viewModel"
+            type="com.tokentm.sdk.components.cert.UserCertByIDCardVM" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="姓名"
+                    android:textColor="#ff374f66"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="请输入您的身份证姓名"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="@={viewModel.userName}"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@drawable/arch_divider_comm" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="身份证号"
+                    android:textColor="#ff374f66"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="请输入您的身份证号"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="@={viewModel.userIDCard}"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@drawable/arch_divider_comm" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="*上传证件照片"
+                android:textColor="#ff374f66"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="237dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="17dp"
+                android:background="@mipmap/upload_idcard_front"
+                android:onClick="@{()->presenter.onSelectPic(viewModel.userIDCardFrontPic)}"
+                android:scaleType="centerCrop"
+                android:src="@{viewModel.userIDCardFrontPic}" />
+
+            <ImageView
+                android:layout_width="237dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="17dp"
+                android:background="@mipmap/upload_idcard_back"
+                android:onClick="@{()->presenter.onSelectPic(viewModel.userIDCardBackPic)}"
+                android:scaleType="centerCrop"
+                android:src="@{viewModel.userIDCardBackPic}" />
+
+            <ImageView
+                android:layout_width="237dp"
+                android:layout_height="140dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="17dp"
+                android:background="@mipmap/upload_idcard_handed"
+                android:onClick="@{()->presenter.onSelectPic(viewModel.userIDCardHandedPic)}"
+                android:scaleType="centerCrop"
+                android:src="@{viewModel.userIDCardHandedPic}" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/base_btn_bg_selector"
+                android:enabled="@{viewModel.submitable}"
+                android:onClick="@{()->presenter.onUserCert(viewModel.userName, viewModel.userIDCard, viewModel.userIDCardFrontPic, viewModel.userIDCardBackPic, viewModel.userIDCardHandedPic)}"
+                android:text="认证"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                tools:text="认证" />
+        </LinearLayout>
+    </ScrollView>
+
+</layout>
