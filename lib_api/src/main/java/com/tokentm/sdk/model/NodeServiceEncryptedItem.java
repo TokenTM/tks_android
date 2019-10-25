@@ -5,19 +5,19 @@ package com.tokentm.sdk.model;
  * @Description
  */
 public class NodeServiceEncryptedItem {
-    private String encryptedServiceDid;
-    private String encryptedData;
+    private String service_did;
+    private String value;
 
-    public NodeServiceEncryptedItem(String encryptedServiceDid, String encryptedData) {
-        this.encryptedServiceDid = encryptedServiceDid;
-        this.encryptedData = encryptedData;
+    public NodeServiceEncryptedItem(String service_did, String value) {
+        this.service_did = service_did;
+        this.value = value;
     }
 
-    public String getEncryptedServiceDid() {
-        return encryptedServiceDid;
+    public String getService_did() {
+        return service_did;
     }
 
-    public String getEncryptedData() {
-        return encryptedData;
+    public String getValue() {
+        return value;
     }
 }
