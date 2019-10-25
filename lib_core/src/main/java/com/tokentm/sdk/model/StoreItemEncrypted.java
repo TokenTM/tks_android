@@ -14,7 +14,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.tokentm.sdk.common.SDKsp;
-import com.tokentm.sdk.common.encrypt.EncryptionUtils;
+import com.tokentm.sdk.common.encrypt.TEAUtils;
 import com.tokentm.sdk.wallet.SignUtils;
 import com.xxf.arch.json.JsonUtils;
 
@@ -51,7 +51,7 @@ public class StoreItemEncrypted extends StoreItem<String> {
         @Override
         public JsonElement serialize(StoreItemEncrypted src, Type typeOfSrc, JsonSerializationContext context) {
             //加密数据
-            String encryptData = EncryptionUtils.encodeString(src.getData(), _getDPK(src.getDid()));
+            String encryptData = TEAUtils.encryptString(src.getData(), _getDPK(src.getDid()));
             //时间戳
             long timestamp = System.currentTimeMillis();
             JsonObject storeItemJsonObject = new JsonObject();

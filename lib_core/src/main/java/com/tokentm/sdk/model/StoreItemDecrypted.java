@@ -8,7 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.JsonAdapter;
 import com.tokentm.sdk.common.SDKsp;
-import com.tokentm.sdk.common.encrypt.EncryptionUtils;
+import com.tokentm.sdk.common.encrypt.TEAUtils;
 
 import java.lang.reflect.Type;
 
@@ -40,7 +40,7 @@ public class StoreItemDecrypted extends StoreItem<String> {
         @Override
         public StoreItemDecrypted deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
             StoreItemDecrypted deserialize = context.deserialize(json, typeOfT);
-            String decodeString = EncryptionUtils.decodeString(deserialize.getData(), _getDPK(deserialize.getDid()));
+            String decodeString = TEAUtils.decryptString(deserialize.getData(), _getDPK(deserialize.getDid()));
             deserialize.setData(decodeString);
             return deserialize;
         }

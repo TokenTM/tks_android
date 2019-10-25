@@ -11,7 +11,7 @@ import java.security.MessageDigest;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 备份加密
  */
-public final class EncryptionUtils {
+public final class TEAUtils {
 
     /**
      * md5 32位
@@ -50,10 +50,10 @@ public final class EncryptionUtils {
      * @param key
      * @return
      */
-    public static String encodeString(String content, String key) {
-        XXF.getLogger().d(String.format("========>encodeString content:%s key: %s", content, key));
+    public static String encryptString(String content, String key) {
+        XXF.getLogger().d(String.format("========>encryptString content:%s key: %s", content, key));
         String result = XXTEA.encryptToBase64String(content, md5_16(key));
-        XXF.getLogger().d(String.format("========>encodeString result:%s", result));
+        XXF.getLogger().d(String.format("========>encryptString result:%s", result));
         return result;
     }
 
@@ -65,10 +65,10 @@ public final class EncryptionUtils {
      * @param key
      * @return
      */
-    public static String decodeString(String content, String key) {
-        XXF.getLogger().d(String.format("========>decodeString content:%s key: %s", content, key));
+    public static String decryptString(String content, String key) {
+        XXF.getLogger().d(String.format("========>decryptString content:%s key: %s", content, key));
         String result = XXTEA.decryptBase64StringToString(content, md5_16(key));
-        XXF.getLogger().d(String.format("========>decodeString result:%s", result));
+        XXF.getLogger().d(String.format("========>decryptString result:%s", result));
         return result;
     }
 }

@@ -4,7 +4,7 @@ import com.tokentm.sdk.Config;
 import com.tokentm.sdk.api.DIDApiService;
 import com.tokentm.sdk.common.CacheUtils;
 import com.tokentm.sdk.common.SDKsp;
-import com.tokentm.sdk.common.encrypt.EncryptionUtils;
+import com.tokentm.sdk.common.encrypt.TEAUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
 import com.tokentm.sdk.model.DIDReqDTO;
 import com.tokentm.sdk.model.StoreItem;
@@ -99,8 +99,8 @@ public class DidRepositoryImpl implements DidService {
                                         SDKsp.getInstance()._putDPK(did, dataPrivateKey);
 
                                         return Observable.zip(
-                                                //备份dpk
-                                                _storeDpk(did, dataPrivateKey, identityPwd),
+                                                //备份pwd_dpk
+                                                _storePwdDpk(did, dataPrivateKey, identityPwd),
                                                 //备份keystore
                                                 _storeUserKeyStore(did, walletResult.getKeyStoreFileContent()),
 
@@ -119,19 +119,19 @@ public class DidRepositoryImpl implements DidService {
 
 
     /**
-     * 备份dpk
+     * 备份pwd_dpk
      *
      * @param did
      * @param dpk
      * @param identityPwd
      * @return
      */
-    private Observable<Long> _storeDpk(String did, String dpk, String identityPwd) {
+    private Observable<Long> _storePwdDpk(String did, String dpk, String identityPwd) {
         StoreItem<String> dpkStoreItem = new StoreItem<String>();
         dpkStoreItem.setDid(did);
         dpkStoreItem.setDataId(did);
         dpkStoreItem.setDataType(Config.BackupType.TYPE_DPK.getValue());
-        dpkStoreItem.setData(EncryptionUtils.encodeString(dpk, identityPwd));
+        dpkStoreItem.setData(TEAUtils.encryptString(dpk, identityPwd));
         return StoreRepositoryImpl
                 .getInstance()
                 .store(dpkStoreItem);
@@ -163,12 +163,12 @@ public class DidRepositoryImpl implements DidService {
 //                .flatMap(new Function<BackupPwdSecurityQuestionDTO, ObservableSource<Boolean>>() {
 //                    @Override
 //                    public ObservableSource<Boolean> apply(BackupPwdSecurityQuestionDTO backupPwdSecurityQuestionDTO) throws Exception {
-//                        String dpk = EncryptionUtils.decodeString(backupPwdSecurityQuestionDTO.getPwdEncryptedSecretKey(), oldIdentityPwd);
+//                        String dpk = TEAUtils.decryptString(backupPwdSecurityQuestionDTO.getPwdEncryptedSecretKey(), oldIdentityPwd);
 //                        if (TextUtils.isEmpty(dpk)) {
 //                            throw new RuntimeException("旧密码不正确");
 //                        }
 //                        //用新密码加密密钥
-//                        String pwdEncryptedSecretKey = EncryptionUtils.encodeString(dpk, newIdentityPwd);
+//                        String pwdEncryptedSecretKey = TEAUtils.encryptString(dpk, newIdentityPwd);
 //                        backupPwdSecurityQuestionDTO.setPwdEncryptedSecretKey(pwdEncryptedSecretKey);
 //
 //                        //1.备份身份密码

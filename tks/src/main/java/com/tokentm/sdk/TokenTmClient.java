@@ -3,9 +3,13 @@ package com.tokentm.sdk;
 import android.app.Application;
 import android.content.Context;
 
+import com.tokentm.sdk.api.NodeApiService;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.source.BasicRepositoryImpl;
 import com.tokentm.sdk.source.BasicService;
+import com.tokentm.sdk.source.NodeEncryptRepositoryImpl;
+import com.tokentm.sdk.source.NodeEncryptService;
+import com.tokentm.sdk.source.NodeRepositoryImpl;
 import com.tokentm.sdk.source.StoreService;
 import com.tokentm.sdk.source.StoreRepositoryImpl;
 import com.tokentm.sdk.source.ChainService;
@@ -60,6 +64,8 @@ public class TokenTmClient {
         SERVICE_MAP.put(ChainService.class, ChainRepositoryImpl.getInstance());
         SERVICE_MAP.put(DidService.class, DidRepositoryImpl.getInstance());
         SERVICE_MAP.put(BasicService.class, BasicRepositoryImpl.getInstance());
+        SERVICE_MAP.put(NodeApiService.class, NodeRepositoryImpl.getInstance());
+        SERVICE_MAP.put(NodeEncryptService.class, NodeEncryptRepositoryImpl.getInstance());
     }
 
 
