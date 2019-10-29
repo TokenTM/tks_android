@@ -60,4 +60,18 @@ public interface StoreService extends RepoService {
                                                     String dataType,
                                                     String dataId);
 
+
+    /**
+     * 获取云端存储  的最新版本号
+     * -1 代表没有数据版本
+     *
+     * @param did
+     * @param dataType
+     * @param dataId
+     * @return
+     */
+    Observable<Long> getStoreVersion(String did,
+                                     String dataType,
+                                     String dataId);
+
 }

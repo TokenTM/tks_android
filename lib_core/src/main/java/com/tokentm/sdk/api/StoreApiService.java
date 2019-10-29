@@ -87,6 +87,24 @@ public interface StoreApiService {
 
 
     /**
+     * 获取 云端存储
+     *
+     * @param did
+     * @param dataType
+     * @param dataId
+     * @param sign
+     * @param timestamp
+     * @return
+     */
+    @GET("store")
+    Observable<ResponseDTO<StoreItem<String>>> getStore(@Query("did") String did,
+                                             @Query("dataType") String dataType,
+                                             @Query("dataId") String dataId,
+                                             @Query("sign") String sign,
+                                             @Query("timestamp") long timestamp);
+
+
+    /**
      * 按类型查询 云端存储
      *
      * @param body
