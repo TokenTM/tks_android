@@ -283,4 +283,17 @@ public class DidRepositoryImpl implements DidService {
                 });
     }
 
+    @Override
+    public Observable<Boolean> validatePwd(String uDID, String pwd) {
+        return _getStoreUserKeyStore(uDID)
+                .map(new Function<File, Boolean>() {
+                    @Override
+                    public Boolean apply(File file) throws Exception {
+                        WalletResult walletResult = WalletUtils._openWallet(pwd, file);
+                        return walletResult != null;
+                    }
+                });
+    }
+
+
 }
