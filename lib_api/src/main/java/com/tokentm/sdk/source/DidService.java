@@ -20,15 +20,6 @@ public interface DidService extends RepoService {
     Observable<String> createUDID(String phone, String smsCode, String identityPwd);
 
 
-    /**
-     * 重置身份密码,通过旧密码
-     *
-     * @param uDID
-     * @param oldIdentityPwd
-     * @param newIdentityPwd
-     * @return
-     */
-    Observable<Boolean> resetPwd(String uDID, String oldIdentityPwd, String newIdentityPwd);
 
 
     /**

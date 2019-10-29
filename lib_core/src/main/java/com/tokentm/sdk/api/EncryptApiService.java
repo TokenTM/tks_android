@@ -1,11 +1,11 @@
 package com.tokentm.sdk.api;
 
 
-import com.tokentm.sdk.BuildConfig;
+import com.tokentm.sdk.core.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
-import com.tokentm.sdk.model.ServiceEncryptItem;
+import com.tokentm.sdk.model.ServiceEncryptDecryptDTO;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
@@ -28,19 +28,19 @@ public interface EncryptApiService {
      * 加密
      *
      * @param url
-     * @param serviceEncryptItem
+     * @param serviceEncryptDecryptDTO
      * @return
      */
     @POST
-    Observable<ResponseDTO<String>> encrypt(@Url String url, @Body ServiceEncryptItem serviceEncryptItem);
+    Observable<ResponseDTO<String>> encrypt(@Url String url, @Body ServiceEncryptDecryptDTO serviceEncryptDecryptDTO);
 
     /**
      * 解密
      *
      * @param url
-     * @param serviceEncryptItem
+     * @param serviceEncryptDecryptDTO
      * @return
      */
     @POST
-    Observable<ResponseDTO<String>> decrypt(@Url String url, @Body ServiceEncryptItem serviceEncryptItem);
+    Observable<ResponseDTO<String>> decrypt(@Url String url, @Body ServiceEncryptDecryptDTO serviceEncryptDecryptDTO);
 }

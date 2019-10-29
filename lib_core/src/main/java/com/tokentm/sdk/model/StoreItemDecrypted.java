@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.JsonAdapter;
 import com.tokentm.sdk.common.SDKsp;
@@ -39,7 +40,14 @@ public class StoreItemDecrypted extends StoreItem<String> {
 
         @Override
         public StoreItemDecrypted deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            StoreItemDecrypted deserialize = context.deserialize(json, typeOfT);
+            JsonObject storeItemJsonObject = json.getAsJsonObject();
+            StoreItemDecrypted deserialize = new StoreItemDecrypted();
+            deserialize.setDataId(storeItemJsonObject.get("dataId").getAsString());
+            deserialize.setDataType(storeItemJsonObject.get("dataType").getAsString());
+            deserialize.setData(storeItemJsonObject.get("data").getAsString());
+            deserialize.setDid(storeItemJsonObject.get("did").getAsString());
+            deserialize.setVersion(storeItemJsonObject.get("version").getAsLong());
+
             String decodeString = TEAUtils.decryptString(deserialize.getData(), _getDPK(deserialize.getDid()));
             deserialize.setData(decodeString);
             return deserialize;

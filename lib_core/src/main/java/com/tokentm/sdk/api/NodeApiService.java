@@ -1,6 +1,5 @@
 package com.tokentm.sdk.api;
-
-import com.tokentm.sdk.BuildConfig;
+import com.tokentm.sdk.core.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;

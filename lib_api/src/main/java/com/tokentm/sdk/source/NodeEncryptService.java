@@ -1,6 +1,6 @@
 package com.tokentm.sdk.source;
 
-import com.tokentm.sdk.model.NodeServiceEncryptedItem;
+import com.tokentm.sdk.model.NodeServiceEncryptDecryptItem;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface NodeEncryptService extends RepoService {
      * @param smsCode
      * @return
      */
-    Observable<List<NodeServiceEncryptedItem>> encrypt(String uDid, String data, String phone, String smsCode);
+    Observable<List<NodeServiceEncryptDecryptItem>> encrypt(String uDid, String data, String phone, String smsCode);
 
 
     /**
@@ -34,5 +34,5 @@ public interface NodeEncryptService extends RepoService {
      * @param smsCode
      * @return
      */
-    Observable<String> decrypt(String uDid, String data, String phone, String smsCode);
+    Observable<String> decrypt(String uDid, List<NodeServiceEncryptDecryptItem> data, String phone, String smsCode);
 }

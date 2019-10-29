@@ -67,6 +67,11 @@ public class WalletResult {
         return new String(FileUtils.readBytes(keyStoreFile), StandardCharsets.UTF_8);
     }
 
+    public String readKeyStoreFileContent() {
+        //及时查询吧！！！
+        return new String(FileUtils.readBytes(keyStoreFile), StandardCharsets.UTF_8);
+    }
+
     /**
      * 读取原始的ECKeyPaire
      *
