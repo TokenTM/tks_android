@@ -7,11 +7,17 @@ import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.UserActivityCertByIdcardBinding;
+import com.tokentm.sdk.source.FileService;
+import com.xxf.arch.XXF;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.BottomPicSelectDialog;
+
+import java.io.File;
 
 import io.reactivex.functions.Consumer;
 
@@ -66,6 +72,13 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
                 pic.set(url);
             }
         }).show();
+    }
+
+    private void uploadPic(String url, Consumer<String> consumer) {
+        TokenTmClient.getService(FileService.class)
+                .upload(certByIDCardParams.getuDid(), new File(url), certByIDCardParams.getuDid())
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .subscribe(consumer);
     }
 
     @Override

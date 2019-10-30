@@ -4,6 +4,10 @@ import com.xxf.arch.XXF;
 
 import org.xxtea.XXTEA;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
@@ -21,8 +25,7 @@ public final class TEAUtils {
      */
     public static String md5_32(String content) {
         try {
-            MessageDigest m;
-            m = MessageDigest.getInstance("MD5");
+            MessageDigest m = MessageDigest.getInstance("MD5");
             m.update(content.getBytes("UTF-8"), 0, content.length());
             String md5Val = new BigInteger(1, m.digest()).toString(16);
             return md5Val;
@@ -30,6 +33,25 @@ public final class TEAUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 生成文件的md5校验值
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static String getFileMD5(File file) throws Exception {
+        InputStream fis = new FileInputStream(file);
+        byte[] buffer = new byte[1024];
+        int numRead = 0;
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        while ((numRead = fis.read(buffer)) > 0) {
+            m.update(buffer, 0, numRead);
+        }
+        fis.close();
+        return new BigInteger(1, m.digest()).toString(16);
     }
 
     /**

@@ -7,16 +7,18 @@ import com.tokentm.sdk.api.NodeApiService;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.source.BasicRepositoryImpl;
 import com.tokentm.sdk.source.BasicService;
+import com.tokentm.sdk.source.ChainRepositoryImpl;
+import com.tokentm.sdk.source.ChainService;
+import com.tokentm.sdk.source.DidRepositoryImpl;
+import com.tokentm.sdk.source.DidService;
+import com.tokentm.sdk.source.FileRepositoryImpl;
+import com.tokentm.sdk.source.FileService;
 import com.tokentm.sdk.source.NodeEncryptRepositoryImpl;
 import com.tokentm.sdk.source.NodeEncryptService;
 import com.tokentm.sdk.source.NodeRepositoryImpl;
-import com.tokentm.sdk.source.StoreService;
-import com.tokentm.sdk.source.StoreRepositoryImpl;
-import com.tokentm.sdk.source.ChainService;
-import com.tokentm.sdk.source.ChainRepositoryImpl;
-import com.tokentm.sdk.source.DidService;
-import com.tokentm.sdk.source.DidRepositoryImpl;
 import com.tokentm.sdk.source.RepoService;
+import com.tokentm.sdk.source.StoreRepositoryImpl;
+import com.tokentm.sdk.source.StoreService;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,6 +68,7 @@ public class TokenTmClient {
         SERVICE_MAP.put(BasicService.class, BasicRepositoryImpl.getInstance());
         SERVICE_MAP.put(NodeApiService.class, NodeRepositoryImpl.getInstance());
         SERVICE_MAP.put(NodeEncryptService.class, NodeEncryptRepositoryImpl.getInstance());
+        SERVICE_MAP.put(FileService.class, FileRepositoryImpl.getInstance());
     }
 
 
