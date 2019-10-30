@@ -20,7 +20,7 @@
 
 
         <EditText
-            android:id="@+id/backup_pwd_et"
+            android:id="@+id/identity_pwd_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="35dp"
@@ -36,7 +36,7 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/backup_pwd_forget_tv"
+            android:id="@+id/identity_pwd_forget_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"

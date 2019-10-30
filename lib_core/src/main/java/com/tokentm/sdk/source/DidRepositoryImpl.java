@@ -289,8 +289,13 @@ public class DidRepositoryImpl implements DidService {
                 .map(new Function<File, Boolean>() {
                     @Override
                     public Boolean apply(File file) throws Exception {
-                        WalletResult walletResult = WalletUtils._openWallet(pwd, file);
-                        return walletResult != null;
+                        try {
+                            WalletResult walletResult = WalletUtils._openWallet(pwd, file);
+                            return walletResult != null;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return false;
                     }
                 });
     }

@@ -9,7 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
 import com.tokentm.sdk.demo.databinding.DidActivityBinding;
@@ -89,7 +89,7 @@ public class DidDemoActivity extends FragmentActivity {
                     ToastUtils.showToast("先创建did");
                     return;
                 }
-                new UserIdentityPwdInputDialog(v.getContext(), did, new IResultDialog.OnDialogClickListener<Boolean>() {
+                new UserIdentityPwdInputAlertDialog(v.getContext(), did, new IResultDialog.OnDialogClickListener<Boolean>() {
                     @Override
                     public boolean onCancel(@NonNull DialogInterface dialog, @Nullable Boolean cancelResult) {
                         return false;
