@@ -21,6 +21,25 @@ public interface DidService extends RepoService {
 
 
     /**
+     * 解开UDID
+     *
+     * @param phone
+     * @param smsCode
+     * @return
+     */
+    Observable<Boolean> decryptUDID(String phone, String smsCode);
+
+
+    /**
+     * 是否可以使用,否则需要解开
+     *
+     * @param uDid
+     * @return
+     */
+    Observable<Boolean> isAccessible(String uDid);
+
+
+    /**
      * 重置身份密码,通过手机号+验证码
      *
      * @param uDID
@@ -39,6 +58,7 @@ public interface DidService extends RepoService {
      * @return
      */
     Observable<Boolean> validateIdentityPwd(String uDID, String identityPwd);
+
 
 }
 

@@ -116,6 +116,17 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
                 });
     }
 
+    @Override
+    public Observable<Boolean> decryptUDID(String phone, String smsCode) {
+        //TODO 实现核心逻辑
+        return Observable.just(true);
+    }
+
+    @Override
+    public Observable<Boolean> isAccessible(String uDid) {
+        return Observable.just(false);
+    }
+
 
     /**
      * 备份pwd_dpk
