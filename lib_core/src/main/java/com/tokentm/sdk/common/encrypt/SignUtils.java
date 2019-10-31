@@ -81,7 +81,7 @@ public class SignUtils {
      * @return
      * @throws Exception
      */
-    public static String signDataPk(@NonNull SignObject signObject, String dataPrivateKey) throws Exception {
+    public static String signByDataPk(@NonNull SignObject signObject, String dataPrivateKey) throws Exception {
         return sign(signObject,
                 new SignFieldFilter() {
                     @Override
@@ -107,7 +107,7 @@ public class SignUtils {
         for (Field field : clazz.getDeclaredFields()) {
             field.setAccessible(true);
             SignField sf = field.getAnnotation(SignField.class);
-            if (!signFieldFilter.apply(signObject, field, sf)) {
+            if (sf != null && signFieldFilter.apply(signObject, field, sf)) {
                 String fieldName = field.getName();
                 Object value = field.get(signObject);
                 values.put(fieldName, String.valueOf(value));
@@ -123,7 +123,7 @@ public class SignUtils {
     private static class SignFieldFilter implements Function3<SignObject, Field, SignField, Boolean> {
 
         /**
-         * 代表是否过滤 true过滤
+         * false 代表过滤,true 代表采用了,是正确值
          *
          * @param signObject
          * @param field
@@ -133,11 +133,11 @@ public class SignUtils {
          */
         @Override
         public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
-            if (!field.getType().isPrimitive()) {
+            if (!field.getType().isPrimitive() && field.getType() != String.class) {
                 throw new RuntimeException("signField annotation only support primitive type field");
             }
             Object value = field.get(signObject);
-            return signField == null || (value == null && signField.ignoreNullValue());
+            return !(signField == null || (value == null && signField.ignoreNullValue()));
         }
     }
 }

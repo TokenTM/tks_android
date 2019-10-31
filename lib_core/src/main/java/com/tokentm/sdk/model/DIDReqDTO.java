@@ -1,6 +1,13 @@
 package com.tokentm.sdk.model;
 
-public class DIDReqDTO {
+import com.tokentm.sdk.common.encrypt.SignField;
+import com.tokentm.sdk.common.encrypt.SignObject;
+
+/**
+ * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Description
+ */
+public class DIDReqDTO implements SignObject {
 
     /**
      * chainAddress : string
@@ -12,14 +19,27 @@ public class DIDReqDTO {
      * timestamp : 0
      */
 
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String chainAddress;
+
     private String chainPrvSign;
+
     private String chainPubKey;
+
+    @SignField(chainPKSign = true, dataPKSign = true, ignoreNullValue = true)
     private String data;
+
     private String dataPubKey;
+
     private String sign;
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String phone;
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String code;
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private long timestamp;
 
     public String getChainAddress() {

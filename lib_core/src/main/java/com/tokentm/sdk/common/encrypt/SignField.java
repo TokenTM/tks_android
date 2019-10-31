@@ -9,6 +9,7 @@ import java.lang.annotation.ElementType;
  * 不能随便动！！！
  * 不能随便动！！！
  * 不能随便动！！！
+ * 仅支持基本类型和String
  */
 @java.lang.annotation.Target({ElementType.FIELD})
 @java.lang.annotation.Retention(java.lang.annotation.RetentionPolicy.RUNTIME)

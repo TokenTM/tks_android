@@ -4,22 +4,20 @@ import com.tokentm.sdk.Config;
 import com.tokentm.sdk.api.DIDApiService;
 import com.tokentm.sdk.common.CacheUtils;
 import com.tokentm.sdk.common.SDKsp;
+import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
 import com.tokentm.sdk.model.DIDReqDTO;
 import com.tokentm.sdk.model.NodeServiceEncryptDecryptItem;
 import com.tokentm.sdk.model.PwdDpkStoreItem;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.wallet.FileUtils;
-import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.tokentm.sdk.wallet.WalletResult;
 import com.tokentm.sdk.wallet.WalletUtils;
 import com.xxf.arch.XXF;
 import com.xxf.arch.json.JsonUtils;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
@@ -66,8 +64,8 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
                         //时间戳
                         long timestamp = System.currentTimeMillis();
 
-                        XXF.getLogger().d("========>privateKey=" + walletResult.getPrivateKey());
                         String publicKey = Sm_crypto.c_FromPrvKey(walletResult.getPrivateKey());
+                        XXF.getLogger().d("========>privateKey=" + walletResult.getPrivateKey());
                         XXF.getLogger().d("========>publicKey=" + publicKey);
 
                         //数据验证签名的密钥对
@@ -78,23 +76,16 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
                         XXF.getLogger().d("========>dataPrivateKey=" + dataPrivateKey);
                         XXF.getLogger().d("========>dataPublicKey=" + dataPublicKey);
 
-
-                        Map<String, String> signMap = new HashMap<>();
-                        signMap.put("timestamp", String.valueOf(timestamp));
-                        signMap.put("chainAddress", walletResult.getCredentials().getAddress());
-                        signMap.put("phone", phone);
-                        signMap.put("code", smsCode);
-
                         DIDReqDTO didReqDTO = new DIDReqDTO();
                         didReqDTO.setTimestamp(timestamp);
                         didReqDTO.setChainAddress(walletResult.getCredentials().getAddress());
-                        didReqDTO.setChainPrvSign(SignUtils.sign(signMap, walletResult.getPrivateKey()));
                         didReqDTO.setChainPubKey(publicKey);
                         didReqDTO.setData(null);
                         didReqDTO.setDataPubKey(dataPublicKey);
                         didReqDTO.setPhone(phone);
                         didReqDTO.setCode(smsCode);
-                        didReqDTO.setSign(SignUtils.sign(signMap, dataPrivateKey));
+                        didReqDTO.setChainPrvSign(SignUtils.signByChainPk(didReqDTO, walletResult.getPrivateKey()));
+                        didReqDTO.setSign(SignUtils.signByDataPk(didReqDTO, dataPrivateKey));
 
 
                         return XXF.getApiService(DIDApiService.class)
@@ -191,7 +182,6 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
                 .map(new Function<String, PwdDpkStoreItem>() {
                     @Override
                     public PwdDpkStoreItem apply(String s) throws Exception {
-                        XXF.getLogger().d("======>json:" + s);
                         return JsonUtils.toBean(s, PwdDpkStoreItem.class);
                     }
                 }).map(new Function<PwdDpkStoreItem, PwdDpkStoreItem>() {
