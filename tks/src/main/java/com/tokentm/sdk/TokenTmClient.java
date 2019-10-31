@@ -9,8 +9,8 @@ import com.tokentm.sdk.source.BasicRepositoryImpl;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.ChainRepositoryImpl;
 import com.tokentm.sdk.source.ChainService;
-import com.tokentm.sdk.source.DidRepositoryImpl;
-import com.tokentm.sdk.source.DidService;
+import com.tokentm.sdk.source.IdentityPwdRepositoryImpl;
+import com.tokentm.sdk.source.IdentityPwdService;
 import com.tokentm.sdk.source.FileRepositoryImpl;
 import com.tokentm.sdk.source.FileService;
 import com.tokentm.sdk.source.NodeEncryptRepositoryImpl;
@@ -64,7 +64,7 @@ public class TokenTmClient {
     private static void registerService() {
         SERVICE_MAP.put(StoreService.class, StoreRepositoryImpl.getInstance());
         SERVICE_MAP.put(ChainService.class, ChainRepositoryImpl.getInstance());
-        SERVICE_MAP.put(DidService.class, DidRepositoryImpl.getInstance());
+        SERVICE_MAP.put(IdentityPwdService.class, IdentityPwdRepositoryImpl.getInstance());
         SERVICE_MAP.put(BasicService.class, BasicRepositoryImpl.getInstance());
         SERVICE_MAP.put(NodeApiService.class, NodeRepositoryImpl.getInstance());
         SERVICE_MAP.put(NodeEncryptService.class, NodeEncryptRepositoryImpl.getInstance());

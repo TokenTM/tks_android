@@ -6,7 +6,7 @@ import io.reactivex.Observable;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public interface DidService extends RepoService {
+public interface IdentityPwdService extends RepoService {
 
 
     /**

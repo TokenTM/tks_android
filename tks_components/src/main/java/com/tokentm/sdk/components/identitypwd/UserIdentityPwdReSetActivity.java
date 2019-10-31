@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.tokentm.sdk.TokenTmClient;
-import com.tokentm.sdk.source.DidService;
+import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 
@@ -46,7 +46,7 @@ public class UserIdentityPwdReSetActivity extends UserIdentityPwdSetActivity {
 
     @Override
     public void onIdentityPwdSet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
-        TokenTmClient.getService(DidService.class)
+        TokenTmClient.getService(IdentityPwdService.class)
                 .resetIdentityPwd(did, phone.get(), smsCode.get(), identityPwd.get())
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))

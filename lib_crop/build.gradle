@@ -22,5 +22,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation project(path: ':tks')
+    implementation rootProject.ext.dependencies.recyclerview
+    implementation rootProject.ext.dependencies.xxf_android
+
 }

@@ -4,6 +4,7 @@ import com.tokentm.sdk.core.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
+import com.tokentm.sdk.model.DIDForkReqDTO;
 import com.tokentm.sdk.model.DIDReqDTO;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
@@ -23,9 +24,20 @@ import retrofit2.http.POST;
 public interface DIDApiService {
     /**
      * 创建did
+     *
      * @param body
      * @return
      */
     @POST("did")
     Observable<ResponseDTO<String>> createDID(@Body DIDReqDTO body);
+
+
+    /**
+     * 派生一个did
+     *
+     * @param body
+     * @return
+     */
+    @POST("did/forkDid")
+    Observable<ResponseDTO<String>> forkDID(@Body DIDForkReqDTO body);
 }

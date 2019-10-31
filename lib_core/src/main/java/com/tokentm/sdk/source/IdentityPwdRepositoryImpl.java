@@ -33,14 +33,14 @@ import sm_crypto.Sm_crypto;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class DidRepositoryImpl implements DidService, BaseRepo {
-    private static volatile DidService INSTANCE;
+public class IdentityPwdRepositoryImpl implements IdentityPwdService, BaseRepo {
+    private static volatile IdentityPwdService INSTANCE;
 
-    public static DidService getInstance() {
+    public static IdentityPwdService getInstance() {
         if (INSTANCE == null) {
-            synchronized (DidService.class) {
+            synchronized (IdentityPwdService.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new DidRepositoryImpl();
+                    INSTANCE = new IdentityPwdRepositoryImpl();
                 }
             }
         }

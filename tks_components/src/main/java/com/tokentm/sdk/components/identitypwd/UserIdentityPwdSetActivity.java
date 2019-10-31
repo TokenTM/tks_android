@@ -18,7 +18,7 @@ import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.ComponentUtils;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.source.BasicService;
-import com.tokentm.sdk.source.DidService;
+import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 
@@ -148,7 +148,7 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
 
     @Override
     public void onIdentityPwdSet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
-        TokenTmClient.getService(DidService.class)
+        TokenTmClient.getService(IdentityPwdService.class)
                 .createUDID(phone.get(), smsCode.get(), identityPwd.get())
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))

@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.databinding.UserDialogDecryptedByPwdBinding;
-import com.tokentm.sdk.source.DidRepositoryImpl;
+import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
 
@@ -80,8 +81,7 @@ public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
             return;
         }
         String pwd = binding.identityPwdEt.getText().toString().trim();
-        DidRepositoryImpl
-                .getInstance()
+        TokenTmClient.getService(IdentityPwdService.class)
                 .validateIdentityPwd(uDid, pwd)
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(new Consumer<Boolean>() {
