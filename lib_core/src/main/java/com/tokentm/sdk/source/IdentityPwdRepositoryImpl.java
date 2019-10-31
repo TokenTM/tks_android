@@ -3,12 +3,8 @@ package com.tokentm.sdk.source;
 import android.text.TextUtils;
 
 import com.tokentm.sdk.Config;
-import com.tokentm.sdk.api.DIDApiService;
 import com.tokentm.sdk.common.CacheUtils;
 import com.tokentm.sdk.common.SDKsp;
-import com.tokentm.sdk.common.encrypt.SignUtils;
-import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
-import com.tokentm.sdk.model.DIDReqDTO;
 import com.tokentm.sdk.model.NodeServiceEncryptDecryptItem;
 import com.tokentm.sdk.model.PwdDpkStoreItem;
 import com.tokentm.sdk.model.StoreItem;
@@ -63,36 +59,21 @@ public class IdentityPwdRepositoryImpl implements IdentityPwdService, BaseRepo {
                 .flatMap(new Function<WalletResult, ObservableSource<String>>() {
                     @Override
                     public ObservableSource<String> apply(WalletResult walletResult) throws Exception {
-                        //时间戳
-                        long timestamp = System.currentTimeMillis();
-
-                        String publicKey = Sm_crypto.c_FromPrvKey(walletResult.getPrivateKey());
-                        XXF.getLogger().d("========>privateKey=" + walletResult.getPrivateKey());
-                        XXF.getLogger().d("========>publicKey=" + publicKey);
+                        String chainPublicKey = Sm_crypto.c_FromPrvKey(walletResult.getPrivateKey());
 
                         //数据验证签名的密钥对
                         String dataPrivateKey = Sm_crypto.c_GenerateKey();
                         String dataPublicKey = Sm_crypto.c_FromPrvKey(dataPrivateKey);
-
-
-                        XXF.getLogger().d("========>dataPrivateKey=" + dataPrivateKey);
-                        XXF.getLogger().d("========>dataPublicKey=" + dataPublicKey);
-
-                        DIDReqDTO didReqDTO = new DIDReqDTO();
-                        didReqDTO.setTimestamp(timestamp);
-                        didReqDTO.setChainAddress(walletResult.getCredentials().getAddress());
-                        didReqDTO.setChainPubKey(publicKey);
-                        didReqDTO.setData(null);
-                        didReqDTO.setDataPubKey(dataPublicKey);
-                        didReqDTO.setPhone(phone);
-                        didReqDTO.setCode(smsCode);
-                        didReqDTO.setChainPrvSign(SignUtils.signByChainPk(didReqDTO, walletResult.getPrivateKey()));
-                        didReqDTO.setSign(SignUtils.signByDataPk(didReqDTO, dataPrivateKey));
-
-
-                        return XXF.getApiService(DIDApiService.class)
-                                .createDID(didReqDTO)
-                                .map(new ResponseDTOSimpleFunction<String>())
+                        return DIDRepositoryImpl
+                                .getInstance()
+                                .createDID(
+                                        phone,
+                                        smsCode,
+                                        walletResult.getCredentials().getAddress(),
+                                        chainPublicKey, walletResult.getPrivateKey(),
+                                        null,
+                                        dataPublicKey, dataPrivateKey
+                                )
                                 .flatMap(new Function<String, ObservableSource<String>>() {
                                     @Override
                                     public ObservableSource<String> apply(String did) throws Exception {

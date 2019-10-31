@@ -9,10 +9,12 @@ import com.tokentm.sdk.source.BasicRepositoryImpl;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.ChainRepositoryImpl;
 import com.tokentm.sdk.source.ChainService;
-import com.tokentm.sdk.source.IdentityPwdRepositoryImpl;
-import com.tokentm.sdk.source.IdentityPwdService;
+import com.tokentm.sdk.source.DIDRepositoryImpl;
+import com.tokentm.sdk.source.DIDService;
 import com.tokentm.sdk.source.FileRepositoryImpl;
 import com.tokentm.sdk.source.FileService;
+import com.tokentm.sdk.source.IdentityPwdRepositoryImpl;
+import com.tokentm.sdk.source.IdentityPwdService;
 import com.tokentm.sdk.source.NodeEncryptRepositoryImpl;
 import com.tokentm.sdk.source.NodeEncryptService;
 import com.tokentm.sdk.source.NodeRepositoryImpl;
@@ -62,9 +64,10 @@ public class TokenTmClient {
      * 注册数据服务
      */
     private static void registerService() {
+        SERVICE_MAP.put(DIDService.class, DIDRepositoryImpl.getInstance());
+        SERVICE_MAP.put(IdentityPwdService.class, IdentityPwdRepositoryImpl.getInstance());
         SERVICE_MAP.put(StoreService.class, StoreRepositoryImpl.getInstance());
         SERVICE_MAP.put(ChainService.class, ChainRepositoryImpl.getInstance());
-        SERVICE_MAP.put(IdentityPwdService.class, IdentityPwdRepositoryImpl.getInstance());
         SERVICE_MAP.put(BasicService.class, BasicRepositoryImpl.getInstance());
         SERVICE_MAP.put(NodeApiService.class, NodeRepositoryImpl.getInstance());
         SERVICE_MAP.put(NodeEncryptService.class, NodeEncryptRepositoryImpl.getInstance());
