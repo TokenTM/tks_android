@@ -41,7 +41,7 @@ public class BasicRepositoryImpl implements BasicService, BaseRepo {
         signMap.put("userIdentityCode", userIdentityCode);
         signMap.put("userName", userName);
         signMap.put("timestamp", String.valueOf(timestamp));
-        String sign = SignUtils.sign(signMap, _getDPK(did));
+        String sign = SignUtils.sign(signMap, getUserDPK(did));
         return XXF.getApiService(BasicApiService.class)
                 .getOrgLetterImage(did, orgName, sign, timestamp, userIdentityCode, userName)
                 .map(new Function<ResponseBody, InputStream>() {

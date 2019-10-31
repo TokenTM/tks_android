@@ -1,5 +1,7 @@
 package com.tokentm.sdk.source;
 
+import android.text.TextUtils;
+
 import com.tokentm.sdk.Config;
 import com.tokentm.sdk.api.DIDApiService;
 import com.tokentm.sdk.common.CacheUtils;
@@ -117,16 +119,37 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
     }
 
     @Override
-    public Observable<Boolean> decryptUDID(String phone, String smsCode) {
-        //TODO 实现核心逻辑
-        return Observable.just(true);
+    public Observable<Boolean> decryptUDID(String uDID, String phone, String smsCode) {
+        return _getStorePwdDpk(uDID, phone, smsCode)
+                .map(new Function<PwdDpkStoreItem, Boolean>() {
+                    @Override
+                    public Boolean apply(PwdDpkStoreItem pwdDpkStoreItem) throws Exception {
+                        //put dpk to disk
+                        SDKsp.getInstance()._putDPK(uDID, pwdDpkStoreItem.getDpk());
+
+                        return pwdDpkStoreItem != null;
+                    }
+                });
     }
 
+    /**
+     * @param uDID
+     * @return
+     */
     @Override
-    public Observable<Boolean> isAccessible(String uDid) {
-        return Observable.just(false);
+    public Observable<Boolean> isAccessible(String uDID) {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                try {
+                    return !TextUtils.isEmpty(getUserDPK(uDID));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
     }
-
 
     /**
      * 备份pwd_dpk
@@ -165,42 +188,33 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
      * 获取 备份pwd_dpk
      *
      * @param did
-     * @param dataId
      * @param phone
      * @param smsCode
      * @return
      */
     private Observable<PwdDpkStoreItem> _getStorePwdDpk(String did,
-                                                        String dataId,
                                                         String phone,
                                                         String smsCode) {
         StoreRepositoryImpl instance = (StoreRepositoryImpl) StoreRepositoryImpl.getInstance();
-        return instance.getStore(did, Config.BackupType.TYPE_DPK.getValue(), dataId, phone, smsCode)
+        return instance.getStore(did, Config.BackupType.TYPE_DPK.getValue(), did, phone, smsCode)
                 .map(new Function<StoreItem<String>, List<NodeServiceEncryptDecryptItem>>() {
                     @Override
                     public List<NodeServiceEncryptDecryptItem> apply(StoreItem<String> stringStoreItem) throws Exception {
                         return JsonUtils.toBeanList(stringStoreItem.getData(), NodeServiceEncryptDecryptItem.class);
                     }
                 })
-                .flatMap(new Function<List<NodeServiceEncryptDecryptItem>, ObservableSource<String>>() {
+                .flatMap(new Function<List<NodeServiceEncryptDecryptItem>, ObservableSource<PwdDpkStoreItem>>() {
                     @Override
-                    public ObservableSource<String> apply(List<NodeServiceEncryptDecryptItem> nodeServiceEncryptDecryptItems) throws Exception {
+                    public ObservableSource<PwdDpkStoreItem> apply(List<NodeServiceEncryptDecryptItem> nodeServiceEncryptDecryptItems) throws Exception {
                         return NodeEncryptRepositoryImpl
                                 .getInstance()
-                                .decrypt(did, nodeServiceEncryptDecryptItems, phone, smsCode);
-                    }
-                })
-                .map(new Function<String, PwdDpkStoreItem>() {
-                    @Override
-                    public PwdDpkStoreItem apply(String s) throws Exception {
-                        return JsonUtils.toBean(s, PwdDpkStoreItem.class);
-                    }
-                }).map(new Function<PwdDpkStoreItem, PwdDpkStoreItem>() {
-                    @Override
-                    public PwdDpkStoreItem apply(PwdDpkStoreItem pwdDpkStoreItem) throws Exception {
-                        //put dpk
-                        SDKsp.getInstance()._putDPK(did, pwdDpkStoreItem.getDpk());
-                        return pwdDpkStoreItem;
+                                .decrypt(did, nodeServiceEncryptDecryptItems, phone, smsCode)
+                                .map(new Function<String, PwdDpkStoreItem>() {
+                                    @Override
+                                    public PwdDpkStoreItem apply(String s) throws Exception {
+                                        return JsonUtils.toBean(s, PwdDpkStoreItem.class);
+                                    }
+                                });
                     }
                 });
 
@@ -255,10 +269,13 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
 
     @Override
     public Observable<Boolean> resetIdentityPwd(String uDID, String oldPhone, String smsCode, String newIdentityPwd) {
-        return _getStorePwdDpk(uDID, uDID, oldPhone, smsCode)
+        return _getStorePwdDpk(uDID, oldPhone, smsCode)
                 .flatMap(new Function<PwdDpkStoreItem, ObservableSource<Boolean>>() {
                     @Override
                     public ObservableSource<Boolean> apply(PwdDpkStoreItem pwdDpkStoreItem) throws Exception {
+                        //put dpk to disk
+                        SDKsp.getInstance()._putDPK(uDID, pwdDpkStoreItem.getDpk());
+
                         String oldIdentityPwd = pwdDpkStoreItem.getPwd();
                         //每次都获取最新的keystore 防止其他端修改了
                         return _getStoreUserKeyStore(uDID)

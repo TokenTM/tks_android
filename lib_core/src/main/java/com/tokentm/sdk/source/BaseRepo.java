@@ -12,11 +12,11 @@ public interface BaseRepo {
     /**
      * 获取数据私钥
      *
-     * @param did
+     * @param uDID
      * @return
      */
-    default String _getDPK(String did) {
-        String dpk = SDKsp.getInstance()._getDPK(did);
+    default String getUserDPK(String uDID) throws RuntimeException {
+        String dpk = SDKsp.getInstance()._getDPK(uDID);
         if (TextUtils.isEmpty(dpk)) {
             throw new RuntimeException("dpk is null");
         }

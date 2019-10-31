@@ -23,20 +23,21 @@ public interface DidService extends RepoService {
     /**
      * 解开UDID
      *
+     * @param uDID
      * @param phone
      * @param smsCode
      * @return
      */
-    Observable<Boolean> decryptUDID(String phone, String smsCode);
+    Observable<Boolean> decryptUDID(String uDID,String phone, String smsCode);
 
 
     /**
      * 是否可以使用,否则需要解开
      *
-     * @param uDid
+     * @param uDID
      * @return
      */
-    Observable<Boolean> isAccessible(String uDid);
+    Observable<Boolean> isAccessible(String uDID);
 
 
     /**

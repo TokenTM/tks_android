@@ -107,7 +107,7 @@ public class CertRepositoryImpl implements CertService, BaseRepo {
                                         userCertBody.setIdentityBackImgId(strings.get(1));
                                         userCertBody.setIdentityHandImgId(strings.get(2));
 
-                                        userCertBody.setSign(SignUtils.signByDataPk(userCertBody, _getDPK(userCertBody.getDid())));
+                                        userCertBody.setSign(SignUtils.signByDataPk(userCertBody, getUserDPK(userCertBody.getDid())));
                                         userCertBody.setChainPrvKeySign(SignUtils.signByChainPk(userCertBody, walletResult.getPrivateKey()));
 
                                         return XXF.getApiService(CertApiService.class)

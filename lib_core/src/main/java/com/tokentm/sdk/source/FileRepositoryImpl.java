@@ -50,7 +50,7 @@ public class FileRepositoryImpl implements FileService, BaseRepo {
                         signMap.put("fileMd5", fileMd5);
                         signMap.put("targetDid", targetDid);
                         signMap.put("timestamp", String.valueOf(timestamp));
-                        String sign = SignUtils.sign(signMap, _getDPK(did));
+                        String sign = SignUtils.sign(signMap, getUserDPK(did));
 
                         MultipartBody.Part filePart = RequestUtils.createFileBody("file", file);
                         return XXF.getApiService(FileApiService.class)

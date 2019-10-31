@@ -90,10 +90,10 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                             //data sign
                             Map<String, String> dataSignMap = new HashMap<>();
                             dataSignMap.put("data", storeItem.getData());
-                            String dataSign = SignUtils.sign(dataSignMap, _getDPK(storeItemReqBodyDTO.getDid()));
+                            String dataSign = SignUtils.sign(dataSignMap, getUserDPK(storeItemReqBodyDTO.getDid()));
                             storeItemReqBodyDTO.setDataSign(dataSign);
 
-                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, _getDPK(storeItemReqBodyDTO.getDid())));
+                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, getUserDPK(storeItemReqBodyDTO.getDid())));
 
                             storeItemReqBodyDTOS.add(storeItemReqBodyDTO);
                         }
@@ -169,7 +169,7 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                             storeItemReqBodyDTO.setDataType(storeItem.getDataType());
                             storeItemReqBodyDTO.setDataId(storeItem.getDataId());
                             //加密数据
-                            String encryptData = TEAUtils.encryptString(storeItem.getData(), _getDPK(storeItem.getDid()));
+                            String encryptData = TEAUtils.encryptString(storeItem.getData(), getUserDPK(storeItem.getDid()));
                             storeItemReqBodyDTO.setData(encryptData);
 
                             storeItemReqBodyDTO.setVersion(storeItem.getVersion());
@@ -179,10 +179,10 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                             //data sign
                             Map<String, String> dataSignMap = new HashMap<>();
                             dataSignMap.put("data", storeItem.getData());
-                            String dataSign = SignUtils.sign(dataSignMap, _getDPK(storeItemReqBodyDTO.getDid()));
+                            String dataSign = SignUtils.sign(dataSignMap, getUserDPK(storeItemReqBodyDTO.getDid()));
                             storeItemReqBodyDTO.setDataSign(dataSign);
 
-                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, _getDPK(storeItemReqBodyDTO.getDid())));
+                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, getUserDPK(storeItemReqBodyDTO.getDid())));
 
                             storeItemReqBodyDTOS.add(storeItemReqBodyDTO);
                         }
@@ -206,7 +206,7 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                     @Override
                     public StoreItem<String> apply(StoreItem<String> stringStoreItem) throws Exception {
                         //解密
-                        String decodeString = TEAUtils.decryptString(stringStoreItem.getData(), _getDPK(stringStoreItem.getDid()));
+                        String decodeString = TEAUtils.decryptString(stringStoreItem.getData(), getUserDPK(stringStoreItem.getDid()));
                         stringStoreItem.setData(decodeString);
                         return stringStoreItem;
                     }
@@ -223,7 +223,7 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
         signMap.put("did", did);
         signMap.put("timestamp", String.valueOf(timestamp));
 
-        String sign = SignUtils.sign(signMap, _getDPK(did));
+        String sign = SignUtils.sign(signMap, getUserDPK(did));
         return storeApiService
                 .getStore(did, dataType, dataId, sign, timestamp)
                 .map(new ResponseDTOSimpleFunction<>());
@@ -237,7 +237,7 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                     public List<StoreItem<String>> apply(List<StoreItem<String>> storeItems) throws Exception {
                         for (StoreItem<String> stringStoreItem : storeItems) {
                             //解密
-                            String decodeString = TEAUtils.decryptString(stringStoreItem.getData(), _getDPK(stringStoreItem.getDid()));
+                            String decodeString = TEAUtils.decryptString(stringStoreItem.getData(), getUserDPK(stringStoreItem.getDid()));
                             stringStoreItem.setData(decodeString);
                         }
                         return storeItems;
@@ -255,7 +255,7 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                         signBody.setDid(did);
                         signBody.setDataType(dataType);
                         signBody.setTimestamp(System.currentTimeMillis());
-                        signBody.setSign(SignUtils.signByDataPk(signBody, _getDPK(did)));
+                        signBody.setSign(SignUtils.signByDataPk(signBody, getUserDPK(did)));
                         return signBody;
                     }
                 })
