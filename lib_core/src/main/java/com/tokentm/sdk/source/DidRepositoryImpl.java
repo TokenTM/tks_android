@@ -145,7 +145,7 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
                     public ObservableSource<Long> apply(StoreItem<String> dpkStoreItem) throws Exception {
                         return StoreRepositoryImpl
                                 .getInstance()
-                                .store(dpkStoreItem);
+                                .storePublic(dpkStoreItem);
                     }
                 });
     }
@@ -211,7 +211,7 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
         keyStoreItem.setData(keyStoreFileContent);
         return StoreRepositoryImpl
                 .getInstance()
-                .storeEncrypt(keyStoreItem)
+                .storePrivate(keyStoreItem)
                 .doOnNext(new Consumer<Long>() {
                     @Override
                     public void accept(Long aLong) throws Exception {
@@ -230,7 +230,7 @@ public class DidRepositoryImpl implements DidService, BaseRepo {
     private Observable<File> _getStoreUserKeyStore(String did) {
         return StoreRepositoryImpl
                 .getInstance()
-                .getStoreDecrypted(did, Config.BackupType.TYPE_KEY_STORE.getValue(), did)
+                .getPrivateStore(did, Config.BackupType.TYPE_KEY_STORE.getValue(), did)
                 .map(new Function<StoreItem<String>, File>() {
                     @Override
                     public File apply(StoreItem<String> stringStoreItem) throws Exception {

@@ -1,15 +1,15 @@
 package com.tokentm.sdk.source;
 
+import android.support.annotation.RestrictTo;
+
 import com.tokentm.sdk.api.StoreApiService;
 import com.tokentm.sdk.common.encrypt.SignUtils;
+import com.tokentm.sdk.common.encrypt.TEAUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
 import com.tokentm.sdk.model.StoreItem;
-import com.tokentm.sdk.model.StoreItemDecrypted;
-import com.tokentm.sdk.model.StoreItemEncrypted;
-import com.tokentm.sdk.model.StoreItemSigned;
+import com.tokentm.sdk.model.StoreItemReqBodyDTO;
 import com.xxf.arch.XXF;
 import com.xxf.arch.http.XXFHttp;
-import com.xxf.arch.json.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,8 +47,8 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
 
 
     @Override
-    public Observable<Long> store(StoreItem<String> storeItem) {
-        return this.store(Arrays.asList(storeItem))
+    public Observable<Long> storePublic(StoreItem<String> storeItem) {
+        return this.storePublic(Arrays.asList(storeItem))
                 .map(new Function<List<Long>, Long>() {
                     @Override
                     public Long apply(List<Long> longs) throws Exception {
@@ -58,8 +58,8 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
     }
 
     @Override
-    public Observable<Long> storeEncrypt(StoreItem<String> storeItem) {
-        return this.storeEncrypt(Arrays.asList(storeItem))
+    public Observable<Long> storePrivate(StoreItem<String> storeItem) {
+        return this.storePrivate(Arrays.asList(storeItem))
                 .map(new Function<List<Long>, Long>() {
                     @Override
                     public Long apply(List<Long> longs) throws Exception {
@@ -69,46 +69,43 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
     }
 
     @Override
-    public Observable<List<Long>> store(List<StoreItem<String>> storeItems) {
+    public Observable<List<Long>> storePublic(List<StoreItem<String>> storeItems) {
         return _attachNewVersionInner(storeItems)
-                .map(new Function<List<StoreItem<String>>, List<StoreItemSigned>>() {
+                .map(new Function<List<StoreItem<String>>, List<StoreItemReqBodyDTO>>() {
                     @Override
-                    public List<StoreItemSigned> apply(List<StoreItem<String>> newVersionStoreItems) throws Exception {
-                        //转化成自动签名的json
-                        String jsonString = JsonUtils.toJsonString(newVersionStoreItems);
-                        List<StoreItemSigned> storeStringItems = JsonUtils.toBeanList(jsonString, StoreItemSigned.class);
-                        return storeStringItems;
+                    public List<StoreItemReqBodyDTO> apply(List<StoreItem<String>> newVersionStoreItems) throws Exception {
+                        List<StoreItemReqBodyDTO> storeItemReqBodyDTOS = new ArrayList<>();
+                        for (StoreItem<String> storeItem : newVersionStoreItems) {
+                            StoreItemReqBodyDTO storeItemReqBodyDTO = new StoreItemReqBodyDTO();
+                            storeItemReqBodyDTO.setDid(storeItem.getDid());
+                            storeItemReqBodyDTO.setDataType(storeItem.getDataType());
+                            storeItemReqBodyDTO.setDataId(storeItem.getDataId());
+                            storeItemReqBodyDTO.setData(storeItem.getData());
+                            storeItemReqBodyDTO.setVersion(storeItem.getVersion());
+                            storeItemReqBodyDTO.setTimestamp(System.currentTimeMillis());
+
+
+                            //data sign
+                            Map<String, String> dataSignMap = new HashMap<>();
+                            dataSignMap.put("data", storeItem.getData());
+                            String dataSign = SignUtils.sign(dataSignMap, _getDPK(storeItemReqBodyDTO.getDid()));
+                            storeItemReqBodyDTO.setDataSign(dataSign);
+
+                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, _getDPK(storeItemReqBodyDTO.getDid())));
+
+                            storeItemReqBodyDTOS.add(storeItemReqBodyDTO);
+                        }
+                        return storeItemReqBodyDTOS;
                     }
                 })
-                .flatMap(new Function<List<StoreItemSigned>, ObservableSource<List<Long>>>() {
+                .flatMap(new Function<List<StoreItemReqBodyDTO>, ObservableSource<List<Long>>>() {
                     @Override
-                    public ObservableSource<List<Long>> apply(List<StoreItemSigned> storeItems) throws Exception {
+                    public ObservableSource<List<Long>> apply(List<StoreItemReqBodyDTO> storeItemReqBodyDTOS) throws Exception {
                         return storeApiService
-                                .store(storeItems)
+                                .store(storeItemReqBodyDTOS)
                                 .map(new ResponseDTOSimpleFunction<List<Long>>());
                     }
                 });
-    }
-
-    /**
-     * 通过手机号+验证码获取数据
-     * ⚠️ 不暴露出去,不推荐
-     *
-     * @param did
-     * @param dataType
-     * @param dataId
-     * @param phone
-     * @param smsCode
-     * @return
-     */
-    public Observable<StoreItem<String>> getStore(String did,
-                                                  String dataType,
-                                                  String dataId,
-                                                  String phone,
-                                                  String smsCode) {
-        return XXF.getApiService(StoreApiService.class)
-                .getStore(did, dataType, dataId, phone, smsCode)
-                .map(new ResponseDTOSimpleFunction<>());
     }
 
 
@@ -158,54 +155,64 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
     }
 
     @Override
-    public Observable<List<Long>> storeEncrypt(List<StoreItem<String>> storeItems) {
+    public Observable<List<Long>> storePrivate(List<StoreItem<String>> storeItems) {
         return _attachNewVersionInner(storeItems)
-                .map(new Function<List<StoreItem<String>>, List<StoreItemEncrypted>>() {
+                .map(new Function<List<StoreItem<String>>, List<StoreItemReqBodyDTO>>() {
                     @Override
-                    public List<StoreItemEncrypted> apply(List<StoreItem<String>> newVersionStoreItems) throws Exception {
-                        //json 转化自动签名和加解密的模型
-                        String jsonString = JsonUtils.toJsonString(newVersionStoreItems);
-                        List<StoreItemEncrypted> storeItemEncrypteds = JsonUtils.toBeanList(jsonString, StoreItemEncrypted.class);
-                        return storeItemEncrypteds;
+                    public List<StoreItemReqBodyDTO> apply(List<StoreItem<String>> newVersionStoreItems) throws Exception {
+                        List<StoreItemReqBodyDTO> storeItemReqBodyDTOS = new ArrayList<>();
+                        for (StoreItem<String> storeItem : newVersionStoreItems) {
+                            StoreItemReqBodyDTO storeItemReqBodyDTO = new StoreItemReqBodyDTO();
+                            storeItemReqBodyDTO.setDid(storeItem.getDid());
+                            storeItemReqBodyDTO.setDataType(storeItem.getDataType());
+                            storeItemReqBodyDTO.setDataId(storeItem.getDataId());
+                            //加密数据
+                            String encryptData = TEAUtils.encryptString(storeItem.getData(), _getDPK(storeItem.getDid()));
+                            storeItemReqBodyDTO.setData(encryptData);
+
+                            storeItemReqBodyDTO.setVersion(storeItem.getVersion());
+                            storeItemReqBodyDTO.setTimestamp(System.currentTimeMillis());
+
+
+                            //data sign
+                            Map<String, String> dataSignMap = new HashMap<>();
+                            dataSignMap.put("data", storeItem.getData());
+                            String dataSign = SignUtils.sign(dataSignMap, _getDPK(storeItemReqBodyDTO.getDid()));
+                            storeItemReqBodyDTO.setDataSign(dataSign);
+
+                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, _getDPK(storeItemReqBodyDTO.getDid())));
+
+                            storeItemReqBodyDTOS.add(storeItemReqBodyDTO);
+                        }
+                        return storeItemReqBodyDTOS;
                     }
                 })
-                .flatMap(new Function<List<StoreItemEncrypted>, ObservableSource<List<Long>>>() {
+                .flatMap(new Function<List<StoreItemReqBodyDTO>, ObservableSource<List<Long>>>() {
                     @Override
-                    public ObservableSource<List<Long>> apply(List<StoreItemEncrypted> storeItems) throws Exception {
+                    public ObservableSource<List<Long>> apply(List<StoreItemReqBodyDTO> storeItemReqBodyDTOS) throws Exception {
                         return storeApiService
-                                .storeEncrypt(storeItems)
+                                .store(storeItemReqBodyDTOS)
                                 .map(new ResponseDTOSimpleFunction<List<Long>>());
                     }
                 });
     }
 
     @Override
-    public Observable<StoreItem<String>> getStoreDecrypted(String did, String dataType, String dataId) {
-        long timestamp = System.currentTimeMillis();
-
-        // api sign
-        Map<String, String> signMap = new HashMap<>();
-        signMap.put("dataId", dataId);
-        signMap.put("dataType", dataType);
-        signMap.put("did", did);
-        signMap.put("timestamp", String.valueOf(timestamp));
-
-        String sign = SignUtils.sign(signMap, _getDPK(did));
-
-        return storeApiService
-                .getStoreDecrypted(did, dataType, dataId, sign, timestamp)
-                .map(new ResponseDTOSimpleFunction<StoreItemDecrypted>());
+    public Observable<StoreItem<String>> getPrivateStore(String did, String dataType, String dataId) {
+        return getPublicStore(did, dataType, dataId)
+                .map(new Function<StoreItem<String>, StoreItem<String>>() {
+                    @Override
+                    public StoreItem<String> apply(StoreItem<String> stringStoreItem) throws Exception {
+                        //解密
+                        String decodeString = TEAUtils.decryptString(stringStoreItem.getData(), _getDPK(stringStoreItem.getDid()));
+                        stringStoreItem.setData(decodeString);
+                        return stringStoreItem;
+                    }
+                });
     }
 
-    /**
-     * 获取数据
-     *
-     * @param did
-     * @param dataType
-     * @param dataId
-     * @return
-     */
-    private Observable<StoreItem<String>> _getStoreInner(String did, String dataType, String dataId) {
+    @Override
+    public Observable<StoreItem<String>> getPublicStore(String did, String dataType, String dataId) {
         long timestamp = System.currentTimeMillis();
         // api sign
         Map<String, String> signMap = new HashMap<>();
@@ -220,9 +227,31 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                 .map(new ResponseDTOSimpleFunction<>());
     }
 
+    /**
+     * 通过手机号+验证码获取数据
+     * ⚠️ 不暴露出去,不推荐
+     *
+     * @param did
+     * @param dataType
+     * @param dataId
+     * @param phone
+     * @param smsCode
+     * @return
+     */
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    public Observable<StoreItem<String>> getStore(String did,
+                                                  String dataType,
+                                                  String dataId,
+                                                  String phone,
+                                                  String smsCode) {
+        return XXF.getApiService(StoreApiService.class)
+                .getStore(did, dataType, dataId, phone, smsCode)
+                .map(new ResponseDTOSimpleFunction<>());
+    }
+
     @Override
     public Observable<Long> getStoreVersion(String did, String dataType, String dataId) {
-        return _getStoreInner(did, dataType, dataId)
+        return getPublicStore(did, dataType, dataId)
                 .map(new Function<StoreItem<String>, Long>() {
                     @Override
                     public Long apply(StoreItem<String> stringStoreItem) throws Exception {
