@@ -8,6 +8,7 @@ import com.tokentm.sdk.common.encrypt.TEAUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.model.StoreItemReqBodyDTO;
+import com.tokentm.sdk.model.StoreQueryByTypeReqBodyDTO;
 import com.xxf.arch.XXF;
 import com.xxf.arch.http.XXFHttp;
 
@@ -16,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -225,6 +227,45 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
         return storeApiService
                 .getStore(did, dataType, dataId, sign, timestamp)
                 .map(new ResponseDTOSimpleFunction<>());
+    }
+
+    @Override
+    public Observable<List<StoreItem<String>>> getPrivateStore(String did, String dataType) {
+        return getPrivateStore(did, dataType)
+                .map(new Function<List<StoreItem<String>>, List<StoreItem<String>>>() {
+                    @Override
+                    public List<StoreItem<String>> apply(List<StoreItem<String>> storeItems) throws Exception {
+                        for (StoreItem<String> stringStoreItem : storeItems) {
+                            //解密
+                            String decodeString = TEAUtils.decryptString(stringStoreItem.getData(), _getDPK(stringStoreItem.getDid()));
+                            stringStoreItem.setData(decodeString);
+                        }
+                        return storeItems;
+                    }
+                });
+    }
+
+    @Override
+    public Observable<List<StoreItem<String>>> getPublicStore(String did, String dataType) {
+        return Observable
+                .fromCallable(new Callable<StoreQueryByTypeReqBodyDTO>() {
+                    @Override
+                    public StoreQueryByTypeReqBodyDTO call() throws Exception {
+                        StoreQueryByTypeReqBodyDTO signBody = new StoreQueryByTypeReqBodyDTO();
+                        signBody.setDid(did);
+                        signBody.setDataType(dataType);
+                        signBody.setTimestamp(System.currentTimeMillis());
+                        signBody.setSign(SignUtils.signByDataPk(signBody, _getDPK(did)));
+                        return signBody;
+                    }
+                })
+                .flatMap(new Function<StoreQueryByTypeReqBodyDTO, ObservableSource<List<StoreItem<String>>>>() {
+                    @Override
+                    public ObservableSource<List<StoreItem<String>>> apply(StoreQueryByTypeReqBodyDTO storeQueryByTypeReqBodyDTO) throws Exception {
+                        return storeApiService.getStore(storeQueryByTypeReqBodyDTO)
+                                .map(new ResponseDTOSimpleFunction<>());
+                    }
+                });
     }
 
     /**

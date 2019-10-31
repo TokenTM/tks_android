@@ -1,7 +1,6 @@
 package com.tokentm.sdk.demo;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,6 +11,8 @@ import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 import com.xxf.arch.utils.ToastUtils;
+
+import org.xxtea.XXTEA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +45,11 @@ public class MainActivity extends Activity {
         binding.btCreateDid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(), DidDemoActivity.class));
+                String xxxes = XXTEA.decryptBase64StringToString("xxxjhhgdshgsdghghdsghjgjdsgjfdsgfgfdsfgdsgfsdgffgdsgfdsgfdsgfgfsdgfdsgfsdgfhfgdsgf", "123");
+
+                System.out.println("========>splitIndexs:" + xxxes);
+
+                //v.getContext().startActivity(new Intent(v.getContext(), DidDemoActivity.class));
             }
         });
         binding.btBackup.setOnClickListener(new View.OnClickListener() {

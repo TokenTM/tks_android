@@ -6,6 +6,7 @@ import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.model.StoreItemReqBodyDTO;
+import com.tokentm.sdk.model.StoreQueryByTypeReqBodyDTO;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
@@ -72,5 +73,14 @@ public interface StoreApiService {
                                                         @Query("dataId") String dataId,
                                                         @Query("sign") String sign,
                                                         @Query("timestamp") long timestamp);
+
+    /**
+     * 按类型查询 云端存储
+     *
+     * @param body
+     * @return
+     */
+    @GET("store/data_type")
+    Observable<ResponseDTO<List<StoreItem<String>>>> getStore(@Body StoreQueryByTypeReqBodyDTO body);
 
 }

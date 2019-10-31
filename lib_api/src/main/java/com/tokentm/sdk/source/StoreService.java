@@ -75,6 +75,27 @@ public interface StoreService extends RepoService {
 
 
     /**
+     * 获取云端私有存储
+     *
+     * @param did
+     * @param dataType
+     * @return
+     */
+    Observable<List<StoreItem<String>>> getPrivateStore(String did,
+                                                        String dataType);
+
+    /**
+     * 获取云端公开存储
+     *
+     * @param did
+     * @param dataType
+     * @return
+     */
+    Observable<List<StoreItem<String>>> getPublicStore(String did,
+                                                       String dataType);
+
+
+    /**
      * 获取云端存储  的最新版本号
      * -1 代表没有数据版本
      *
