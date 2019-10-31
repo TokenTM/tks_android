@@ -1,14 +1,24 @@
 package com.tokentm.sdk.model;
 
+import com.tokentm.sdk.common.encrypt.SignField;
+import com.tokentm.sdk.common.encrypt.SignObject;
+
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class StoreQueryByTypeReqBodyDTO {
+public class StoreQueryByTypeReqBodyDTO implements SignObject {
+
+    @SignField(chainPKSign = false, dataPKSign = true)
     private String dataType;
+
+    @SignField(chainPKSign = false, dataPKSign = true)
     private String did;
-    private String sign;
+
+    @SignField(chainPKSign = false, dataPKSign = true)
     private long timestamp;
+
+    private String sign;
 
     public String getDataType() {
         return dataType;
@@ -26,14 +36,6 @@ public class StoreQueryByTypeReqBodyDTO {
         this.did = did;
     }
 
-    public String getSign() {
-        return sign;
-    }
-
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
-
     public long getTimestamp() {
         return timestamp;
     }
@@ -42,4 +44,11 @@ public class StoreQueryByTypeReqBodyDTO {
         this.timestamp = timestamp;
     }
 
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
 }
