@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="crop_label_edit_photo">裁剪</string>
+    <string name="crop_label_original">原始比例</string>
+    <string name="crop_menu_crop">裁剪</string>
+</resources>

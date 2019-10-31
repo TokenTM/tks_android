@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
@@ -16,14 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
-    }
+
 }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation rootProject.ext.dependencies.design
     implementation project(path: ':tks')
-    implementation project(path: ':lib_crop')
-    api 'org.xxtea:xxtea-java:1.0.5'
 }

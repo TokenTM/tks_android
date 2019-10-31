@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="crop_color_crop_background">#000</color>
+    <color name="crop_color_default_crop_frame">#ffffff</color>
+    <color name="crop_color_default_crop_grid">#80ffffff</color>
+    <color name="crop_color_default_dimmed">#8c000000</color>
+    <color name="crop_color_default_logo">#4f212121</color>
+    <color name="crop_color_progress_wheel_line">#808080</color>
+    <color name="crop_color_statusbar">#CC5833</color>
+    <color name="crop_color_toolbar">#FF6E40</color>
+    <color name="crop_color_toolbar_widget">#fff</color>
+    <color name="crop_color_widget">#000</color>
+    <color name="crop_color_widget_active">#FF6E40</color>
+    <color name="crop_color_widget_background">#fff</color>
+    <color name="crop_color_widget_text">#000</color>
+    <declare-styleable name="crop_AspectRatioTextView"><attr format="string" name="crop_artv_ratio_title"/><attr format="float" name="crop_artv_ratio_x"/><attr format="float" name="crop_artv_ratio_y"/></declare-styleable>
+    <declare-styleable name="crop_CropView"><attr format="float" name="crop_aspect_ratio_x"/><attr format="float" name="crop_aspect_ratio_y"/><attr format="boolean" name="crop_show_oval_crop_frame"/><attr format="boolean" name="crop_oval_dimmed_layer"/><attr format="color" name="crop_dimmed_color"/><attr format="dimension" name="crop_grid_stroke_size"/><attr format="color" name="crop_grid_color"/><attr format="integer" name="crop_grid_row_count"/><attr format="integer" name="crop_grid_column_count"/><attr format="boolean" name="crop_show_grid"/><attr format="dimension" name="crop_frame_stroke_size"/><attr format="color" name="crop_frame_color"/><attr format="boolean" name="crop_show_frame"/></declare-styleable>
+    <dimen name="crop_default_crop_frame_stoke_width">1dp</dimen>
+    <dimen name="crop_default_crop_grid_stoke_width">1dp</dimen>
+    <dimen name="crop_default_crop_rect_corner_touch_area_line_length">10dp</dimen>
+    <dimen name="crop_default_crop_rect_corner_touch_threshold">30dp</dimen>
+    <dimen name="crop_default_crop_rect_min_size">100dp</dimen>
+    <dimen name="crop_height_crop_aspect_ratio_text">40dp</dimen>
+    <dimen name="crop_height_divider_shadow">3dp</dimen>
+    <dimen name="crop_height_horizontal_wheel_progress_line">20dp</dimen>
+    <dimen name="crop_height_wrapper_controls">64dp</dimen>
+    <dimen name="crop_height_wrapper_states">72dp</dimen>
+    <dimen name="crop_margin_horizontal_wheel_progress_line">10dp</dimen>
+    <dimen name="crop_margit_top_widget_text">10sp</dimen>
+    <dimen name="crop_padding_crop_frame">16dp</dimen>
+    <dimen name="crop_progress_size">30dp</dimen>
+    <dimen name="crop_size_dot_scale_text_view">8dp</dimen>
+    <dimen name="crop_size_wrapper_rotate_button">50dp</dimen>
+    <dimen name="crop_text_size_widget_text">13sp</dimen>
+    <dimen name="crop_width_horizontal_wheel_progress_line">2dp</dimen>
+    <integer name="crop_progress_loading_anim_time">1500</integer>
+    <string name="crop_error_input_data_is_absent">Both input and output Uri must be specified</string>
+    <string name="crop_label_edit_photo">Edit Photo</string>
+    <string name="crop_label_original">Original</string>
+    <string name="crop_menu_crop">Crop</string>
+    <string name="crop_mutate_exception_hint">Therefore, override color resource (crop_color_toolbar_widget) in your app to make it work on pre-L devices</string>
+    <style name="crop_ImageViewWidgetIcon">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:duplicateParentState">true</item>
+    </style>
+    <style name="crop_TextViewCropAspectRatio">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/crop_height_crop_aspect_ratio_text</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:duplicateParentState">true</item>
+        <item name="android:textColor">@color/crop_scale_text_view_selector</item>
+    </style>
+    <style name="crop_TextViewWidgetText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginTop">@dimen/crop_margit_top_widget_text</item>
+        <item name="android:textColor">@color/crop_color_widget_text</item>
+        <item name="android:textSize">@dimen/crop_text_size_widget_text</item>
+    </style>
+    <style name="crop_WrapperIconState">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+    </style>
+    <style name="crop_WrapperRotateButton">
+        <item name="android:layout_width">@dimen/crop_size_wrapper_rotate_button</item>
+        <item name="android:layout_height">@dimen/crop_size_wrapper_rotate_button</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+    </style>
+</resources>

@@ -1,21 +1,27 @@
 package com.tokentm.sdk.components.cert;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.ObservableField;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.UserActivityCertByIdcardBinding;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
+import com.tokentm.sdk.crop.Crop;
+import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.source.CertService;
 import com.xxf.arch.XXF;
+import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.view.actiondialog.BottomPicSelectDialog;
 
@@ -23,6 +29,7 @@ import java.io.File;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -72,12 +79,38 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
         new BottomPicSelectDialog(this, new Consumer<String>() {
             @Override
             public void accept(String url) throws Exception {
-
-                pic.set(url);
+                startUCrop(UserCertByIDCardActivity.this, url, pic);
             }
         }).show();
     }
-    
+
+    /**
+     * 启动裁剪
+     *
+     * @param activity       上下文
+     * @param sourceFilePath 需要裁剪图片的绝对路径
+     * @return //
+     */
+    @SuppressLint("CheckResult")
+    public void startUCrop(final FragmentActivity activity, String sourceFilePath,
+                           ObservableField<String> pic) {
+        XXF.startActivityForResult(activity, CropUtils.getUCropLauncher(activity, sourceFilePath), Crop.REQUEST_CROP)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                }).subscribe(new Consumer<ActivityResult>() {
+            @Override
+            public void accept(ActivityResult activityResult) throws Exception {
+                Uri resultUri = Crop.getOutput(activityResult.getData());
+                if (resultUri != null) {
+                    pic.set(resultUri.getPath());
+                }
+            }
+        });
+    }
+
 
     @Override
     public void onUserCert(ObservableField<String> userName, ObservableField<String> userIDCard, ObservableField<String> userIDCardFrontPic, ObservableField<String> userIDCardBackPic, ObservableField<String> userIDCardHandedPic) {
