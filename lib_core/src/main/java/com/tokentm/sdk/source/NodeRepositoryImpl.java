@@ -14,7 +14,7 @@ import io.reactivex.Observable;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class NodeRepositoryImpl implements NodeService {
+public class NodeRepositoryImpl implements NodeService, BaseRepo {
 
     private static volatile NodeService INSTANCE;
 

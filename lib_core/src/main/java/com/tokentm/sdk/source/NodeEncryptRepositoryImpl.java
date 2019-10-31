@@ -26,7 +26,7 @@ import io.reactivex.functions.Function;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class NodeEncryptRepositoryImpl implements NodeEncryptService {
+public class NodeEncryptRepositoryImpl implements NodeEncryptService, BaseRepo {
     private static final int SPLIT_MIN_COUNT = 3;
     private static final int SPLIT_MAX_COUNT = 6;
     private static volatile NodeEncryptService INSTANCE;

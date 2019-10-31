@@ -10,7 +10,7 @@ import io.reactivex.Observable;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class ChainRepositoryImpl implements ChainService {
+public class ChainRepositoryImpl implements ChainService, BaseRepo {
     private static volatile ChainService INSTANCE;
 
     public static ChainService getInstance() {

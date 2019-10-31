@@ -7,7 +7,15 @@ import java.io.Serializable;
  * @Description
  */
 public enum NodeServiceType implements Serializable {
+    /**
+     * 用户实名认证
+     */
+    TYPE_USER_AUTHENTICATE("USER_AUTHENTICATE"),
 
+    /**
+     * 公司认证
+     */
+    TYPE_COMPANY_AUTHENTICATE("COMPANY_AUTHENTICATE"),
     /**
      * 解密
      */

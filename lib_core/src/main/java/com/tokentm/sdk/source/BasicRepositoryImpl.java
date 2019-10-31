@@ -1,11 +1,8 @@
 package com.tokentm.sdk.source;
 
-import android.text.TextUtils;
-
 import com.tokentm.sdk.api.BasicApiService;
-import com.tokentm.sdk.common.SDKsp;
+import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
-import com.tokentm.sdk.wallet.SignUtils;
 import com.xxf.arch.XXF;
 import com.xxf.arch.http.ResponseException;
 
@@ -20,7 +17,7 @@ import okhttp3.ResponseBody;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class BasicRepositoryImpl implements BasicService {
+public class BasicRepositoryImpl implements BasicService, BaseRepo {
     private static volatile BasicService INSTANCE;
 
     public static BasicService getInstance() {
@@ -34,19 +31,6 @@ public class BasicRepositoryImpl implements BasicService {
         return INSTANCE;
     }
 
-    /**
-     * 获取数据私钥
-     *
-     * @param did
-     * @return
-     */
-    private String _getDPK(String did) {
-        String dpk = SDKsp.getInstance()._getDPK(did);
-        if (TextUtils.isEmpty(dpk)) {
-            throw new RuntimeException("dpk is null");
-        }
-        return dpk;
-    }
 
     @Override
     public Observable<InputStream> getOrgLetterImage(String did, String orgName, String userIdentityCode, String userName) {

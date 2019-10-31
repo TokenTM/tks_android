@@ -1,18 +1,13 @@
 package com.tokentm.sdk.source;
 
-import android.text.TextUtils;
-
 import com.tokentm.sdk.api.StoreApiService;
-import com.tokentm.sdk.common.SDKsp;
-import com.tokentm.sdk.http.ResponseDTO;
+import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.model.StoreItemDecrypted;
 import com.tokentm.sdk.model.StoreItemEncrypted;
 import com.tokentm.sdk.model.StoreItemSigned;
-import com.tokentm.sdk.wallet.SignUtils;
 import com.xxf.arch.XXF;
-import com.xxf.arch.http.ResponseException;
 import com.xxf.arch.http.XXFHttp;
 import com.xxf.arch.json.JsonUtils;
 
@@ -30,7 +25,7 @@ import io.reactivex.functions.Function;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class StoreRepositoryImpl implements StoreService {
+public class StoreRepositoryImpl implements StoreService, BaseRepo {
     private static volatile StoreService INSTANCE;
 
     public static StoreService getInstance() {
@@ -50,19 +45,6 @@ public class StoreRepositoryImpl implements StoreService {
         storeApiService = XXFHttp.getApiService(StoreApiService.class);
     }
 
-    /**
-     * 获取数据私钥
-     *
-     * @param did
-     * @return
-     */
-    private String _getDPK(String did) {
-        String dpk = SDKsp.getInstance()._getDPK(did);
-        if (TextUtils.isEmpty(dpk)) {
-            throw new RuntimeException("dpk is null");
-        }
-        return dpk;
-    }
 
     @Override
     public Observable<Long> store(StoreItem<String> storeItem) {
@@ -251,11 +233,12 @@ public class StoreRepositoryImpl implements StoreService {
                     @Override
                     public Long apply(Throwable throwable) throws Exception {
                         //如果数据data 等于null 说明服务器没有对应的版本
-                        if (throwable instanceof ResponseException
+                      /*  if (throwable instanceof ResponseException
                                 && ((ResponseException) throwable).code == ResponseDTO.CODE_BODY_NULL) {
                             return -1L;
                         }
-                        throw new RuntimeException(throwable);
+                        throw new RuntimeException(throwable);*/
+                        return -1L;
                     }
                 });
     }

@@ -47,7 +47,7 @@ public class UserIdentityPwdReSetActivity extends UserIdentityPwdSetActivity {
     @Override
     public void onIdentityPwdSet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         TokenTmClient.getService(DidService.class)
-                .resetPwd(did, phone.get(), smsCode.get(), identityPwd.get())
+                .resetIdentityPwd(did, phone.get(), smsCode.get(), identityPwd.get())
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
                 .subscribe(new Consumer<Boolean>() {

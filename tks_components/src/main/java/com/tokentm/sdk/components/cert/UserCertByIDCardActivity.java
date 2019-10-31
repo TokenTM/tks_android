@@ -1,7 +1,9 @@
 package com.tokentm.sdk.components.cert;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.ObservableField;
 import android.os.Bundle;
@@ -11,14 +13,15 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.UserActivityCertByIdcardBinding;
-import com.tokentm.sdk.source.FileService;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
+import com.tokentm.sdk.source.CertService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.BottomPicSelectDialog;
 
 import java.io.File;
 
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -69,20 +72,39 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
         new BottomPicSelectDialog(this, new Consumer<String>() {
             @Override
             public void accept(String url) throws Exception {
+
                 pic.set(url);
             }
         }).show();
     }
-
-    private void uploadPic(String url, Consumer<String> consumer) {
-        TokenTmClient.getService(FileService.class)
-                .upload(certByIDCardParams.getuDid(), new File(url), certByIDCardParams.getuDid())
-                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(consumer);
-    }
+    
 
     @Override
     public void onUserCert(ObservableField<String> userName, ObservableField<String> userIDCard, ObservableField<String> userIDCardFrontPic, ObservableField<String> userIDCardBackPic, ObservableField<String> userIDCardHandedPic) {
-        ToastUtils.showToast("TODO");
+        new UserIdentityPwdInputAlertDialog(this, certByIDCardParams.getuDid(), new BiConsumer<DialogInterface, String>() {
+            @Override
+            public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
+                dialogInterface.dismiss();
+                TokenTmClient.getService(CertService.class)
+                        .userCertByIDCard(
+                                certByIDCardParams.getuDid(),
+                                identityPwd,
+                                userName.get(),
+                                userIDCard.get(),
+                                new File(userIDCardFrontPic.get()),
+                                new File(userIDCardBackPic.get()),
+                                new File(userIDCardHandedPic.get())
+                        )
+                        .compose(XXF.bindToLifecycle(UserCertByIDCardActivity.this))
+                        .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(UserCertByIDCardActivity.this)))
+                        .subscribe(new Consumer<String>() {
+                            @Override
+                            public void accept(String s) throws Exception {
+                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, s));
+                                finish();
+                            }
+                        });
+            }
+        }).show();
     }
 }

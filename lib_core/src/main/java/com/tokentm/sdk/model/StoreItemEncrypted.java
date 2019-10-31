@@ -15,7 +15,7 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import com.tokentm.sdk.common.SDKsp;
 import com.tokentm.sdk.common.encrypt.TEAUtils;
-import com.tokentm.sdk.wallet.SignUtils;
+import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.xxf.arch.json.JsonUtils;
 
 import java.lang.reflect.Type;

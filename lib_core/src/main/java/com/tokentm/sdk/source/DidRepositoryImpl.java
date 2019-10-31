@@ -10,7 +10,7 @@ import com.tokentm.sdk.model.NodeServiceEncryptDecryptItem;
 import com.tokentm.sdk.model.PwdDpkStoreItem;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.wallet.FileUtils;
-import com.tokentm.sdk.wallet.SignUtils;
+import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.tokentm.sdk.wallet.WalletResult;
 import com.tokentm.sdk.wallet.WalletUtils;
 import com.xxf.arch.XXF;
@@ -33,7 +33,7 @@ import sm_crypto.Sm_crypto;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class DidRepositoryImpl implements DidService {
+public class DidRepositoryImpl implements DidService, BaseRepo {
     private static volatile DidService INSTANCE;
 
     public static DidService getInstance() {
@@ -253,7 +253,7 @@ public class DidRepositoryImpl implements DidService {
 
 
     @Override
-    public Observable<Boolean> resetPwd(String uDID, String oldPhone, String smsCode, String newIdentityPwd) {
+    public Observable<Boolean> resetIdentityPwd(String uDID, String oldPhone, String smsCode, String newIdentityPwd) {
         return _getStorePwdDpk(uDID, uDID, oldPhone, smsCode)
                 .flatMap(new Function<PwdDpkStoreItem, ObservableSource<Boolean>>() {
                     @Override
@@ -284,13 +284,13 @@ public class DidRepositoryImpl implements DidService {
     }
 
     @Override
-    public Observable<Boolean> validatePwd(String uDID, String pwd) {
+    public Observable<Boolean> validateIdentityPwd(String uDID, String identityPwd) {
         return _getStoreUserKeyStore(uDID)
                 .map(new Function<File, Boolean>() {
                     @Override
                     public Boolean apply(File file) throws Exception {
                         try {
-                            WalletResult walletResult = WalletUtils._openWallet(pwd, file);
+                            WalletResult walletResult = WalletUtils._openWallet(identityPwd, file);
                             return walletResult != null;
                         } catch (Exception e) {
                             e.printStackTrace();

@@ -2,7 +2,6 @@ package com.tokentm.sdk.demo;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -15,9 +14,9 @@ import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
 import com.tokentm.sdk.demo.databinding.DidActivityBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.arch.dialog.IResultDialog;
 import com.xxf.arch.utils.ToastUtils;
 
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
@@ -89,15 +88,10 @@ public class DidDemoActivity extends FragmentActivity {
                     ToastUtils.showToast("先创建did");
                     return;
                 }
-                new UserIdentityPwdInputAlertDialog(v.getContext(), did, new IResultDialog.OnDialogClickListener<Boolean>() {
+                new UserIdentityPwdInputAlertDialog(v.getContext(), did, new BiConsumer<DialogInterface, String>() {
                     @Override
-                    public boolean onCancel(@NonNull DialogInterface dialog, @Nullable Boolean cancelResult) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onConfirm(@NonNull DialogInterface dialog, @Nullable Boolean confirmResult) {
-                        return false;
+                    public void accept(DialogInterface dialogInterface, String s) throws Exception {
+                        dialogInterface.dismiss();
                     }
                 }).show();
             }

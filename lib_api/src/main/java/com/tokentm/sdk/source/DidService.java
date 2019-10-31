@@ -29,16 +29,16 @@ public interface DidService extends RepoService {
      * @param newIdentityPwd
      * @return
      */
-    Observable<Boolean> resetPwd(String uDID, String oldPhone, String smsCode, String newIdentityPwd);
+    Observable<Boolean> resetIdentityPwd(String uDID, String oldPhone, String smsCode, String newIdentityPwd);
 
     /**
      * 校验pwd是否正确
      *
      * @param uDID
-     * @param pwd
+     * @param identityPwd
      * @return
      */
-    Observable<Boolean> validatePwd(String uDID, String pwd);
+    Observable<Boolean> validateIdentityPwd(String uDID, String identityPwd);
 
 }
 

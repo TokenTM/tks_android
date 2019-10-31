@@ -1,12 +1,9 @@
 package com.tokentm.sdk.source;
 
-import android.text.TextUtils;
-
 import com.tokentm.sdk.api.FileApiService;
-import com.tokentm.sdk.common.SDKsp;
+import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.tokentm.sdk.common.encrypt.TEAUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
-import com.tokentm.sdk.wallet.SignUtils;
 import com.xxf.arch.XXF;
 import com.xxf.arch.http.RequestUtils;
 
@@ -23,7 +20,7 @@ import okhttp3.MultipartBody;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 文件仓库
  */
-public class FileRepositoryImpl implements FileService {
+public class FileRepositoryImpl implements FileService, BaseRepo {
 
     private static volatile FileService INSTANCE;
 
@@ -38,19 +35,7 @@ public class FileRepositoryImpl implements FileService {
         return INSTANCE;
     }
 
-    /**
-     * 获取数据私钥
-     *
-     * @param did
-     * @return
-     */
-    private String _getDPK(String did) {
-        String dpk = SDKsp.getInstance()._getDPK(did);
-        if (TextUtils.isEmpty(dpk)) {
-            throw new RuntimeException("dpk is null");
-        }
-        return dpk;
-    }
+
 
     @Override
     public Observable<String> upload(String did, File file, String targetDid) {
