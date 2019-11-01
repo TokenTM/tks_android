@@ -30,9 +30,9 @@ import sm_crypto.Sm_crypto;
  * @Description
  */
 public class IdentityPwdRepositoryImpl implements IdentityPwdService, BaseRepo {
-    private static volatile IdentityPwdService INSTANCE;
+    private static volatile IdentityPwdRepositoryImpl INSTANCE;
 
-    public static IdentityPwdService getInstance() {
+    public static IdentityPwdRepositoryImpl getInstance() {
         if (INSTANCE == null) {
             synchronized (IdentityPwdService.class) {
                 if (INSTANCE == null) {
@@ -295,6 +295,25 @@ public class IdentityPwdRepositoryImpl implements IdentityPwdService, BaseRepo {
                             e.printStackTrace();
                         }
                         return false;
+                    }
+                });
+    }
+
+
+    /**
+     * 获取用户钱包
+     * ⚠️ 不暴露出去
+     *
+     * @param uDID
+     * @param identityPwd
+     * @return
+     */
+    public Observable<WalletResult> openUserWallet(String uDID, String identityPwd) {
+        return _getStoreUserKeyStore(uDID)
+                .map(new Function<File, WalletResult>() {
+                    @Override
+                    public WalletResult apply(File file) throws Exception {
+                        return WalletUtils._openWallet(identityPwd, file);
                     }
                 });
     }

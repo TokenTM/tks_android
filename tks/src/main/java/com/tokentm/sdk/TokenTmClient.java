@@ -7,6 +7,8 @@ import com.tokentm.sdk.api.NodeApiService;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.source.BasicRepositoryImpl;
 import com.tokentm.sdk.source.BasicService;
+import com.tokentm.sdk.source.CertRepositoryImpl;
+import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.ChainRepositoryImpl;
 import com.tokentm.sdk.source.ChainService;
 import com.tokentm.sdk.source.DIDRepositoryImpl;
@@ -67,6 +69,7 @@ public class TokenTmClient {
         SERVICE_MAP.put(DIDService.class, DIDRepositoryImpl.getInstance());
         SERVICE_MAP.put(IdentityPwdService.class, IdentityPwdRepositoryImpl.getInstance());
         SERVICE_MAP.put(StoreService.class, StoreRepositoryImpl.getInstance());
+        SERVICE_MAP.put(CertService.class, CertRepositoryImpl.getInstance());
         SERVICE_MAP.put(ChainService.class, ChainRepositoryImpl.getInstance());
         SERVICE_MAP.put(BasicService.class, BasicRepositoryImpl.getInstance());
         SERVICE_MAP.put(NodeApiService.class, NodeRepositoryImpl.getInstance());

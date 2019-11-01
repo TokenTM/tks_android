@@ -1,8 +1,9 @@
 package com.tokentm.sdk.demo;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -11,6 +12,10 @@ import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
+import com.tokentm.sdk.model.CompanyCertResult;
+import com.xxf.arch.XXF;
+import com.xxf.arch.activity.XXFActivity;
+import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -19,8 +24,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
-public class MainActivity extends Activity {
+
+public class MainActivity extends FragmentActivity {
 
 
     ActivityMainBinding binding;
@@ -90,9 +99,39 @@ public class MainActivity extends Activity {
                                 .setUserIDCard("511324198901090148")
                                 .build()
                 );
+
+                XXF.startActivityForResult(
+                        MainActivity.this,
+                        UserCertByIDCardActivity.getLauncher(v.getContext(),
+                                new UserCertByIDCardParams.Builder(did)
+                                        .setUserName("小炫风")
+                                        .setUserIDCard("511324198901090148")
+                                        .build()
+                        ),
+                        1001)
+                        .filter(new Predicate<ActivityResult>() {
+                            @Override
+                            public boolean test(ActivityResult activityResult) throws Exception {
+                                return activityResult.isOk();
+                            }
+                        })
+                        .map(new Function<ActivityResult, String>() {
+                            @Override
+                            public String apply(ActivityResult activityResult) throws Exception {
+                                return activityResult.getData().getStringExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                            }
+                        })
+                        .take(1)
+                        .subscribe(new Consumer<String>() {
+                            @Override
+                            public void accept(String txHash) throws Exception {
+                                ToastUtils.showToast("实名认证成功:" + txHash);
+                            }
+                        });
             }
         });
         binding.btCertCompany.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
                 String did = DemoSp.getInstance().getString("did");
@@ -100,10 +139,33 @@ public class MainActivity extends Activity {
                     ToastUtils.showToast("请先生成did");
                     return;
                 }
-                CompanyCertActivity.launch(v.getContext(),
-                        new CompanyCertParams.Builder(did, "北京百度科技有限公司", "李彦宏")
-                                .build()
-                );
+                XXF.startActivityForResult(
+                        MainActivity.this,
+                        CompanyCertActivity.getLauncher(
+                                v.getContext(),
+                                new CompanyCertParams.Builder(did, "北京百度科技有限公司", "李彦宏")
+                                        .build()
+                        ),
+                        1001)
+                        .filter(new Predicate<ActivityResult>() {
+                            @Override
+                            public boolean test(ActivityResult activityResult) throws Exception {
+                                return activityResult.isOk();
+                            }
+                        })
+                        .map(new Function<ActivityResult, CompanyCertResult>() {
+                            @Override
+                            public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
+                                return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                            }
+                        })
+                        .take(1)
+                        .subscribe(new Consumer<CompanyCertResult>() {
+                            @Override
+                            public void accept(CompanyCertResult companyCertResult) throws Exception {
+                                ToastUtils.showToast("公司认证成功:" + companyCertResult);
+                            }
+                        });
             }
         });
     }

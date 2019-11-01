@@ -38,6 +38,6 @@ public interface DIDApiService {
      * @param body
      * @return
      */
-    @POST("did/forkDid")
+    @POST("did/fork")
     Observable<ResponseDTO<String>> forkDID(@Body DIDForkReqDTO body);
 }

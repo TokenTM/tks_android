@@ -4,7 +4,8 @@ import com.tokentm.sdk.core.BuildConfig;
 import com.tokentm.sdk.http.DefaultRxHttpCacheDirectoryProvider;
 import com.tokentm.sdk.http.GlobalGsonConvertInterceptor;
 import com.tokentm.sdk.http.ResponseDTO;
-import com.tokentm.sdk.model.UserCertByIdCardReqDTO;
+import com.tokentm.sdk.model.CompanyCertReqBodyDTO;
+import com.tokentm.sdk.model.UserCertByIdCardReqBodyDTO;
 import com.xxf.arch.annotation.BaseUrl;
 import com.xxf.arch.annotation.GsonInterceptor;
 import com.xxf.arch.annotation.RxHttpCacheProvider;
@@ -29,5 +30,15 @@ public interface CertApiService {
      * @return
      */
     @POST("auth/user")
-    Observable<ResponseDTO<String>> userCertByIdCard(@Body UserCertByIdCardReqDTO body);
+    Observable<ResponseDTO<String>> userCertByIdCard(@Body UserCertByIdCardReqBodyDTO body);
+
+
+    /**
+     * 用户 身份证实名
+     *
+     * @param body
+     * @return
+     */
+    @POST("auth/company")
+    Observable<ResponseDTO<String>> companyCert(@Body CompanyCertReqBodyDTO body);
 }

@@ -17,9 +17,11 @@ public class DIDForkReqDTO implements SignObject {
 
     private String chainPrvSign;
 
+    private String dataPrvSign;
+
     private String chainPubKey;
 
-    @SignField(chainPKSign = true, dataPKSign = true, ignoreNullValue = true)
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String data;
 
     private String dataPubKey;
@@ -91,5 +93,13 @@ public class DIDForkReqDTO implements SignObject {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getDataPrvSign() {
+        return dataPrvSign;
+    }
+
+    public void setDataPrvSign(String dataPrvSign) {
+        this.dataPrvSign = dataPrvSign;
     }
 }

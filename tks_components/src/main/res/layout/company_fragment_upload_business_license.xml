@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/pdfView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:minHeight="408dp"
+                android:src="@mipmap/business_license_upload_ic" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_bottom"
+                android:layout_margin="15dp"
+                android:text="备注：请确认你是该公司法人，成功开通会员后你将拥有代表该公司的法人私钥。请妥善保管"
+                android:textColor="#f6b64d"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

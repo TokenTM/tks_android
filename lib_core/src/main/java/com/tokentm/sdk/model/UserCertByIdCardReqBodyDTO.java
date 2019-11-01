@@ -7,7 +7,7 @@ import com.tokentm.sdk.common.encrypt.SignObject;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class UserCertByIdCardReqDTO implements SignObject {
+public class UserCertByIdCardReqBodyDTO implements SignObject {
 
     @SignField(chainPKSign = true, dataPKSign = true)
     private String address;

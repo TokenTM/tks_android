@@ -82,11 +82,13 @@ public class DIDRepositoryImpl implements DIDService {
                         XXF.getLogger().d("========>dataPublicKey=" + dataPubKey);
 
                         DIDForkReqDTO didReqDTO = new DIDForkReqDTO();
-                        didReqDTO.setTimestamp(timestamp);
+                        didReqDTO.setForkDid(fromDid);
                         didReqDTO.setChainAddress(chainAddress);
                         didReqDTO.setChainPubKey(chainPubKey);
                         didReqDTO.setData(null);
                         didReqDTO.setDataPubKey(dataPubKey);
+                        didReqDTO.setTimestamp(timestamp);
+                        didReqDTO.setDataPrvSign(SignUtils.signByDataPk(didReqDTO, dataPrivateKey));
                         didReqDTO.setChainPrvSign(SignUtils.signByChainPk(didReqDTO, chainPrivateKey));
                         didReqDTO.setSign(SignUtils.signByDataPk(didReqDTO, dataPrivateKey));
 

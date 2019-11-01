@@ -1,6 +1,4 @@
-package com.tokentm.sdk.components.cert.model;
-
-import com.google.gson.annotations.SerializedName;
+package com.tokentm.sdk.model;
 
 import java.io.Serializable;
 
@@ -13,12 +11,10 @@ public enum CompanyType implements Serializable {
     /**
      * 1代表公司，5代表组织
      */
-    @SerializedName("1")
     TYPE_COMPANY(1),
     /**
      * 1代表公司，5代表组织
      */
-    @SerializedName("5")
     TYPE_ORGANIZATION(5);
 
     int value;

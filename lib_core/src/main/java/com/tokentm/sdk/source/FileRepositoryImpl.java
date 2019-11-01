@@ -38,26 +38,25 @@ public class FileRepositoryImpl implements FileService, BaseRepo {
 
 
     @Override
-    public Observable<String> upload(String did, File file, String targetDid) {
-        return Observable.just(did)
+    public Observable<String> upload(String uDID, String objectDID, File file, String targetDid) {
+        return Observable.just(uDID)
                 .flatMap(new Function<String, ObservableSource<String>>() {
                     @Override
                     public ObservableSource<String> apply(String s) throws Exception {
                         long timestamp = System.currentTimeMillis();
                         String fileMd5 = TEAUtils.getFileMD5(file);
                         Map<String, String> signMap = new HashMap<>();
-                        signMap.put("did", did);
+                        signMap.put("did", objectDID);
                         signMap.put("fileMd5", fileMd5);
                         signMap.put("targetDid", targetDid);
                         signMap.put("timestamp", String.valueOf(timestamp));
-                        String sign = SignUtils.sign(signMap, getUserDPK(did));
+                        String sign = SignUtils.sign(signMap, getUserDPK(uDID));
 
                         MultipartBody.Part filePart = RequestUtils.createFileBody("file", file);
                         return XXF.getApiService(FileApiService.class)
-                                .upload(did, filePart, fileMd5, sign, targetDid, timestamp)
+                                .upload(objectDID, filePart, fileMd5, sign, targetDid, timestamp)
                                 .map(new ResponseDTOSimpleFunction<>());
                     }
                 });
-
     }
 }

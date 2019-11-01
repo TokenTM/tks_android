@@ -8,6 +8,7 @@ import org.web3j.utils.Numeric;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -62,15 +63,7 @@ public class SignUtils {
      * @throws Exception
      */
     public static String signByChainPk(@NonNull SignObject signObject, String chainPrivateKey) throws Exception {
-        return sign(signObject,
-                new SignFieldFilter() {
-                    @Override
-                    public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
-                        return signField.chainPKSign() && super.apply(signObject, field, signField);
-                    }
-                },
-                chainPrivateKey
-        );
+        return sign(getChainPKSignFields(signObject), chainPrivateKey);
     }
 
     /**
@@ -82,25 +75,67 @@ public class SignUtils {
      * @throws Exception
      */
     public static String signByDataPk(@NonNull SignObject signObject, String dataPrivateKey) throws Exception {
-        return sign(signObject,
-                new SignFieldFilter() {
-                    @Override
-                    public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
-                        return signField.dataPKSign() && super.apply(signObject, field, signField);
-                    }
-                },
-                dataPrivateKey
-        );
+        return sign(getDataPKSignFields(signObject), dataPrivateKey);
     }
 
     /**
+     * 获取链私钥签名字段
+     *
      * @param signObject
-     * @param signFieldFilter
-     * @param key
      * @return
      * @throws Exception
      */
-    private static String sign(@NonNull SignObject signObject, SignFieldFilter signFieldFilter, String key) throws Exception {
+    public static Map<String, String> getChainPKSignFields(@NonNull SignObject signObject) throws Exception {
+        return getSignFields(signObject, new SignFieldFilter() {
+            @Override
+            public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
+                return signField.chainPKSign() && super.apply(signObject, field, signField);
+            }
+        });
+    }
+
+    /**
+     * 包裹child签名 设置key
+     *
+     * @param appendKeyTag
+     * @param childSignFields
+     * @return
+     */
+    public static Map<String, String> wrapperChildSignFields(String appendKeyTag, Map<String, String> childSignFields) {
+        Map<String, String> childSignFieldsWrapper = new HashMap<>();
+        for (Map.Entry<String, String> entry : childSignFields.entrySet()) {
+            childSignFieldsWrapper.put(String.format("%s%s", appendKeyTag, entry.getKey()), entry.getValue());
+        }
+        return childSignFieldsWrapper;
+    }
+
+
+    /**
+     * 获取数据签名字段
+     *
+     * @param signObject
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, String> getDataPKSignFields(@NonNull SignObject signObject) throws Exception {
+        return getSignFields(signObject, new SignFieldFilter() {
+            @Override
+            public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
+                return signField.dataPKSign() && super.apply(signObject, field, signField);
+            }
+        });
+    }
+
+
+    /**
+     * 获取签名字段
+     *
+     * @param signObject
+     * @param signFieldFilter
+     * @return
+     * @throws Exception
+     */
+    private static Map<String, String> getSignFields(@NonNull SignObject signObject, SignFieldFilter signFieldFilter) throws Exception {
         Objects.requireNonNull(signObject);
         Map<String, String> values = new LinkedHashMap<String, String>();
         Class<?> clazz = signObject.getClass();
@@ -113,7 +148,7 @@ public class SignUtils {
                 values.put(fieldName, String.valueOf(value));
             }
         }
-        return sign(values, key);
+        return values;
     }
 
     /**

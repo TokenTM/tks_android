@@ -1,6 +1,8 @@
 package com.tokentm.sdk.source;
 
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
+import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.model.CompanyType;
 
 import java.io.File;
 
@@ -41,5 +43,24 @@ public interface CertService extends RepoService {
      * @return
      */
     Observable<CertUserInfoStoreItem> getUserCertByIDCardInfo(String uDid);
+
+    /**
+     * 公司认证
+     *
+     * @param uDid
+     * @param identityPwd
+     * @param companyName
+     * @param companyType
+     * @param companyCreditCode
+     * @param licenseImg
+     * @return
+     */
+    Observable<CompanyCertResult> companyCert(String uDid,
+                                              String identityPwd,
+                                              String companyName,
+                                              CompanyType companyType,
+                                              String companyCreditCode,
+                                              File licenseImg
+    );
 
 }

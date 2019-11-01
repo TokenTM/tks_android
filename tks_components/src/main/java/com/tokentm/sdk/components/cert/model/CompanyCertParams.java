@@ -2,6 +2,8 @@ package com.tokentm.sdk.components.cert.model;
 
 import android.support.annotation.NonNull;
 
+import com.tokentm.sdk.model.CompanyType;
+
 import java.io.Serializable;
 import java.util.Objects;
 
