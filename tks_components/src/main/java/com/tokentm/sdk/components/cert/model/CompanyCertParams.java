@@ -33,7 +33,6 @@ public class CompanyCertParams implements Serializable {
         public Builder(@NonNull String uDid, @NonNull String companyName, @NonNull String legalPersonName) {
             this.uDid = Objects.requireNonNull(uDid);
             this.companyName = Objects.requireNonNull(companyName);
-            this.companyCreditCode = companyCreditCode;
             this.legalPersonName = Objects.requireNonNull(legalPersonName);
         }
 

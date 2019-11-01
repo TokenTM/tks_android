@@ -15,7 +15,7 @@ public interface FileService extends RepoService {
      * @param did
      * @param file
      * @param targetDid 查看权限的did
-     * @return 文件id
+     * @return 远程文件id
      */
     Observable<String> upload(String did, File file, String targetDid);
 }

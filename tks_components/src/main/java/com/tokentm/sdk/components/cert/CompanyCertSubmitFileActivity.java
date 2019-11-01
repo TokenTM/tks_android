@@ -14,11 +14,14 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.CompanyActivityCompanySubmitFileBinding;
+import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.source.BasicService;
+import com.tokentm.sdk.source.CertService;
 import com.xxf.arch.XXF;
 
 import java.io.InputStream;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
@@ -64,12 +67,23 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
     @SuppressLint("CheckResult")
     private void loadData() {
-        TokenTmClient.getService(BasicService.class)
-                .getOrgLetterImage(companyCertParams.getuDid(), companyCertParams.getCompanyName(), "511324199010090695", companyCertParams.getLegalPersonName())
-                .map(new Function<InputStream, Bitmap>() {
+        TokenTmClient.getService(CertService.class)
+                .getUserCertByIDCardInfo(companyCertParams.getuDid())
+                .flatMap(new Function<CertUserInfoStoreItem, ObservableSource<Bitmap>>() {
                     @Override
-                    public Bitmap apply(InputStream inputStream) throws Exception {
-                        return BitmapFactory.decodeStream(inputStream);
+                    public ObservableSource<Bitmap> apply(CertUserInfoStoreItem certUserInfoStoreItem) throws Exception {
+                        return TokenTmClient.getService(BasicService.class)
+                                .getOrgLetterImage(
+                                        companyCertParams.getuDid(),
+                                        companyCertParams.getCompanyName(),
+                                        certUserInfoStoreItem.getIdentityCode(),
+                                        companyCertParams.getLegalPersonName())
+                                .map(new Function<InputStream, Bitmap>() {
+                                    @Override
+                                    public Bitmap apply(InputStream inputStream) throws Exception {
+                                        return BitmapFactory.decodeStream(inputStream);
+                                    }
+                                });
                     }
                 })
                 .compose(XXF.bindToLifecycle(this))

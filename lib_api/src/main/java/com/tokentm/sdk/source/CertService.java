@@ -1,5 +1,7 @@
 package com.tokentm.sdk.source;
 
+import com.tokentm.sdk.model.CertUserInfoStoreItem;
+
 import java.io.File;
 
 import io.reactivex.Observable;
@@ -20,7 +22,7 @@ public interface CertService extends RepoService {
      * @param identityFontImg 身份证正面照片
      * @param identityBackImg 身份证背面照片
      * @param identityHandImg 身份证手持照片
-     * @return
+     * @return 返回交易txHash
      */
     Observable<String> userCertByIDCard(String uDid,
                                         String identityPwd,
@@ -30,4 +32,14 @@ public interface CertService extends RepoService {
                                         File identityBackImg,
                                         File identityHandImg
     );
+
+
+    /**
+     * 获取认证信息
+     *
+     * @param uDid
+     * @return
+     */
+    Observable<CertUserInfoStoreItem> getUserCertByIDCardInfo(String uDid);
+
 }

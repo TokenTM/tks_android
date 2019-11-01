@@ -19,7 +19,14 @@ public interface Config {
          * 备份私钥
          */
         @SerializedName("_tks_dpk")
-        TYPE_DPK("_tks_dpk");
+        TYPE_DPK("_tks_dpk"),
+        
+        /**
+         * 实名信息
+         */
+        @SerializedName("_tks_user_cert_info")
+        TYPE_USER_CERT_INFO("_tks_user_cert_info");
+
 
         private String value;
 
