@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.tokentm.sdk.components.identitypwd.PhoneCodeGetVM" />
+
+        <variable
+            name="presenter"
+            type="com.tokentm.sdk.components.identitypwd.PhoneCodeGetPresenter" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:background="#6cf">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="42dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/user_dialog_get_phone_code_bg"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="68dp"
+                    android:gravity="center"
+                    android:text="身份确认"
+                    android:textColor="#333333"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/input_phone_number_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="9.5dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/user_line_round_rect_gray"
+                    android:gravity="center_vertical"
+                    android:hint="请输入您的手机号"
+                    android:inputType="phone"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:text="@={viewModel.phone}"
+                    android:padding="7dp"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/user_line_round_rect_gray"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/input_phone_code_et"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.3"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="请输入您的验证码"
+                        android:inputType="textPassword"
+                        android:maxLength="20"
+                        android:text="@={viewModel.smsCode}"
+                        android:maxLines="1"
+                        android:padding="7dp"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:enabled="@{viewModel.smsCountdown &lt;=0}"
+                        android:onClick="@{()->presenter.onSendSMSCode(viewModel.phone,viewModel.smsCountdown)}"
+                        android:text='@{viewModel.smsCountdown &lt;=0?"获取验证码":viewModel.smsCountdown+"s"}'
+                        android:id="@+id/get_phone_code_tv"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="right|center_vertical"
+                        android:paddingRight="8.5dp"
+                        tools:text="获取验证码"
+                        android:textColor="#00C1CE"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/identity_pwd_forget_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="13.5dp"
+                    android:layout_marginRight="13dp"
+                    android:layout_marginBottom="21.5dp"
+                    android:text="提示：该操作涉及到您的隐私数据，需要输入您的身份证号码进行确认"
+                    android:textColor="#A7AAB3"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:enabled="@{viewModel.submitable}"
+                    android:onClick="@{()->presenter.onCheckPhoneCode(viewModel.phone,viewModel.smsCode)}"
+                    android:id="@+id/get_phone_code_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/user_dialog_get_phone_code_ok_btn"
+                    android:paddingTop="10.5dp"
+                    android:paddingBottom="10.5dp"
+                    android:text="确认"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="85dp"
+            android:layout_height="99dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/user_dialog_get_phone_code_top" />
+    </FrameLayout>
+
+</layout>

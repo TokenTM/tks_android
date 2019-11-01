@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserIdentityGetPhoneCodeDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
 import com.tokentm.sdk.demo.databinding.DidActivityBinding;
@@ -88,12 +88,21 @@ public class DidDemoActivity extends FragmentActivity {
                     ToastUtils.showToast("先创建did");
                     return;
                 }
-                new UserIdentityPwdInputAlertDialog(v.getContext(), did, new BiConsumer<DialogInterface, String>() {
+//                new UserIdentityPwdInputAlertDialog(v.getContext(), did, new BiConsumer<DialogInterface, String>() {
+//                    @Override
+//                    public void accept(DialogInterface dialogInterface, String s) throws Exception {
+//                        dialogInterface.dismiss();
+//                    }
+//                }).show();
+
+                new UserIdentityGetPhoneCodeDialog(DidDemoActivity.this, did, new BiConsumer<DialogInterface, String>() {
                     @Override
                     public void accept(DialogInterface dialogInterface, String s) throws Exception {
                         dialogInterface.dismiss();
                     }
                 }).show();
+
+
             }
         });
     }

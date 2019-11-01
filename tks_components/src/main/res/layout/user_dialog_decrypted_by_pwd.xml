@@ -1,66 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        tools:background="#6cf">
 
-
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="身份密码"
-            android:textColor="#374F66"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="27.5dp">
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/user_dialog_bg"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="306dp"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/user_dialog_top_bg" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="身份密码"
+                    android:textColor="#374F66"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
 
 
-        <EditText
-            android:id="@+id/identity_pwd_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="35dp"
-            android:background="@drawable/user_line_round_rect_gray"
-            android:gravity="center_vertical"
-            android:hint="请输入您的身份密码"
-            android:inputType="textPassword"
-            android:maxLength="20"
-            android:maxLines="1"
-            android:padding="7dp"
-            android:textSize="15sp" />
+                <EditText
+                    android:id="@+id/identity_pwd_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="17dp"
+                    android:layout_marginTop="9.5dp"
+                    android:layout_marginRight="17dp"
+                    android:background="@drawable/user_line_round_rect_gray"
+                    android:gravity="center_vertical"
+                    android:hint="请输入您的身份密码"
+                    android:inputType="textPassword"
+                    android:maxLength="20"
+                    android:maxLines="1"
+                    android:padding="7dp"
+                    android:textSize="15sp" />
 
-        <TextView
-            android:id="@+id/identity_pwd_forget_tv"
+                <TextView
+                    android:id="@+id/identity_pwd_forget_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="35dp"
+                    android:gravity="center"
+                    android:paddingLeft="7dp"
+                    android:paddingTop="3.5dp"
+                    android:paddingBottom="7dp"
+                    android:text="忘记密码?"
+                    android:textColor="#FF820E"
+                    android:textSize="12sp" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#F2F2F2" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="43.5dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/cancel_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:text="取消"
+                        android:textColor="#999999"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/ok_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_btn_ok"
+                        android:text="确认"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="35dp"
-            android:gravity="center"
-            android:paddingLeft="7dp"
-            android:paddingTop="7dp"
-            android:paddingBottom="7dp"
-            android:text="忘记身份密码?"
-            android:textColor="#FF820E"
-            android:textSize="12sp" />
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/user_dialog_top" />
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/ok_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/base_btn_bg_selector"
-            android:text="确认"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
-
-    </LinearLayout>
 </layout>

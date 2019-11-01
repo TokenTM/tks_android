@@ -42,6 +42,8 @@ public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
         dialogWindow.requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        //设置window背景透明
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         binding = UserDialogDecryptedByPwdBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
@@ -50,6 +52,12 @@ public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
 
     private void initView() {
         binding.identityPwdEt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(UserConfig.MAX_LENTH_PWD)});
+        binding.cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
         binding.okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,5 +1,6 @@
 package com.tokentm.sdk.components.identitypwd;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -113,6 +114,7 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
         });
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onSendSMSCode(ObservableField<String> phone, ObservableLong smsCountdown) {
         TokenTmClient.getService(BasicService.class)
