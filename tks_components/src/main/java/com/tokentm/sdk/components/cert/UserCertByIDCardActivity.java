@@ -79,6 +79,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
         new BottomPicSelectDialog(this, new Consumer<String>() {
             @Override
             public void accept(String url) throws Exception {
+                //pic.set(url);
                 startUCrop(UserCertByIDCardActivity.this, url, pic);
             }
         }).show();
@@ -100,15 +101,17 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
                     public boolean test(ActivityResult activityResult) throws Exception {
                         return activityResult.isOk();
                     }
-                }).subscribe(new Consumer<ActivityResult>() {
-            @Override
-            public void accept(ActivityResult activityResult) throws Exception {
-                Uri resultUri = Crop.getOutput(activityResult.getData());
-                if (resultUri != null) {
-                    pic.set(resultUri.getPath());
-                }
-            }
-        });
+                }).
+                take(1)
+                .subscribe(new Consumer<ActivityResult>() {
+                    @Override
+                    public void accept(ActivityResult activityResult) throws Exception {
+                        Uri resultUri = Crop.getOutput(activityResult.getData());
+                        if (resultUri != null) {
+                            pic.set(resultUri.getPath());
+                        }
+                    }
+                });
     }
 
 

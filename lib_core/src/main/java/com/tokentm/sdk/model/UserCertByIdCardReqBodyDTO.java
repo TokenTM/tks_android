@@ -2,6 +2,7 @@ package com.tokentm.sdk.model;
 
 import com.tokentm.sdk.common.encrypt.SignField;
 import com.tokentm.sdk.common.encrypt.SignObject;
+import com.tokentm.sdk.common.encrypt.SignTargetField;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -47,7 +48,11 @@ public class UserCertByIdCardReqBodyDTO implements SignObject {
 
     @SignField(chainPKSign = true, dataPKSign = true)
     private long timestamp;
+
+    @SignTargetField(SignTargetField.SignType.DPK_SIGN)
     private String sign;
+
+    @SignTargetField(SignTargetField.SignType.CPK_SIGN)
     private String chainPrvKeySign;
 
     public String getAddress() {

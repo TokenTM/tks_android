@@ -93,7 +93,8 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                             String dataSign = SignUtils.sign(dataSignMap, getUserDPK(storeItemReqBodyDTO.getDid()));
                             storeItemReqBodyDTO.setDataSign(dataSign);
 
-                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, getUserDPK(storeItemReqBodyDTO.getDid())));
+                            Map<String, String> dataPKSignFields = SignUtils.getDPKSignFields(storeItemReqBodyDTO);
+                            storeItemReqBodyDTO.setSign(SignUtils.sign(dataPKSignFields, getUserDPK(storeItemReqBodyDTO.getDid())));
 
                             storeItemReqBodyDTOS.add(storeItemReqBodyDTO);
                         }
@@ -182,7 +183,8 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                             String dataSign = SignUtils.sign(dataSignMap, getUserDPK(storeItemReqBodyDTO.getDid()));
                             storeItemReqBodyDTO.setDataSign(dataSign);
 
-                            storeItemReqBodyDTO.setSign(SignUtils.signByDataPk(storeItemReqBodyDTO, getUserDPK(storeItemReqBodyDTO.getDid())));
+                            Map<String, String> dataPKSignFields = SignUtils.getDPKSignFields(storeItemReqBodyDTO);
+                            storeItemReqBodyDTO.setSign(SignUtils.sign(dataPKSignFields, getUserDPK(storeItemReqBodyDTO.getDid())));
 
                             storeItemReqBodyDTOS.add(storeItemReqBodyDTO);
                         }
@@ -255,7 +257,9 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                         signBody.setDid(did);
                         signBody.setDataType(dataType);
                         signBody.setTimestamp(System.currentTimeMillis());
-                        signBody.setSign(SignUtils.signByDataPk(signBody, getUserDPK(did)));
+                        //签名
+                        SignUtils.signByDPK(signBody, getUserDPK(did));
+
                         return signBody;
                     }
                 })

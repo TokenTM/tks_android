@@ -2,6 +2,7 @@ package com.tokentm.sdk.model;
 
 import com.tokentm.sdk.common.encrypt.SignField;
 import com.tokentm.sdk.common.encrypt.SignObject;
+import com.tokentm.sdk.common.encrypt.SignTargetField;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -22,6 +23,7 @@ public class DIDReqDTO implements SignObject {
     @SignField(chainPKSign = true, dataPKSign = true)
     private String chainAddress;
 
+    @SignTargetField(SignTargetField.SignType.CPK_SIGN)
     private String chainPrvSign;
 
     private String chainPubKey;
@@ -31,6 +33,7 @@ public class DIDReqDTO implements SignObject {
 
     private String dataPubKey;
 
+    @SignTargetField(SignTargetField.SignType.DPK_SIGN)
     private String sign;
 
     @SignField(chainPKSign = true, dataPKSign = true)

@@ -21,7 +21,6 @@ import com.xxf.arch.json.JsonUtils;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import io.reactivex.Observable;
@@ -126,8 +125,8 @@ public class CertRepositoryImpl implements CertService, BaseRepo {
                                         userCertBody.setIdentityBackImgId(identityBackImgId);
                                         userCertBody.setIdentityHandImgId(identityHandImgId);
 
-                                        userCertBody.setSign(SignUtils.signByDataPk(userCertBody, getUserDPK(userCertBody.getDid())));
-                                        userCertBody.setChainPrvKeySign(SignUtils.signByChainPk(userCertBody, walletResult.getPrivateKey()));
+                                        //签名
+                                        SignUtils.signAll(userCertBody, walletResult.getPrivateKey(), getUserDPK(userCertBody.getDid()));
 
                                         return XXF.getApiService(CertApiService.class)
                                                 .userCertByIdCard(userCertBody)
@@ -230,9 +229,6 @@ public class CertRepositoryImpl implements CertService, BaseRepo {
                                                                         signedLegalPerson.setName(certUserInfoStoreItem.getName());
                                                                         signedLegalPerson.setTimestamp(timestamp);
                                                                         signedLegalPerson.setIdentityCode(certUserInfoStoreItem.getIdentityCode());
-                                                                        //用户数据签名
-                                                                        String legalPersonSign = SignUtils.signByDataPk(signedLegalPerson, dataPrivateKey);
-                                                                        signedLegalPerson.setSign(legalPersonSign);
 
 
                                                                         CompanyCertReqBodyDTO companyCertBody = new CompanyCertReqBodyDTO();
@@ -246,22 +242,8 @@ public class CertRepositoryImpl implements CertService, BaseRepo {
                                                                         companyCertBody.setTargetDid(targetDid);
                                                                         companyCertBody.setLicenseImgId(remoteFileId);
 
-                                                                        //包括legalPerson的签名
-
-                                                                        Map<String, String> legalPersonChainPKSignFields = SignUtils.getChainPKSignFields(companyCertBody.getLegalPerson());
-                                                                        Map<String, String> legalPersonDataPKSignFields = SignUtils.getDataPKSignFields(companyCertBody.getLegalPerson());
-                                                                        legalPersonChainPKSignFields = SignUtils.wrapperChildSignFields("legalPerson_", legalPersonChainPKSignFields);
-                                                                        legalPersonDataPKSignFields = SignUtils.wrapperChildSignFields("legalPerson_", legalPersonDataPKSignFields);
-
-
-                                                                        Map<String, String> companyChainPKSignFields = SignUtils.getChainPKSignFields(companyCertBody);
-                                                                        companyChainPKSignFields.putAll(legalPersonChainPKSignFields);
-
-                                                                        Map<String, String> companyDataPKSignFields = SignUtils.getDataPKSignFields(companyCertBody);
-                                                                        companyDataPKSignFields.putAll(legalPersonDataPKSignFields);
-
-                                                                        companyCertBody.setChainPrvKeySign(SignUtils.sign(companyChainPKSignFields, chainPrivateKey));
-                                                                        companyCertBody.setSign(SignUtils.sign(companyDataPKSignFields, dataPrivateKey));
+                                                                        //签名
+                                                                        SignUtils.signAll(companyCertBody, chainPrivateKey, dataPrivateKey);
                                                                         return companyCertBody;
                                                                     }
                                                                 }

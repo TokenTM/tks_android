@@ -53,8 +53,8 @@ public class DIDRepositoryImpl implements DIDService {
                         didReqDTO.setDataPubKey(dataPubKey);
                         didReqDTO.setPhone(phone);
                         didReqDTO.setCode(smsCode);
-                        didReqDTO.setChainPrvSign(SignUtils.signByChainPk(didReqDTO, chainPrivateKey));
-                        didReqDTO.setSign(SignUtils.signByDataPk(didReqDTO, dataPrivateKey));
+                        //签名
+                        SignUtils.signAll(didReqDTO, chainPrivateKey, dataPrivateKey);
                         return didReqDTO;
                     }
                 })
@@ -88,9 +88,9 @@ public class DIDRepositoryImpl implements DIDService {
                         didReqDTO.setData(null);
                         didReqDTO.setDataPubKey(dataPubKey);
                         didReqDTO.setTimestamp(timestamp);
-                        didReqDTO.setDataPrvSign(SignUtils.signByDataPk(didReqDTO, dataPrivateKey));
-                        didReqDTO.setChainPrvSign(SignUtils.signByChainPk(didReqDTO, chainPrivateKey));
-                        didReqDTO.setSign(SignUtils.signByDataPk(didReqDTO, dataPrivateKey));
+
+                        //签名
+                        SignUtils.signAll(didReqDTO, chainPrivateKey, dataPrivateKey);
 
                         return didReqDTO;
                     }

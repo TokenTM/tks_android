@@ -1,6 +1,7 @@
 package com.tokentm.sdk.common.encrypt;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.xxf.arch.XXF;
 
@@ -10,12 +11,11 @@ import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import io.reactivex.functions.Function3;
+import io.reactivex.functions.BiFunction;
 import sm_crypto.Sm_crypto;
 
 /**
@@ -54,29 +54,6 @@ public class SignUtils {
         return sign;
     }
 
-    /**
-     * 链私钥签名
-     *
-     * @param signObject
-     * @param chainPrivateKey
-     * @return
-     * @throws Exception
-     */
-    public static String signByChainPk(@NonNull SignObject signObject, String chainPrivateKey) throws Exception {
-        return sign(getChainPKSignFields(signObject), chainPrivateKey);
-    }
-
-    /**
-     * 链私钥签名
-     *
-     * @param signObject
-     * @param dataPrivateKey
-     * @return
-     * @throws Exception
-     */
-    public static String signByDataPk(@NonNull SignObject signObject, String dataPrivateKey) throws Exception {
-        return sign(getDataPKSignFields(signObject), dataPrivateKey);
-    }
 
     /**
      * 获取链私钥签名字段
@@ -85,30 +62,17 @@ public class SignUtils {
      * @return
      * @throws Exception
      */
-    public static Map<String, String> getChainPKSignFields(@NonNull SignObject signObject) throws Exception {
-        return getSignFields(signObject, new SignFieldFilter() {
-            @Override
-            public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
-                return signField.chainPKSign() && super.apply(signObject, field, signField);
-            }
-        });
+    public static Map<String, String> getCPKSignFields(@NonNull SignObject signObject) throws Exception {
+        return treeSign(
+                signObject, new BiFunction<SignTargetField.SignType, Map<String, String>, String>() {
+                    @Override
+                    public String apply(SignTargetField.SignType signType, Map<String, String> stringStringMap) throws Exception {
+                        //不自动签名
+                        return null;
+                    }
+                })
+                .get(SignTargetField.SignType.CPK_SIGN);
     }
-
-    /**
-     * 包裹child签名 设置key
-     *
-     * @param appendKeyTag
-     * @param childSignFields
-     * @return
-     */
-    public static Map<String, String> wrapperChildSignFields(String appendKeyTag, Map<String, String> childSignFields) {
-        Map<String, String> childSignFieldsWrapper = new HashMap<>();
-        for (Map.Entry<String, String> entry : childSignFields.entrySet()) {
-            childSignFieldsWrapper.put(String.format("%s%s", appendKeyTag, entry.getKey()), entry.getValue());
-        }
-        return childSignFieldsWrapper;
-    }
-
 
     /**
      * 获取数据签名字段
@@ -117,62 +81,211 @@ public class SignUtils {
      * @return
      * @throws Exception
      */
-    public static Map<String, String> getDataPKSignFields(@NonNull SignObject signObject) throws Exception {
-        return getSignFields(signObject, new SignFieldFilter() {
+    public static Map<String, String> getDPKSignFields(@NonNull SignObject signObject) throws Exception {
+        return treeSign(
+                signObject, new BiFunction<SignTargetField.SignType, Map<String, String>, String>() {
+                    @Override
+                    public String apply(SignTargetField.SignType signType, Map<String, String> stringStringMap) throws Exception {
+
+                        //不自动签名
+                        return null;
+                    }
+                })
+                .get(SignTargetField.SignType.DPK_SIGN);
+    }
+
+
+    /**
+     * 链私钥签名
+     *
+     * @param signObject
+     * @param cpk
+     * @throws Exception
+     */
+    public static void signByCPK(@NonNull SignObject signObject, String cpk) throws Exception {
+        sign(SignTargetField.SignType.CPK_SIGN, signObject, cpk);
+    }
+
+    /**
+     * 数据私钥签名
+     *
+     * @param signObject
+     * @param dpk
+     * @throws Exception
+     */
+    public static void signByDPK(@NonNull SignObject signObject, String dpk) throws Exception {
+        sign(SignTargetField.SignType.DPK_SIGN, signObject, dpk);
+    }
+
+    /**
+     * 签名 所有类型
+     *
+     * @param signObject
+     * @param cpk
+     * @param dpk
+     * @throws Exception
+     */
+    public static void signAll(@NonNull SignObject signObject, String cpk, String dpk) throws Exception {
+        treeSign(signObject, new BiFunction<SignTargetField.SignType, Map<String, String>, String>() {
             @Override
-            public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
-                return signField.dataPKSign() && super.apply(signObject, field, signField);
+            public String apply(SignTargetField.SignType signType, Map<String, String> stringStringMap) throws Exception {
+                if (stringStringMap != null && !stringStringMap.isEmpty()) {
+                    switch (signType) {
+                        case DPK_SIGN:
+                            return sign(stringStringMap, cpk);
+                        case CPK_SIGN:
+                            return sign(stringStringMap, dpk);
+                        default:
+                            throw new RuntimeException("not support signType:" + signType);
+                    }
+                }
+                return null;
+            }
+        });
+    }
+
+    public static void sign(SignTargetField.SignType type, @NonNull SignObject signObject, String key) throws Exception {
+        treeSign(signObject, new BiFunction<SignTargetField.SignType, Map<String, String>, String>() {
+            @Override
+            public String apply(SignTargetField.SignType signType, Map<String, String> stringStringMap) throws Exception {
+                if (stringStringMap != null && !stringStringMap.isEmpty()) {
+                    if (type == signType) {
+                        return sign(stringStringMap, key);
+                    }
+                }
+                return null;
             }
         });
     }
 
 
     /**
-     * 获取签名字段
+     * 优先深度遍历
      *
      * @param signObject
-     * @param signFieldFilter
+     * @param signFieldFunction
      * @return
      * @throws Exception
      */
-    private static Map<String, String> getSignFields(@NonNull SignObject signObject, SignFieldFilter signFieldFilter) throws Exception {
-        Objects.requireNonNull(signObject);
-        Map<String, String> values = new LinkedHashMap<String, String>();
-        Class<?> clazz = signObject.getClass();
-        for (Field field : clazz.getDeclaredFields()) {
+    public static Map<SignTargetField.SignType, Map<String, String>> treeSign(@NonNull SignObject signObject,
+                                                                              BiFunction<SignTargetField.SignType, Map<String, String>, String> signFieldFunction) throws Exception {
+        Map<SignTargetField.SignType, Map<String, String>> signFieldMap = new HashMap<>();
+        for (Field field : signObject.getClass().getDeclaredFields()) {
             field.setAccessible(true);
-            SignField sf = field.getAnnotation(SignField.class);
-            if (sf != null && signFieldFilter.apply(signObject, field, sf)) {
-                String fieldName = field.getName();
-                Object value = field.get(signObject);
-                values.put(fieldName, String.valueOf(value));
+            String fieldName = field.getName();
+            //是child 签名对象
+            if (SignObject.class.isAssignableFrom(field.getType())) {
+                //child
+                SignObject childSignObject = (SignObject) field.get(signObject);
+                Map<SignTargetField.SignType, Map<String, String>> childSignFieldMap = treeSign(childSignObject, signFieldFunction);
+
+                for (Map.Entry<SignTargetField.SignType, Map<String, String>> childTypeEntry : childSignFieldMap.entrySet()) {
+                    SignTargetField.SignType signType = childTypeEntry.getKey();
+                    //遍历
+                    for (Map.Entry<String, String> childEntry : childTypeEntry.getValue().entrySet()) {
+                        getNoNullSignFieldType(signFieldMap, signType).put(String.format("%s_%s", fieldName, childEntry.getKey()), childEntry.getValue());
+                    }
+                }
+            } else {
+                if (!_validateSignFieldsAnnotation(signObject, field)) {
+                    continue;
+                }
+                SignField sf = field.getAnnotation(SignField.class);
+                if (sf.chainPKSign()) {
+                    getNoNullSignFieldType(signFieldMap, SignTargetField.SignType.CPK_SIGN)
+                            .put(field.getName(), String.valueOf(field.get(signObject)));
+                } else if (sf.dataPKSign()) {
+                    getNoNullSignFieldType(signFieldMap, SignTargetField.SignType.DPK_SIGN)
+                            .put(field.getName(), String.valueOf(field.get(signObject)));
+                } else {
+                    throw new RuntimeException(String.format("%s_%s_no support", signObject.getClass().toString(), field.getName()));
+                }
             }
         }
-        return values;
+
+        //为签名字段赋值
+        for (Field field : signObject.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            if (!_validateSignTargetFieldsAnnotation(signObject, field)) {
+                continue;
+            }
+            SignTargetField sf = field.getAnnotation(SignTargetField.class);
+            String signedValue = signFieldFunction.apply(sf.value(), getNoNullSignFieldType(signFieldMap, sf.value()));
+            if (!TextUtils.isEmpty(signedValue)) {
+                field.set(signObject, signedValue);
+            }
+        }
+        return signFieldMap;
     }
 
     /**
-     * @author youxuan  E-mail:xuanyouwu@163.com
-     * @Description 签名过滤器
+     * 避免为null
+     *
+     * @param signFieldMap
+     * @param signType
+     * @return
      */
-    private static class SignFieldFilter implements Function3<SignObject, Field, SignField, Boolean> {
-
-        /**
-         * false 代表过滤,true 代表采用了,是正确值
-         *
-         * @param signObject
-         * @param field
-         * @param signField
-         * @return
-         * @throws Exception
-         */
-        @Override
-        public Boolean apply(SignObject signObject, Field field, SignField signField) throws Exception {
-            if (!field.getType().isPrimitive() && field.getType() != String.class) {
-                throw new RuntimeException("signField annotation only support primitive type field");
-            }
-            Object value = field.get(signObject);
-            return !(signField == null || (value == null && signField.ignoreNullValue()));
+    private static Map<String, String> getNoNullSignFieldType(Map<SignTargetField.SignType, Map<String, String>> signFieldMap, SignTargetField.SignType signType) {
+        //避免为null
+        Map<String, String> signTypeFieldMap = signFieldMap.get(signType);
+        if (signTypeFieldMap == null) {
+            signTypeFieldMap = new HashMap<>();
+            signFieldMap.put(signType, signTypeFieldMap);
         }
+        return signTypeFieldMap;
+    }
+
+
+    /**
+     * 检验 {@link SignField}
+     *
+     * @param signObject
+     * @param field
+     * @return
+     * @throws Exception
+     */
+    private static boolean _validateSignFieldsAnnotation(SignObject signObject, Field field) throws Exception {
+        Objects.requireNonNull(signObject);
+        Objects.requireNonNull(field);
+        SignField signField = field.getAnnotation(SignField.class);
+        if (signField == null) {
+            return false;
+        }
+        Class<?> fieldClass = field.getType();
+        boolean isSupportType = (!fieldClass.isAnnotation()
+                &&
+                (String.class.isAssignableFrom(fieldClass) || fieldClass.isPrimitive())
+        );
+        if (!isSupportType) {
+            throw new RuntimeException(String.format("%s_%s_signField annotation only support Primitive type or String field!", signObject.getClass().toString(), field.getName()));
+        }
+        Object value = field.get(signObject);
+        if (value == null && signField.ignoreNullValue()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 检验 {@link SignTargetField}
+     *
+     * @param signObject
+     * @param field
+     * @return
+     * @throws Exception
+     */
+    private static boolean _validateSignTargetFieldsAnnotation(SignObject signObject, Field field) throws Exception {
+        Objects.requireNonNull(signObject);
+        Objects.requireNonNull(field);
+        SignTargetField signTargetField = field.getAnnotation(SignTargetField.class);
+        if (signTargetField == null) {
+            return false;
+        }
+        Class<?> fieldClass = field.getType();
+        boolean isSupportType = String.class.isAssignableFrom(fieldClass);
+        if (!isSupportType) {
+            throw new RuntimeException(String.format("%s_%s_signTargetField annotation only support String field!", signObject.getClass().toString(), field.getName()));
+        }
+        return true;
     }
 }

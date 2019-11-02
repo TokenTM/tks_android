@@ -2,6 +2,7 @@ package com.tokentm.sdk.model;
 
 import com.tokentm.sdk.common.encrypt.SignField;
 import com.tokentm.sdk.common.encrypt.SignObject;
+import com.tokentm.sdk.common.encrypt.SignTargetField;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -18,6 +19,7 @@ public class StoreQueryByTypeReqBodyDTO implements SignObject {
     @SignField(chainPKSign = false, dataPKSign = true)
     private long timestamp;
 
+    @SignTargetField(SignTargetField.SignType.DPK_SIGN)
     private String sign;
 
     public String getDataType() {
