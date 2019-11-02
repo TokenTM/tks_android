@@ -131,9 +131,9 @@ public class SignUtils {
             public String apply(SignTargetField.SignType signType, Map<String, String> stringStringMap) throws Exception {
                 if (stringStringMap != null && !stringStringMap.isEmpty()) {
                     switch (signType) {
-                        case DPK_SIGN:
-                            return sign(stringStringMap, cpk);
                         case CPK_SIGN:
+                            return sign(stringStringMap, cpk);
+                        case DPK_SIGN:
                             return sign(stringStringMap, dpk);
                         default:
                             throw new RuntimeException("not support signType:" + signType);
@@ -194,11 +194,10 @@ public class SignUtils {
                 if (sf.chainPKSign()) {
                     getNoNullSignFieldType(signFieldMap, SignTargetField.SignType.CPK_SIGN)
                             .put(field.getName(), String.valueOf(field.get(signObject)));
-                } else if (sf.dataPKSign()) {
+                }
+                if (sf.dataPKSign()) {
                     getNoNullSignFieldType(signFieldMap, SignTargetField.SignType.DPK_SIGN)
                             .put(field.getName(), String.valueOf(field.get(signObject)));
-                } else {
-                    throw new RuntimeException(String.format("%s_%s_no support", signObject.getClass().toString(), field.getName()));
                 }
             }
         }
