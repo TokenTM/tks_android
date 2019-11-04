@@ -17,7 +17,7 @@ public interface CertService extends RepoService {
     /**
      * 用户 身份证认证
      *
-     * @param uDid
+     * @param uDID
      * @param identityPwd     身份密码
      * @param userName        姓名
      * @param IDCard          身份证号
@@ -26,7 +26,7 @@ public interface CertService extends RepoService {
      * @param identityHandImg 身份证手持照片
      * @return 返回交易txHash
      */
-    Observable<String> userCertByIDCard(String uDid,
+    Observable<String> userCertByIDCard(String uDID,
                                         String identityPwd,
                                         String userName,
                                         String IDCard,
@@ -35,19 +35,26 @@ public interface CertService extends RepoService {
                                         File identityHandImg
     );
 
+    /**
+     * 是否完成了实名认证
+     *
+     * @param uDID
+     * @return
+     */
+    Observable<Boolean> isUserCert(String uDID);
 
     /**
      * 获取身份证认证信息
      *
-     * @param uDid
+     * @param uDID
      * @return
      */
-    Observable<CertUserInfoStoreItem> getUserCertByIDCardInfo(String uDid);
+    Observable<CertUserInfoStoreItem> getUserCertByIDCardInfo(String uDID);
 
     /**
      * 公司认证
      *
-     * @param uDid
+     * @param uDID
      * @param identityPwd       身份密码
      * @param companyName       公司名字
      * @param companyType       公司类型
@@ -55,12 +62,20 @@ public interface CertService extends RepoService {
      * @param licenseImg        公函/营业执照
      * @return
      */
-    Observable<CompanyCertResult> companyCert(String uDid,
+    Observable<CompanyCertResult> companyCert(String uDID,
                                               String identityPwd,
                                               String companyName,
                                               CompanyType companyType,
                                               String companyCreditCode,
                                               File licenseImg
     );
+
+    /**
+     * 是否完成了公司认证
+     *
+     * @param cDID
+     * @return
+     */
+    Observable<Boolean> iscompanyCert(String cDID);
 
 }

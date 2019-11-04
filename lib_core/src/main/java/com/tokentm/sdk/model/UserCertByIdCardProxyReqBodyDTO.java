@@ -8,31 +8,60 @@ import com.tokentm.sdk.common.encrypt.SignTargetField;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public class UserCertByIdCardReqBodyDTO implements SignObject {
+public class UserCertByIdCardProxyReqBodyDTO implements SignObject {
 
-    @SignField(dataPKSign = true)
+    @SignField(chainPKSign = true, dataPKSign = true)
+    private String address;
+
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String did;
 
-    @SignField(dataPKSign = true)
+
+    @SignField(chainPKSign = true, dataPKSign = true)
+    private boolean force;
+
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String identityBackImgId;
 
-    @SignField(dataPKSign = true)
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String identityCode;
 
-    @SignField(dataPKSign = true)
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String identityFontImgId;
 
-    @SignField(dataPKSign = true)
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String identityHandImgId;
 
-    @SignField(dataPKSign = true)
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String name;
 
-    @SignField(dataPKSign = true)
+
+    @SignField(chainPKSign = true, dataPKSign = true)
+    private String targetDid;
+
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private long timestamp;
 
     @SignTargetField(SignTargetField.SignType.DPK_SIGN)
     private String sign;
+
+    @SignTargetField(SignTargetField.SignType.CPK_SIGN)
+    private String chainPrvKeySign;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getDid() {
         return did;
@@ -40,6 +69,14 @@ public class UserCertByIdCardReqBodyDTO implements SignObject {
 
     public void setDid(String did) {
         this.did = did;
+    }
+
+    public boolean isForce() {
+        return force;
+    }
+
+    public void setForce(boolean force) {
+        this.force = force;
     }
 
     public String getIdentityBackImgId() {
@@ -82,6 +119,13 @@ public class UserCertByIdCardReqBodyDTO implements SignObject {
         this.name = name;
     }
 
+    public String getTargetDid() {
+        return targetDid;
+    }
+
+    public void setTargetDid(String targetDid) {
+        this.targetDid = targetDid;
+    }
 
     public long getTimestamp() {
         return timestamp;
@@ -97,5 +141,13 @@ public class UserCertByIdCardReqBodyDTO implements SignObject {
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    public String getChainPrvKeySign() {
+        return chainPrvKeySign;
+    }
+
+    public void setChainPrvKeySign(String chainPrvKeySign) {
+        this.chainPrvKeySign = chainPrvKeySign;
     }
 }
