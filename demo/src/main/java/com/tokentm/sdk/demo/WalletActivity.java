@@ -6,16 +6,11 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.tokentm.sdk.wallet.FileUtils;
-import com.tokentm.sdk.wallet.WalletResult;
-import com.tokentm.sdk.wallet.WalletUtils;
 
 import java.io.File;
 
@@ -92,43 +87,43 @@ public class WalletActivity extends Activity {
     }
 
     private void create() {
-        String pwd = encode_pwd_et.getText().toString();
-        if (TextUtils.isEmpty(pwd)) {
-            Toast.makeText(this, "pwd is null", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            WalletResult walletResult = WalletUtils._createWallet(pwd, getFile());
-            encode_keystore_tv.setText(walletResult.getKeyStoreFileContent());
-            encode_private_tv.setText(walletResult.getPrivateKey());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "创建失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+//        String pwd = encode_pwd_et.getText().toString();
+//        if (TextUtils.isEmpty(pwd)) {
+//            Toast.makeText(this, "pwd is null", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        try {
+//            WalletResult walletResult = WalletUtils._createWallet(pwd, getFile());
+//            encode_keystore_tv.setText(walletResult.getKeyStoreFileContent());
+//            encode_private_tv.setText(walletResult.getPrivateKey());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Toast.makeText(this, "创建失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
     }
 
     private void decode() {
-        String pwd = decode_pwd_et.getText().toString();
-        if (TextUtils.isEmpty(pwd)) {
-            Toast.makeText(this, "pwd is null", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(decode_keystore_et.getText())) {
-            Toast.makeText(this, "keystore is null", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        String keystore = decode_keystore_et.getText().toString();
-        FileUtils.writeStr(getFile(), keystore, false);
-        try {
-            WalletResult walletResult = WalletUtils._openWallet(pwd, getFile());
-            decode_keystore_tv.setText(walletResult.getKeyStoreFileContent());
-            decode_private_tv.setText(walletResult.getPrivateKey());
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "解密失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
+//        String pwd = decode_pwd_et.getText().toString();
+//        if (TextUtils.isEmpty(pwd)) {
+//            Toast.makeText(this, "pwd is null", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(decode_keystore_et.getText())) {
+//            Toast.makeText(this, "keystore is null", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        String keystore = decode_keystore_et.getText().toString();
+//        FileUtils.writeStr(getFile(), keystore, false);
+//        try {
+//            WalletResult walletResult = WalletUtils._openWallet(pwd, getFile());
+//            decode_keystore_tv.setText(walletResult.getKeyStoreFileContent());
+//            decode_private_tv.setText(walletResult.getPrivateKey());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Toast.makeText(this, "解密失败:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+//        }
     }
 }
