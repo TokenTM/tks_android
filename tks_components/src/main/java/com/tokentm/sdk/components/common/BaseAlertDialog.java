@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.common;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -8,7 +8,6 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.tokentm.sdk.components.common.TokenProgressHUDImpl;
 import com.xxf.arch.dialog.XXFAlertDialog;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 

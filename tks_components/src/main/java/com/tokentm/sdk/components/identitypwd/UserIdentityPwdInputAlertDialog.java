@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.components.databinding.UserDialogDecryptedByPwdBinding;
 import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
@@ -33,7 +34,6 @@ public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
     public UserIdentityPwdInputAlertDialog(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
         super(context, dialogConsumer);
         this.uDid = uDid;
-
     }
 
     @Override

@@ -37,7 +37,7 @@ public interface CertService extends RepoService {
 
 
     /**
-     * 获取认证信息
+     * 获取身份证认证信息
      *
      * @param uDid
      * @return
@@ -48,11 +48,11 @@ public interface CertService extends RepoService {
      * 公司认证
      *
      * @param uDid
-     * @param identityPwd
-     * @param companyName
-     * @param companyType
-     * @param companyCreditCode
-     * @param licenseImg
+     * @param identityPwd       身份密码
+     * @param companyName       公司名字
+     * @param companyType       公司类型
+     * @param companyCreditCode 公司社会信用代码
+     * @param licenseImg        公函/营业执照
      * @return
      */
     Observable<CompanyCertResult> companyCert(String uDid,

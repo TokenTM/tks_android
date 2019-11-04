@@ -16,7 +16,7 @@ import android.view.View;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.common.ComponentUtils;
+import com.tokentm.sdk.components.common.CompatUtils;
 import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.IdentityPwdService;
@@ -82,9 +82,9 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
             public void onClick(View v) {
                 v.setSelected(!v.isSelected());
                 if (v.isSelected()) {
-                    ComponentUtils.showTextForPlain(binding.identityPwdEt);
+                    CompatUtils.showTextForPlain(binding.identityPwdEt);
                 } else {
-                    ComponentUtils.showTextForCipher(binding.identityPwdEt);
+                    CompatUtils.showTextForCipher(binding.identityPwdEt);
                 }
             }
         });
@@ -93,9 +93,9 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
             public void onClick(View v) {
                 v.setSelected(!v.isSelected());
                 if (v.isSelected()) {
-                    ComponentUtils.showTextForPlain(binding.identityRepwdEt);
+                    CompatUtils.showTextForPlain(binding.identityRepwdEt);
                 } else {
-                    ComponentUtils.showTextForCipher(binding.identityRepwdEt);
+                    CompatUtils.showTextForCipher(binding.identityRepwdEt);
                 }
             }
         });

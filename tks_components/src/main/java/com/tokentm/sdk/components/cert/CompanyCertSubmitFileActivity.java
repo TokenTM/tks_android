@@ -32,7 +32,7 @@ import io.reactivex.functions.Consumer;
  * @Description 公司认证 提交文件
  * 返回值 @{@link CompanyCertResult}
  */
-public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
+class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
     /**
      * 认证参数
      */

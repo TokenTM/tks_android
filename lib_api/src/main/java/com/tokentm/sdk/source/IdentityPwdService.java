@@ -37,7 +37,7 @@ public interface IdentityPwdService extends RepoService {
      * @param uDID
      * @return
      */
-    Observable<Boolean> isAccessible(String uDID);
+    Observable<Boolean> isUDIDAccessible(String uDID);
 
 
     /**

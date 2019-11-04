@@ -16,7 +16,7 @@ import android.widget.TextView;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 基础UI组件工具类
  */
-public class ComponentUtils {
+public class CompatUtils {
 
     /**
      * 密文

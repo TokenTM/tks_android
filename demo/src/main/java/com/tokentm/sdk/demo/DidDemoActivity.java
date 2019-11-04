@@ -7,19 +7,12 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.UserIdentityGetPhoneCodeDialog;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
+import com.tokentm.sdk.components.ComponentUtils;
 import com.tokentm.sdk.demo.databinding.DidActivityBinding;
-import com.xxf.arch.XXF;
-import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 
 public class DidDemoActivity extends FragmentActivity {
     DidActivityBinding binding;
@@ -46,25 +39,15 @@ public class DidDemoActivity extends FragmentActivity {
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                XXF.startActivityForResult(DidDemoActivity.this, UserIdentityPwdSetActivity.getLauncher(v.getContext(), "17611639080"), 101)
-                        .filter(new Predicate<ActivityResult>() {
+                ComponentUtils.launchUserIdentityPwdActivity(
+                        DidDemoActivity.this,
+                        "17611639080",
+                        new Consumer<String>() {
                             @Override
-                            public boolean test(ActivityResult activityResult) throws Exception {
-                                return activityResult.isOk();
-                            }
-                        })
-                        .take(1)
-                        .map(new Function<ActivityResult, String>() {
-                            @Override
-                            public String apply(ActivityResult activityResult) throws Exception {
-                                return activityResult.getData().getStringExtra(BaseTitleBarActivity.KEY_ACTIVITY_RESULT);
-                            }
-                        })
-                        .subscribe(new Consumer<String>() {
-                            @Override
-                            public void accept(String did) throws Exception {
-                                DemoSp.getInstance().putString("did", did);
-                                binding.didText.setText("did:" + did);
+                            public void accept(String uDID) throws Exception {
+                                //TODO 中心化系统和userId进行绑定
+                                DemoSp.getInstance().putString("did", uDID);
+                                binding.didText.setText("did:" + uDID);
                             }
                         });
             }
@@ -77,7 +60,17 @@ public class DidDemoActivity extends FragmentActivity {
                     ToastUtils.showToast("先创建did");
                     return;
                 }
-                UserIdentityPwdReSetActivity.launch(v.getContext(), did, "17611639080");
+                ComponentUtils
+                        .launchUserIdentityPwdAReSetctivity(
+                                DidDemoActivity.this,
+                                did,
+                                "17611639080",
+                                new Consumer<Boolean>() {
+                                    @Override
+                                    public void accept(Boolean reseted) throws Exception {
+                                        ToastUtils.showToast("重置成功?" + String.valueOf(reseted));
+                                    }
+                                });
             }
         });
 
@@ -88,21 +81,16 @@ public class DidDemoActivity extends FragmentActivity {
                     ToastUtils.showToast("先创建did");
                     return;
                 }
-//                new UserIdentityPwdInputAlertDialog(v.getContext(), did, new BiConsumer<DialogInterface, String>() {
-//                    @Override
-//                    public void accept(DialogInterface dialogInterface, String s) throws Exception {
-//                        dialogInterface.dismiss();
-//                    }
-//                }).show();
-
-                new UserIdentityGetPhoneCodeDialog(DidDemoActivity.this, did, new BiConsumer<DialogInterface, String>() {
-                    @Override
-                    public void accept(DialogInterface dialogInterface, String s) throws Exception {
-                        dialogInterface.dismiss();
-                    }
-                }).show();
-
-
+                ComponentUtils.showIdentityPwdDialog(
+                        DidDemoActivity.this,
+                        did,
+                        new BiConsumer<DialogInterface, String>() {
+                            @Override
+                            public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
+                                dialogInterface.dismiss();
+                                //TODO 下一步
+                            }
+                        });
             }
         });
     }

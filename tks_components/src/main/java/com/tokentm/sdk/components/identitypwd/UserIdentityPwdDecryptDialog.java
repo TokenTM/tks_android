@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.components.databinding.UserDialogGetPhoneCodeBinding;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.IdentityPwdService;
@@ -33,7 +34,8 @@ import io.reactivex.functions.Function;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 手机号获取验证码对话框
  */
-public class UserIdentityGetPhoneCodeDialog extends BaseAlertDialog<String> implements PhoneCodeGetPresenter {
+public class UserIdentityPwdDecryptDialog extends BaseAlertDialog<Boolean> implements PhoneCodeGetPresenter {
+
 
     /**
      * 倒计时60秒
@@ -43,7 +45,7 @@ public class UserIdentityGetPhoneCodeDialog extends BaseAlertDialog<String> impl
     private String uDid;
     private FragmentActivity mContext;
 
-    public UserIdentityGetPhoneCodeDialog(@NonNull FragmentActivity context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
+    public UserIdentityPwdDecryptDialog(@NonNull FragmentActivity context, String uDid, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
         super(context, dialogConsumer);
         mContext = context;
         this.uDid = uDid;
@@ -121,6 +123,7 @@ public class UserIdentityGetPhoneCodeDialog extends BaseAlertDialog<String> impl
 
     /**
      * 校验验证码
+     *
      * @param phone
      * @param smsCode
      */
@@ -133,11 +136,10 @@ public class UserIdentityGetPhoneCodeDialog extends BaseAlertDialog<String> impl
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        if (aBoolean){
-                            ToastUtils.showToast("校验成功");
-                            dismiss();
-                        }else {
-                            ToastUtils.showToast("校验失败");
+                        if (aBoolean) {
+                            setResult(true);
+                        } else {
+                            ToastUtils.showToast("操作失败");
                         }
                     }
                 });

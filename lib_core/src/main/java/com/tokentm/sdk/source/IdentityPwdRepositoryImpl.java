@@ -118,7 +118,7 @@ public class IdentityPwdRepositoryImpl implements IdentityPwdService, BaseRepo {
      * @return
      */
     @Override
-    public Observable<Boolean> isAccessible(String uDID) {
+    public Observable<Boolean> isUDIDAccessible(String uDID) {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {

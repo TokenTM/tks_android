@@ -7,15 +7,11 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.components.cert.CompanyCertActivity;
-import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
+import com.tokentm.sdk.components.ComponentUtils;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.model.CompanyCertResult;
-import com.xxf.arch.XXF;
-import com.xxf.arch.activity.XXFActivity;
-import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.utils.ToastUtils;
 
 import java.util.ArrayList;
@@ -25,8 +21,6 @@ import java.util.List;
 import java.util.Random;
 
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 
 
 public class MainActivity extends FragmentActivity {
@@ -93,38 +87,16 @@ public class MainActivity extends FragmentActivity {
                     ToastUtils.showToast("请先生成did");
                     return;
                 }
-                UserCertByIDCardActivity.launch(v.getContext(),
+                ComponentUtils.launchUserCertActivity(
+                        MainActivity.this,
                         new UserCertByIDCardParams.Builder(did)
                                 .setUserName("小炫风")
                                 .setUserIDCard("511324198901090148")
-                                .build()
-                );
-
-                XXF.startActivityForResult(
-                        MainActivity.this,
-                        UserCertByIDCardActivity.getLauncher(v.getContext(),
-                                new UserCertByIDCardParams.Builder(did)
-                                        .setUserName("小炫风")
-                                        .setUserIDCard("511324198901090148")
-                                        .build()
-                        ),
-                        1001)
-                        .filter(new Predicate<ActivityResult>() {
-                            @Override
-                            public boolean test(ActivityResult activityResult) throws Exception {
-                                return activityResult.isOk();
-                            }
-                        })
-                        .map(new Function<ActivityResult, String>() {
-                            @Override
-                            public String apply(ActivityResult activityResult) throws Exception {
-                                return activityResult.getData().getStringExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                            }
-                        })
-                        .take(1)
-                        .subscribe(new Consumer<String>() {
+                                .build(),
+                        new Consumer<String>() {
                             @Override
                             public void accept(String txHash) throws Exception {
+                                //TODO 中心化系统进行记录
                                 ToastUtils.showToast("实名认证成功:" + txHash);
                             }
                         });
@@ -139,30 +111,13 @@ public class MainActivity extends FragmentActivity {
                     ToastUtils.showToast("请先生成did");
                     return;
                 }
-                XXF.startActivityForResult(
+                ComponentUtils.launchCompanyCertActivity(
                         MainActivity.this,
-                        CompanyCertActivity.getLauncher(
-                                v.getContext(),
-                                new CompanyCertParams.Builder(did, "北京百度科技有限公司", "李彦宏")
-                                        .build()
-                        ),
-                        1001)
-                        .filter(new Predicate<ActivityResult>() {
-                            @Override
-                            public boolean test(ActivityResult activityResult) throws Exception {
-                                return activityResult.isOk();
-                            }
-                        })
-                        .map(new Function<ActivityResult, CompanyCertResult>() {
-                            @Override
-                            public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
-                                return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                            }
-                        })
-                        .take(1)
-                        .subscribe(new Consumer<CompanyCertResult>() {
+                        new CompanyCertParams.Builder(did, "北京百度科技有限公司", "李彦宏").build(),
+                        new Consumer<CompanyCertResult>() {
                             @Override
                             public void accept(CompanyCertResult companyCertResult) throws Exception {
+                                //TODO 中心化系统进行记录
                                 ToastUtils.showToast("公司认证成功:" + companyCertResult);
                             }
                         });
