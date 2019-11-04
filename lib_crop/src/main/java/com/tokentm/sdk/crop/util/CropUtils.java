@@ -3,12 +3,10 @@ package com.tokentm.sdk.crop.util;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.CropActivity;
-import com.tokentm.sdk.crop.R;
 
 import java.io.File;
 
@@ -40,9 +38,9 @@ public class CropUtils {
         //是否隐藏底部容器，默认显示，true-隐藏  false-显示
         options.setHideBottomControls(false);
         //设置toolbar颜色
-        options.setToolbarColor(ActivityCompat.getColor(activity, R.color.colorPrimary));
+        options.setToolbarColor(0xFF00C1CE);
         //设置状态栏颜色
-        options.setStatusBarColor(ActivityCompat.getColor(activity, R.color.colorPrimary));
+        options.setStatusBarColor(0xFF00C1CE);
         //是否能调整裁剪框
         options.setFreeStyleCropEnabled(true);
         //UCrop配置
