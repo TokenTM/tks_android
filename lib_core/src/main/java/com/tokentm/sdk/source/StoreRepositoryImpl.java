@@ -314,7 +314,7 @@ public class StoreRepositoryImpl implements StoreService, BaseRepo {
                         throw new RuntimeException(throwable);*/
                         return -1L;
                     }
-                });
+                }).defaultIfEmpty(-1L);
     }
 
 }

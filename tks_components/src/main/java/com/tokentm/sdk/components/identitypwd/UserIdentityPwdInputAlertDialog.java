@@ -13,7 +13,7 @@ import android.view.WindowManager;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseAlertDialog;
-import com.tokentm.sdk.components.databinding.UserDialogDecryptedByPwdBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserDialogDecryptedByPwdBinding;
 import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
 public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
 
 
-    private UserDialogDecryptedByPwdBinding binding;
+    private TksComponentsUserDialogDecryptedByPwdBinding binding;
     String uDid;
 
     public UserIdentityPwdInputAlertDialog(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
@@ -44,7 +44,7 @@ public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         //设置window背景透明
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        binding = UserDialogDecryptedByPwdBinding.inflate(getLayoutInflater());
+        binding = TksComponentsUserDialogDecryptedByPwdBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

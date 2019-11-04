@@ -17,7 +17,7 @@ import android.view.View;
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
-import com.tokentm.sdk.components.databinding.UserActivityIdentityPwdSetBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
@@ -49,14 +49,14 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
                 .putExtra(KEY_PHONE, phone);
     }
 
-    UserActivityIdentityPwdSetBinding binding;
+    TksComponentsUserActivityIdentityPwdSetBinding binding;
     IdentityPwdSetVM viewModel;
     String phone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = UserActivityIdentityPwdSetBinding.inflate(getLayoutInflater());
+        binding = TksComponentsUserActivityIdentityPwdSetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

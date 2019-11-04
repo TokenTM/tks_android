@@ -47,7 +47,7 @@ public final class TEAUtils {
         byte[] buffer = new byte[1024];
         int numRead = 0;
         MessageDigest m = MessageDigest.getInstance("MD5");
-        while ((numRead = fis.read(buffer)) > 0) {
+        while ((numRead = fis.read(buffer)) != -1) {
             m.update(buffer, 0, numRead);
         }
         fis.close();

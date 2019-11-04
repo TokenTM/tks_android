@@ -425,17 +425,18 @@ public class CertRepositoryImpl implements CertService, BaseRepo {
                         signedLegalPerson.setIdentityCode(legalPersonIdentityCode);
 
 
-                        CompanyCertProxyReqBodyDTO companyCertBody = new CompanyCertProxyReqBodyDTO();
-                        companyCertBody.setDid(cDID);//公司cid
-                        companyCertBody.setAddress(chainAddress);
-                        companyCertBody.setCompanyName(companyName);
-                        companyCertBody.setCompanyType(companyType.getValue());
-                        companyCertBody.setCreditCode(companyCreditCode);
-                        companyCertBody.setLegalPerson(signedLegalPerson);
-                        companyCertBody.setTimestamp(timestamp);
-                        companyCertBody.setTargetDid(targetDid);
-                        companyCertBody.setLicenseImgId(licenseImgId);
-                        return companyCertBody;
+                        CompanyCertProxyReqBodyDTO companyCertProxyBody = new CompanyCertProxyReqBodyDTO();
+                        companyCertProxyBody.setForce(true);
+                        companyCertProxyBody.setDid(cDID);//公司cid
+                        companyCertProxyBody.setAddress(chainAddress);
+                        companyCertProxyBody.setCompanyName(companyName);
+                        companyCertProxyBody.setCompanyType(companyType.getValue());
+                        companyCertProxyBody.setCreditCode(companyCreditCode);
+                        companyCertProxyBody.setLegalPerson(signedLegalPerson);
+                        companyCertProxyBody.setTimestamp(timestamp);
+                        companyCertProxyBody.setTargetDid(targetDid);
+                        companyCertProxyBody.setLicenseImgId(licenseImgId);
+                        return companyCertProxyBody;
                     }
                 }).flatMap(new Function<CompanyCertProxyReqBodyDTO, ObservableSource<CompanyCertResult>>() {
                     @Override

@@ -24,7 +24,6 @@ public interface IdentityPwdSetPresenter {
      * @param phone
      * @param smsCode
      * @param identityPwd
-     * @param reIdentityPwd
      */
     void onIdentityPwdSet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd);
 }

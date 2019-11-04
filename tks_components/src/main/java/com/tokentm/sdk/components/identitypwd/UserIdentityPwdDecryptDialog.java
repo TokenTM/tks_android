@@ -15,7 +15,7 @@ import android.view.WindowManager;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseAlertDialog;
-import com.tokentm.sdk.components.databinding.UserDialogGetPhoneCodeBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserDialogGetPhoneCodeBinding;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
@@ -41,7 +41,7 @@ public class UserIdentityPwdDecryptDialog extends BaseAlertDialog<Boolean> imple
      * 倒计时60秒
      */
     private static final int SMS_DELAY = 60;
-    private UserDialogGetPhoneCodeBinding binding;
+    private TksComponentsUserDialogGetPhoneCodeBinding binding;
     private String uDid;
     private FragmentActivity mContext;
 
@@ -60,7 +60,7 @@ public class UserIdentityPwdDecryptDialog extends BaseAlertDialog<Boolean> imple
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
             //设置window背景透明
             getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-            binding = UserDialogGetPhoneCodeBinding.inflate(getLayoutInflater());
+            binding = TksComponentsUserDialogGetPhoneCodeBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
             initView();
         }

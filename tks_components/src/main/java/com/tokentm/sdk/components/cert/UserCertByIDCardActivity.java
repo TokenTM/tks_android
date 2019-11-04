@@ -15,7 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.UserActivityCertByIdcardBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserActivityCertByIdcardBinding;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
@@ -51,7 +51,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
     }
 
 
-    UserActivityCertByIdcardBinding binding;
+    TksComponentsUserActivityCertByIdcardBinding binding;
     UserCertByIDCardVM viewModel;
     UserCertByIDCardParams certByIDCardParams;
 
@@ -59,7 +59,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = UserActivityCertByIdcardBinding.inflate(getLayoutInflater());
+        binding = TksComponentsUserActivityCertByIdcardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

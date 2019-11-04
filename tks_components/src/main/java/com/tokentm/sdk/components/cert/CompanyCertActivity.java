@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.CompanyActivityCompanySelectTypeBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanySelectTypeBinding;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.model.CompanyType;
 import com.xxf.arch.XXF;
@@ -41,13 +41,13 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
                 .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }
 
-    CompanyActivityCompanySelectTypeBinding binding;
+    TksComponentsCompanyActivityCompanySelectTypeBinding binding;
     CompanyCertParams companyCertParams;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = CompanyActivityCompanySelectTypeBinding.inflate(getLayoutInflater());
+        binding = TksComponentsCompanyActivityCompanySelectTypeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

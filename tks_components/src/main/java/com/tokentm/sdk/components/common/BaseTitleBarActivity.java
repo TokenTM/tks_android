@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.tokentm.sdk.components.databinding.ArchBindLayoutTitleBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsBindLayoutTitleBinding;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.utils.DensityUtil;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
@@ -37,7 +37,7 @@ public class BaseTitleBarActivity extends XXFActivity {
         return titleBar;
     }
 
-    protected ArchBindLayoutTitleBinding titleBinding;
+    protected TksComponentsBindLayoutTitleBinding titleBinding;
     private LinearLayout rootView;
 
     @CallSuper
@@ -49,7 +49,7 @@ public class BaseTitleBarActivity extends XXFActivity {
             int blueColor = 0xFF00C1CE;
             StatusBarUtils.compatStatusBarForM(this, false, blueColor);
         }
-        titleBinding = ArchBindLayoutTitleBinding.inflate(getLayoutInflater());
+        titleBinding = TksComponentsBindLayoutTitleBinding.inflate(getLayoutInflater());
         titleBinding.setTitleBar(titleBar);
         rootView = new LinearLayout(getContext());
         rootView.setOrientation(LinearLayout.VERTICAL);

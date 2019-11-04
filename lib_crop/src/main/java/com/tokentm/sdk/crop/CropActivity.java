@@ -31,12 +31,13 @@ import android.widget.TextView;
 import com.tokentm.sdk.crop.callback.BitmapCropCallback;
 import com.tokentm.sdk.crop.util.SelectedStateListDrawable;
 import com.tokentm.sdk.crop.view.CropImageView;
+import com.tokentm.sdk.crop.view.CropView;
 import com.tokentm.sdk.crop.view.GestureCropImageView;
 import com.tokentm.sdk.crop.view.OverlayView;
 import com.tokentm.sdk.crop.view.TransformImageView;
-import com.tokentm.sdk.crop.view.CropView;
 import com.tokentm.sdk.crop.view.widget.AspectRatioTextView;
 import com.tokentm.sdk.crop.view.widget.HorizontalProgressWheelView;
+import com.xxf.view.utils.StatusBarUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -99,6 +100,10 @@ public class CropActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int blueColor = 0xFF00C1CE;
+            StatusBarUtils.compatStatusBarForM(this, false, blueColor);
+        }
         setContentView(R.layout.crop_activity_photobox);
 
         final Intent intent = getIntent();

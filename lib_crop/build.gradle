@@ -2,7 +2,8 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
-
+//    resourcePrefix(project.getName())
+    resourcePrefix('crop')
 
     defaultConfig {
         minSdkVersion rootProject.ext.android.minSdkVersion

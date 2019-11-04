@@ -14,12 +14,6 @@ import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.xxf.arch.utils.ToastUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
 import io.reactivex.functions.Consumer;
 
 
@@ -53,29 +47,6 @@ public class MainActivity extends FragmentActivity {
         binding.btBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String str = "abcdefghijkuipjhdghfgfgdgfdggjffgjdgjfegvywqgttygiyggfdaig";
-                int length = str.length();
-                int sliceCount = new Random().nextInt(3) + 4;
-                System.out.println("========>count:" + sliceCount);
-                List<Integer> splitIndexs = new ArrayList<>(Arrays.asList(0, length));
-                while (splitIndexs.size() < sliceCount - 1) {
-                    int index = new Random().nextInt(length);
-                    if (!splitIndexs.contains(index)) {
-                        splitIndexs.add(index);
-                    }
-                }
-                Collections.sort(splitIndexs);
-                System.out.println("========>splitIndexs:" + splitIndexs);
-                List<String> splitStringList = new ArrayList<>();
-                for (int i = 0; i < splitIndexs.size() - 1; i++) {
-                    splitStringList.add(str.substring(splitIndexs.get(i), splitIndexs.get(i + 1)));
-                }
-
-                StringBuilder sb = new StringBuilder();
-                for (String s : splitStringList) {
-                    sb.append(s);
-                }
-                System.out.println("========>" + TextUtils.equals(str, sb.toString()));
 
             }
         });

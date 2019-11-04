@@ -17,7 +17,7 @@
     <!-- 【标题布局 请勿轻易修改】 -->
     <!-- 【标题布局 请勿轻易修改】 -->
     <LinearLayout
-        style="@style/ArchTitleLinearLayout"
+        style="@style/tks_components_ArchTitleLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:background="@{titleBar.getTitleBarBackground()}"

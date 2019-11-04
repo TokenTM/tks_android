@@ -27,6 +27,9 @@ public class CompanyCertProxyReqBodyDTO implements SignObject {
     private String creditCode;
 
     @SignField(chainPKSign = true, dataPKSign = true)
+    private boolean force;
+
+    @SignField(chainPKSign = true, dataPKSign = true)
     private String did;
 
 
@@ -128,6 +131,14 @@ public class CompanyCertProxyReqBodyDTO implements SignObject {
 
     public int getCompanyType() {
         return companyType;
+    }
+
+    public boolean isForce() {
+        return force;
+    }
+
+    public void setForce(boolean force) {
+        this.force = force;
     }
 
     public void setCompanyType(int companyType) {

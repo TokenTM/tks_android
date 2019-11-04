@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="ArchTitleLinearLayout">
+    <style name="tks_components_ArchTitleLinearLayout">
         <item name="android:elevation">0dp</item>
         <item name="android:height">49dp</item>
         <item name="android:background">@android:color/white</item>
-        <item name="android:divider">@drawable/arch_divider_comm</item>
+        <item name="android:divider">@drawable/tks_components_arch_divider_comm</item>
         <item name="android:showDividers">end</item>
     </style>
 </resources>

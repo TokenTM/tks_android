@@ -50,7 +50,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="9.5dp"
                     android:layout_marginRight="12dp"
-                    android:background="@drawable/user_line_round_rect_gray"
+                    android:background="@drawable/tks_components_user_line_round_rect_gray"
                     android:gravity="center_vertical"
                     android:hint="请输入您的手机号"
                     android:inputType="phone"
@@ -66,7 +66,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_marginTop="11dp"
                     android:layout_marginRight="12dp"
-                    android:background="@drawable/user_line_round_rect_gray"
+                    android:background="@drawable/tks_components_user_line_round_rect_gray"
                     android:orientation="horizontal">
 
                     <EditText
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:background="@drawable/user_dialog_get_phone_code_ok_btn"
+                    android:background="@drawable/tks_components_user_dialog_get_phone_code_ok_btn"
                     android:paddingTop="10.5dp"
                     android:paddingBottom="10.5dp"
                     android:text="确认"

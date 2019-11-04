@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.CompanyActivityCompanySubmitFileBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanySubmitFileBinding;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.source.CertRepositoryImpl;
@@ -32,7 +32,7 @@ import io.reactivex.functions.Consumer;
  * @Description 公司认证 提交文件
  * 返回值 @{@link CompanyCertResult}
  */
-class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
+public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
     /**
      * 认证参数
      */
@@ -47,14 +47,14 @@ class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                 .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }
 
-    CompanyActivityCompanySubmitFileBinding binding;
+    TksComponentsCompanyActivityCompanySubmitFileBinding binding;
     CompanyCertParams companyCertParams;
     BaseFragmentAdapter baseFragmentAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = CompanyActivityCompanySubmitFileBinding.inflate(getLayoutInflater());
+        binding = TksComponentsCompanyActivityCompanySubmitFileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
