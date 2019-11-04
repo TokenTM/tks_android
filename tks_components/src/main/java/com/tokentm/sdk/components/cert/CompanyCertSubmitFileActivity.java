@@ -5,24 +5,31 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.SparseArray;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanySubmitFileBinding;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
+import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.source.CertRepositoryImpl;
+import com.tokentm.sdk.source.CertService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.utils.FragmentUtils;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.arch.widget.BaseFragmentAdapter;
 
 import java.io.File;
-import java.util.Arrays;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -49,7 +56,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
     TksComponentsCompanyActivityCompanySubmitFileBinding binding;
     CompanyCertParams companyCertParams;
-    BaseFragmentAdapter baseFragmentAdapter;
+    SparseArray<Fragment> fragmentSparseArray = new SparseArray<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +64,9 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         binding = TksComponentsCompanyActivityCompanySubmitFileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
+        loadData();
     }
+
 
     private void initView() {
         setTitle("企业认证");
@@ -65,19 +74,19 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
         binding.companyNameTv.setText(companyCertParams.getCompanyName());
         binding.companyCreditCodeTv.setText(companyCertParams.getCompanyCreditCode());
-        binding.legalPersonNameTv.setText(companyCertParams.getLegalPersonName());
 
-        binding.tabLayout.setupWithViewPager(binding.viewPager);
 
-        binding.viewPager.setAdapter(baseFragmentAdapter = new BaseFragmentAdapter(getSupportFragmentManager()));
-        baseFragmentAdapter.bindTitle(true, Arrays.asList("营业执照认证", "公函认证"));
-
-        baseFragmentAdapter.bindData(true,
-                Arrays.asList(
-                        ChooseBusinessLicenseFragment.newInstance(companyCertParams),
-                        ChooseOfficialLetterFragment.newInstance(companyCertParams)
-                )
-        );
+        binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (checkedId == binding.rbBusinessLicense.getId()) {
+                    binding.companyCreditCodeTv.setHint("必填");
+                } else if (checkedId == binding.rbOfficialLetter.getId()) {
+                    binding.companyCreditCodeTv.setHint("选填");
+                }
+                FragmentUtils.switchFragment(getSupportFragmentManager(), getOrNewFragment(checkedId), binding.flContent.getId());
+            }
+        });
 
         binding.okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,15 +94,54 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                 companyCert();
             }
         });
+        binding.rbBusinessLicense.setChecked(true);
+
+        binding.companyUserTypeTv.setText(companyCertParams.getCompanyType() == CompanyType.TYPE_COMPANY ? "法定代表人" : "姓名");
+    }
+
+    private void loadData() {
+        TokenTmClient.getService(CertService.class)
+                .getUserCertByIDCardInfo(companyCertParams.getuDid())
+                .compose(XXF.bindToLifecycle(this))
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(new Consumer<CertUserInfoStoreItem>() {
+                    @Override
+                    public void accept(CertUserInfoStoreItem certUserInfoStoreItem) throws Exception {
+                        //实名认证的名字
+                        binding.legalPersonNameTv.setText(certUserInfoStoreItem.getName());
+                    }
+                });
+    }
+
+    private Fragment getOrNewFragment(@IdRes int checkedId) {
+        Fragment fragment = fragmentSparseArray.get(checkedId);
+        if (fragment == null) {
+            if (checkedId == binding.rbBusinessLicense.getId()) {
+                fragment = ChooseBusinessLicenseFragment.newInstance(companyCertParams);
+            } else if (checkedId == binding.rbOfficialLetter.getId()) {
+                fragment = ChooseOfficialLetterFragment.newInstance(companyCertParams);
+            } else {
+                throw new RuntimeException("no support");
+            }
+            fragmentSparseArray.put(checkedId, fragment);
+        }
+        return fragment;
     }
 
     private void companyCert() {
-        Fragment currFragment = baseFragmentAdapter.getFragmentsList().get(binding.tabLayout.getSelectedTabPosition());
+        if (binding.radioGroup.getCheckedRadioButtonId() == binding.rbBusinessLicense.getId()
+                && TextUtils.isEmpty(binding.companyCreditCodeTv.getText())) {
+            ToastUtils.showToast("请填写企业社会统一信用代码!");
+            return;
+        }
+
+        Fragment currFragment = getOrNewFragment(binding.radioGroup.getCheckedRadioButtonId());
         if (currFragment instanceof PicSelectPresenter) {
             PicSelectPresenter picSelectPresenter = (PicSelectPresenter) currFragment;
             String picPath = picSelectPresenter.getSelectedPic();
             if (TextUtils.isEmpty(picSelectPresenter.getSelectedPic())) {
-                ToastUtils.showToast(String.format("请上传%s的资料", baseFragmentAdapter.getPageTitle(binding.tabLayout.getSelectedTabPosition())));
+                RadioButton button = findViewById(binding.radioGroup.getCheckedRadioButtonId());
+                ToastUtils.showToast(String.format("请上传%s的资料", button.getText()));
                 return;
             }
             new UserIdentityPwdInputAlertDialog(this,
@@ -108,7 +156,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                                             pwd,
                                             companyCertParams.getCompanyName(),
                                             companyCertParams.getCompanyType(),
-                                            companyCertParams.getCompanyCreditCode(),
+                                            binding.companyCreditCodeTv.getText().toString().trim(),
                                             new File(picPath)
                                     )
                                     .compose(XXF.bindToLifecycle(CompanyCertSubmitFileActivity.this))

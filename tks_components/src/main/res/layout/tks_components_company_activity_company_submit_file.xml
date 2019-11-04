@@ -5,7 +5,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:showDividers="middle">
 
@@ -17,7 +17,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="12dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="12dp"
                 android:text="工商注册名字"
                 android:textColor="#ff374f66"
                 android:textSize="15sp" />
@@ -45,18 +48,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:padding="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="12dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="12dp"
                 android:text="统一社会信用代码"
                 android:textColor="#ff374f66"
                 android:textSize="15sp" />
 
-            <TextView
+            <EditText
                 android:id="@+id/company_credit_code_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="@null"
                 android:ellipsize="end"
                 android:gravity="right|center_vertical"
+                android:hint="必填"
                 android:maxLines="1"
                 android:paddingRight="15dp"
                 android:textColor="#ff374f66"
@@ -70,10 +78,14 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/company_user_type_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:padding="15dp"
+                android:paddingLeft="15dp"
+                android:paddingTop="12dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="12dp"
                 android:text="姓名/法人"
                 android:textColor="#ff374f66"
                 android:textSize="15sp" />
@@ -92,15 +104,44 @@
                 tools:text="诸葛亮" />
         </LinearLayout>
 
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayout"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable" />
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
+            <RadioButton
+                android:id="@+id/rb_business_license"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableLeft="@drawable/tks_components_checked_selector"
+                android:drawablePadding="5dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="营业执照认证"
+                android:textColor="#ff374f66"
+                android:textSize="15sp" />
+
+            <RadioButton
+                android:id="@+id/rb_official_letter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:button="@null"
+                android:drawableLeft="@drawable/tks_components_checked_selector"
+                android:drawablePadding="5dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:text="公函认证"
+                android:textColor="#ff374f66"
+                android:textSize="15sp" />
+        </RadioGroup>
+
+        <FrameLayout
+            android:id="@+id/fl_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1" />

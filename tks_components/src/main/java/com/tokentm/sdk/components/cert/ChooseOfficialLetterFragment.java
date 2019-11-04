@@ -105,7 +105,7 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
                     public ObservableSource<File> apply(Bitmap bitmap) throws Exception {
                         return SystemUtils.saveImageToAlbum(
                                 getActivity(),
-                                String.format("%s_%s.png", companyCertParams.getCompanyName(), companyCertParams.getLegalPersonName()), getViewBitmap(bitmapView)
+                                String.format("%s.png", companyCertParams.getCompanyName()), getViewBitmap(bitmapView)
                         );
                     }
                 })
@@ -156,7 +156,7 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
                                         companyCertParams.getuDid(),
                                         companyCertParams.getCompanyName(),
                                         certUserInfoStoreItem.getIdentityCode(),
-                                        companyCertParams.getLegalPersonName())
+                                        certUserInfoStoreItem.getName())
                                 .map(new Function<InputStream, Bitmap>() {
                                     @Override
                                     public Bitmap apply(InputStream inputStream) throws Exception {

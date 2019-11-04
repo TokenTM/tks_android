@@ -19,7 +19,6 @@ public class CompanyCertParams implements Serializable {
                 ", companyType=" + companyType +
                 ", companyName='" + companyName + '\'' +
                 ", companyCreditCode='" + companyCreditCode + '\'' +
-                ", legalPersonName='" + legalPersonName + '\'' +
                 ", tag=" + tag +
                 '}';
     }
@@ -29,20 +28,17 @@ public class CompanyCertParams implements Serializable {
         private CompanyType companyType;
         private String companyName;
         private String companyCreditCode;
-        private String legalPersonName;
         private Serializable tag;
 
-        public Builder(@NonNull String uDid, @NonNull String companyName, @NonNull String legalPersonName) {
+        public Builder(@NonNull String uDid, @NonNull String companyName) {
             this.uDid = Objects.requireNonNull(uDid);
             this.companyName = Objects.requireNonNull(companyName);
-            this.legalPersonName = Objects.requireNonNull(legalPersonName);
         }
 
         public Builder(CompanyCertParams companyCertParams) {
             this.uDid = companyCertParams.uDid;
             this.companyName = companyCertParams.companyName;
             this.companyCreditCode = companyCertParams.companyCreditCode;
-            this.legalPersonName = companyCertParams.legalPersonName;
             this.companyType = companyCertParams.companyType;
             this.tag = companyCertParams.tag;
         }
@@ -63,7 +59,7 @@ public class CompanyCertParams implements Serializable {
         }
 
         public CompanyCertParams build() {
-            return new CompanyCertParams(uDid, companyType, companyName, companyCreditCode, legalPersonName, tag);
+            return new CompanyCertParams(uDid, companyType, companyName, companyCreditCode, tag);
         }
     }
 
@@ -84,10 +80,6 @@ public class CompanyCertParams implements Serializable {
      */
     private String companyCreditCode;
 
-    /**
-     * 法人姓名
-     */
-    private String legalPersonName;
 
     /**
      * 自定义的tag
@@ -103,21 +95,16 @@ public class CompanyCertParams implements Serializable {
         return companyName;
     }
 
-    private CompanyCertParams(String uDid, CompanyType companyType, String companyName, String companyCreditCode, String legalPersonName, Serializable tag) {
+    private CompanyCertParams(String uDid, CompanyType companyType, String companyName, String companyCreditCode, Serializable tag) {
         this.uDid = uDid;
         this.companyType = companyType;
         this.companyName = companyName;
         this.companyCreditCode = companyCreditCode;
-        this.legalPersonName = legalPersonName;
         this.tag = tag;
     }
 
     public String getCompanyCreditCode() {
         return companyCreditCode;
-    }
-
-    public String getLegalPersonName() {
-        return legalPersonName;
     }
 
     public Serializable getTag() {

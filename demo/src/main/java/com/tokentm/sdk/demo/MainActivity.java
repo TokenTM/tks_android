@@ -84,7 +84,7 @@ public class MainActivity extends FragmentActivity {
                 }
                 ComponentUtils.launchCompanyCertActivity(
                         MainActivity.this,
-                        new CompanyCertParams.Builder(did, "北京百度科技有限公司", "李彦宏").build(),
+                        new CompanyCertParams.Builder(did, "北京百度科技有限公司").build(),
                         new Consumer<CompanyCertResult>() {
                             @Override
                             public void accept(CompanyCertResult companyCertResult) throws Exception {
