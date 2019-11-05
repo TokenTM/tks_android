@@ -38,7 +38,7 @@
                 android:onClick="@{titleBar.getTitleBarLeftIconListener()}"
                 android:scaleType="centerInside"
                 android:src="@{titleBar.getTitleBarLeftIcon()}"
-                tools:src="@mipmap/arch_ic_title_back" />
+                tools:src="@mipmap/tks_components_ic_title_back" />
         </LinearLayout>
 
         <LinearLayout

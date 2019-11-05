@@ -28,7 +28,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/user_dialog_get_phone_code_bg"
+                android:background="@mipmap/tks_components_user_dialog_get_phone_code_bg"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -134,7 +134,7 @@
             android:layout_width="85dp"
             android:layout_height="99dp"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/user_dialog_get_phone_code_top" />
+            android:src="@mipmap/tks_components_user_dialog_get_phone_code_top" />
     </FrameLayout>
 
 </layout>

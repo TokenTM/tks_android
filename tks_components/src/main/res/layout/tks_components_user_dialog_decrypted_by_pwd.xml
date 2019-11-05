@@ -25,7 +25,7 @@
                 <ImageView
                     android:layout_width="306dp"
                     android:layout_height="wrap_content"
-                    android:src="@mipmap/user_dialog_top_bg" />
+                    android:src="@mipmap/tks_components_user_dialog_top_bg" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/user_dialog_top" />
+            android:src="@mipmap/tks_components_user_dialog_top" />
     </FrameLayout>
 
 </layout>

@@ -98,7 +98,7 @@
                 android:layout_height="140dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="17dp"
-                android:background="@mipmap/upload_idcard_front"
+                android:background="@mipmap/tks_components_upload_idcard_front"
                 android:onClick="@{()->presenter.onSelectPic(viewModel.userIDCardFrontPic)}"
                 android:scaleType="centerCrop"
                 android:src="@{viewModel.userIDCardFrontPic}" />
@@ -108,7 +108,7 @@
                 android:layout_height="140dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="17dp"
-                android:background="@mipmap/upload_idcard_back"
+                android:background="@mipmap/tks_components_upload_idcard_back"
                 android:onClick="@{()->presenter.onSelectPic(viewModel.userIDCardBackPic)}"
                 android:scaleType="centerCrop"
                 android:src="@{viewModel.userIDCardBackPic}" />
@@ -118,7 +118,7 @@
                 android:layout_height="140dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="17dp"
-                android:background="@mipmap/upload_idcard_handed"
+                android:background="@mipmap/tks_components_upload_idcard_handed"
                 android:onClick="@{()->presenter.onSelectPic(viewModel.userIDCardHandedPic)}"
                 android:scaleType="centerCrop"
                 android:src="@{viewModel.userIDCardHandedPic}" />

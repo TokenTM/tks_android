@@ -20,6 +20,6 @@ public class TokenTitleBar extends TitleBar {
         //默认
         this.setTitleBarBackground(new ColorDrawable(0xFF00C1CE));
         this.setTitleBarHeight(DensityUtil.dip2px(44));
-        this.setTitleBarLeftIcon(R.mipmap.arch_ic_title_back, backAction);
+        this.setTitleBarLeftIcon(R.mipmap.tks_components_ic_title_back, backAction);
     }
 }
