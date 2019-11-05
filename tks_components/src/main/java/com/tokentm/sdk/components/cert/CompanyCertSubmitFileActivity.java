@@ -22,7 +22,6 @@ import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.model.CompanyType;
-import com.tokentm.sdk.source.CertRepositoryImpl;
 import com.tokentm.sdk.source.CertService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -150,8 +149,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                         @Override
                         public void accept(DialogInterface dialogInterface, String pwd) throws Exception {
                             dialogInterface.dismiss();
-                            CertRepositoryImpl
-                                    .getInstance()
+                            TokenTmClient.getService(CertService.class)
                                     .companyCert(companyCertParams.getuDid(),
                                             pwd,
                                             companyCertParams.getCompanyName(),
