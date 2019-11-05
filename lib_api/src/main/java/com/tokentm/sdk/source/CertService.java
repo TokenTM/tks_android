@@ -1,10 +1,12 @@
 package com.tokentm.sdk.source;
 
+import com.tokentm.sdk.model.CertRecord;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.model.CompanyType;
 
 import java.io.File;
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -76,6 +78,14 @@ public interface CertService extends RepoService {
      * @param cDID
      * @return
      */
-    Observable<Boolean> iscompanyCert(String cDID);
+    Observable<Boolean> isCompanyCert(String cDID);
+
+    /**
+     * 获取认证记录
+     *
+     * @param DIDs
+     * @return
+     */
+    Observable<List<CertRecord>> getCertRecords(List<String> DIDs);
 
 }

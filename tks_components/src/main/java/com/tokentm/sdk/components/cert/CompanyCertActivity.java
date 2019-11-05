@@ -53,6 +53,7 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
+        setTitle("选择企业类型");
         companyCertParams = (CompanyCertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
         binding.llCompany.setOnClickListener(new View.OnClickListener() {
             @Override

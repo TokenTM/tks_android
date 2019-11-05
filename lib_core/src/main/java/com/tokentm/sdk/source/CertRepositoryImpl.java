@@ -8,6 +8,7 @@ import com.tokentm.sdk.api.CertApiServce;
 import com.tokentm.sdk.api.CertProxyApiService;
 import com.tokentm.sdk.common.encrypt.SignUtils;
 import com.tokentm.sdk.http.ResponseDTOSimpleFunction;
+import com.tokentm.sdk.model.CertRecord;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.CompanyCertProxyReqBodyDTO;
 import com.tokentm.sdk.model.CompanyCertReqBodyDTO;
@@ -23,6 +24,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.json.JsonUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -461,10 +463,16 @@ public class CertRepositoryImpl implements CertService, BaseRepo {
     }
 
     @Override
-    public Observable<Boolean> iscompanyCert(String cDID) {
+    public Observable<Boolean> isCompanyCert(String cDID) {
         return XXF.getApiService(CertProxyApiService.class)
                 .isCompanyCert(cDID)
                 .map(new ResponseDTOSimpleFunction<Boolean>());
+    }
+
+    @Override
+    public Observable<List<CertRecord>> getCertRecords(List<String> DIDs) {
+        //TODO 实现 @youxuan
+        return Observable.just(new ArrayList<>());
     }
 
 
