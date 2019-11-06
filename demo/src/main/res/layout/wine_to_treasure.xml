@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/bt_create_property_rights_transfer_records"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="物权转移记录"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bt_create_enterprise_certification_dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="创建企业认证弹窗"
+                tools:ignore="MissingConstraints" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

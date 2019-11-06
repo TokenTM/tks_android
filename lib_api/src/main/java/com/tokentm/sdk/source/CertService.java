@@ -1,9 +1,9 @@
 package com.tokentm.sdk.source;
 
-import com.tokentm.sdk.model.CertRecord;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.model.CompanyType;
+import com.tokentm.sdk.model.UserPropertyRightsTransferRecords;
 
 import java.io.File;
 import java.util.List;
@@ -81,11 +81,11 @@ public interface CertService extends RepoService {
     Observable<Boolean> isCompanyCert(String cDID);
 
     /**
-     * 获取认证记录
+     * 获取用户物权转移记录
      *
      * @param DIDs
      * @return
      */
-    Observable<List<CertRecord>> getCertRecords(List<String> DIDs);
+    Observable<List<UserPropertyRightsTransferRecords>> getPropertyRightsTransferRecords(List<String> DIDs);
 
 }

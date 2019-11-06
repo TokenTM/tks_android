@@ -94,5 +94,13 @@ public class MainActivity extends FragmentActivity {
                         });
             }
         });
+        //开启酒来宝页面
+        binding.btWineToTreasure.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("CheckResult")
+            @Override
+            public void onClick(View v) {
+                v.getContext().startActivity(WineToTreasureActivity.getLauncher(v.getContext()));
+            }
+        });
     }
 }
