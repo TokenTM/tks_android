@@ -19,12 +19,12 @@
                 tools:ignore="MissingConstraints" />
 
             <Button
-                android:id="@+id/bt_create_enterprise_certification_dialog"
+                android:id="@+id/bt_create_certification_instructions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="创建企业认证弹窗"
+                android:text="认证说明"
                 tools:ignore="MissingConstraints" />
         </LinearLayout>
     </ScrollView>

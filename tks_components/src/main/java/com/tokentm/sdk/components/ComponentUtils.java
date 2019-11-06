@@ -68,7 +68,6 @@ public class ComponentUtils {
      * @param consumer
      */
     public static void launchUserIdentityPwdAReSetctivity(FragmentActivity activity, String uDID, String phone, Consumer<Boolean> consumer) {
-        UserIdentityPwdReSetActivity.launch(activity, uDID, phone);
         XXF.startActivityForResult(activity,
                 UserIdentityPwdReSetActivity.getLauncher(activity, uDID, phone),
                 7001)

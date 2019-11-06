@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.tokentm.sdk.components.cert.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.demo.databinding.WineToTreasureBinding;
 
@@ -38,11 +39,11 @@ public class WineToTreasureActivity extends FragmentActivity {
                 v.getContext().startActivity(PropertyRightsTransferRecordsActivity.getLauncher(v.getContext()));
             }
         });
-        //开启企业认证弹窗
-        binding.btCreateEnterpriseCertificationDialog.setOnClickListener(new View.OnClickListener() {
+        //开启认证说明
+        binding.btCreateCertificationInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                v.getContext().startActivity(new Intent(v.getContext(), PropertyRightsTransferRecordsActivity.class));
+                v.getContext().startActivity(new Intent(v.getContext(), CertificationInstructionsActivity.class));
             }
         });
     }
