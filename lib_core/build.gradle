@@ -71,11 +71,6 @@ android {
             readConfig(it);
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        innertest {
-            minifyEnabled false//true开启混淆配置，false关闭
-            readConfig(it);
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
         release {
             minifyEnabled false//true开启混淆配置，false关闭
             readConfig(it);
@@ -86,6 +81,9 @@ android {
         main {
             jniLibs.srcDirs = ['libs']
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 dependencies {
