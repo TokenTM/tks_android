@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 //读取module配置文件
 def readConfig(def buildType) {
     def configFileName;
