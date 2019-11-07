@@ -1,4 +1,4 @@
-package com.tokentm.sdk.demo;
+package com.tokentm.sdk.uidemo;
 
 import com.tokentm.sdk.common.SharedPreferenceWrapper;
 import com.xxf.arch.XXF;
