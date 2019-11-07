@@ -7,7 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.tokentm.sdk.components.cert.CertificationInstructionsActivity;
+import com.tokentm.sdk.components.identitypwd.CertificationDetailsActivity;
+import com.tokentm.sdk.components.identitypwd.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.identitypwd.EnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.IdentityAuthenticationAlertDialog;
@@ -50,6 +51,13 @@ public class WineToTreasureActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 v.getContext().startActivity(new Intent(v.getContext(), CertificationInstructionsActivity.class));
+            }
+        });
+        //开启认证详情
+        binding.btCreateCertificationDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.getContext().startActivity(new Intent(v.getContext(), CertificationDetailsActivity.class));
             }
         });
 

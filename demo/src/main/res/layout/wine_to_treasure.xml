@@ -28,6 +28,15 @@
                 tools:ignore="MissingConstraints" />
 
             <Button
+                android:id="@+id/bt_create_certification_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="认证详情"
+                tools:ignore="MissingConstraints" />
+
+            <Button
                 android:id="@+id/bt_create_identity_authentication"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

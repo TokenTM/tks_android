@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.cert;
+package com.tokentm.sdk.components.identitypwd;
 
 interface CertificationInstructionsPresenter {
 }
