@@ -1,4 +1,4 @@
-package com.tokentm.sdk.demo;
+package com.tokentm.sdk.uidemo;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +11,7 @@ import com.tokentm.sdk.components.cert.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.identitypwd.EnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.IdentityAuthenticationAlertDialog;
-import com.tokentm.sdk.demo.databinding.WineToTreasureBinding;
+import com.tokentm.sdk.uidemo.databinding.WineToTreasureBinding;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;

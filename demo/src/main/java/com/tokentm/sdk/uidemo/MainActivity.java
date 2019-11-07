@@ -10,8 +10,8 @@ import android.view.View;
 import com.tokentm.sdk.components.ComponentUtils;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
-import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.Consumer;
