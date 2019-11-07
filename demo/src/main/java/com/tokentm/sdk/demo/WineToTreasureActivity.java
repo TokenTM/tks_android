@@ -1,6 +1,7 @@
 package com.tokentm.sdk.demo;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -8,7 +9,12 @@ import android.view.View;
 
 import com.tokentm.sdk.components.cert.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
+import com.tokentm.sdk.components.identitypwd.EnterpriseCertificationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.IdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.demo.databinding.WineToTreasureBinding;
+import com.xxf.arch.utils.ToastUtils;
+
+import io.reactivex.functions.BiConsumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -46,5 +52,23 @@ public class WineToTreasureActivity extends FragmentActivity {
                 v.getContext().startActivity(new Intent(v.getContext(), CertificationInstructionsActivity.class));
             }
         });
+
+        binding.btCreateIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new EnterpriseCertificationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
+                    @Override
+                    public void accept(DialogInterface dialogInterface, Boolean s) throws Exception {
+                        new IdentityAuthenticationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
+                            @Override
+                            public void accept(DialogInterface dialogInterface, Boolean s) throws Exception {
+                                ToastUtils.showToast("身份认证");
+                            }
+                        }).show();
+                    }
+                }).show();
+            }
+        });
+
     }
 }
