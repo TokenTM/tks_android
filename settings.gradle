@@ -1,4 +1,4 @@
 include ':demo'
 include ':tks_components'
 include ':lib_crop'
-rootProject.name = 'tks_components'
+rootProject.name = 'token_components'
