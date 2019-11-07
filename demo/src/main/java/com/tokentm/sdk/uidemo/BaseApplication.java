@@ -1,4 +1,4 @@
-package com.tokentm.sdk.demo;
+package com.tokentm.sdk.uidemo;
 
 import android.app.Application;
 import android.util.Log;

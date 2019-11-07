@@ -1,4 +1,4 @@
-package com.tokentm.sdk.demo;
+package com.tokentm.sdk.uidemo;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.ComponentUtils;
-import com.tokentm.sdk.demo.databinding.DidActivityBinding;
+import com.tokentm.sdk.uidemo.databinding.DidActivityBinding;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;

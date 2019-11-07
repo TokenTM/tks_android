@@ -1,4 +1,4 @@
-package com.tokentm.sdk.demo;
+package com.tokentm.sdk.uidemo;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,9 +10,8 @@ import android.view.View;
 import com.tokentm.sdk.components.ComponentUtils;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
-import com.tokentm.sdk.demo.databinding.ActivityMainBinding;
+import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.model.CompanyCertResult;
-import com.tokentm.sdk.source.StoreService;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.Consumer;

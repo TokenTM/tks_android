@@ -1,4 +1,4 @@
-package com.tokentm.sdk.demo;
+package com.tokentm.sdk.uidemo;
 
 import android.app.Activity;
 import android.content.ClipData;
