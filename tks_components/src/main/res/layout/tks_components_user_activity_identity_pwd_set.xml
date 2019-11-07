@@ -214,7 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:text="温馨提示：身份密码将作为您链信名片的唯一身份凭证，用于领取您的区块链数字身份及保护您的数据安全。链信名片不存储您的任何密码信息，请放心设置。"
+                    android:text="温馨提示：身份密码将作为您链信宝的唯一身份凭证，用于领取您的区块链数字身份及保护您的数据安全。链信宝不存储您的任何密码信息，请放心设置。"
                     android:textColor="#ffff820e"
                     android:textSize="13sp" />
 

@@ -25,4 +25,5 @@ dependencies {
     implementation rootProject.ext.dependencies.design
     api 'com.github.TokenTM.tks_android_core:tks:0.0.6_test'
     api project(path: ':lib_crop')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'//正式版本
 }
