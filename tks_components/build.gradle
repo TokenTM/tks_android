@@ -23,6 +23,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.dependencies.design
-    implementation project(path: ':tks')
-    implementation project(path: ':lib_crop')
+    api 'com.github.TokenTM.tks_android_core:tks:0.0.4'
+    api project(path: ':lib_crop')
 }

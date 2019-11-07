@@ -48,11 +48,11 @@ public class UserCheckPrivateKeyDialog extends BaseAlertDialog<Boolean> implemen
 
 
     private void initView() {
-        UserCheckPrivateKeyVM viewModel = ViewModelProviders.of(mContext).get(UserCheckPrivateKeyVM.class);
+     /*   UserCheckPrivateKeyVM viewModel = ViewModelProviders.of(mContext).get(UserCheckPrivateKeyVM.class);
         binding.setPresenter(this);
         binding.setViewModel(viewModel);
         binding.inputPrivateKeyEt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(UserConfig.MAX_LENTH_PWD)});
-    }
+*/    }
 
     @Override
     public void show() {
