@@ -35,6 +35,15 @@
                 android:maxLines="1"
                 android:text="弹窗前往企业认证"
                 tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bt_create_private_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="弹窗输入私钥"
+                tools:ignore="MissingConstraints" />
         </LinearLayout>
     </ScrollView>
 </layout>

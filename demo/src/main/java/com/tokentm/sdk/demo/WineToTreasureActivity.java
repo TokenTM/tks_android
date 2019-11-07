@@ -11,6 +11,7 @@ import com.tokentm.sdk.components.cert.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.identitypwd.EnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.IdentityAuthenticationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserCheckPrivateKeyDialog;
 import com.tokentm.sdk.demo.databinding.WineToTreasureBinding;
 import com.xxf.arch.utils.ToastUtils;
 
@@ -67,6 +68,18 @@ public class WineToTreasureActivity extends FragmentActivity {
                         }).show();
                     }
                 }).show();
+            }
+        });
+
+        binding.btCreatePrivateKey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               new UserCheckPrivateKeyDialog(WineToTreasureActivity.this, new BiConsumer<DialogInterface, Boolean>() {
+                   @Override
+                   public void accept(DialogInterface dialogInterface, Boolean aBoolean) throws Exception {
+
+                   }
+               }).show();
             }
         });
 
