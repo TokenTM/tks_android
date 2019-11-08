@@ -2,14 +2,11 @@ package com.tokentm.sdk.components.cert.adapter;
 
 
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.tokentm.sdk.components.cert.recyclerview.BaseBindableAdapter;
 import com.tokentm.sdk.components.databinding.TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding;
-import com.tokentm.sdk.model.UserPropertyRightsTransferRecords;
 import com.xxf.view.recyclerview.adapter.BaseViewHolder;
 
 import java.text.SimpleDateFormat;
@@ -30,13 +27,13 @@ public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapte
             return;
         }
 
-        binding.userCertficationDateTv.setText(formatDate(userPropertyRightsTransferRecords.time));
-        binding.userCertficationActionTv.setText(userPropertyRightsTransferRecords.info);
-        binding.userCertficationTimeTv.setText(formatTime(userPropertyRightsTransferRecords.time));
-        binding.userCertficationCodeTv.setText(userPropertyRightsTransferRecords.txHash);
-
-        binding.userCertficationCodeLl.setVisibility(TextUtils.isEmpty(userPropertyRightsTransferRecords.txHash) ? View.GONE : View.VISIBLE);
-        binding.userCertficationTopLine.setVisibility(index > 0 ? View.VISIBLE : View.INVISIBLE);
+//        binding.userCertficationDateTv.setText(formatDate(userPropertyRightsTransferRecords.time));
+//        binding.userCertficationActionTv.setText(userPropertyRightsTransferRecords.info);
+//        binding.userCertficationTimeTv.setText(formatTime(userPropertyRightsTransferRecords.time));
+//        binding.userCertficationCodeTv.setText(userPropertyRightsTransferRecords.txHash);
+//
+//        binding.userCertficationCodeLl.setVisibility(TextUtils.isEmpty(userPropertyRightsTransferRecords.txHash) ? View.GONE : View.VISIBLE);
+//        binding.userCertficationTopLine.setVisibility(index > 0 ? View.VISIBLE : View.INVISIBLE);
     }
 
     private String formatTime(long time) {

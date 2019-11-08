@@ -1,9 +1,9 @@
 package com.tokentm.sdk.components.identitypwd;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
 import com.tokentm.sdk.components.databinding.TksComponentsUserFragmentCertificationDetailsBinding;
 
@@ -11,27 +11,13 @@ import com.tokentm.sdk.components.databinding.TksComponentsUserFragmentCertifica
  * @author lqx  E-mail:herolqx@126.com
  * @Description 认证详情 被添加到认证说明activity和认证详情activity中作为共有显示
  */
-public class UserCertificationDetailsFragment extends BaseFragment {
-    /**
-     * 认证参数
-     */
-    private static final String KEY_CERT_PARAMS = "companyCertParams";
-
-    public static UserCertificationDetailsFragment newInstance(CompanyCertParams companyCertParams) {
-        UserCertificationDetailsFragment fragment = new UserCertificationDetailsFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(KEY_CERT_PARAMS, companyCertParams);
-        fragment.setArguments(args);
-        return fragment;
-    }
+public class UserCertificationDetailsFragment extends BaseFragment implements CompanyCertificationInstructionsPresenter {
 
     public static UserCertificationDetailsFragment newInstance() {
         return new UserCertificationDetailsFragment();
     }
 
     TksComponentsUserFragmentCertificationDetailsBinding binding;
-    CompanyCertParams companyCertParams;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +28,10 @@ public class UserCertificationDetailsFragment extends BaseFragment {
     }
 
     private void initView() {
-//        companyCertParams = (CompanyCertParams) getArguments().getSerializable(KEY_CERT_PARAMS);
+        CompanyCertificationInstructionsVM viewModel = ViewModelProviders.of(this).get(CompanyCertificationInstructionsVM.class);
+        binding.setViewModel(viewModel);
+        binding.setPresenter(this);
+        viewModel.loadData(this);
     }
 
 }

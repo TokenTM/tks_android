@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsVM" />
+
+        <!--认证说明-->
+        <variable
+            name="presenter"
+            type="com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsPresenter" />
+    </data>
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="0x0c8f89da973e6a130e29834af824f82"
+                android:text="@={viewModel.txHash}"
                 android:textColor="#ff737785"
                 android:textSize="13sp" />
 
@@ -73,7 +84,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="成功"
+                    android:text="@={viewModel.chainStateDesc}"
                     android:textColor="#52C41B"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -96,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="8263777"
+                android:text="@={viewModel.block}"
                 android:textColor="#ff737785"
                 android:textSize="13sp" />
 
@@ -118,7 +129,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Nov-14-2018 12:22:06 PM UTC+8"
+                android:text="@={viewModel.timesTamp}"
                 android:textColor="#ff737785"
                 android:textSize="13sp" />
 
@@ -140,7 +151,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="0x0c8f89da973e6a130e29834af824f82"
+                android:text="@={viewModel.fromAddr}"
                 android:textColor="#ff737785"
                 android:textSize="13sp" />
 
@@ -162,7 +173,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="0x0c8f89da973e6a130e29834af824f82"
+                android:text="@={viewModel.toAddr}"
                 android:textColor="#ff737785"
                 android:textSize="13sp" />
 

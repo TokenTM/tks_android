@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.tokentm.sdk.components.ComponentUtils;
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.uidemo.databinding.WineToTreasureBinding;
 
@@ -18,7 +18,7 @@ import io.reactivex.functions.Consumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 酒来宝测试页面
  */
-public class WineToTreasureActivity extends FragmentActivity {
+public class WineToTreasureActivity extends BaseTitleBarActivity {
 
 
     WineToTreasureBinding binding;
@@ -36,6 +36,7 @@ public class WineToTreasureActivity extends FragmentActivity {
     }
 
     private void initView() {
+        setTitle("酒来宝");
         //开启物权转移记录
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override

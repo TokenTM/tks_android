@@ -1,4 +1,4 @@
 package com.tokentm.sdk.components.identitypwd;
 
-interface CompanyCertificationInstructionsPresenter {
+public interface CompanyCertificationInstructionsPresenter {
 }

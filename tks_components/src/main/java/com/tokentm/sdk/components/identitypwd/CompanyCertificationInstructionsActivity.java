@@ -13,7 +13,7 @@ import com.xxf.arch.utils.FragmentUtils;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 认证说明
  */
-public class CompanyCertificationInstructionsActivity extends BaseTitleBarActivity implements CompanyCertificationInstructionsPresenter {
+public class CompanyCertificationInstructionsActivity extends BaseTitleBarActivity{
 
     TksComponentsCompanyActivityCertificationInstructionsBinding binding;
 
@@ -28,6 +28,8 @@ public class CompanyCertificationInstructionsActivity extends BaseTitleBarActivi
         setContentView(binding.getRoot());
         initView();
     }
+
+
 
 
     private void initView() {
