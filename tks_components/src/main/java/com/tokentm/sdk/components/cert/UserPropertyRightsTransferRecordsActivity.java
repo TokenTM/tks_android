@@ -6,14 +6,22 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.adapter.UserPropertyRightsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityPropertyRightsTransferRecordsBinding;
+import com.tokentm.sdk.model.CommodityOwnershipRecordDTO;
+import com.tokentm.sdk.source.CommodityService;
+import com.xxf.arch.XXF;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.view.databinding.statelayout.IStateLayoutVM;
 import com.xxf.view.databinding.statelayout.StateLayoutVM;
 import com.xxf.view.loading.ViewState;
 
+import java.util.List;
+
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -62,15 +70,14 @@ public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActiv
      * 加载数据
      */
     private void loadData() {
-//        TokenTmClient.getService(CertService.class)
-//                .getPropertyRightsTransferRecords(null)
-//                .compose(XXF.bindToLifecycle(this))
-//                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-//                .subscribe(new Consumer<List<UserPropertyRightsTransferRecords>>() {
-//                    @Override
-//                    public void accept(List<UserPropertyRightsTransferRecords> userPropertyRightsTransferRecords) throws Exception {
-//                        userCertificationRecordAdapter.bindData(true,userPropertyRightsTransferRecords);
-//                    }
-//                });
+        TokenTmClient.getService(CommodityService.class).getOwnershipRecords("1")
+                .compose(XXF.bindToLifecycle(this))
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .subscribe(new Consumer<List<CommodityOwnershipRecordDTO>>() {
+                    @Override
+                    public void accept(List<CommodityOwnershipRecordDTO> commodityOwnershipRecordDTOS) throws Exception {
+                        userCertificationRecordAdapter.bindData(true, commodityOwnershipRecordDTOS);
+                    }
+                });
     }
 }

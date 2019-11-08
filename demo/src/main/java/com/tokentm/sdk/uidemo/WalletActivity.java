@@ -1,6 +1,5 @@
 package com.tokentm.sdk.uidemo;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -12,11 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+
 import java.io.File;
 
 import io.reactivex.annotations.NonNull;
 
-public class WalletActivity extends Activity {
+public class WalletActivity extends BaseTitleBarActivity {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, WalletActivity.class);
@@ -44,7 +45,7 @@ public class WalletActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wallet_main);
-
+        setTitle("加密");
         decode_keystore_et = findViewById(R.id.decode_keystore_et);
         decode_pwd_et = findViewById(R.id.decode_pwd_et);
         decode_keystore_tv = findViewById(R.id.decode_keystore_tv);

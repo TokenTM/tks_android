@@ -3,18 +3,18 @@ package com.tokentm.sdk.uidemo;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.ComponentUtils;
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.uidemo.databinding.DidActivityBinding;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
-public class DidDemoActivity extends FragmentActivity {
+public class DidDemoActivity extends BaseTitleBarActivity {
     DidActivityBinding binding;
 
     @Override
@@ -35,7 +35,7 @@ public class DidDemoActivity extends FragmentActivity {
     }
 
     private void initView() {
-
+        setTitle("Did创建");
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
