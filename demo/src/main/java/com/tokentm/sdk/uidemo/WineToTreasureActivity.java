@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import com.tokentm.sdk.components.cert.ChainCertificationActivity;
 import com.tokentm.sdk.components.identitypwd.CertificationDetailsActivity;
 import com.tokentm.sdk.components.identitypwd.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
@@ -60,7 +61,7 @@ public class WineToTreasureActivity extends FragmentActivity {
                 v.getContext().startActivity(new Intent(v.getContext(), CertificationDetailsActivity.class));
             }
         });
-
+        //开启企业认证
         binding.btCreateIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +76,13 @@ public class WineToTreasureActivity extends FragmentActivity {
                         }).show();
                     }
                 }).show();
+            }
+        });
+        //开启连心认证
+        binding.btCreateChainCertification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChainCertificationActivity.launch(v.getContext());
             }
         });
 

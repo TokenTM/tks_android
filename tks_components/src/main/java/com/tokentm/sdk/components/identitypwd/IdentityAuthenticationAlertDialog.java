@@ -19,7 +19,6 @@ import io.reactivex.functions.BiConsumer;
  */
 public class IdentityAuthenticationAlertDialog extends BaseAlertDialog<Boolean> implements IdentityAuthenticationPresenter{
 
-
     private TksComponentsDialogIdentityAuthenticationBinding binding;
 
     public IdentityAuthenticationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
