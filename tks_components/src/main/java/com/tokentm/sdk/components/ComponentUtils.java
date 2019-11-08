@@ -6,10 +6,16 @@ import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
+import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
+import com.tokentm.sdk.components.cert.UserPropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.identitypwd.CompanyCertificationDetailsActivity;
+import com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsActivity;
+import com.tokentm.sdk.components.identitypwd.CompanyCompanyEnterpriseCertificationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserIdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdDecryptDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputWithStampAnimAlertDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
@@ -127,6 +133,27 @@ public class ComponentUtils {
     }
 
     /**
+     * show 企业认证 dialog
+     *
+     * @param activity
+     * @param dialogConsumer
+     */
+    public static void showCompanyCompanyEnterpriseCertificationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+        new CompanyCompanyEnterpriseCertificationAlertDialog(activity, dialogConsumer)
+                .show();
+    }
+
+    /**
+     * show 身份认证 dialog
+     *
+     * @param activity
+     * @param dialogConsumer
+     */
+    public static void showUserIdentityAuthenticationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+        new UserIdentityAuthenticationAlertDialog(activity, dialogConsumer).show();
+    }
+
+    /**
      * 启动用户实名认证 页面
      *
      * @param activity
@@ -191,5 +218,111 @@ public class ComponentUtils {
                 .subscribe(consumer);
     }
 
+    /**
+     * 启动 物权转移 页面
+     *
+     * @param activity
+     * @param consumer
+     */
+    @SuppressLint("CheckResult")
+    public static void launchUserPropertyRightsTransferRecordsActivity(FragmentActivity activity, Consumer<CompanyCertResult> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                UserPropertyRightsTransferRecordsActivity.getLauncher(activity), 7101)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .map(new Function<ActivityResult, CompanyCertResult>() {
+                    @Override
+                    public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
+                        return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(consumer);
+    }
 
+    /**
+     * 启动 认证说明 页面
+     *
+     * @param activity
+     * @param consumer
+     */
+    public static void launchCompanyCertificationInstructionsActivity(FragmentActivity activity, Consumer<CompanyCertResult> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                CompanyCertificationInstructionsActivity.getLauncher(activity), 7101)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .map(new Function<ActivityResult, CompanyCertResult>() {
+                    @Override
+                    public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
+                        return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(consumer);
+    }
+
+    /**
+     * 启动 认证详情 页面
+     *
+     * @param activity
+     * @param consumer
+     */
+    public static void launchUserCertificationDetailsActivity(FragmentActivity activity, Consumer<CompanyCertResult> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                CompanyCertificationDetailsActivity.getLauncher(activity), 7101)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .map(new Function<ActivityResult, CompanyCertResult>() {
+                    @Override
+                    public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
+                        return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(consumer);
+    }
+
+    /**
+     * 开启链信认证
+     * @param activity
+     * @param consumer
+     */
+    public static void launchCompanyChainCertificationActivity(FragmentActivity activity, Consumer<CompanyCertResult> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                CompanyChainCertificationActivity.getLauncher(activity), 7101)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .map(new Function<ActivityResult, CompanyCertResult>() {
+                    @Override
+                    public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
+                        return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(consumer);
+    }
 }

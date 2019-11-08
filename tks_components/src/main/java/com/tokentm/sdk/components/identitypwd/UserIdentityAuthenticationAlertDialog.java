@@ -17,11 +17,11 @@ import io.reactivex.functions.BiConsumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 前往身份认证弹窗
  */
-public class UserUserIdentityAuthenticationAlertDialog extends BaseAlertDialog<Boolean> implements UserIdentityAuthenticationPresenter {
+public class UserIdentityAuthenticationAlertDialog extends BaseAlertDialog<Boolean> implements UserIdentityAuthenticationPresenter {
 
     private TksComponentsUserDialogIdentityAuthenticationBinding binding;
 
-    public UserUserIdentityAuthenticationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+    public UserIdentityAuthenticationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
         super(context, dialogConsumer);
     }
 

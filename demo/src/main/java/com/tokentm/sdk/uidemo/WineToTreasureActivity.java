@@ -7,16 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
-import com.tokentm.sdk.components.identitypwd.CompanyCompanyEnterpriseCertificationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.UserCertificationDetailsActivity;
-import com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsActivity;
-import com.tokentm.sdk.components.cert.UserUserPropertyRightsTransferRecordsActivity;
-import com.tokentm.sdk.components.identitypwd.UserUserIdentityAuthenticationAlertDialog;
+import com.tokentm.sdk.components.ComponentUtils;
+import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.uidemo.databinding.WineToTreasureBinding;
-import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Consumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -44,45 +40,88 @@ public class WineToTreasureActivity extends FragmentActivity {
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(UserUserPropertyRightsTransferRecordsActivity.getLauncher(v.getContext()));
+                ComponentUtils.launchUserPropertyRightsTransferRecordsActivity(
+                        WineToTreasureActivity.this,
+                        new Consumer<CompanyCertResult>() {
+                            @Override
+                            public void accept(CompanyCertResult companyCertResult) throws Exception {
+                                //TODO 处理物权转移记录返回值
+                            }
+                        });
             }
         });
         //开启认证说明
         binding.btCreateCertificationInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(), CompanyCertificationInstructionsActivity.class));
+                ComponentUtils.launchCompanyCertificationInstructionsActivity(
+                        WineToTreasureActivity.this,
+                        new Consumer<CompanyCertResult>() {
+                            @Override
+                            public void accept(CompanyCertResult companyCertResult) throws Exception {
+                                //TODO 处理认证说明返回值
+                            }
+                        });
             }
         });
         //开启认证详情
         binding.btCreateCertificationDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(), UserCertificationDetailsActivity.class));
+                ComponentUtils.launchUserCertificationDetailsActivity(
+                        WineToTreasureActivity.this,
+                        new Consumer<CompanyCertResult>() {
+                            @Override
+                            public void accept(CompanyCertResult companyCertResult) throws Exception {
+                                //TODO 处理认证详情返回值
+                            }
+                        });
             }
         });
-        //开启企业认证
+        //开启 企业认证 弹窗
         binding.btCreateIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new CompanyCompanyEnterpriseCertificationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
-                    @Override
-                    public void accept(DialogInterface dialogInterface, Boolean s) throws Exception {
-                        new UserUserIdentityAuthenticationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
+                ComponentUtils.showCompanyCompanyEnterpriseCertificationAlertDialog(
+                        WineToTreasureActivity.this,
+                        new BiConsumer<DialogInterface, Boolean>() {
                             @Override
-                            public void accept(DialogInterface dialogInterface, Boolean s) throws Exception {
-                                ToastUtils.showToast("身份认证");
+                            public void accept(DialogInterface dialogInterface, Boolean identityPwd) throws Exception {
+                                dialogInterface.dismiss();
+                                //TODO 点击下一步回调
                             }
-                        }).show();
-                    }
-                }).show();
+                        });
+            }
+        });
+
+        //开启 身份认证 弹窗
+        binding.btCreateUserIdentityAuthenticationAlertDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ComponentUtils.showUserIdentityAuthenticationAlertDialog(
+                        WineToTreasureActivity.this,
+                        new BiConsumer<DialogInterface, Boolean>() {
+                            @Override
+                            public void accept(DialogInterface dialogInterface, Boolean identityPwd) throws Exception {
+                                dialogInterface.dismiss();
+                                //TODO 点击下一步回调
+                            }
+                        });
             }
         });
         //开启链信认证
         binding.btCreateChainCertification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CompanyChainCertificationActivity.launch(v.getContext());
+                ComponentUtils.launchCompanyChainCertificationActivity(
+                        WineToTreasureActivity.this,
+                        new Consumer<CompanyCertResult>() {
+                            @Override
+                            public void accept(CompanyCertResult companyCertResult) throws Exception {
+                                //TODO 处理开启链信认证回值
+                            }
+                        });
+
             }
         });
 

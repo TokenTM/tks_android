@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityChainCertificationBinding;
 
@@ -15,22 +14,9 @@ import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityChainC
  * @Description 链信认证
  */
 public class CompanyChainCertificationActivity extends BaseTitleBarActivity {
-    /**
-     * 认证参数
-     */
-    private static final String KEY_CERT_PARAMS = "companyCertParams";
 
-    public static void launch(Context context) {
-        context.startActivity(getLauncher(context, null));
-    }
-
-    public static void launch(Context context, CompanyCertParams companyCertParams) {
-        context.startActivity(getLauncher(context, companyCertParams));
-    }
-
-    private static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
-        return new Intent(context, CompanyChainCertificationActivity.class)
-                .putExtra(KEY_CERT_PARAMS, companyCertParams);
+    public static Intent getLauncher(Context context) {
+        return new Intent(context, CompanyChainCertificationActivity.class);
     }
 
     TksComponentsCompanyActivityChainCertificationBinding binding;

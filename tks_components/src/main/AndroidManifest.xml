@@ -7,7 +7,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".cert.UserUserPropertyRightsTransferRecordsActivity"
+            android:name=".cert.UserPropertyRightsTransferRecordsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
@@ -15,7 +15,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.UserCertificationDetailsActivity"
+            android:name=".identitypwd.CompanyCertificationDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

@@ -27,7 +27,7 @@ import io.reactivex.functions.Consumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录
  */
-public class UserUserPropertyRightsTransferRecordsActivity extends BaseTitleBarActivity implements UserPropertyRightsTransferRecordsPresenter {
+public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActivity implements UserPropertyRightsTransferRecordsPresenter {
 
     TksComponentsUserActivityPropertyRightsTransferRecordsBinding binding;
     UserPropertyRightsTransferRecordsAdapter userCertificationRecordAdapter;
@@ -40,7 +40,7 @@ public class UserUserPropertyRightsTransferRecordsActivity extends BaseTitleBarA
     });
 
     public static Intent getLauncher(Context context) {
-        return new Intent(context, UserUserPropertyRightsTransferRecordsActivity.class);
+        return new Intent(context, UserPropertyRightsTransferRecordsActivity.class);
     }
 
     @Override
