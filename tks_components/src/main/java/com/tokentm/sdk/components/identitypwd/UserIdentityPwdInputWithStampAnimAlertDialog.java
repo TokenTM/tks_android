@@ -13,7 +13,7 @@ import android.view.WindowManager;
 
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseAlertDialog;
-import com.tokentm.sdk.components.databinding.TksComponentsUserDialogDecryptedByPwdBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding;
 import com.tokentm.sdk.source.IdentityPwdService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
@@ -22,16 +22,15 @@ import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
 /**
- * @author lqx  E-mail:herolqx@126.com
- * @Description 身份密码输入对话框
+ * @author youxuan  E-mail:xuanyouwu@163.com
+ * @Description 身份密码输入对话框 带盖章效果
  */
-public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
+public class UserIdentityPwdInputWithStampAnimAlertDialog extends BaseAlertDialog<String> {
 
-
-    private TksComponentsUserDialogDecryptedByPwdBinding binding;
+    private TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding binding;
     String uDid;
 
-    public UserIdentityPwdInputAlertDialog(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
+    public UserIdentityPwdInputWithStampAnimAlertDialog(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
         super(context, dialogConsumer);
         this.uDid = uDid;
     }
@@ -44,7 +43,7 @@ public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         //设置window背景透明
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        binding = TksComponentsUserDialogDecryptedByPwdBinding.inflate(getLayoutInflater());
+        binding = TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -71,6 +70,14 @@ public class UserIdentityPwdInputAlertDialog extends BaseAlertDialog<String> {
                 forgotIdentityPwd();
             }
         });
+        //延时一段时间在执行动画,因为进来先弹键盘
+        binding.tksComponentsUserDialogDecryptedWithRedChapterIv.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                PropertyAnimUtils.startStampAnim(binding.tksComponentsUserDialogDecryptedWithRedChapterIv
+                        , binding.tksComponentsUserDialogDecryptedByReadChapter);
+            }
+        }, 800);
     }
 
     private void forgotIdentityPwd() {

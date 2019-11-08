@@ -6,7 +6,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,6 +114,25 @@
 
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!--印章-->
+            <View
+                android:id="@+id/tks_components_user_dialog_decrypted_with_red_chapter_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@mipmap/tks_components_user_dialog_read_chapter_seal"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="@+id/tks_components_user_dialog_decrypted_iv"
+                app:layout_constraintEnd_toEndOf="@+id/tks_components_user_dialog_decrypted_iv" />
+
+            <View
+                android:id="@+id/tks_components_user_dialog_decrypted_by_read_chapter"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="10dp"
+                android:background="@mipmap/tks_components_user_dialog_red_chapter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tks_components_user_dialog_decrypted_with_red_chapter_iv" />
         </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 </layout>

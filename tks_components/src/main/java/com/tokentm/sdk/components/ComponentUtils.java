@@ -11,7 +11,7 @@ import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdDecryptDialog;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputWithStampAnimAlertDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
@@ -122,7 +122,7 @@ public class ComponentUtils {
      * @param dialogConsumer
      */
     public static void showIdentityPwdDialog(FragmentActivity activity, String uDID, BiConsumer<DialogInterface, String> dialogConsumer) {
-        new UserIdentityPwdInputAlertDialog(activity, uDID, dialogConsumer)
+        new UserIdentityPwdInputWithStampAnimAlertDialog(activity, uDID, dialogConsumer)
                 .show();
     }
 
