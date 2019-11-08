@@ -14,92 +14,17 @@ ext {
     ]
 
     dependencies = [
-            xxf_android               : "com.github.NBXXF:xxf_android:2.5.2",
-            //---------------bug 反馈----------------
-            bugtags                   : "com.bugtags.metrics:bugtags-lib:3.0.0",
+            tks_test              : "com.github.TokenTM.tks_android_core:tks:0.1.3_test",
 
             // ------------- Android -------------
-            supportV4                 : "com.android.support:support-v4:${dependVersion.support}",
-            supportV4fragment         : "com.android.support:support-fragment:${dependVersion.support}",
-            supportAnnotations        : "com.android.support:support-annotations:${dependVersion.support}",
-            appcompatV7               : "com.android.support:appcompat-v7:${dependVersion.support}",
-            design                    : "com.android.support:design:${dependVersion.support}",
-            cardview                  : "com.android.support:cardview-v7:${dependVersion.support}",
-            emojicompat               : "com.android.support:support-emoji-bundled:${dependVersion.support}", // Emoji适配，第一版是26.0.0
-            junit                     : "junit:junit:4.12",
-            supportTestEspresso       : "com.android.support.test.espresso:espresso-core:3.0.1",
-
+            supportV4             : "com.android.support:support-v4:${dependVersion.support}",
+            supportV4fragment     : "com.android.support:support-fragment:${dependVersion.support}",
+            supportAnnotations    : "com.android.support:support-annotations:${dependVersion.support}",
+            appcompatV7           : "com.android.support:appcompat-v7:${dependVersion.support}",
+            design                : "com.android.support:design:${dependVersion.support}",
             // ------------- reyclerview ------------
-            recyclerview              : "com.android.support:recyclerview-v7:${dependVersion.support}",
-            recyclerview_animators    : "jp.wasabeef:recyclerview-animators:2.2.6",
-
-            // ------------- 网络请求 -------------
-            retrofit                  : 'com.squareup.retrofit2:retrofit:2.5.0',
-            okhttp                    : 'com.squareup.okhttp3:okhttp:3.14.1',
-            okhttp_logging_interceptor: 'com.squareup.okhttp3:logging-interceptor:3.9.0',
-            stetho                    : 'com.facebook.stetho:stetho:1.5.0',
-
-            // ------------- 图片加载 -------------
-            glide                     : 'com.github.bumptech.glide:glide:4.9.0',
-            glideAp                   : 'com.github.bumptech.glide:compiler:4.9.0',
-
-            // ------------- 通信 -------------
-            eventbus                  : 'org.greenrobot:eventbus:3.1.1',
-
-            // ------------- RxAndroid -------------
-            rxAndroid                 : 'io.reactivex.rxjava2:rxandroid:2.1.1',
-            rxJava                    : 'io.reactivex.rxjava2:rxjava:2.2.8',
-
-            // ------------- 基础架构-------------
-
-            // ViewModel and LiveData
-            lifecycleExt              : "android.arch.lifecycle:extensions:1.1.1",
-            // alternatively - just ViewModel
-            lifecycleVm               : "android.arch.lifecycle:viewmodel:1.1.1",// use -ktx for Kotlin
-            // alternatively - just LiveData
-            lifecycleLd               : "android.arch.lifecycle:livedata:1.1.1",
-            // alternatively - Lifecycles only (no ViewModel or LiveData).
-            //     Support library depends on this lightweight import
-            lifecycleRt               : "android.arch.lifecycle:runtime:1.1.1",
-
-            lifecycleCP               : "android.arch.lifecycle:compiler:1.1.1",
-            // optional - ReactiveStreams support for LiveData
-            lifecycleRx               : "android.arch.lifecycle:reactivestreams:1.1.1",
-
-            // ------------- 组件路由 -------------
-            arouter                   : 'com.alibaba:arouter-api:1.4.0',
-            arouterAp                 : 'com.alibaba:arouter-compiler:1.2.1',
-
-            // ------------- json解析 -------------
-            gson                      : 'com.google.code.gson:gson:2.8.5',
-
-            // ------------- log打印工具 -------------
-            logger                    : 'com.orhanobut:logger:2.1.1',
-
-            greendao                  : 'org.greenrobot:greendao:3.2.0',
-
-            // ------------- 约束控件 -------------
-            constraintLayout          : 'com.android.support.constraint:constraint-layout:1.0.0-alpha7',
-            topsnackbar               : 'com.androidadvance:topsnackbar:1.1.1',
-
-            //-------------- 内存管理 -------------
-            leakcanary                : "com.squareup.leakcanary:leakcanary-android:1.5.4",
-            leakcanarynoop            : "com.squareup.leakcanary:leakcanary-android-no-op:1.5.4",
-            blockcanary               : "com.github.markzhai:blockcanary-android:1.5.0",
-            blockcanarynoop           : "com.github.markzhai:blockcanary-no-op:1.5.0",
-
-            //-----------------阿里热修复------------------
-            sophix                    : "com.aliyun.ams:alicloud-android-hotfix:3.2.0",
-            //------------------集成JSSDK-----------------
-//            jssdk                     : "com.icourt.alpha:JSSDK:1.0.0"
-
-            //------------- 神策 -----------------------
-            sence                     : 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:1.8.9',
-            //-------------------二维码扫描------------------
-            zxing                     : "com.google.zxing:core:3.3.0",
-
-            //-------------------badge 通知数量提示------------------
-            badge                     : "q.rorbin:badgeview:1.1.3"
+            recyclerview          : "com.android.support:recyclerview-v7:${dependVersion.support}",
+            recyclerview_animators: "jp.wasabeef:recyclerview-animators:2.2.6",
 
 
     ]

@@ -28,6 +28,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.dependencies.recyclerview
-    implementation rootProject.ext.dependencies.xxf_android
+    //注意 不要打包到tks_components中
+    compileOnly rootProject.ext.dependencies.tks_test
 
 }

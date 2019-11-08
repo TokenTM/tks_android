@@ -54,18 +54,7 @@ allprojects {
         resolutionStrategy.force rootProject.ext.dependencies.supportV4fragment
         resolutionStrategy.force rootProject.ext.dependencies.design
         resolutionStrategy.force rootProject.ext.dependencies.recyclerview
-        resolutionStrategy.force rootProject.ext.dependencies.supportTestEspresso
         resolutionStrategy.force rootProject.ext.dependencies.supportAnnotations
-
-        resolutionStrategy.force rootProject.ext.dependencies.lifecycleExt
-        resolutionStrategy.force rootProject.ext.dependencies.lifecycleVm
-        resolutionStrategy.force rootProject.ext.dependencies.lifecycleLd
-        resolutionStrategy.force rootProject.ext.dependencies.lifecycleRt
-        resolutionStrategy.force rootProject.ext.dependencies.lifecycleRx
-        resolutionStrategy.force rootProject.ext.dependencies.lifecycleCP
-        resolutionStrategy.force rootProject.ext.dependencies.okhttp
-        resolutionStrategy.force rootProject.ext.dependencies.rxJava
-        resolutionStrategy.force rootProject.ext.dependencies.rxAndroid
     }
 }
 
