@@ -15,6 +15,10 @@ android {
         targetCompatibility 1.8
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -24,20 +28,13 @@ android {
     dataBinding {
         enabled = true
     }
-
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
 }
 
 dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api fileTree(include: ['*.aar'], dir: 'aars')
-
+    api fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     //加载依赖库
     implementation project(path: ':tks_components')
+    implementation 'com.github.TokenTM.tks_android_core:tks:0.0.7_test'
 
 }
 repositories {

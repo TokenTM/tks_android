@@ -2,6 +2,7 @@ package com.tokentm.sdk.uidemo;
 
 import android.os.Build;
 import android.os.NetworkOnMainThreadException;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 
 import com.google.gson.JsonParseException;
@@ -16,8 +17,6 @@ import java.net.SocketTimeoutException;
 
 import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLHandshakeException;
-
-import io.reactivex.annotations.NonNull;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com

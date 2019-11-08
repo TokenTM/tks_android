@@ -10,6 +10,7 @@ import android.view.View;
 import com.tokentm.sdk.components.ComponentUtils;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.xxf.arch.utils.ToastUtils;
@@ -17,7 +18,7 @@ import com.xxf.arch.utils.ToastUtils;
 import io.reactivex.functions.Consumer;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends BaseTitleBarActivity {
 
 
     ActivityMainBinding binding;
@@ -32,6 +33,7 @@ public class MainActivity extends FragmentActivity {
 
 
     private void initView() {
+        setTitle("tks_demo");
         binding.btCreateWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
