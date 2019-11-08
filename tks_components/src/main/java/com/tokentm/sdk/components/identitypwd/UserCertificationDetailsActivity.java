@@ -4,21 +4,21 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsActivityCertificationDetailsBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserActivityCertificationDetailsBinding;
 import com.xxf.arch.utils.FragmentUtils;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
  * @Description 认证详情
  */
-public class CertificationDetailsActivity extends BaseTitleBarActivity {
+public class UserCertificationDetailsActivity extends BaseTitleBarActivity {
 
-    TksComponentsActivityCertificationDetailsBinding binding;
+    TksComponentsUserActivityCertificationDetailsBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsActivityCertificationDetailsBinding.inflate(getLayoutInflater());
+        binding = TksComponentsUserActivityCertificationDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -26,6 +26,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
 
     private void initView() {
         setTitle("认证详情");
-        FragmentUtils.addFragment(getSupportFragmentManager(),CertificationDetailsFragment.newInstance(),binding.flContent.getId());
+        FragmentUtils.addFragment(getSupportFragmentManager(), UserCertificationDetailsFragment.newInstance(),binding.flContent.getId());
     }
 }

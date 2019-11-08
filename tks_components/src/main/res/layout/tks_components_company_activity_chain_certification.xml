@@ -4,8 +4,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:orientation="vertical">
 
         <FrameLayout
@@ -23,10 +23,10 @@
                 android:textSize="15sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right|center_vertical"
-                android:src="@mipmap/tks_components_cheked" />
+                android:src="@mipmap/tks_components_user_chain_certification_right_arrow" />
         </FrameLayout>
 
         <View
@@ -49,10 +49,10 @@
                 android:textSize="15sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right|center_vertical"
-                android:src="@mipmap/tks_components_cheked" />
+                android:src="@mipmap/tks_components_user_chain_certification_right_arrow" />
         </FrameLayout>
 
         <View
@@ -75,10 +75,10 @@
                 android:textSize="15sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="10dp"
+                android:layout_height="16dp"
                 android:layout_gravity="right|center_vertical"
-                android:src="@mipmap/tks_components_cheked" />
+                android:src="@mipmap/tks_components_user_chain_certification_right_arrow" />
         </FrameLayout>
 
         <View

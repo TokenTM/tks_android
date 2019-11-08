@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.tokentm.sdk.components.cert.ChainCertificationActivity;
-import com.tokentm.sdk.components.identitypwd.CertificationDetailsActivity;
-import com.tokentm.sdk.components.identitypwd.CertificationInstructionsActivity;
-import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
-import com.tokentm.sdk.components.identitypwd.EnterpriseCertificationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.IdentityAuthenticationAlertDialog;
+import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
+import com.tokentm.sdk.components.identitypwd.CompanyCompanyEnterpriseCertificationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserCertificationDetailsActivity;
+import com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsActivity;
+import com.tokentm.sdk.components.cert.UserUserPropertyRightsTransferRecordsActivity;
+import com.tokentm.sdk.components.identitypwd.UserUserIdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.uidemo.databinding.WineToTreasureBinding;
 import com.xxf.arch.utils.ToastUtils;
 
@@ -44,31 +44,31 @@ public class WineToTreasureActivity extends FragmentActivity {
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(PropertyRightsTransferRecordsActivity.getLauncher(v.getContext()));
+                v.getContext().startActivity(UserUserPropertyRightsTransferRecordsActivity.getLauncher(v.getContext()));
             }
         });
         //开启认证说明
         binding.btCreateCertificationInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(), CertificationInstructionsActivity.class));
+                v.getContext().startActivity(new Intent(v.getContext(), CompanyCertificationInstructionsActivity.class));
             }
         });
         //开启认证详情
         binding.btCreateCertificationDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(), CertificationDetailsActivity.class));
+                v.getContext().startActivity(new Intent(v.getContext(), UserCertificationDetailsActivity.class));
             }
         });
         //开启企业认证
         binding.btCreateIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new EnterpriseCertificationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
+                new CompanyCompanyEnterpriseCertificationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
                     @Override
                     public void accept(DialogInterface dialogInterface, Boolean s) throws Exception {
-                        new IdentityAuthenticationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
+                        new UserUserIdentityAuthenticationAlertDialog(v.getContext(), new BiConsumer<DialogInterface, Boolean>() {
                             @Override
                             public void accept(DialogInterface dialogInterface, Boolean s) throws Exception {
                                 ToastUtils.showToast("身份认证");
@@ -78,11 +78,11 @@ public class WineToTreasureActivity extends FragmentActivity {
                 }).show();
             }
         });
-        //开启连心认证
+        //开启链信认证
         binding.btCreateChainCertification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChainCertificationActivity.launch(v.getContext());
+                CompanyChainCertificationActivity.launch(v.getContext());
             }
         });
 

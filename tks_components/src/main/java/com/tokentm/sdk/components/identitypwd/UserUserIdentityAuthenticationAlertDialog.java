@@ -9,20 +9,19 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tokentm.sdk.components.common.BaseAlertDialog;
-import com.tokentm.sdk.components.databinding.TksComponentsDialogEnterpriseCertificationBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserDialogIdentityAuthenticationBinding;
 
 import io.reactivex.functions.BiConsumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
- * @Description 前往企业认证弹窗
+ * @Description 前往身份认证弹窗
  */
-public class EnterpriseCertificationAlertDialog extends BaseAlertDialog<Boolean> implements EnterpriseCertificationPresenter{
+public class UserUserIdentityAuthenticationAlertDialog extends BaseAlertDialog<Boolean> implements UserIdentityAuthenticationPresenter {
 
+    private TksComponentsUserDialogIdentityAuthenticationBinding binding;
 
-    private TksComponentsDialogEnterpriseCertificationBinding binding;
-
-    public EnterpriseCertificationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+    public UserUserIdentityAuthenticationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
         super(context, dialogConsumer);
     }
 
@@ -34,7 +33,7 @@ public class EnterpriseCertificationAlertDialog extends BaseAlertDialog<Boolean>
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         //设置window背景透明
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        binding = TksComponentsDialogEnterpriseCertificationBinding.inflate(getLayoutInflater());
+        binding = TksComponentsUserDialogIdentityAuthenticationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

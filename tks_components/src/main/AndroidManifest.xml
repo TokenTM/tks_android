@@ -7,15 +7,19 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".cert.PropertyRightsTransferRecordsActivity"
+            android:name=".cert.UserUserPropertyRightsTransferRecordsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.CertificationInstructionsActivity"
+            android:name=".identitypwd.CompanyCertificationInstructionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.CertificationDetailsActivity"
+            android:name=".identitypwd.UserCertificationDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".cert.CompanyChainCertificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

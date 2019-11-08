@@ -4,7 +4,7 @@ package com.tokentm.sdk.components.identitypwd;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 企业认证
  */
-public interface EnterpriseCertificationPresenter {
+public interface CompanyEnterpriseCertificationPresenter {
 
     /**
      * 去认证

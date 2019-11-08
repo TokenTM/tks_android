@@ -14,7 +14,7 @@ import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityChainC
  * @author lqx  E-mail:herolqx@126.com
  * @Description 链信认证
  */
-public class ChainCertificationActivity extends BaseTitleBarActivity {
+public class CompanyChainCertificationActivity extends BaseTitleBarActivity {
     /**
      * 认证参数
      */
@@ -29,7 +29,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity {
     }
 
     private static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
-        return new Intent(context, ChainCertificationActivity.class)
+        return new Intent(context, CompanyChainCertificationActivity.class)
                 .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }
 

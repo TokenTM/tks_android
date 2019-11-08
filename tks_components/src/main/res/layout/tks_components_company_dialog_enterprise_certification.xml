@@ -5,7 +5,7 @@
     <data>
         <variable
             name="presenter"
-            type="com.tokentm.sdk.components.identitypwd.EnterpriseCertificationPresenter" />
+            type="com.tokentm.sdk.components.identitypwd.CompanyEnterpriseCertificationPresenter" />
     </data>
     <FrameLayout
         android:layout_width="match_parent"

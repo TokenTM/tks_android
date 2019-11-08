@@ -5,38 +5,38 @@ import android.support.annotation.Nullable;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
-import com.tokentm.sdk.components.databinding.TksComponentsCompanyFragmentCertificationDetailsBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsUserFragmentCertificationDetailsBinding;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
  * @Description 认证详情 被添加到认证说明activity和认证详情activity中作为共有显示
  */
-public class CertificationDetailsFragment extends BaseFragment {
+public class UserCertificationDetailsFragment extends BaseFragment {
     /**
      * 认证参数
      */
     private static final String KEY_CERT_PARAMS = "companyCertParams";
 
-    public static CertificationDetailsFragment newInstance(CompanyCertParams companyCertParams) {
-        CertificationDetailsFragment fragment = new CertificationDetailsFragment();
+    public static UserCertificationDetailsFragment newInstance(CompanyCertParams companyCertParams) {
+        UserCertificationDetailsFragment fragment = new UserCertificationDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(KEY_CERT_PARAMS, companyCertParams);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public static CertificationDetailsFragment newInstance() {
-        return new CertificationDetailsFragment();
+    public static UserCertificationDetailsFragment newInstance() {
+        return new UserCertificationDetailsFragment();
     }
 
-    TksComponentsCompanyFragmentCertificationDetailsBinding binding;
+    TksComponentsUserFragmentCertificationDetailsBinding binding;
     CompanyCertParams companyCertParams;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsCompanyFragmentCertificationDetailsBinding.inflate(getLayoutInflater());
+        binding = TksComponentsUserFragmentCertificationDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

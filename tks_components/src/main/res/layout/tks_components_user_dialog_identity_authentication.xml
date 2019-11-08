@@ -6,7 +6,7 @@
 
         <variable
             name="presenter"
-            type="com.tokentm.sdk.components.identitypwd.IdentityAuthenticationPresenter" />
+            type="com.tokentm.sdk.components.identitypwd.UserIdentityAuthenticationPresenter" />
     </data>
 
     <FrameLayout

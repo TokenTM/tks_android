@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录adapter
  */
-public class PropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding, UserPropertyRightsTransferRecords> {
+public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding, UserPropertyRightsTransferRecords> {
     @Override
     protected TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
         return TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding.inflate(inflater, viewGroup, false);
