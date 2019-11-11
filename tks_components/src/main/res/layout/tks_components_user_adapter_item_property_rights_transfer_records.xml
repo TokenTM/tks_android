@@ -79,12 +79,13 @@
                     android:textSize="11sp" />
 
                 <ImageView
+                    android:id="@+id/user_bar_code"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
                     android:layout_marginTop="3dp"
                     android:layout_marginBottom="3dp"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/tks_components_user_ic_certfication_code" />
+                    tools:src="@mipmap/tks_components_user_ic_certfication_code" />
 
                 <TextView
                     android:id="@+id/user_certfication_code_tv"

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tokentm.sdk.components.cert.recyclerview.BaseBindableAdapter;
+import com.tokentm.sdk.components.common.BarCodeUtil;
 import com.tokentm.sdk.components.databinding.TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding;
 import com.tokentm.sdk.model.CommodityOwnershipRecordDTO;
 import com.xxf.view.recyclerview.adapter.BaseViewHolder;
@@ -34,6 +35,14 @@ public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapte
         binding.userCertficationActionTv.setText(commodityOwnershipRecordDTO.getInfo());
         binding.userCertficationTimeTv.setText(formatTime(commodityOwnershipRecordDTO.getTime()));
         binding.userCertficationCodeTv.setText(commodityOwnershipRecordDTO.getTxHash());
+        binding.userBarCode.post(new Runnable() {
+            @Override
+            public void run() {
+                binding.userBarCode.setImageBitmap(BarCodeUtil.createBarcode(commodityOwnershipRecordDTO.getTxHash(),binding.userBarCode.getWidth()
+                        ,binding.userBarCode.getHeight()));
+            }
+        });
+
 
         binding.userCertficationCodeLl.setVisibility(TextUtils.isEmpty(commodityOwnershipRecordDTO.getTxHash()) ? View.GONE : View.VISIBLE);
         binding.userCertficationTopLine.setVisibility(index > 0 ? View.VISIBLE : View.INVISIBLE);
