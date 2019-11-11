@@ -9,40 +9,40 @@ import android.view.View;
 import com.tokentm.sdk.components.ComponentUtils;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
-import com.tokentm.sdk.uidemo.databinding.WineToTreasureBinding;
+import com.tokentm.sdk.uidemo.databinding.CertificationDetailsBinding;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
- * @Description 酒来宝测试页面
+ * @Description 认证详情页面
  */
-public class WineToTreasureActivity extends BaseTitleBarActivity {
+public class CertificationDetailsActivity extends BaseTitleBarActivity {
 
 
-    WineToTreasureBinding binding;
+    CertificationDetailsBinding binding;
 
     public static Intent getLauncher(Context context) {
-        return new Intent(context, WineToTreasureActivity.class);
+        return new Intent(context, CertificationDetailsActivity.class);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = WineToTreasureBinding.inflate(getLayoutInflater());
+        binding = CertificationDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
 
     private void initView() {
-        setTitle("酒来宝");
+        setTitle("认证详情");
         //开启物权转移记录
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ComponentUtils.launchUserPropertyRightsTransferRecordsActivity(
-                        WineToTreasureActivity.this,
+                        CertificationDetailsActivity.this,
                         new Consumer<CompanyCertResult>() {
                             @Override
                             public void accept(CompanyCertResult companyCertResult) throws Exception {
@@ -56,7 +56,7 @@ public class WineToTreasureActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 ComponentUtils.launchCompanyCertificationInstructionsActivity(
-                        WineToTreasureActivity.this,
+                        CertificationDetailsActivity.this,
                         new Consumer<CompanyCertResult>() {
                             @Override
                             public void accept(CompanyCertResult companyCertResult) throws Exception {
@@ -70,7 +70,7 @@ public class WineToTreasureActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 ComponentUtils.launchUserCertificationDetailsActivity(
-                        WineToTreasureActivity.this,
+                        CertificationDetailsActivity.this,
                         new Consumer<CompanyCertResult>() {
                             @Override
                             public void accept(CompanyCertResult companyCertResult) throws Exception {
@@ -84,12 +84,12 @@ public class WineToTreasureActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 ComponentUtils.showCompanyCompanyEnterpriseCertificationAlertDialog(
-                        WineToTreasureActivity.this,
+                        CertificationDetailsActivity.this,
                         new BiConsumer<DialogInterface, Boolean>() {
                             @Override
                             public void accept(DialogInterface dialogInterface, Boolean identityPwd) throws Exception {
                                 dialogInterface.dismiss();
-                                //TODO 点击下一步回调
+                                //TODO 点击回调
                             }
                         });
             }
@@ -100,12 +100,12 @@ public class WineToTreasureActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 ComponentUtils.showUserIdentityAuthenticationAlertDialog(
-                        WineToTreasureActivity.this,
+                        CertificationDetailsActivity.this,
                         new BiConsumer<DialogInterface, Boolean>() {
                             @Override
                             public void accept(DialogInterface dialogInterface, Boolean identityPwd) throws Exception {
                                 dialogInterface.dismiss();
-                                //TODO 点击下一步回调
+                                //TODO 点击回调
                             }
                         });
             }
@@ -115,14 +115,13 @@ public class WineToTreasureActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 ComponentUtils.launchCompanyChainCertificationActivity(
-                        WineToTreasureActivity.this,
+                        CertificationDetailsActivity.this,
                         new Consumer<CompanyCertResult>() {
                             @Override
                             public void accept(CompanyCertResult companyCertResult) throws Exception {
                                 //TODO 处理开启链信认证回值
                             }
                         });
-
             }
         });
 

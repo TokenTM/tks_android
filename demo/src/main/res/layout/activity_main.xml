@@ -51,10 +51,10 @@
                 tools:ignore="MissingConstraints" />
 
             <Button
-                android:id="@+id/bt_wine_to_treasure"
+                android:id="@+id/bt_certification_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="开启酒来宝"
+                android:text="开启认证详情"
                 tools:ignore="MissingConstraints" />
         </LinearLayout>
     </ScrollView>

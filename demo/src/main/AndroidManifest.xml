@@ -20,7 +20,7 @@
         </activity>
         <activity android:name="com.tokentm.sdk.uidemo.WalletActivity" />
         <activity android:name="com.tokentm.sdk.uidemo.DidDemoActivity" />
-        <activity android:name="com.tokentm.sdk.uidemo.WineToTreasureActivity" />
+        <activity android:name="com.tokentm.sdk.uidemo.CertificationDetailsActivity" />
     </application>
 
 </manifest>

@@ -95,12 +95,12 @@ public class MainActivity extends BaseTitleBarActivity {
                         });
             }
         });
-        //开启酒来宝页面
-        binding.btWineToTreasure.setOnClickListener(new View.OnClickListener() {
+        //开启认证详情
+        binding.btCertificationDetails.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(WineToTreasureActivity.getLauncher(v.getContext()));
+                v.getContext().startActivity(CertificationDetailsActivity.getLauncher(v.getContext()));
             }
         });
     }
