@@ -23,7 +23,8 @@ import com.tokentm.sdk.source.CertService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-import com.xxf.view.actiondialog.BottomPicSelectDialog;
+import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
 
@@ -76,13 +77,21 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
 
     @Override
     public void onSelectPic(ObservableField<String> pic) {
-        new BottomPicSelectDialog(this, new Consumer<String>() {
+        //直接进行拍照
+        SystemUtils.doTakePhoto(this, new Consumer<String>() {
             @Override
             public void accept(String url) throws Exception {
-                //pic.set(url);
                 startUCrop(UserCertByIDCardActivity.this, url, pic);
             }
-        }).show();
+        });
+        //弹出相册和拍照选框
+//        new BottomPicSelectDialog(this, new Consumer<String>() {
+//            @Override
+//            public void accept(String url) throws Exception {
+//                startUCrop(UserCertByIDCardActivity.this, url, pic);
+//
+//            }
+//        }).show();
     }
 
     /**

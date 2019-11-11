@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
+import com.tokentm.sdk.components.cert.CompanyReleaseCertificateActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.UserPropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
@@ -302,6 +303,7 @@ public class ComponentUtils {
 
     /**
      * 开启链信认证
+     *
      * @param activity
      * @param consumer
      */
@@ -324,5 +326,34 @@ public class ComponentUtils {
                 .take(1)
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
+    }
+
+    /**
+     * 开启 确认收货存证
+     *
+     * @param activity
+     * @param did
+     * @param consumer 返回结果包装
+     */
+    public static void launchCompanyReleaseCertificateActivity(FragmentActivity activity, String did, Consumer<String> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                CompanyReleaseCertificateActivity.getLauncher(activity, did), 7102)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .map(new Function<ActivityResult, String>() {
+                    @Override
+                    public String apply(ActivityResult activityResult) throws Exception {
+                        return (String) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(consumer);
+
     }
 }

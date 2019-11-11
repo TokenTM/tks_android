@@ -25,11 +25,12 @@ public class BarCodeUtil {
         for (int y = 0; y < height; y++) {
             int offset = y * width;
             for (int x = 0; x < width; x++) {
-                pixels[offset + x] = bitMatrix.get(x, y) ? 0xff000000 : 0xFFFFFFFF;
+                //0xff000000 黑   0xFFFFFFFF 白
+                pixels[offset + x] = bitMatrix.get(x, y) ? 0xff000000 : 0x00FFFFFF;
             }
         }
         Bitmap bitmap = Bitmap.createBitmap(width, height,
-                Bitmap.Config.RGB_565);
+                Bitmap.Config.ARGB_4444);
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
         return bitmap;
     }
@@ -40,12 +41,10 @@ public class BarCodeUtil {
     private static BitMatrix renderResult(boolean[] code, int width, int height) {
         int inputWidth = code.length;
         // Add quiet zone on both sides.
-        int fullWidth = inputWidth;
-        int outputWidth = Math.max(width, fullWidth);
+        int outputWidth = Math.max(width, inputWidth);
         int outputHeight = Math.max(1, height);
 
-        int multiple = outputWidth / fullWidth;
-        int leftPadding = (outputWidth - (inputWidth * multiple)) / 2;
+        int multiple = outputWidth / inputWidth;
 
         BitMatrix output = new BitMatrix(outputWidth, outputHeight);
         for (int inputX = 0, outputX = 0; inputX < inputWidth; inputX++, outputX += multiple) {

@@ -88,16 +88,17 @@
                     tools:src="@mipmap/tks_components_user_ic_certfication_code" />
 
                 <TextView
+                    tools:text="692349566923495669234956692349566923495669234956692349566923495"
                     android:id="@+id/user_certfication_code_tv"
                     android:layout_width="292dp"
                     android:layout_height="13dp"
-                    android:text="692349566923495669234956692349566923495669234956692349566923495"
                     android:textColor="#ff374f66"
                     android:textSize="9.5sp" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/user_bar_code_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

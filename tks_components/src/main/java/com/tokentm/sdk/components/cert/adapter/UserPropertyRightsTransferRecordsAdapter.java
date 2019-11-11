@@ -20,6 +20,10 @@ import java.text.SimpleDateFormat;
  * @Description 物权转移记录adapter
  */
 public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding, CommodityOwnershipRecordDTO> {
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    private SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
+
     @Override
     protected TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
         return TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding.inflate(inflater, viewGroup, false);
@@ -31,26 +35,38 @@ public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapte
             return;
         }
 
+        String txHash = commodityOwnershipRecordDTO.getTxHash();
+
         binding.userCertficationDateTv.setText(formatDate(commodityOwnershipRecordDTO.getTime()));
         binding.userCertficationActionTv.setText(commodityOwnershipRecordDTO.getInfo());
         binding.userCertficationTimeTv.setText(formatTime(commodityOwnershipRecordDTO.getTime()));
-        binding.userCertficationCodeTv.setText(commodityOwnershipRecordDTO.getTxHash());
-        binding.userBarCode.post(new Runnable() {
-            @Override
-            public void run() {
-                binding.userBarCode.setImageBitmap(BarCodeUtil.createBarcode(commodityOwnershipRecordDTO.getTxHash(),binding.userBarCode.getWidth()
-                        ,binding.userBarCode.getHeight()));
+
+        if (txHash != null && !"".equals(txHash)) {
+            //去掉前面开头的0x或者0X
+            String startsWithLowerCase = "0x";
+            String startsWithCapital = "0X";
+            if (txHash.startsWith(startsWithLowerCase) || txHash.startsWith(startsWithCapital)) {
+                txHash = txHash.substring(2);
             }
-        });
+            binding.userCertficationCodeTv.setText(txHash);
+            String finalTxHash = txHash;
+            binding.userBarCode.post(new Runnable() {
+                @Override
+                public void run() {
+                    binding.userBarCode.setImageBitmap(BarCodeUtil.createBarcode(finalTxHash, binding.userBarCode.getWidth()
+                            , binding.userBarCode.getHeight()));
+                }
+            });
+        }
 
 
-        binding.userCertficationCodeLl.setVisibility(TextUtils.isEmpty(commodityOwnershipRecordDTO.getTxHash()) ? View.GONE : View.VISIBLE);
+        binding.userCertficationCodeLl.setVisibility(TextUtils.isEmpty(txHash) ? View.GONE : View.VISIBLE);
+        binding.userBarCodeState.setVisibility(TextUtils.isEmpty(txHash) ? View.GONE : View.VISIBLE);
         binding.userCertficationTopLine.setVisibility(index > 0 ? View.VISIBLE : View.INVISIBLE);
     }
 
     private String formatTime(long time) {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
             return simpleDateFormat.format(time);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,8 +76,7 @@ public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapte
 
     private String formatDate(long time) {
         try {
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            return simpleDateFormat.format(time);
+            return simpleDateFormat1.format(time);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -62,6 +62,24 @@
                 android:maxLines="1"
                 android:text="开启链信认证"
                 tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bt_release_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="发布证书"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bt_confirm_certificate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="确认证书"
+                tools:ignore="MissingConstraints" />
         </LinearLayout>
     </ScrollView>
 </layout>
