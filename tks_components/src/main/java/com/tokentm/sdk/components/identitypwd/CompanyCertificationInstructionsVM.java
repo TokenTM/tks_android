@@ -2,8 +2,8 @@ package com.tokentm.sdk.components.identitypwd;
 
 import android.app.Application;
 import android.databinding.Observable;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.support.annotation.NonNull;
 
 import com.tokentm.sdk.TokenTmClient;
@@ -25,7 +25,7 @@ public class CompanyCertificationInstructionsVM extends XXFViewModel {
     /**
      * 上链状态
      */
-    public ObservableInt chainState = new ObservableInt();
+    public ObservableBoolean chainState = new ObservableBoolean();
     /**
      * 上链状态描述
      */
@@ -64,10 +64,8 @@ public class CompanyCertificationInstructionsVM extends XXFViewModel {
         chainState.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                switch (chainState.get()) {
-                    case 1:
-                        chainStateDesc.set("成功");
-                        break;
+                if (chainState.get()){
+                    chainStateDesc.set("成功");
                 }
             }
         });
@@ -76,21 +74,21 @@ public class CompanyCertificationInstructionsVM extends XXFViewModel {
     /**
      * 请求认证说明接口数据
      */
-    public void loadData(ProgressHUDProvider progressHUDProvider) {
+    public void loadData(ProgressHUDProvider progressHUDProvider,String txHashString) {
         TokenTmClient.getService(ChainService.class)
-                .getChainInfo("1")
+                .getChainInfo(txHashString)
                 .compose(bindToLifecycle())
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(progressHUDProvider)))
                 .subscribe(new Consumer<ChainInfoDTO>() {
                     @Override
                     public void accept(ChainInfoDTO chainInfoDTO) throws Exception {
                         //设置上链状态
-                        chainState.set(chainInfoDTO.getChainState());
-                        fromAddr.set(chainInfoDTO.getFromAddr());
-                        toAddr.set(chainInfoDTO.getToAddr());
-                        txHash.set(chainInfoDTO.getTxHash());
-                        timesTamp.set(chainInfoDTO.getTimestamp());
-                        block.set(chainInfoDTO.getBlock());
+                        chainState.set(chainInfoDTO.isSuccess());
+                        fromAddr.set(chainInfoDTO.getFrom());
+                        toAddr.set(chainInfoDTO.getTo());
+                        txHash.set(chainInfoDTO.getHash());
+                        timesTamp.set(chainInfoDTO.getTimestamp()+"");
+                        block.set(chainInfoDTO.getBlockNumber());
                     }
                 });
     }

@@ -16,7 +16,10 @@ import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.Consumer;
 
-
+/**
+ * @author lqx  E-mail:herolqx@126.com
+ * @Description 入口
+ */
 public class MainActivity extends BaseTitleBarActivity {
 
 
@@ -54,7 +57,7 @@ public class MainActivity extends BaseTitleBarActivity {
         binding.btCertByIdcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString("did");
+                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
                 if (TextUtils.isEmpty(did)) {
                     ToastUtils.showToast("请先生成did");
                     return;
@@ -70,6 +73,7 @@ public class MainActivity extends BaseTitleBarActivity {
                             public void accept(String txHash) throws Exception {
                                 //TODO 中心化系统进行记录
                                 ToastUtils.showToast("实名认证成功:" + txHash);
+                                DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH,txHash);
                             }
                         });
             }
@@ -78,7 +82,7 @@ public class MainActivity extends BaseTitleBarActivity {
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString("did");
+                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
                 if (TextUtils.isEmpty(did)) {
                     ToastUtils.showToast("请先生成did");
                     return;

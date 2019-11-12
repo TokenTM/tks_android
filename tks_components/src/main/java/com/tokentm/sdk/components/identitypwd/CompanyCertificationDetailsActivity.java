@@ -15,10 +15,13 @@ import com.xxf.arch.utils.FragmentUtils;
  */
 public class CompanyCertificationDetailsActivity extends BaseTitleBarActivity {
 
+    private static final String TX_HASH = "tx_hash";
+
     TksComponentsCompanyActivityCertificationDetailsBinding binding;
 
-    public static Intent getLauncher(FragmentActivity activity) {
-        return new Intent(activity, CompanyCertificationDetailsActivity.class);
+    public static Intent getLauncher(FragmentActivity activity, String txHash) {
+        return new Intent(activity, CompanyCertificationDetailsActivity.class)
+                .putExtra(TX_HASH, txHash);
     }
 
     @Override
@@ -32,6 +35,7 @@ public class CompanyCertificationDetailsActivity extends BaseTitleBarActivity {
 
     private void initView() {
         setTitle("认证详情");
-        FragmentUtils.addFragment(getSupportFragmentManager(), UserCertificationDetailsFragment.newInstance(),binding.flContent.getId());
+        String txHash = getIntent().getStringExtra(TX_HASH);
+        FragmentUtils.addFragment(getSupportFragmentManager(), UserCertificationDetailsFragment.newInstance(txHash), binding.flContent.getId());
     }
 }

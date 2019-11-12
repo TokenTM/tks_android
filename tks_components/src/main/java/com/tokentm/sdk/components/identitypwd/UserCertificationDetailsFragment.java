@@ -13,8 +13,14 @@ import com.tokentm.sdk.components.databinding.TksComponentsUserFragmentCertifica
  */
 public class UserCertificationDetailsFragment extends BaseFragment implements CompanyCertificationInstructionsPresenter {
 
-    public static UserCertificationDetailsFragment newInstance() {
-        return new UserCertificationDetailsFragment();
+    private final static String TX_HASH = "tx_hash";
+
+    public static UserCertificationDetailsFragment newInstance(String txHash) {
+        UserCertificationDetailsFragment userCertificationDetailsFragment = new UserCertificationDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(TX_HASH, txHash);
+        userCertificationDetailsFragment.setArguments(bundle);
+        return userCertificationDetailsFragment;
     }
 
     TksComponentsUserFragmentCertificationDetailsBinding binding;
@@ -28,10 +34,15 @@ public class UserCertificationDetailsFragment extends BaseFragment implements Co
     }
 
     private void initView() {
-        CompanyCertificationInstructionsVM viewModel = ViewModelProviders.of(this).get(CompanyCertificationInstructionsVM.class);
-        binding.setViewModel(viewModel);
-        binding.setPresenter(this);
-        viewModel.loadData(this);
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String txHash = arguments.getString(TX_HASH);
+            CompanyCertificationInstructionsVM viewModel = ViewModelProviders.of(this).get(CompanyCertificationInstructionsVM.class);
+            binding.setViewModel(viewModel);
+            binding.setPresenter(this);
+            viewModel.loadData(this, txHash);
+        }
+
     }
 
 }

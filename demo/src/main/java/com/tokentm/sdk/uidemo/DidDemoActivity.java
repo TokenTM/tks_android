@@ -14,6 +14,10 @@ import com.xxf.arch.utils.ToastUtils;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
+/**
+ * @author lqx  E-mail:herolqx@126.com
+ * @Description 生成did
+ */
 public class DidDemoActivity extends BaseTitleBarActivity {
     DidActivityBinding binding;
 
@@ -30,7 +34,7 @@ public class DidDemoActivity extends BaseTitleBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        did = DemoSp.getInstance().getString("did");
+        did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
         binding.didText.setText(TextUtils.isEmpty(did) ? "" : "已创建did:\n" + did);
     }
 
@@ -46,7 +50,7 @@ public class DidDemoActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(String uDID) throws Exception {
                                 //TODO 中心化系统和userId进行绑定
-                                DemoSp.getInstance().putString("did", uDID);
+                                DemoSp.getInstance().putString(DemoSp.SP_KEY_DID, uDID);
                                 binding.didText.setText("did:" + uDID);
                             }
                         });

@@ -15,7 +15,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".cert.CompanyReleaseCertificateActivity"
+            android:name="com.tokentm.sdk.uidemo.ReleaseCertificateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

@@ -60,7 +60,7 @@
                 tools:text="物品名称 : 泸州老窖酱香型白酒" />
 
             <TextView
-                android:id="@+id/user_property_rights_transfer_records_purchase_quantity_tv"
+                android:id="@+id/user_property_rights_transfer_records_buy_number_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"

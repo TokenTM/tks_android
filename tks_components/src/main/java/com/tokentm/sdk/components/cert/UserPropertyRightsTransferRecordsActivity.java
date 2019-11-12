@@ -10,7 +10,7 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.adapter.UserPropertyRightsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityPropertyRightsTransferRecordsBinding;
-import com.tokentm.sdk.model.CertificateInfoDTO;
+import com.tokentm.sdk.model.CertificateCommodityActionDTO;
 import com.tokentm.sdk.source.CommodityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -78,10 +78,10 @@ public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActiv
         TokenTmClient.getService(CommodityService.class).getActionRecords(did)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(new Consumer<List<CertificateInfoDTO.CertificateActionBean>>() {
+                .subscribe(new Consumer<List<CertificateCommodityActionDTO>>() {
                     @Override
-                    public void accept(List<CertificateInfoDTO.CertificateActionBean> certificateActionBeans) throws Exception {
-                        userCertificationRecordAdapter.bindData(true,certificateActionBeans);
+                    public void accept(List<CertificateCommodityActionDTO> certificateCommodityActionDTOS) throws Exception {
+                        userCertificationRecordAdapter.bindData(true,certificateCommodityActionDTOS);
                     }
                 });
     }
