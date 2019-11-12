@@ -33,8 +33,9 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="44dp"
-                android:layout_height="25dp"
+                android:paddingRight="40dp"
+                android:layout_width="84dp"
+                android:layout_height="match_parent"
                 android:onClick="@{titleBar.getTitleBarLeftIconListener()}"
                 android:scaleType="centerInside"
                 android:src="@{titleBar.getTitleBarLeftIcon()}"
