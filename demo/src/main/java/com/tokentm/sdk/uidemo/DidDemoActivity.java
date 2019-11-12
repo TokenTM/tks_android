@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.components.ComponentUtils;
+import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.uidemo.databinding.DidActivityBinding;
 import com.xxf.arch.utils.ToastUtils;
@@ -87,7 +87,7 @@ public class DidDemoActivity extends BaseTitleBarActivity {
                         new BiConsumer<DialogInterface, String>() {
                             @Override
                             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
-                                dialogInterface.dismiss();
+//                                dialogInterface.dismiss();
                                 //TODO 下一步
                             }
                         });

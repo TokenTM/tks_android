@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.components.ComponentUtils;
+import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;

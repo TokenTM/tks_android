@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.utils;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -11,7 +11,7 @@ import android.view.animation.AccelerateInterpolator;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 属性动画工具类
  */
-class PropertyAnimUtils {
+public class PropertyAnimUtils {
 
 
     /**
@@ -20,7 +20,7 @@ class PropertyAnimUtils {
      * @param imprintView 印记view
      * @param sealView    印章view
      */
-    static void startStampAnim(View imprintView, View sealView) {
+    public static void startStampAnim(View imprintView, View sealView,AnimatorListenerAdapter animatorListenerAdapter) {
 
         //印章的缩小然后放大,模拟落章的效果
         ObjectAnimator animator = ObjectAnimator.ofFloat(sealView, "scaleY", 1f, 0.7f, 1f);
@@ -37,6 +37,7 @@ class PropertyAnimUtils {
                 sealView.setVisibility(View.INVISIBLE);
                 // 显示印记
                 imprintView.setVisibility(View.VISIBLE);
+                animatorListenerAdapter.onAnimationEnd(animation);
             }
         });
 
@@ -56,6 +57,12 @@ class PropertyAnimUtils {
                 super.onAnimationEnd(animation);
                 //开启落章动画
                 animSet1.start();
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                sealView.setVisibility(View.VISIBLE);
             }
         });
         //开启印章移动动画

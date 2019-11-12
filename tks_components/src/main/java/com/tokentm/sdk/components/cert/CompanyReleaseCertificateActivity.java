@@ -10,15 +10,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.tokentm.sdk.TokenTmClient;
-import com.tokentm.sdk.components.ComponentUtils;
+import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanyReleaseCertificateBinding;
 import com.tokentm.sdk.model.CertificateInitiateResultDTO;
-import com.tokentm.sdk.source.CertificateService;
+import com.tokentm.sdk.source.CommodityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-
-import java.util.Calendar;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -62,7 +60,7 @@ public class CompanyReleaseCertificateActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                                 dialogInterface.dismiss();
-                                initiate(did, identityPwd, "type_product", binding.tksComponentsCompanyProductName.getText().toString(), null, Calendar.getInstance().getTimeInMillis());
+                                initiate(did, identityPwd, did, binding.tksComponentsCompanyProductName.getText().toString());
                             }
                         });
             }
@@ -74,15 +72,12 @@ public class CompanyReleaseCertificateActivity extends BaseTitleBarActivity {
      *
      * @param did
      * @param identityPwd  身份密码
-     * @param type         存证类型
-     * @param content      存证内容
-     * @param extraData    额外的附加内容
-     * @param timeInMillis 存证失效时间
+     * @param toDid 发给谁
      */
     @SuppressLint("CheckResult")
-    private void initiate(String did, String identityPwd, String type, String content, String extraData, long timeInMillis) {
-        TokenTmClient.getService(CertificateService.class)
-                .initiate(did, identityPwd, type, content, extraData, timeInMillis)
+    private void initiate(String did, String identityPwd, String toDid, String content) {
+        TokenTmClient.getService(CommodityService.class)
+                .send(did, identityPwd, toDid, content)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CompanyReleaseCertificateActivity.this)))
                 .subscribe(new Consumer<CertificateInitiateResultDTO>() {

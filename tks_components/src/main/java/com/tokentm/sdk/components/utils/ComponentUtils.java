@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components;
+package com.tokentm.sdk.components.utils;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -18,7 +18,7 @@ import com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsAc
 import com.tokentm.sdk.components.identitypwd.CompanyCompanyEnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdDecryptDialog;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputWithStampAnimAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
 import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
@@ -129,7 +129,7 @@ public class ComponentUtils {
      * @param dialogConsumer
      */
     public static void showIdentityPwdDialog(FragmentActivity activity, String uDID, BiConsumer<DialogInterface, String> dialogConsumer) {
-        new UserIdentityPwdInputWithStampAnimAlertDialog(activity, uDID, dialogConsumer)
+         UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(activity, uDID, dialogConsumer)
                 .show();
     }
 
@@ -226,10 +226,10 @@ public class ComponentUtils {
      * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchUserPropertyRightsTransferRecordsActivity(FragmentActivity activity, Consumer<CompanyCertResult> consumer) {
+    public static void launchUserPropertyRightsTransferRecordsActivity(FragmentActivity activity, String did,Consumer<CompanyCertResult> consumer) {
         XXF.startActivityForResult(
                 activity,
-                UserPropertyRightsTransferRecordsActivity.getLauncher(activity), 7101)
+                UserPropertyRightsTransferRecordsActivity.getLauncher(activity,did), 7101)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
                     public boolean test(ActivityResult activityResult) throws Exception {

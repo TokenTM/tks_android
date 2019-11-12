@@ -16,14 +16,13 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityCertByIdcardBinding;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.source.CertService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
@@ -126,7 +125,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
 
     @Override
     public void onUserCert(ObservableField<String> userName, ObservableField<String> userIDCard, ObservableField<String> userIDCardFrontPic, ObservableField<String> userIDCardBackPic, ObservableField<String> userIDCardHandedPic) {
-        new UserIdentityPwdInputAlertDialog(this, certByIDCardParams.getuDid(), new BiConsumer<DialogInterface, String>() {
+        UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(this, certByIDCardParams.getuDid(), new BiConsumer<DialogInterface, String>() {
             @Override
             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                 dialogInterface.dismiss();

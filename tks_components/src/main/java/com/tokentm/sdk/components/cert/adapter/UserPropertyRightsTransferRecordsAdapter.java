@@ -1,16 +1,14 @@
 package com.tokentm.sdk.components.cert.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.tokentm.sdk.components.cert.recyclerview.BaseBindableAdapter;
-import com.tokentm.sdk.components.common.BarCodeUtil;
 import com.tokentm.sdk.components.databinding.TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding;
-import com.tokentm.sdk.model.CommodityOwnershipRecordDTO;
+import com.tokentm.sdk.model.CertificateInfoDTO;
 import com.xxf.view.recyclerview.adapter.BaseViewHolder;
 
 import java.text.SimpleDateFormat;
@@ -19,9 +17,11 @@ import java.text.SimpleDateFormat;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录adapter
  */
-public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding, CommodityOwnershipRecordDTO> {
+public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding, CertificateInfoDTO.CertificateActionBean> {
 
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
@@ -30,39 +30,39 @@ public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapte
     }
 
     @Override
-    public void onBindHolder(BaseViewHolder holder, TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding binding, @Nullable CommodityOwnershipRecordDTO commodityOwnershipRecordDTO, int index) {
-        if (commodityOwnershipRecordDTO == null) {
+    public void onBindHolder(BaseViewHolder holder, TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding binding, @Nullable CertificateInfoDTO.CertificateActionBean certificateActionBean, int index) {
+        if (certificateActionBean == null) {
             return;
         }
 
-        String txHash = commodityOwnershipRecordDTO.getTxHash();
+//        String txHash = certificateActionBean.getTxHash();
+//
+//        binding.userCertficationDateTv.setText(formatDate(certificateActionBean.getTimestamp()));
+//        binding.userCertficationActionTv.setText(certificateActionBean.getSign());
+//        binding.userCertficationTimeTv.setText(formatTime(certificateActionBean.getTimestamp()));
 
-        binding.userCertficationDateTv.setText(formatDate(commodityOwnershipRecordDTO.getTime()));
-        binding.userCertficationActionTv.setText(commodityOwnershipRecordDTO.getInfo());
-        binding.userCertficationTimeTv.setText(formatTime(commodityOwnershipRecordDTO.getTime()));
-
-        if (txHash != null && !"".equals(txHash)) {
-            //去掉前面开头的0x或者0X
-            String startsWithLowerCase = "0x";
-            String startsWithCapital = "0X";
-            if (txHash.startsWith(startsWithLowerCase) || txHash.startsWith(startsWithCapital)) {
-                txHash = txHash.substring(2);
-            }
-            binding.userCertficationCodeTv.setText(txHash);
-            String finalTxHash = txHash;
-            binding.userBarCode.post(new Runnable() {
-                @Override
-                public void run() {
-                    binding.userBarCode.setImageBitmap(BarCodeUtil.createBarcode(finalTxHash, binding.userBarCode.getWidth()
-                            , binding.userBarCode.getHeight()));
-                }
-            });
-        }
+//        if (txHash != null && !"".equals(txHash)) {
+//            //去掉前面开头的0x或者0X
+//            String startsWithLowerCase = "0x";
+//            String startsWithCapital = "0X";
+//            if (txHash.startsWith(startsWithLowerCase) || txHash.startsWith(startsWithCapital)) {
+//                txHash = txHash.substring(2);
+//            }
+//            binding.userCertficationCodeTv.setText(txHash);
+//            String finalTxHash = txHash;
+//            binding.userBarCode.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    binding.userBarCode.setImageBitmap(BarCodeUtil.createBarcode(finalTxHash, binding.userBarCode.getWidth()
+//                            , binding.userBarCode.getHeight()));
+//                }
+//            });
+//        }
 
 
-        binding.userCertficationCodeLl.setVisibility(TextUtils.isEmpty(txHash) ? View.GONE : View.VISIBLE);
-        binding.userBarCodeState.setVisibility(TextUtils.isEmpty(txHash) ? View.GONE : View.VISIBLE);
-        binding.userCertficationTopLine.setVisibility(index > 0 ? View.VISIBLE : View.INVISIBLE);
+//        binding.userCertficationCodeLl.setVisibility(TextUtils.isEmpty(txHash) ? View.GONE : View.VISIBLE);
+//        binding.userBarCodeState.setVisibility(TextUtils.isEmpty(txHash) ? View.GONE : View.VISIBLE);
+//        binding.userCertficationTopLine.setVisibility(index > 0 ? View.VISIBLE : View.INVISIBLE);
     }
 
     private String formatTime(long time) {

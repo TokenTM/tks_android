@@ -10,7 +10,7 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.adapter.UserPropertyRightsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityPropertyRightsTransferRecordsBinding;
-import com.tokentm.sdk.model.CommodityOwnershipRecordDTO;
+import com.tokentm.sdk.model.CertificateInfoDTO;
 import com.tokentm.sdk.source.CommodityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -27,10 +27,13 @@ import io.reactivex.functions.Consumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录
  */
-public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActivity implements UserPropertyRightsTransferRecordsPresenter {
+public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActivity
+        implements UserPropertyRightsTransferRecordsPresenter {
 
-    TksComponentsUserActivityPropertyRightsTransferRecordsBinding binding;
-    UserPropertyRightsTransferRecordsAdapter userCertificationRecordAdapter;
+    private static final String KEY_DID = "did";
+    private String did;
+    private TksComponentsUserActivityPropertyRightsTransferRecordsBinding binding;
+    private UserPropertyRightsTransferRecordsAdapter userCertificationRecordAdapter;
 
     public IStateLayoutVM stateLayoutVM = new StateLayoutVM(new Action() {
         @Override
@@ -39,8 +42,9 @@ public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActiv
         }
     });
 
-    public static Intent getLauncher(Context context) {
-        return new Intent(context, UserPropertyRightsTransferRecordsActivity.class);
+    public static Intent getLauncher(Context context, String did) {
+        return new Intent(context, UserPropertyRightsTransferRecordsActivity.class)
+                .putExtra(KEY_DID, did);
     }
 
     @Override
@@ -55,6 +59,7 @@ public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActiv
 
     private void initView() {
         setTitle("物权转移记录");
+        did = getIntent().getStringExtra(KEY_DID);
         binding.setStateLayoutVM(stateLayoutVM);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(userCertificationRecordAdapter = new UserPropertyRightsTransferRecordsAdapter());
@@ -70,13 +75,13 @@ public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActiv
      * 加载数据
      */
     private void loadData() {
-        TokenTmClient.getService(CommodityService.class).getOwnershipRecords("1")
+        TokenTmClient.getService(CommodityService.class).getActionRecords(did)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(new Consumer<List<CommodityOwnershipRecordDTO>>() {
+                .subscribe(new Consumer<List<CertificateInfoDTO.CertificateActionBean>>() {
                     @Override
-                    public void accept(List<CommodityOwnershipRecordDTO> commodityOwnershipRecordDTOS) throws Exception {
-                        userCertificationRecordAdapter.bindData(true, commodityOwnershipRecordDTOS);
+                    public void accept(List<CertificateInfoDTO.CertificateActionBean> certificateActionBeans) throws Exception {
+                        userCertificationRecordAdapter.bindData(true,certificateActionBeans);
                     }
                 });
     }

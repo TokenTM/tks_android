@@ -24,6 +24,7 @@ public class UserIdentityPwdReSetActivity extends UserIdentityPwdSetActivity {
 
     private static final String KEY_DID = "did";
     private static final String KEY_PHONE = "phone";
+    private String did;
 
     public static void launch(@NonNull Context context, @NonNull String did, @Nullable String phone) {
         context.startActivity(getLauncher(context, did, phone));
@@ -34,8 +35,6 @@ public class UserIdentityPwdReSetActivity extends UserIdentityPwdSetActivity {
                 .putExtra(KEY_DID, did)
                 .putExtra(KEY_PHONE, phone);
     }
-
-    String did;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

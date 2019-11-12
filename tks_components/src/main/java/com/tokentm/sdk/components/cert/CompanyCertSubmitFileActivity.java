@@ -18,7 +18,7 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanySubmitFileBinding;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputAlertDialog;
+import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.model.CompanyType;
@@ -143,7 +143,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                 ToastUtils.showToast(String.format("请上传%s的资料", button.getText()));
                 return;
             }
-            new UserIdentityPwdInputAlertDialog(this,
+            UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(this,
                     companyCertParams.getuDid(),
                     new BiConsumer<DialogInterface, String>() {
                         @Override

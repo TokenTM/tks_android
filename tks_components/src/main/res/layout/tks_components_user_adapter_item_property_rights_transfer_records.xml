@@ -42,41 +42,57 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-
             <TextView
-                android:id="@+id/user_certfication_date_tv"
-                android:layout_width="91dp"
-                android:layout_height="21dp"
-                android:textColor="#ff374f66"
+                android:id="@+id/user_property_rights_transfer_records_description_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#374f66"
                 android:textSize="15sp"
-                tools:text="2020-20-20" />
+                tools:text="每日一淘已发货给尚真 " />
 
             <TextView
-                android:id="@+id/user_certfication_action_tv"
-                android:layout_width="247dp"
-                android:layout_height="19dp"
-                android:layout_marginTop="5dp"
-                android:maxLines="1"
-                android:textColor="#374F66"
-                android:textSize="13sp"
-                tools:text="成功认证员工身份：北京投肯科技有限公司" />
+                android:id="@+id/user_property_rights_transfer_records_item_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#374f66"
+                android:textSize="15sp"
+                tools:text="物品名称 : 泸州老窖酱香型白酒" />
+
+            <TextView
+                android:id="@+id/user_property_rights_transfer_records_purchase_quantity_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#ff374f66"
+                android:textSize="14sp"
+                tools:text="购买数量 : 1" />
+
+            <TextView
+                android:id="@+id/user_property_rights_transfer_records_delivery_time_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4.5dp"
+                android:text="发货时间 : 2019:11:11  12:22:06"
+                android:textColor="#ff737785"
+                android:textSize="13sp" />
 
             <LinearLayout
-                android:id="@+id/user_certfication_code_ll"
+                android:id="@+id/user_certification_code_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/user_certfication_time_tv"
+                    android:id="@+id/user_certification_time_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="7.5dp"
                     android:maxLines="1"
-                    android:text="2019.01.01 12:22:06"
                     android:textColor="#374F66"
-                    android:textSize="11sp" />
+                    android:textSize="11sp"
+                    tools:text="2019.01.01 12:22:06" />
 
                 <ImageView
                     android:id="@+id/user_bar_code"
@@ -88,12 +104,13 @@
                     tools:src="@mipmap/tks_components_user_ic_certfication_code" />
 
                 <TextView
-                    tools:text="692349566923495669234956692349566923495669234956692349566923495"
-                    android:id="@+id/user_certfication_code_tv"
+                    android:id="@+id/user_certification_code_tv"
                     android:layout_width="292dp"
                     android:layout_height="13dp"
                     android:textColor="#ff374f66"
-                    android:textSize="9.5sp" />
+                    android:textSize="9.5sp"
+                    android:textStyle="bold"
+                    tools:text="692349566923495669234956692349566923495669234956692349566923495" />
             </LinearLayout>
         </LinearLayout>
 

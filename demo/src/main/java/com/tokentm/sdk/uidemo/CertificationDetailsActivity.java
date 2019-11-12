@@ -8,10 +8,10 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.TokenTmClient;
-import com.tokentm.sdk.components.ComponentUtils;
+import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
-import com.tokentm.sdk.source.CertificateService;
+import com.tokentm.sdk.source.CommodityService;
 import com.tokentm.sdk.uidemo.databinding.CertificationDetailsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -49,8 +49,13 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String did = DemoSp.getInstance().getString("did");
+                if (TextUtils.isEmpty(did)) {
+                    ToastUtils.showToast("请先生成did");
+                    return;
+                }
                 ComponentUtils.launchUserPropertyRightsTransferRecordsActivity(
-                        CertificationDetailsActivity.this,
+                        CertificationDetailsActivity.this,did,
                         new Consumer<CompanyCertResult>() {
                             @Override
                             public void accept(CompanyCertResult companyCertResult) throws Exception {
@@ -178,8 +183,8 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                                 dialogInterface.dismiss();
-                                TokenTmClient.getService(CertificateService.class)
-                                        .confirm(did, identityPwd, postCertificateId, null)
+                                TokenTmClient.getService(CommodityService.class)
+                                        .receive(did, identityPwd, postCertificateId)
                                         .compose(XXF.bindToLifecycle(CertificationDetailsActivity.this))
                                         .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CertificationDetailsActivity.this)))
                                         .subscribe(new Consumer<String>() {

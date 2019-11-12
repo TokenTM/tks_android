@@ -125,6 +125,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/tks_components_user_dialog_decrypted_iv" />
 
             <View
+                android:visibility="invisible"
                 android:id="@+id/tks_components_user_dialog_decrypted_by_read_chapter"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
