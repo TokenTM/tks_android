@@ -50,6 +50,7 @@ public class DidDemoActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(String uDID) throws Exception {
                                 //TODO 中心化系统和userId进行绑定
+                                did = uDID;
                                 DemoSp.getInstance().putString(DemoSp.SP_KEY_DID, uDID);
                                 binding.didText.setText("did:" + uDID);
                             }

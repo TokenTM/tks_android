@@ -6,10 +6,10 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.xxf.arch.utils.ToastUtils;

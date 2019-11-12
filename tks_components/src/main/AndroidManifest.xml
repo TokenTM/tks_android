@@ -14,10 +14,7 @@
             android:name=".identitypwd.CompanyCertificationInstructionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name="com.tokentm.sdk.uidemo.ReleaseCertificateActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <activity
             android:name=".identitypwd.CompanyCertificationDetailsActivity"
             android:screenOrientation="portrait"
