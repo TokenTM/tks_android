@@ -1,6 +1,7 @@
 package com.tokentm.sdk.components.utils;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
@@ -62,6 +63,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -91,6 +93,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -129,7 +132,7 @@ public class ComponentUtils {
      * @param dialogConsumer
      */
     public static void showIdentityPwdDialog(FragmentActivity activity, String uDID, BiConsumer<DialogInterface, String> dialogConsumer) {
-         UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(activity, uDID, dialogConsumer)
+        UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(activity, uDID, dialogConsumer)
                 .show();
     }
 
@@ -182,6 +185,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -215,6 +219,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -226,10 +231,10 @@ public class ComponentUtils {
      * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchUserPropertyRightsTransferRecordsActivity(FragmentActivity activity, String did,Consumer<CompanyCertResult> consumer) {
+    public static void launchUserPropertyRightsTransferRecordsActivity(FragmentActivity activity, String did, Consumer<CompanyCertResult> consumer) {
         XXF.startActivityForResult(
                 activity,
-                UserPropertyRightsTransferRecordsActivity.getLauncher(activity,did), 7101)
+                UserPropertyRightsTransferRecordsActivity.getLauncher(activity, did), 7101)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
                     public boolean test(ActivityResult activityResult) throws Exception {
@@ -243,6 +248,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -270,6 +276,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -297,6 +304,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -324,6 +332,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
@@ -352,6 +361,7 @@ public class ComponentUtils {
                     }
                 })
                 .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
 
