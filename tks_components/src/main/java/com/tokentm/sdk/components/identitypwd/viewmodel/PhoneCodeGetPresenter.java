@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.viewmodel;
 
 import android.databinding.ObservableField;
 import android.databinding.ObservableLong;

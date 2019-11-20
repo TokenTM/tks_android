@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.view;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,6 +10,7 @@ import android.view.WindowManager;
 
 import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.components.databinding.TksComponentsUserDialogIdentityAuthenticationBinding;
+import com.tokentm.sdk.components.identitypwd.presenter.UserIdentityAuthenticationPresenter;
 
 import io.reactivex.functions.BiConsumer;
 

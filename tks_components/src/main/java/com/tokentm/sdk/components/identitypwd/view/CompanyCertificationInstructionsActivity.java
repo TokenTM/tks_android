@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.view;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -3,7 +3,15 @@
 
     <application>
         <activity
-            android:name=".identitypwd.UserIdentityPwdSetActivity"
+            android:name=".identitypwd.view.UserIdentityConfirmActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".identitypwd.view.UserIdentityPwdResetActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".identitypwd.view.UserIdentityPwdUpdateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
@@ -11,20 +19,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.CompanyCertificationInstructionsActivity"
+            android:name=".identitypwd.view.CompanyCertificationInstructionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".identitypwd.CompanyCertificationDetailsActivity"
+            android:name=".identitypwd.view.CompanyCertificationDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".cert.CompanyChainCertificationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".identitypwd.UserIdentityPwdReSetActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

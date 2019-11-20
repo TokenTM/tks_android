@@ -16,7 +16,7 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityCertByIdcardBinding;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.source.CertService;

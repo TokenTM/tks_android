@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -18,10 +18,16 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdSetBinding;
+import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter;
+import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVM;
+import com.tokentm.sdk.components.identitypwd.UserConfig;
+import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.source.BasicService;
-import com.tokentm.sdk.source.IdentityPwdService;
+import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
+import com.xxf.arch.utils.ToastUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,9 +39,9 @@ import io.reactivex.functions.Function;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 用户身份密码设置
+ * @Description 用户身份确认页面 返回did
  */
-public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements IdentityPwdSetPresenter {
+public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements IdentityPwdSetPresenter {
     //倒计时60秒
     private static final int SMS_DELAY = 60;
     private static final String KEY_PHONE = "phone";
@@ -45,7 +51,7 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
     }
 
     public static Intent getLauncher(Context context, String phone) {
-        return new Intent(context, UserIdentityPwdSetActivity.class)
+        return new Intent(context, UserIdentityConfirmActivity.class)
                 .putExtra(KEY_PHONE, phone);
     }
 
@@ -63,7 +69,7 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
 
     private void initView() {
         phone = getIntent().getStringExtra(KEY_PHONE);
-        setTitle("设置身份密码");
+        setTitle("身份确认");
 
         viewModel = ViewModelProviders.of(this).get(IdentityPwdSetVM.class);
         viewModel.phone.set(phone);
@@ -100,7 +106,6 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
             }
         });
 
-
         viewModel.identityPwd.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -112,6 +117,61 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
                 binding.identityPwdCheckCombineTv.setSelected(UserConfig.PATTERN_PWD.matcher(identityPwd).matches());
             }
         });
+
+        viewModel.smsCode.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if (!TextUtils.isEmpty(viewModel.smsCode.get()) && viewModel.smsCode.get().length() >= 6) {
+                    //检查
+                    checkDid(viewModel.phone, viewModel.smsCode);
+                }
+            }
+        });
+    }
+
+    /**
+     * 检查did是否存在
+     *
+     * @param phone
+     * @param smsCode
+     */
+    private void checkDid(ObservableField<String> phone, ObservableField<String> smsCode) {
+        TokenTmClient.getService(IdentityService.class)
+                .getUDID(phone.get(), smsCode.get())
+                .compose(new UILifeTransformerImpl<String>() {
+
+                    @Override
+                    public void onSubscribe() {
+                        viewModel.checkDIDData.set(false);
+                        viewModel.checkDIDProgressVisible.set(true);
+                    }
+
+                    @Override
+                    public void onNext(String uDID) {
+                        viewModel.checkDIDData.set(true);
+                        viewModel.did.set(uDID);
+                        viewModel.checkDIDProgressVisible.set(false);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+
+                    @Override
+                    public void onError(Throwable throwable) {
+                        viewModel.checkDIDData.set(false);
+                        viewModel.checkDIDProgressVisible.set(false);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        viewModel.checkDIDData.set(false);
+                        viewModel.checkDIDProgressVisible.set(false);
+                    }
+                })
+                .compose(XXF.bindToLifecycle(this))
+                .compose(XXF.bindToErrorNotice())
+                .subscribe();
     }
 
     @SuppressLint("CheckResult")
@@ -121,7 +181,7 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
                 .sendSmsCode(phone.get())
                 .compose(XXF.bindToLifecycle(getActivity()))
                 .compose(XXF.<Boolean>bindToProgressHud(
-                        new ProgressHUDTransformerImpl.Builder(UserIdentityPwdSetActivity.this)
+                        new ProgressHUDTransformerImpl.Builder(UserIdentityConfirmActivity.this)
                                 .setLoadingNotice("发送中..."))
                 )
                 .flatMap(new Function<Boolean, ObservableSource<Long>>() {
@@ -149,9 +209,24 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
     }
 
     @Override
-    public void onIdentityPwdSet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
-        TokenTmClient.getService(IdentityPwdService.class)
-                .createUDID(phone.get(), smsCode.get(), identityPwd.get())
+    public void onForgetIdentity(ObservableField<String> phone, ObservableField<String> uDID) {
+        ComponentUtils.launchUserIdentityPwdReSetctivity(
+                this,
+                uDID.get(),
+                phone.get(),
+                new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean reSeted) throws Exception {
+
+                    }
+                });
+    }
+
+
+    @Override
+    public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
+        TokenTmClient.getService(IdentityService.class)
+                .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
                 .subscribe(new Consumer<String>() {
@@ -160,6 +235,26 @@ public class UserIdentityPwdSetActivity extends BaseTitleBarActivity implements 
                         //返回uDid
                         setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, uDid));
                         finish();
+                    }
+                });
+    }
+
+    @Override
+    public void onIdentityDecrypt(ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
+        TokenTmClient.getService(IdentityService.class)
+                .decryptUDID(uDID.get(), phone.get(), smsCode.get(), identityPwd.get())
+                .compose(XXF.bindToLifecycle(this))
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean isDecrypt) throws Exception {
+                        if (isDecrypt) {
+                            //返回uDid
+                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, uDID.get()));
+                            finish();
+                        } else {
+                            ToastUtils.showToast("uDID解密失败");
+                        }
                     }
                 });
     }

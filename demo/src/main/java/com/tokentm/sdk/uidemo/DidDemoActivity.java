@@ -43,7 +43,7 @@ public class DidDemoActivity extends BaseTitleBarActivity {
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ComponentUtils.launchUserIdentityPwdActivity(
+                ComponentUtils.launchUserIdentityConfirmActivity(
                         DidDemoActivity.this,
                         "17611639080",
                         new Consumer<String>() {
@@ -66,7 +66,7 @@ public class DidDemoActivity extends BaseTitleBarActivity {
                     return;
                 }
                 ComponentUtils
-                        .launchUserIdentityPwdAReSetctivity(
+                        .launchUserIdentityPwdReSetctivity(
                                 DidDemoActivity.this,
                                 did,
                                 "17611639080",

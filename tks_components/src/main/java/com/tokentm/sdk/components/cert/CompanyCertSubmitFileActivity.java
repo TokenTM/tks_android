@@ -18,7 +18,7 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanySubmitFileBinding;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.tokentm.sdk.model.CompanyType;

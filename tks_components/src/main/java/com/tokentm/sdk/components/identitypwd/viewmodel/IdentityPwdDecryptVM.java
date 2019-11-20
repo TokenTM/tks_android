@@ -1,9 +1,10 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.viewmodel;
 
 import android.app.Application;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -14,33 +15,25 @@ import com.xxf.arch.viewmodel.XXFViewModel;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 设置身份密码vm
  */
-public class IdentityPwdSetVM extends XXFViewModel {
+public class IdentityPwdDecryptVM extends XXFViewModel {
 
     public ObservableField<String> phone = new ObservableField<>();
     public ObservableLong smsCountdown = new ObservableLong();
     public ObservableField<String> smsCode = new ObservableField<>();
-    public ObservableField<String> identityPwd = new ObservableField<>();
-    public ObservableField<String> reIdentityPwd = new ObservableField<>();
+    public ObservableInt step = new ObservableInt();
     public ObservableBoolean submitable = new ObservableBoolean();
-
     private Observable.OnPropertyChangedCallback submitableCallback = new Observable.OnPropertyChangedCallback() {
         @Override
         public void onPropertyChanged(Observable sender, int propertyId) {
             submitable.set(!TextUtils.isEmpty(phone.get())
                     && !TextUtils.isEmpty(smsCode.get())
-                    && !TextUtils.isEmpty(reIdentityPwd.get())
-                    && TextUtils.equals(identityPwd.get(), reIdentityPwd.get())
-                    && reIdentityPwd.get().length() >= UserConfig.MINI_LENTH_PWD
-                    && reIdentityPwd.get().length() <= UserConfig.MAX_LENTH_PWD
-                    && UserConfig.PATTERN_PWD.matcher(reIdentityPwd.get()).matches());
+            );
         }
     };
 
-    public IdentityPwdSetVM(@NonNull Application application) {
+    public IdentityPwdDecryptVM(@NonNull Application application) {
         super(application);
-        this.reIdentityPwd.addOnPropertyChangedCallback(submitableCallback);
-        this.identityPwd.addOnPropertyChangedCallback(submitableCallback);
-        this.phone.addOnPropertyChangedCallback(submitableCallback);
-        this.smsCode.addOnPropertyChangedCallback(submitableCallback);
+        phone.addOnPropertyChangedCallback(submitableCallback);
+        smsCode.addOnPropertyChangedCallback(submitableCallback);
     }
 }

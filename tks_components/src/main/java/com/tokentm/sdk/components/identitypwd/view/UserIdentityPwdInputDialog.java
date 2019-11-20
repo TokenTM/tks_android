@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,9 +16,10 @@ import android.view.WindowManager;
 import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.components.databinding.TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding;
+import com.tokentm.sdk.components.identitypwd.UserConfig;
 import com.tokentm.sdk.components.utils.KeyboardUtils;
 import com.tokentm.sdk.components.utils.PropertyAnimUtils;
-import com.tokentm.sdk.source.IdentityPwdService;
+import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
@@ -108,7 +109,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
     }
 
     private void forgotIdentityPwd() {
-        UserIdentityPwdReSetActivity.launch(getContext(), null);
+        UserIdentityPwdResetActivity.launch(getContext(), uDid, null);
     }
 
 //    @Override
@@ -123,7 +124,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
             return;
         }
         String pwd = binding.identityPwdEt.getText().toString().trim();
-        TokenTmClient.getService(IdentityPwdService.class)
+        TokenTmClient.getService(IdentityService.class)
                 .validateIdentityPwd(uDid, pwd)
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
                 .subscribe(new Consumer<Boolean>() {
@@ -131,7 +132,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
                     public void accept(Boolean aBoolean) throws Exception {
                         //校验密码成功
                         if (aBoolean) {
-                            if (isWithStampAnim){
+                            if (isWithStampAnim) {
                                 binding.tksComponentsUserDialogDecryptedWithRedChapterIv.post(new Runnable() {
                                     @Override
                                     public void run() {
@@ -151,7 +152,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
                                                 });
                                     }
                                 });
-                            }else {
+                            } else {
                                 dismiss();
                                 setResult(pwd);
                             }

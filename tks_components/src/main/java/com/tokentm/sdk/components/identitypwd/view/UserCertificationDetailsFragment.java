@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.view;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 
 import com.tokentm.sdk.components.common.BaseFragment;
 import com.tokentm.sdk.components.databinding.TksComponentsUserFragmentCertificationDetailsBinding;
+import com.tokentm.sdk.components.identitypwd.presenter.CompanyCertificationInstructionsPresenter;
+import com.tokentm.sdk.components.identitypwd.viewmodel.CompanyCertificationInstructionsVM;
 
 /**
  * @author lqx  E-mail:herolqx@126.com

@@ -19,7 +19,11 @@ public class BaseApplication extends Application {
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {
-                Log.d("======>", "error:" + Log.getStackTraceString(throwable));
+                if (throwable.getCause() != null) {
+                    Log.d("======>", "error:" + Log.getStackTraceString(throwable.getCause()));
+                } else {
+                    Log.d("======>", "error:" + Log.getStackTraceString(throwable));
+                }
             }
         });
         //初始化
@@ -36,8 +40,12 @@ public class BaseApplication extends Application {
             }
 
             @Override
-            public void d(String msg, Throwable tr) {
-                Log.d("=======>", msg + Log.getStackTraceString(tr));
+            public void d(String msg, Throwable throwable) {
+                if (throwable.getCause() != null) {
+                    Log.d("======>", msg + Log.getStackTraceString(throwable.getCause()));
+                } else {
+                    Log.d("======>", msg + Log.getStackTraceString(throwable));
+                }
             }
 
             @Override

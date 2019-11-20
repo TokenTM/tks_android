@@ -1,13 +1,14 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.presenter;
 
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description
  */
-public interface IdentityPwdSetPresenter {
+public interface IdentityPwdDecryptPresenter {
 
     /**
      * 请求验证码
@@ -19,11 +20,11 @@ public interface IdentityPwdSetPresenter {
 
 
     /**
-     * 设置身份密码
+     * 解开身份密码
      *
+     * @param step
      * @param phone
      * @param smsCode
-     * @param identityPwd
      */
-    void onIdentityPwdSet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd);
+    void onIdentityPwdDecrypt(ObservableInt step, ObservableField<String> phone, ObservableField<String> smsCode);
 }

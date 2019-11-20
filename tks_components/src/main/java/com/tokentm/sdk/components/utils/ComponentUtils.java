@@ -13,16 +13,15 @@ import com.tokentm.sdk.components.cert.UserPropertyRightsTransferRecordsActivity
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.CompanyCertificationDetailsActivity;
-import com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsActivity;
-import com.tokentm.sdk.components.identitypwd.CompanyCompanyEnterpriseCertificationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.UserIdentityAuthenticationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdDecryptDialog;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdInputDialog;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdReSetActivity;
-import com.tokentm.sdk.components.identitypwd.UserIdentityPwdSetActivity;
+import com.tokentm.sdk.components.identitypwd.view.CompanyCertificationDetailsActivity;
+import com.tokentm.sdk.components.identitypwd.view.CompanyCertificationInstructionsActivity;
+import com.tokentm.sdk.components.identitypwd.view.CompanyCompanyEnterpriseCertificationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityAuthenticationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityConfirmActivity;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdResetActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
-import com.tokentm.sdk.source.IdentityPwdService;
+import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
@@ -39,16 +38,16 @@ import io.reactivex.functions.Predicate;
 public class ComponentUtils {
 
     /**
-     * 启动身份密码设置页面
+     * 启动身份确认页面
      *
      * @param activity
      * @param userPhone
-     * @param consumer
+     * @param consumer  返回uDID
      */
     @SuppressLint("CheckResult")
-    public static void launchUserIdentityPwdActivity(FragmentActivity activity, String userPhone, Consumer<String> consumer) {
+    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, Consumer<String> consumer) {
         XXF.startActivityForResult(activity,
-                UserIdentityPwdSetActivity.getLauncher(activity, userPhone),
+                UserIdentityConfirmActivity.getLauncher(activity, userPhone),
                 7000)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
@@ -77,9 +76,9 @@ public class ComponentUtils {
      * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchUserIdentityPwdAReSetctivity(FragmentActivity activity, String uDID, String phone, Consumer<Boolean> consumer) {
+    public static void launchUserIdentityPwdReSetctivity(FragmentActivity activity, String uDID, String phone, Consumer<Boolean> consumer) {
         XXF.startActivityForResult(activity,
-                UserIdentityPwdReSetActivity.getLauncher(activity, uDID, phone),
+                UserIdentityPwdResetActivity.getLauncher(activity, uDID, phone),
                 7001)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
@@ -106,24 +105,12 @@ public class ComponentUtils {
      * @return
      */
     public static boolean isUDIDAccessible(String uDID) {
-        return TokenTmClient.getService(IdentityPwdService.class)
+        return TokenTmClient.getService(IdentityService.class)
                 .isUDIDAccessible(uDID)
                 .onErrorReturnItem(false)
                 .blockingFirst(false);
     }
 
-
-    /**
-     * 解密UDID
-     *
-     * @param activity
-     * @param uDID
-     * @param dialogConsumer
-     */
-    public static void decryptUDID(FragmentActivity activity, String uDID, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
-        new UserIdentityPwdDecryptDialog(activity, uDID, dialogConsumer)
-                .show();
-    }
 
     /**
      * show 身份密码输入框dialog

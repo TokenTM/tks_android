@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd;
+package com.tokentm.sdk.components.identitypwd.viewmodel;
 
 import android.app.Application;
 import android.databinding.Observable;

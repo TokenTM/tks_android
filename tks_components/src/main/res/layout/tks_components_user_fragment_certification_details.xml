@@ -4,12 +4,12 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsVM" />
+            type="com.tokentm.sdk.components.identitypwd.viewmodel.CompanyCertificationInstructionsVM" />
 
         <!--认证说明-->
         <variable
             name="presenter"
-            type="com.tokentm.sdk.components.identitypwd.CompanyCertificationInstructionsPresenter" />
+            type="com.tokentm.sdk.components.identitypwd.presenter.CompanyCertificationInstructionsPresenter" />
     </data>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"

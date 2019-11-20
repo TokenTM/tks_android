@@ -4,7 +4,7 @@ android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.tokentm.sdk.demo"
+        applicationId "com.tokentm.sdk.ui.demo"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion 27
         versionCode 1
