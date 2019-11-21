@@ -5,7 +5,6 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
-import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
@@ -17,11 +16,10 @@ import com.tokentm.sdk.components.identitypwd.view.CompanyCertificationDetailsAc
 import com.tokentm.sdk.components.identitypwd.view.CompanyCertificationInstructionsActivity;
 import com.tokentm.sdk.components.identitypwd.view.CompanyCompanyEnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityAuthenticationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityConfirmActivity;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdResetActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
-import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
@@ -67,49 +65,7 @@ public class ComponentUtils {
                 .subscribe(consumer);
     }
 
-    /**
-     * 启动重置身份密码页面
-     *
-     * @param activity
-     * @param uDID
-     * @param phone
-     * @param consumer
-     */
-    @SuppressLint("CheckResult")
-    public static void launchUserIdentityPwdReSetctivity(FragmentActivity activity, String uDID, String phone, Consumer<Boolean> consumer) {
-        XXF.startActivityForResult(activity,
-                UserIdentityPwdResetActivity.getLauncher(activity, uDID, phone),
-                7001)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
-                .map(new Function<ActivityResult, Boolean>() {
-                    @Override
-                    public Boolean apply(ActivityResult activityResult) throws Exception {
-                        return activityResult.getData().getBooleanExtra(BaseTitleBarActivity.KEY_ACTIVITY_RESULT, false);
-                    }
-                })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
-                .subscribe(consumer);
-    }
 
-    /**
-     * UDID 是否可用
-     *
-     * @param uDID
-     * @return
-     */
-    public static boolean isUDIDAccessible(String uDID) {
-        return TokenTmClient.getService(IdentityService.class)
-                .isUDIDAccessible(uDID)
-                .onErrorReturnItem(false)
-                .blockingFirst(false);
-    }
 
 
     /**

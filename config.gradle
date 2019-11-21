@@ -14,7 +14,7 @@ ext {
     ]
 
     dependencies = [
-            tks_test              : "com.github.TokenTM.tks_android_core:tks:0.3.5_test",
+            tks_test              : "com.github.TokenTM.tks_android_core:tks:0.3.7_test",
 
             // ------------- Android -------------
             supportV4             : "com.android.support:support-v4:${dependVersion.support}",

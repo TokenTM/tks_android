@@ -21,6 +21,7 @@ import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityP
 import com.tokentm.sdk.components.identitypwd.model.StepModel;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdDecryptPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdDecryptVM;
+import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.model.NodeServiceDecryptedPartItem;
 import com.tokentm.sdk.model.NodeServiceEncryptedPartItem;
 import com.tokentm.sdk.source.IdentityService;
@@ -45,21 +46,21 @@ import io.reactivex.functions.Predicate;
  */
 public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implements IdentityPwdDecryptPresenter {
 
-    private static final String KEY_DID = "did";
+    private static final String KEY_DID_INFO = "did_info";
     private static final String KEY_PHONE = "phone";
 
 
-    public static void launch(@NonNull Context context, @NonNull String did, @Nullable String phone) {
-        context.startActivity(getLauncher(context, did, phone));
+    public static void launch(@NonNull Context context, @NonNull IdentityInfoStoreItem identityInfoStoreItem, @Nullable String phone) {
+        context.startActivity(getLauncher(context, identityInfoStoreItem, phone));
     }
 
-    public static Intent getLauncher(@NonNull Context context, @NonNull String did, @Nullable String phone) {
+    public static Intent getLauncher(@NonNull Context context, @NonNull IdentityInfoStoreItem identityInfoStoreItem, @Nullable String phone) {
         return new Intent(context, UserIdentityPwdResetActivity.class)
-                .putExtra(KEY_DID, did)
+                .putExtra(KEY_DID_INFO, identityInfoStoreItem)
                 .putExtra(KEY_PHONE, phone);
     }
 
-    private String did;
+    IdentityInfoStoreItem identityInfoStoreItem;
     private String phone;
     TksComponentsUserActivityIdentityPwdDecryptBinding binding;
     StepAdapter stepAdapter;
@@ -78,7 +79,7 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
 
     private void initView() {
         setTitle("重置身份密码");
-        did = getIntent().getStringExtra(KEY_DID);
+        identityInfoStoreItem = (IdentityInfoStoreItem) getIntent().getSerializableExtra(KEY_DID_INFO);
         phone = getIntent().getStringExtra(KEY_PHONE);
 
         binding.setViewModel(ViewModelProviders.of(this).get(IdentityPwdDecryptVM.class));
@@ -126,7 +127,7 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
                     public ObservableSource<List<List<NodeServiceEncryptedPartItem>>> call() throws Exception {
                         if (encryptIdentityPwdParts == null || encryptIdentityPwdParts.isEmpty()) {
                             return TokenTmClient.getService(IdentityService.class)
-                                    .getEncryptIdentityPwdParts(did, phone.get(), smsCode.get())
+                                    .getEncryptIdentityPwdParts(identityInfoStoreItem.getDid(), phone.get(), smsCode.get())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .doOnNext(new Consumer<List<List<NodeServiceEncryptedPartItem>>>() {
                                         @Override
@@ -164,21 +165,23 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
                         step.set(step.get() + 1);
 
                         if (decryptedPartItemSparseArray.size() == encryptIdentityPwdParts.get(0).size()) {
-                            List<NodeServiceDecryptedPartItem> decryptedPartItems = new ArrayList<>();
+                            ArrayList<NodeServiceDecryptedPartItem> decryptedPartItems = new ArrayList<>();
                             for (int i = 0; i < decryptedPartItemSparseArray.size(); i++) {
                                 decryptedPartItems.add(decryptedPartItemSparseArray.get(i));
                             }
-                            String pwd = TokenTmClient.getService(IdentityService.class)
-                                    .decryptIdentityPwd(did, decryptedPartItems);
-                            gotoPwdUpdatePage(pwd);
+                            gotoPwdUpdatePage(decryptedPartItems);
 
                         }
                     }
                 });
     }
 
-    private void gotoPwdUpdatePage(String oldPwd) {
-        XXF.startActivityForResult(this, UserIdentityPwdUpdateActivity.getLauncher(this, did, oldPwd), 2001)
+    private void gotoPwdUpdatePage(ArrayList<NodeServiceDecryptedPartItem> decryptedPartItems) {
+        XXF.startActivityForResult(this,
+                UserIdentityPwdUpdateActivity.getLauncher(
+                        this,
+                        identityInfoStoreItem,
+                        decryptedPartItems), 2001)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
                     public boolean test(ActivityResult activityResult) throws Exception {
@@ -206,13 +209,13 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
                                                                                          @Nullable NodeServiceEncryptedPartItem encryptedPartItemCopy,
                                                                                          @NonNull String phone, @NonNull String smsCode) {
         return TokenTmClient.getService(IdentityService.class)
-                .decryptIdentityPwdPart(did, encryptedPartItem, phone, smsCode)
+                .decryptIdentityPwdPart(identityInfoStoreItem.getDid(), encryptedPartItem, phone, smsCode)
                 .onErrorResumeNext(new Function<Throwable, ObservableSource<? extends NodeServiceDecryptedPartItem>>() {
                     @Override
                     public ObservableSource<? extends NodeServiceDecryptedPartItem> apply(Throwable throwable) throws Exception {
                         if (encryptedPartItemCopy != null) {
                             return TokenTmClient.getService(IdentityService.class)
-                                    .decryptIdentityPwdPart(did, encryptedPartItemCopy, phone, smsCode);
+                                    .decryptIdentityPwdPart(identityInfoStoreItem.getDid(), encryptedPartItemCopy, phone, smsCode);
                         }
                         return io.reactivex.Observable.error(throwable);
                     }

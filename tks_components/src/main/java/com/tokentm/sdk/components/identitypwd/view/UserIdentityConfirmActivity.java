@@ -2,6 +2,7 @@ package com.tokentm.sdk.components.identitypwd.view;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
@@ -18,13 +19,14 @@ import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdSetBinding;
+import com.tokentm.sdk.components.identitypwd.UserConfig;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVM;
-import com.tokentm.sdk.components.identitypwd.UserConfig;
-import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
+import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
@@ -35,6 +37,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 
 /**
@@ -138,7 +141,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
     private void checkDid(ObservableField<String> phone, ObservableField<String> smsCode) {
         TokenTmClient.getService(IdentityService.class)
                 .getUDID(phone.get(), smsCode.get())
-                .compose(new UILifeTransformerImpl<String>() {
+                .compose(new UILifeTransformerImpl<IdentityInfoStoreItem>() {
 
                     @Override
                     public void onSubscribe() {
@@ -147,9 +150,10 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
                     }
 
                     @Override
-                    public void onNext(String uDID) {
+                    public void onNext(IdentityInfoStoreItem identityInfoStoreItem) {
                         viewModel.checkDIDData.set(true);
-                        viewModel.did.set(uDID);
+                        viewModel.identityInfo.set(identityInfoStoreItem);
+                        viewModel.did.set(identityInfoStoreItem.available() ? identityInfoStoreItem.getDid() : null);
                         viewModel.checkDIDProgressVisible.set(false);
                     }
 
@@ -210,16 +214,29 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
 
     @Override
     public void onForgetIdentity(ObservableField<String> phone, ObservableField<String> uDID) {
-        ComponentUtils.launchUserIdentityPwdReSetctivity(
-                this,
-                uDID.get(),
-                phone.get(),
-                new Consumer<Boolean>() {
+        XXF.startActivityForResult(this,
+                UserIdentityPwdResetActivity.getLauncher(
+                        this,
+                        viewModel.identityInfo.get(),
+                        phone.get()
+                ),
+                7001)
+                .filter(new Predicate<ActivityResult>() {
                     @Override
-                    public void accept(Boolean reSeted) throws Exception {
-
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
                     }
-                });
+                })
+                .map(new Function<ActivityResult, Boolean>() {
+                    @Override
+                    public Boolean apply(ActivityResult activityResult) throws Exception {
+                        return activityResult.getData().getBooleanExtra(BaseTitleBarActivity.KEY_ACTIVITY_RESULT, false);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindUntilEvent(this, Lifecycle.Event.ON_DESTROY))
+                .compose(XXF.bindToErrorNotice())
+                .subscribe();
     }
 
 

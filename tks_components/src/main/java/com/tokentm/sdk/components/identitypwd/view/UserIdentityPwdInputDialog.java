@@ -109,7 +109,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
     }
 
     private void forgotIdentityPwd() {
-        UserIdentityPwdResetActivity.launch(getContext(), uDid, null);
+        //TODO 实现？
     }
 
 //    @Override

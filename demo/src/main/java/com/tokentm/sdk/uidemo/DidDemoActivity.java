@@ -58,26 +58,6 @@ public class DidDemoActivity extends BaseTitleBarActivity {
             }
         });
 
-        binding.updatePwdBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("先创建did");
-                    return;
-                }
-                ComponentUtils
-                        .launchUserIdentityPwdReSetctivity(
-                                DidDemoActivity.this,
-                                did,
-                                "17611639080",
-                                new Consumer<Boolean>() {
-                                    @Override
-                                    public void accept(Boolean reseted) throws Exception {
-                                        ToastUtils.showToast("重置成功?" + String.valueOf(reseted));
-                                    }
-                                });
-            }
-        });
 
         binding.checkPwdBtn.setOnClickListener(new View.OnClickListener() {
             @Override

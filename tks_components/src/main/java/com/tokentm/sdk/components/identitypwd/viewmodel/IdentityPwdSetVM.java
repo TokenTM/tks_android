@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.tokentm.sdk.components.identitypwd.UserConfig;
+import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.xxf.arch.viewmodel.XXFViewModel;
 
 /**
@@ -27,6 +28,7 @@ public class IdentityPwdSetVM extends XXFViewModel {
     public ObservableBoolean isRegisterMode = new ObservableBoolean();
     public ObservableBoolean checkDIDData = new ObservableBoolean();
     public ObservableField<String> did = new ObservableField<String>();
+    public ObservableField<IdentityInfoStoreItem> identityInfo = new ObservableField<>();
     public ObservableBoolean checkDIDProgressVisible = new ObservableBoolean();
 
     private Observable.OnPropertyChangedCallback submitableCallback = new Observable.OnPropertyChangedCallback() {
