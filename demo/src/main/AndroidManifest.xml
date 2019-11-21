@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.tokentm.sdk.uidemo.WalletActivity" />
         <activity android:name="com.tokentm.sdk.uidemo.DidDemoActivity" />
         <activity android:name="com.tokentm.sdk.uidemo.CertificationDetailsActivity" />
+        <activity android:name="com.tokentm.sdk.uidemo.ReleaseCertificateActivity" />
     </application>
 
 </manifest>

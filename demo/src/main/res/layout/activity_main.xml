@@ -15,13 +15,6 @@
 
 
             <Button
-                android:id="@+id/bt_create_wallet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="wallet"
-                tools:ignore="MissingConstraints" />
-
-            <Button
                 android:id="@+id/bt_create_did"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,6 +41,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="备份数据"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bt_get_backup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="获取备份数据"
                 tools:ignore="MissingConstraints" />
 
             <Button

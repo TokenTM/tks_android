@@ -6,12 +6,16 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.model.StoreItem;
+import com.tokentm.sdk.source.StoreService;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
+import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.Consumer;
@@ -36,12 +40,6 @@ public class MainActivity extends BaseTitleBarActivity {
 
     private void initView() {
         setTitle("tks_demo");
-        binding.btCreateWallet.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                WalletActivity.launch(v.getContext());
-            }
-        });
         binding.btCreateDid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +49,45 @@ public class MainActivity extends BaseTitleBarActivity {
         binding.btBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
+                if (TextUtils.isEmpty(did)) {
+                    ToastUtils.showToast("请先生成did");
+                    return;
+                }
+                StoreItem<String> storeItem = new StoreItem<>();
+                storeItem.setDid(did);
+                storeItem.setDataId(did);
+                storeItem.setDataType("testType");
+                storeItem.setData(String.format("android_x_%s", System.currentTimeMillis()));
+                TokenTmClient.getService(StoreService.class)
+                        .storePrivate(storeItem)
+                        .compose(XXF.bindToErrorNotice())
+                        .subscribe(new Consumer<Long>() {
+                            @Override
+                            public void accept(Long aLong) throws Exception {
+                                ToastUtils.showToast("备份成功");
+                            }
+                        });
+            }
+        });
+        binding.btGetBackup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
+                if (TextUtils.isEmpty(did)) {
+                    ToastUtils.showToast("请先生成did");
+                    return;
+                }
 
+                TokenTmClient.getService(StoreService.class)
+                        .getPrivateStore(did, "testType", did)
+                        .compose(XXF.bindToErrorNotice())
+                        .subscribe(new Consumer<StoreItem<String>>() {
+                            @Override
+                            public void accept(StoreItem<String> stringStoreItem) throws Exception {
+                                ToastUtils.showToast("备份获取:" + stringStoreItem.getData());
+                            }
+                        });
             }
         });
         binding.btCertByIdcard.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +109,7 @@ public class MainActivity extends BaseTitleBarActivity {
                             public void accept(String txHash) throws Exception {
                                 //TODO 中心化系统进行记录
                                 ToastUtils.showToast("实名认证成功:" + txHash);
-                                DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH,txHash);
+                                DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, txHash);
                             }
                         });
             }
