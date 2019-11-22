@@ -6,10 +6,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.uidemo.databinding.DidActivityBinding;
-import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -34,12 +33,12 @@ public class DidDemoActivity extends BaseTitleBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
+        did = DemoSp.getInstance().getLoginDID();
         binding.didText.setText(TextUtils.isEmpty(did) ? "" : "已创建did:\n" + did);
     }
 
     private void initView() {
-        setTitle("Did创建");
+        setTitle("Did");
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,8 +50,6 @@ public class DidDemoActivity extends BaseTitleBarActivity {
                             public void accept(String uDID) throws Exception {
                                 //TODO 中心化系统和userId进行绑定
                                 did = uDID;
-                                DemoSp.getInstance().putString(DemoSp.SP_KEY_DID, uDID);
-                                binding.didText.setText("did:" + uDID);
                             }
                         });
             }
@@ -62,10 +59,6 @@ public class DidDemoActivity extends BaseTitleBarActivity {
         binding.checkPwdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("先创建did");
-                    return;
-                }
                 ComponentUtils.showIdentityPwdDialog(
                         DidDemoActivity.this,
                         did,

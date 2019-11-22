@@ -24,6 +24,7 @@ import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdDecryptVM;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.model.NodeServiceDecryptedPartItem;
 import com.tokentm.sdk.model.NodeServiceEncryptedPartItem;
+import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
@@ -32,6 +33,7 @@ import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -45,7 +47,8 @@ import io.reactivex.functions.Predicate;
  * @Description 重置用户身份密码设置
  */
 public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implements IdentityPwdDecryptPresenter {
-
+    //倒计时60秒
+    private static final int SMS_DELAY = 60;
     private static final String KEY_DID_INFO = "did_info";
     private static final String KEY_PHONE = "phone";
 
@@ -115,7 +118,35 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
 
     @Override
     public void onSendSMSCode(ObservableField<String> phone, ObservableLong smsCountdown) {
-
+        TokenTmClient.getService(BasicService.class)
+                .sendSmsCode(phone.get())
+                .compose(XXF.bindToLifecycle(getActivity()))
+                .compose(XXF.<Boolean>bindToProgressHud(
+                        new ProgressHUDTransformerImpl.Builder(UserIdentityPwdResetActivity.this)
+                                .setLoadingNotice("发送中..."))
+                )
+                .flatMap(new Function<Boolean, ObservableSource<Long>>() {
+                    @Override
+                    public ObservableSource<Long> apply(Boolean aBoolean) throws Exception {
+                        return io.reactivex.Observable.interval(0, 1, TimeUnit.SECONDS)
+                                .take(SMS_DELAY + 1)
+                                .map(new Function<Long, Long>() {
+                                    @Override
+                                    public Long apply(Long aLong) throws Exception {
+                                        return SMS_DELAY - aLong;
+                                    }
+                                })
+                                .observeOn(AndroidSchedulers.mainThread());
+                    }
+                })
+                .compose(XXF.bindToLifecycle(getActivity()))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(Long aLong) throws Exception {
+                        smsCountdown.set(aLong);
+                    }
+                });
     }
 
     @SuppressLint("CheckResult")

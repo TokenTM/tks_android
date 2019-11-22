@@ -56,6 +56,13 @@
                 android:layout_height="wrap_content"
                 android:text="开启认证详情"
                 tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/bt_login_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="退出登陆"
+                tools:ignore="MissingConstraints" />
         </LinearLayout>
     </ScrollView>
 </layout>

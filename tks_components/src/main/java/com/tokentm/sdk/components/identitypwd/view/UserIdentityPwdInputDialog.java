@@ -19,6 +19,7 @@ import com.tokentm.sdk.components.databinding.TksComponentsUserDialogDecryptedBy
 import com.tokentm.sdk.components.identitypwd.UserConfig;
 import com.tokentm.sdk.components.utils.KeyboardUtils;
 import com.tokentm.sdk.components.utils.PropertyAnimUtils;
+import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -109,7 +110,15 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
     }
 
     private void forgotIdentityPwd() {
-        //TODO 实现？
+        TokenTmClient.getService(IdentityService.class)
+                .getUDID(uDid)
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .subscribe(new Consumer<IdentityInfoStoreItem>() {
+                    @Override
+                    public void accept(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
+                        UserIdentityPwdResetActivity.launch(getContext(), identityInfoStoreItem, null);
+                    }
+                });
     }
 
 //    @Override

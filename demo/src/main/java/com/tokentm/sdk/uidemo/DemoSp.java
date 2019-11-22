@@ -10,9 +10,9 @@ import com.xxf.arch.XXF;
 public class DemoSp extends SharedPreferenceWrapper {
 
 
+    public static final String SP_KEY_LOGIN = "sp_key_login";
     public static final String SP_KEY_CERTIFICATE_ID = "sp_key_certificate_id";
     public static final String SP_KEY_TX_HASH = "sp_key_tx_hash";
-    public static final String SP_KEY_DID = "sp_key_did";
 
     private static volatile DemoSp INSTANCE;
 
@@ -30,4 +30,23 @@ public class DemoSp extends SharedPreferenceWrapper {
         }
         return INSTANCE;
     }
+
+    public void login(String phone, String did) {
+        putString(SP_KEY_LOGIN, phone);
+        putString(phone, did);
+    }
+
+    public void logout() {
+        putString(SP_KEY_LOGIN, null);
+    }
+
+    public String getLoginPhone() {
+        return getString(SP_KEY_LOGIN);
+    }
+
+    public String getLoginDID() {
+        return getString(getLoginPhone());
+    }
+
+
 }

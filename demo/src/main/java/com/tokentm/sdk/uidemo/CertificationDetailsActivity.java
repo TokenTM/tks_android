@@ -33,7 +33,13 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
     public static Intent getLauncher(Context context) {
         return new Intent(context, CertificationDetailsActivity.class);
     }
+    String did;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        did = DemoSp.getInstance().getLoginDID();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +54,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("请先生成did");
-                    return;
-                }
+
                 ComponentUtils.launchUserPropertyRightsTransferRecordsActivity(
                         CertificationDetailsActivity.this, did,
                         new Consumer<CompanyCertResult>() {
@@ -151,11 +153,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btReleaseCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("请先生成did");
-                    return;
-                }
                 //开启发证demo页面
                 v.getContext().startActivity(ReleaseCertificateActivity.getLauncher(CertificationDetailsActivity.this, did));
             }
@@ -165,11 +162,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btConfirmCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("请先生成did");
-                    return;
-                }
+
                 String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATE_ID);
                 if (TextUtils.isEmpty(certificateId)) {
                     ToastUtils.showToast("请先发证");

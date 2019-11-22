@@ -17,7 +17,7 @@
             android:id="@+id/did_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="创建新DID(身份确认)" />
+            android:text="身份确认" />
 
         <Button
             android:id="@+id/check_pwd_btn"

@@ -3,7 +3,6 @@ package com.tokentm.sdk.uidemo;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.TokenTmClient;
@@ -37,6 +36,13 @@ public class MainActivity extends BaseTitleBarActivity {
         initView();
     }
 
+    String did;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        did = DemoSp.getInstance().getLoginDID();
+    }
 
     private void initView() {
         setTitle("tks_demo");
@@ -49,11 +55,7 @@ public class MainActivity extends BaseTitleBarActivity {
         binding.btBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("请先生成did");
-                    return;
-                }
+
                 StoreItem<String> storeItem = new StoreItem<>();
                 storeItem.setDid(did);
                 storeItem.setDataId(did);
@@ -73,12 +75,6 @@ public class MainActivity extends BaseTitleBarActivity {
         binding.btGetBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("请先生成did");
-                    return;
-                }
-
                 TokenTmClient.getService(StoreService.class)
                         .getPrivateStore(did, "testType", did)
                         .compose(XXF.bindToErrorNotice())
@@ -93,11 +89,7 @@ public class MainActivity extends BaseTitleBarActivity {
         binding.btCertByIdcard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("请先生成did");
-                    return;
-                }
+
                 ComponentUtils.launchUserCertActivity(
                         MainActivity.this,
                         new UserCertByIDCardParams.Builder(did)
@@ -109,7 +101,6 @@ public class MainActivity extends BaseTitleBarActivity {
                             public void accept(String txHash) throws Exception {
                                 //TODO 中心化系统进行记录
                                 ToastUtils.showToast("实名认证成功:" + txHash);
-                                DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, txHash);
                             }
                         });
             }
@@ -118,11 +109,7 @@ public class MainActivity extends BaseTitleBarActivity {
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
-                String did = DemoSp.getInstance().getString(DemoSp.SP_KEY_DID);
-                if (TextUtils.isEmpty(did)) {
-                    ToastUtils.showToast("请先生成did");
-                    return;
-                }
+
                 ComponentUtils.launchCompanyCertActivity(
                         MainActivity.this,
                         new CompanyCertParams.Builder(did, "北京百度科技有限公司").build(),
@@ -141,6 +128,16 @@ public class MainActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 v.getContext().startActivity(CertificationDetailsActivity.getLauncher(v.getContext()));
+            }
+        });
+
+        binding.btLoginOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DemoSp.getInstance().logout();
+
+                startActivity(new Intent(MainActivity.this,LoginOrRegisterActivity.class));
+                finish();
             }
         });
     }
