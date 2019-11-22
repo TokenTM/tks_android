@@ -109,17 +109,6 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
             }
         });
 
-        viewModel.identityPwd.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                String identityPwd = viewModel.identityPwd.get();
-                //设置密码校验提示
-                binding.identityPwdCheckLengthTv.setVisibility(TextUtils.isEmpty(identityPwd) ? View.GONE : View.VISIBLE);
-                binding.identityPwdCheckCombineTv.setVisibility(TextUtils.isEmpty(identityPwd) ? View.GONE : View.VISIBLE);
-                binding.identityPwdCheckLengthTv.setSelected(identityPwd.length() >= UserConfig.MINI_LENTH_PWD && identityPwd.length() <= UserConfig.MAX_LENTH_PWD);
-                binding.identityPwdCheckCombineTv.setSelected(UserConfig.PATTERN_PWD.matcher(identityPwd).matches());
-            }
-        });
 
         viewModel.smsCode.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
@@ -215,7 +204,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
     @Override
     public void onForgetIdentity(ObservableField<String> phone, ObservableField<String> uDID) {
         XXF.startActivityForResult(this,
-                UserIdentityPwdResetActivity.getLauncher(
+                UserIdentityPwdDecryptActivity.getLauncher(
                         this,
                         viewModel.identityInfo.get(),
                         phone.get()

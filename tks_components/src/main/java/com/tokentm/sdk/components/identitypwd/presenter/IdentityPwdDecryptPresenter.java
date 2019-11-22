@@ -25,6 +25,7 @@ public interface IdentityPwdDecryptPresenter {
      * @param step
      * @param phone
      * @param smsCode
+     * @param decryptNodeName
      */
-    void onIdentityPwdDecrypt(ObservableInt step, ObservableField<String> phone, ObservableField<String> smsCode);
+    void onIdentityPwdDecrypt(ObservableInt step, ObservableField<String> phone, ObservableField<String> smsCode,ObservableField<String> decryptNodeName);
 }

@@ -22,6 +22,10 @@ public class IdentityPwdSetVM extends XXFViewModel {
     public ObservableLong smsCountdown = new ObservableLong();
     public ObservableField<String> smsCode = new ObservableField<>();
     public ObservableField<String> identityPwd = new ObservableField<>();
+
+    public ObservableBoolean identityPwdLengthRightful = new ObservableBoolean();
+    public ObservableBoolean identityPwdContentRightful = new ObservableBoolean();
+
     public ObservableField<String> reIdentityPwd = new ObservableField<>();
     public ObservableBoolean submitable = new ObservableBoolean();
 
@@ -62,6 +66,22 @@ public class IdentityPwdSetVM extends XXFViewModel {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 isRegisterMode.set(TextUtils.isEmpty(did.get()));
+            }
+        });
+
+
+        identityPwd.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                identityPwdLengthRightful.set(!TextUtils.isEmpty(identityPwd.get()) && identityPwd.get().length() >= UserConfig.MINI_LENTH_PWD && identityPwd.get().length() <= UserConfig.MAX_LENTH_PWD);
+                identityPwdContentRightful.set(UserConfig.PATTERN_PWD.matcher(identityPwd.get()).matches());
+            }
+        });
+
+        phone.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                smsCode.set(null);
             }
         });
     }

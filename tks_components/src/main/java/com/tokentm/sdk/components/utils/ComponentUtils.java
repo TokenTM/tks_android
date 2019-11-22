@@ -18,7 +18,6 @@ import com.tokentm.sdk.components.identitypwd.view.CompanyCompanyEnterpriseCerti
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityConfirmActivity;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdResetActivity;
 import com.tokentm.sdk.model.CompanyCertResult;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;

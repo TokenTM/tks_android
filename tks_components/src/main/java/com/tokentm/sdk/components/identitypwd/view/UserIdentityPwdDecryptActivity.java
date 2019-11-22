@@ -1,6 +1,5 @@
 package com.tokentm.sdk.components.identitypwd.view;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -39,14 +38,13 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
 
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 重置用户身份密码设置
  */
-public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implements IdentityPwdDecryptPresenter {
+public class UserIdentityPwdDecryptActivity extends BaseTitleBarActivity implements IdentityPwdDecryptPresenter {
     //倒计时60秒
     private static final int SMS_DELAY = 60;
     private static final String KEY_DID_INFO = "did_info";
@@ -58,7 +56,7 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
     }
 
     public static Intent getLauncher(@NonNull Context context, @NonNull IdentityInfoStoreItem identityInfoStoreItem, @Nullable String phone) {
-        return new Intent(context, UserIdentityPwdResetActivity.class)
+        return new Intent(context, UserIdentityPwdDecryptActivity.class)
                 .putExtra(KEY_DID_INFO, identityInfoStoreItem)
                 .putExtra(KEY_PHONE, phone);
     }
@@ -122,7 +120,7 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
                 .sendSmsCode(phone.get())
                 .compose(XXF.bindToLifecycle(getActivity()))
                 .compose(XXF.<Boolean>bindToProgressHud(
-                        new ProgressHUDTransformerImpl.Builder(UserIdentityPwdResetActivity.this)
+                        new ProgressHUDTransformerImpl.Builder(UserIdentityPwdDecryptActivity.this)
                                 .setLoadingNotice("发送中..."))
                 )
                 .flatMap(new Function<Boolean, ObservableSource<Long>>() {
@@ -149,9 +147,8 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
                 });
     }
 
-    @SuppressLint("CheckResult")
     @Override
-    public void onIdentityPwdDecrypt(ObservableInt step, ObservableField<String> phone, ObservableField<String> smsCode) {
+    public void onIdentityPwdDecrypt(ObservableInt step, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> decryptNodeName) {
         io.reactivex.Observable
                 .defer(new Callable<ObservableSource<List<List<NodeServiceEncryptedPartItem>>>>() {
                     @Override
@@ -193,7 +190,9 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
                     @Override
                     public void accept(NodeServiceDecryptedPartItem nodeServiceDecryptedPartItem) throws Exception {
                         decryptedPartItemSparseArray.put(step.get(), nodeServiceDecryptedPartItem);
+                        decryptNodeName.set(nodeServiceDecryptedPartItem.getServiceName());
                         step.set(step.get() + 1);
+
 
                         if (decryptedPartItemSparseArray.size() == encryptIdentityPwdParts.get(0).size()) {
                             ArrayList<NodeServiceDecryptedPartItem> decryptedPartItems = new ArrayList<>();
@@ -213,18 +212,16 @@ public class UserIdentityPwdResetActivity extends BaseTitleBarActivity implement
                         this,
                         identityInfoStoreItem,
                         decryptedPartItems), 2001)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
                 .take(1)
                 .subscribe(new Consumer<ActivityResult>() {
                     @Override
                     public void accept(ActivityResult activityResult) throws Exception {
-                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, true));
-                        finish();
+                        if (activityResult.isOk()) {
+                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, true));
+                            finish();
+                        } else {
+                            finish();
+                        }
                     }
                 });
     }

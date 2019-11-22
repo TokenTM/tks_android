@@ -116,7 +116,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
                 .subscribe(new Consumer<IdentityInfoStoreItem>() {
                     @Override
                     public void accept(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
-                        UserIdentityPwdResetActivity.launch(getContext(), identityInfoStoreItem, null);
+                        UserIdentityPwdDecryptActivity.launch(getContext(), identityInfoStoreItem, null);
                     }
                 });
     }

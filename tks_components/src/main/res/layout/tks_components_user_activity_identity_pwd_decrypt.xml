@@ -123,9 +123,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="25dp"
                     android:gravity="center_horizontal"
-                    android:text='@{"您已经完成了第"+viewModel.step+"次密码验证,本次验证服务由XXX节点提供"}'
+                    android:text='@{"您已经完成了第"+viewModel.step+"次密码验证,本次验证服务由"+viewModel.decryptNodeName+"节点提供"}'
                     android:textColor="#ff374f66"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:visibility="@{viewModel.step>0?View.VISIBLE:View.GONE}" />
 
                 <Button
                     android:layout_width="match_parent"
@@ -134,7 +135,7 @@
                     android:layout_marginBottom="85dp"
                     android:background="@drawable/tks_components_base_btn_bg_selector"
                     android:enabled="@{viewModel.submitable}"
-                    android:onClick="@{()->presenter.onIdentityPwdDecrypt(viewModel.step,viewModel.phone,viewModel.smsCode)}"
+                    android:onClick="@{()->presenter.onIdentityPwdDecrypt(viewModel.step,viewModel.phone,viewModel.smsCode,viewModel.decryptNodeName)}"
                     android:text="确认"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />

@@ -21,6 +21,7 @@ public class IdentityPwdDecryptVM extends XXFViewModel {
     public ObservableLong smsCountdown = new ObservableLong();
     public ObservableField<String> smsCode = new ObservableField<>();
     public ObservableInt step = new ObservableInt();
+    public ObservableField<String> decryptNodeName = new ObservableField<String>();
     public ObservableBoolean submitable = new ObservableBoolean();
     private Observable.OnPropertyChangedCallback submitableCallback = new Observable.OnPropertyChangedCallback() {
         @Override
@@ -35,5 +36,11 @@ public class IdentityPwdDecryptVM extends XXFViewModel {
         super(application);
         phone.addOnPropertyChangedCallback(submitableCallback);
         smsCode.addOnPropertyChangedCallback(submitableCallback);
+        phone.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                smsCode.set(null);
+            }
+        });
     }
 }

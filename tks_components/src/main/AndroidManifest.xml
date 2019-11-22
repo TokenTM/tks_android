@@ -7,7 +7,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.view.UserIdentityPwdResetActivity"
+            android:name=".identitypwd.view.UserIdentityPwdDecryptActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

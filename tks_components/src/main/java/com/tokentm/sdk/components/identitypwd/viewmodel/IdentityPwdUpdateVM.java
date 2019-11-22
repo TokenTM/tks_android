@@ -17,6 +17,8 @@ import com.xxf.arch.viewmodel.XXFViewModel;
 public class IdentityPwdUpdateVM extends XXFViewModel {
 
     public ObservableField<String> identityPwd = new ObservableField<>();
+    public ObservableBoolean identityPwdLengthRightful = new ObservableBoolean();
+    public ObservableBoolean identityPwdContentRightful = new ObservableBoolean();
     public ObservableField<String> reIdentityPwd = new ObservableField<>();
     public ObservableBoolean submitable = new ObservableBoolean();
 
@@ -35,5 +37,13 @@ public class IdentityPwdUpdateVM extends XXFViewModel {
         super(application);
         this.reIdentityPwd.addOnPropertyChangedCallback(submitableCallback);
         this.identityPwd.addOnPropertyChangedCallback(submitableCallback);
+
+        identityPwd.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                identityPwdLengthRightful.set(!TextUtils.isEmpty(identityPwd.get()) && identityPwd.get().length() >= UserConfig.MINI_LENTH_PWD && identityPwd.get().length() <= UserConfig.MAX_LENTH_PWD);
+                identityPwdContentRightful.set(UserConfig.PATTERN_PWD.matcher(identityPwd.get()).matches());
+            }
+        });
     }
 }
