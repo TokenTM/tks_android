@@ -31,9 +31,11 @@ public class StepAdapter extends BaseBindableAdapter<TksComponentsAdapterItemSte
 
     @Override
     public void onBindHolder(BaseViewHolder holder, TksComponentsAdapterItemStepBinding binding, @Nullable StepModel stepModel, int index) {
+        boolean isSelected = (index + 1) <= step;
         binding.stepLine.setVisibility(index > 0 ? View.VISIBLE : View.GONE);
-        binding.stepTv.setBackgroundResource((index + 1) <= step ? stepModel.getSelectIcon() : stepModel.getUnSelectIcon());
+        binding.stepLine.setBackgroundColor(isSelected ? 0xff00c1ce : 0xffe5e5e5);
+        binding.stepTv.setBackgroundResource(isSelected ? stepModel.getSelectIcon() : stepModel.getUnSelectIcon());
         binding.stepTv.setText(String.valueOf(index + 1));
-        binding.stepTv.setTextColor((index + 1) <= step ? 0xff0099db : 0xFFFFFF);
+        binding.stepTv.setTextColor(isSelected ? 0xff0099db : 0xFFFFFF);
     }
 }

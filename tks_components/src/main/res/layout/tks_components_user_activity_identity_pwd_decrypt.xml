@@ -114,7 +114,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="40dp"
+                    android:clickable="false"
+                    android:focusableInTouchMode="false"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
