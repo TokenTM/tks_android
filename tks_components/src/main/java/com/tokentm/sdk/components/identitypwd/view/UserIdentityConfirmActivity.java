@@ -142,7 +142,6 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
                     public void onNext(IdentityInfoStoreItem identityInfoStoreItem) {
                         viewModel.checkDIDData.set(true);
                         viewModel.identityInfo.set(identityInfoStoreItem);
-                        viewModel.did.set(identityInfoStoreItem.available() ? identityInfoStoreItem.getDid() : null);
                         viewModel.checkDIDProgressVisible.set(false);
                     }
 

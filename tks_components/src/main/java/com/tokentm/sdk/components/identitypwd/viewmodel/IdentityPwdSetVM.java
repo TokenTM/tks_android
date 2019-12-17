@@ -62,13 +62,13 @@ public class IdentityPwdSetVM extends XXFViewModel {
         this.phone.addOnPropertyChangedCallback(submitableCallback);
         this.smsCode.addOnPropertyChangedCallback(submitableCallback);
 
-        did.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        this.identityInfo.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
+                did.set(identityInfo.get() != null && identityInfo.get().available() ? identityInfo.get().getDid() : null);
                 isRegisterMode.set(TextUtils.isEmpty(did.get()));
             }
         });
-
 
         identityPwd.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
