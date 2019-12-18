@@ -16,8 +16,10 @@ Add it in your root build.gradle at the end of repositories:
 Step 2. Add the dependency
 
 	dependencies {
-	         implementation 'com.github.TokenTM.tks_android:tks_components:0.1.3_test'
+	         implementation 'com.github.TokenTM.tks_android:tks_components:0.1.4_test'
 	}
+step 3. Add aar for main module    
+aar is at demo/libs
 
 * 详细java开发文档 [html文档./docs/htmldoc/index.html](./docs/htmldoc/index.html)
 

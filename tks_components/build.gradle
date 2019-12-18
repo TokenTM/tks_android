@@ -27,8 +27,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.dependencies.design
-    //注意 不要打包到tks_components中
-    compileOnly rootProject.ext.dependencies.tks_test
+    api rootProject.ext.dependencies.tks_test
     api project(path: ':lib_crop')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'//正式版本
 }
