@@ -56,7 +56,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
         this(context, uDid, false, dialogConsumer);
     }
 
-    private UserIdentityPwdInputDialog(@NonNull Context context, String uDid, boolean isWithStampAnim, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
+    public UserIdentityPwdInputDialog(@NonNull Context context, String uDid, boolean isWithStampAnim, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
         super(context, dialogConsumer);
         this.uDid = uDid;
         this.isWithStampAnim = isWithStampAnim;
