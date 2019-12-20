@@ -5,6 +5,7 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
+import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
@@ -17,12 +18,16 @@ import com.tokentm.sdk.components.identitypwd.view.CompanyCertificationInstructi
 import com.tokentm.sdk.components.identitypwd.view.CompanyCompanyEnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityConfirmActivity;
+import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.model.IdentityInfoStoreItem;
+import com.tokentm.sdk.source.IdentityService;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -65,6 +70,28 @@ public class ComponentUtils {
     }
 
 
+    /**
+     * 忘记身份密码
+     *
+     * @param activity
+     * @param uDID
+     * @param consumer
+     */
+    public static void launchForgotIdentityPwd(FragmentActivity activity, String uDID, Consumer<ActivityResult> consumer) {
+        TokenTmClient.getService(IdentityService.class)
+                .getUDID(uDID)
+                .compose(XXF.bindToErrorNotice())
+                .flatMap(new Function<IdentityInfoStoreItem, ObservableSource<ActivityResult>>() {
+                    @Override
+                    public ObservableSource<ActivityResult> apply(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
+                        return XXF.startActivityForResult(
+                                activity,
+                                UserIdentityPwdDecryptActivity.getLauncher(activity, identityInfoStoreItem, null),
+                                1007
+                        );
+                    }
+                });
+    }
 
 
     /**
