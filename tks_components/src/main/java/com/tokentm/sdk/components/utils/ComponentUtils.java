@@ -5,7 +5,7 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
-import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;

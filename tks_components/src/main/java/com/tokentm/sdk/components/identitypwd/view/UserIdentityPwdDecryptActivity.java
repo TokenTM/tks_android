@@ -13,7 +13,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
-import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdDecryptBinding;

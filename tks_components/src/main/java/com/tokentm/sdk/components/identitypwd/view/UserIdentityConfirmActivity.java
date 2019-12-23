@@ -15,7 +15,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdSetBinding;

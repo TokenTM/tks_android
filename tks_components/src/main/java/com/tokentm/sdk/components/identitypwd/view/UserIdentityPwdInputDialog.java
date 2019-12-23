@@ -12,8 +12,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-
-import com.tokentm.sdk.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.components.databinding.TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding;
 import com.tokentm.sdk.components.identitypwd.UserConfig;
@@ -21,6 +19,7 @@ import com.tokentm.sdk.components.utils.KeyboardUtils;
 import com.tokentm.sdk.components.utils.PropertyAnimUtils;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.IdentityService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;

@@ -3,7 +3,7 @@ package com.tokentm.sdk.uidemo;
 import android.app.Application;
 import android.util.Log;
 
-import com.tokentm.sdk.TokenTmClient;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.Logger;
 import com.xxf.arch.utils.ToastUtils;
