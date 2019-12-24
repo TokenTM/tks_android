@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.uidemo.databinding.DidActivityBinding;
 
@@ -45,11 +46,11 @@ public class DidDemoActivity extends BaseTitleBarActivity {
                 ComponentUtils.launchUserIdentityConfirmActivity(
                         DidDemoActivity.this,
                         "17611639080",
-                        new Consumer<String>() {
+                        new Consumer<BindUDID>() {
                             @Override
-                            public void accept(String uDID) throws Exception {
+                            public void accept(BindUDID bindUDID) throws Exception {
                                 //TODO 中心化系统和userId进行绑定
-                                did = uDID;
+                                did = bindUDID.getDid();
                             }
                         });
             }

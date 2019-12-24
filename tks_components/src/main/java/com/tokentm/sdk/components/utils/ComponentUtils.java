@@ -5,6 +5,7 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
+import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
@@ -47,7 +48,7 @@ public class ComponentUtils {
      * @param consumer  返回uDID
      */
     @SuppressLint("CheckResult")
-    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, Consumer<String> consumer) {
+    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, Consumer<BindUDID> consumer) {
         XXF.startActivityForResult(activity,
                 UserIdentityConfirmActivity.getLauncher(activity, userPhone),
                 7000)
@@ -57,10 +58,10 @@ public class ComponentUtils {
                         return activityResult.isOk();
                     }
                 })
-                .map(new Function<ActivityResult, String>() {
+                .map(new Function<ActivityResult, BindUDID>() {
                     @Override
-                    public String apply(ActivityResult activityResult) throws Exception {
-                        return activityResult.getData().getStringExtra(BaseTitleBarActivity.KEY_ACTIVITY_RESULT);
+                    public BindUDID apply(ActivityResult activityResult) throws Exception {
+                        return (BindUDID) activityResult.getData().getSerializableExtra(BaseTitleBarActivity.KEY_ACTIVITY_RESULT);
                     }
                 })
                 .take(1)

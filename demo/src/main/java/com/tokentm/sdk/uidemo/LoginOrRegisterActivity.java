@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.uidemo.databinding.ActivityLoginBinding;
 
@@ -31,12 +32,12 @@ public class LoginOrRegisterActivity extends AppCompatActivity {
                 ComponentUtils.launchUserIdentityConfirmActivity(
                         LoginOrRegisterActivity.this,
                         binding.loginPhoneEt.getText().toString(),
-                        new Consumer<String>() {
+                        new Consumer<BindUDID>() {
                             @Override
-                            public void accept(String uDID) throws Exception {
+                            public void accept(BindUDID bindUDID) throws Exception {
                                 //TODO 中心化系统和userId进行绑定
 
-                                DemoSp.getInstance().login(binding.loginPhoneEt.getText().toString(), uDID);
+                                DemoSp.getInstance().login(binding.loginPhoneEt.getText().toString(), bindUDID.getDid());
                                 startActivity(new Intent(LoginOrRegisterActivity.this, MainActivity.class));
                                 finish();
                             }

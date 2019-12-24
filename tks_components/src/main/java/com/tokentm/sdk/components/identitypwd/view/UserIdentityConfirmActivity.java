@@ -15,21 +15,23 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.components.identitypwd.UserConfig;
+import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVM;
+import com.tokentm.sdk.exceptions.InvalidIdentityPwdException;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.BasicService;
+import com.tokentm.sdk.source.ChainService;
 import com.tokentm.sdk.source.IdentityService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
-import com.xxf.arch.utils.ToastUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +44,7 @@ import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 用户身份确认页面 返回did
+ * @Description 用户身份确认页面 返回{@link com.tokentm.sdk.components.identitypwd.model.BindUDID}
  */
 public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements IdentityPwdSetPresenter {
     //倒计时60秒
@@ -228,17 +230,33 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
     }
 
 
+    @SuppressLint("CheckResult")
     @Override
     public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         TokenTmClient.getService(IdentityService.class)
                 .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false)
+                .flatMap(new Function<String, ObservableSource<BindUDID>>() {
+
+                    @Override
+                    public ObservableSource<BindUDID> apply(String uDid) throws Exception {
+                        return TokenTmClient.getService(ChainService.class)
+                                .getChainPublicKey(uDid, identityPwd.get(), uDid)
+                                .map(new Function<String, BindUDID>() {
+                                    @Override
+                                    public BindUDID apply(String chainPublicKey) throws Exception {
+                                        String chainAddress = TokenTmClient.getService(ChainService.class).getChainAddress(chainPublicKey);
+                                        return new BindUDID(uDid, chainAddress);
+                                    }
+                                });
+                    }
+                })
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(new Consumer<String>() {
+                .subscribe(new Consumer<BindUDID>() {
                     @Override
-                    public void accept(String uDid) throws Exception {
+                    public void accept(BindUDID bindUDID) throws Exception {
                         //返回uDid
-                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, uDid));
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, bindUDID));
                         finish();
                     }
                 });
@@ -248,18 +266,32 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
     public void onIdentityDecrypt(ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         TokenTmClient.getService(IdentityService.class)
                 .decryptUDID(uDID.get(), phone.get(), smsCode.get(), identityPwd.get())
+                .flatMap(new Function<Boolean, ObservableSource<BindUDID>>() {
+
+                    @Override
+                    public ObservableSource<BindUDID> apply(Boolean isDecrypt) throws Exception {
+                        if (!isDecrypt) {
+                            return io.reactivex.Observable.error(new InvalidIdentityPwdException());
+                        }
+                        return TokenTmClient.getService(ChainService.class)
+                                .getChainPublicKey(uDID.get(), identityPwd.get(), uDID.get())
+                                .map(new Function<String, BindUDID>() {
+                                    @Override
+                                    public BindUDID apply(String chainPublicKey) throws Exception {
+                                        String chainAddress = TokenTmClient.getService(ChainService.class).getChainAddress(chainPublicKey);
+                                        return new BindUDID(uDID.get(), chainAddress);
+                                    }
+                                });
+                    }
+                })
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(new Consumer<Boolean>() {
+                .subscribe(new Consumer<BindUDID>() {
                     @Override
-                    public void accept(Boolean isDecrypt) throws Exception {
-                        if (isDecrypt) {
-                            //返回uDid
-                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, uDID.get()));
-                            finish();
-                        } else {
-                            ToastUtils.showToast("uDID解密失败");
-                        }
+                    public void accept(BindUDID bindUDID) throws Exception {
+                        //返回uDid
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, bindUDID));
+                        finish();
                     }
                 });
     }
