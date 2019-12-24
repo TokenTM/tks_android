@@ -62,7 +62,7 @@ public class MainActivity extends BaseTitleBarActivity {
                 storeItem.setDataType("testType");
                 storeItem.setData(String.format("android_x_%s", System.currentTimeMillis()));
                 TokenTmClient.getService(StoreService.class)
-                        .storePrivate(storeItem)
+                        .store(storeItem)
                         .compose(XXF.bindToErrorNotice())
                         .subscribe(new Consumer<Long>() {
                             @Override
@@ -76,7 +76,7 @@ public class MainActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 TokenTmClient.getService(StoreService.class)
-                        .getPrivateStore(did, "testType", did)
+                        .getStore(did, "testType", did)
                         .compose(XXF.bindToErrorNotice())
                         .subscribe(new Consumer<StoreItem<String>>() {
                             @Override
