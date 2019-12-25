@@ -14,19 +14,13 @@ public class BindUDID implements Serializable {
      * did : string
      */
     private String did;
+    private String phone;
     private String chainAddress;
 
 
-    public BindUDID(String did, String chainAddress) {
+    public BindUDID(String did,String phone, String chainAddress) {
         this.did = did;
-        this.chainAddress = chainAddress;
-    }
-
-    public String getChainAddress() {
-        return chainAddress;
-    }
-
-    public void setChainAddress(String chainAddress) {
+        this.phone=phone;
         this.chainAddress = chainAddress;
     }
 
@@ -34,15 +28,20 @@ public class BindUDID implements Serializable {
         return did;
     }
 
-    public void setDid(String did) {
-        this.did = did;
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getChainAddress() {
+        return chainAddress;
     }
 
     @Override
     public String toString() {
         return "BindUDID{" +
-                "chainAddress='" + chainAddress + '\'' +
-                ", did='" + did + '\'' +
+                "did='" + did + '\'' +
+                ", phone='" + phone + '\'' +
+                ", chainAddress='" + chainAddress + '\'' +
                 '}';
     }
 }

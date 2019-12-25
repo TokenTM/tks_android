@@ -245,7 +245,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
                                     @Override
                                     public BindUDID apply(String chainPublicKey) throws Exception {
                                         String chainAddress = TokenTmClient.getService(ChainService.class).getChainAddress(chainPublicKey);
-                                        return new BindUDID(uDid, chainAddress);
+                                        return new BindUDID(uDid, phone.get(), chainAddress);
                                     }
                                 });
                     }
@@ -279,7 +279,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
                                     @Override
                                     public BindUDID apply(String chainPublicKey) throws Exception {
                                         String chainAddress = TokenTmClient.getService(ChainService.class).getChainAddress(chainPublicKey);
-                                        return new BindUDID(uDID.get(), chainAddress);
+                                        return new BindUDID(uDID.get(), phone.get(), chainAddress);
                                     }
                                 });
                     }
