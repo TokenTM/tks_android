@@ -17,6 +17,8 @@ import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
 
+import java.util.List;
+
 import io.reactivex.functions.Consumer;
 
 /**
@@ -81,7 +83,16 @@ public class MainActivity extends BaseTitleBarActivity {
                         .subscribe(new Consumer<StoreItem<String>>() {
                             @Override
                             public void accept(StoreItem<String> stringStoreItem) throws Exception {
-                                ToastUtils.showToast("备份获取:" + stringStoreItem.getData());
+                                ToastUtils.showToast("备份获取1:" + stringStoreItem.getData());
+                            }
+                        });
+                TokenTmClient.getService(StoreService.class)
+                        .getStore(did, "testType")
+                        .compose(XXF.bindToErrorNotice())
+                        .subscribe(new Consumer<List<StoreItem<String>>>() {
+                            @Override
+                            public void accept(List<StoreItem<String>> storeItems) throws Exception {
+                                ToastUtils.showToast("备份获取2:" + storeItems.size());
                             }
                         });
             }
@@ -136,7 +147,7 @@ public class MainActivity extends BaseTitleBarActivity {
             public void onClick(View v) {
                 DemoSp.getInstance().logout();
 
-                startActivity(new Intent(MainActivity.this,LoginOrRegisterActivity.class));
+                startActivity(new Intent(MainActivity.this, LoginOrRegisterActivity.class));
                 finish();
             }
         });
