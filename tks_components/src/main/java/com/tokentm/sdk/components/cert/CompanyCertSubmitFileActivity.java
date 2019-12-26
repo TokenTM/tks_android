@@ -14,15 +14,15 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanySubmitFileBinding;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
-import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.source.CertService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.FragmentUtils;
@@ -36,7 +36,7 @@ import io.reactivex.functions.Consumer;
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 公司认证 提交文件
- * 返回值 @{@link CompanyCertResult}
+ * 返回值 @{@link com.tokentm.sdk.model.ChainResult}
  */
 public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
     /**
@@ -159,10 +159,10 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                                     )
                                     .compose(XXF.bindToLifecycle(CompanyCertSubmitFileActivity.this))
                                     .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CompanyCertSubmitFileActivity.this)))
-                                    .subscribe(new Consumer<CompanyCertResult>() {
+                                    .subscribe(new Consumer<ChainResult>() {
                                         @Override
-                                        public void accept(CompanyCertResult companyCertResult) throws Exception {
-                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, companyCertResult));
+                                        public void accept(ChainResult chainResult) throws Exception {
+                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
                                             finish();
                                         }
                                     });

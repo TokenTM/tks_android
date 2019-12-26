@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.source.StoreService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
@@ -107,11 +107,12 @@ public class MainActivity extends BaseTitleBarActivity {
                                 .setUserName("小炫风")
                                 .setUserIDCard("511324198901090148")
                                 .build(),
-                        new Consumer<String>() {
+
+                        new Consumer<ChainResult>() {
                             @Override
-                            public void accept(String txHash) throws Exception {
+                            public void accept(ChainResult chainResult) throws Exception {
                                 //TODO 中心化系统进行记录
-                                ToastUtils.showToast("实名认证成功:" + txHash);
+                                ToastUtils.showToast("实名认证成功:" + chainResult.getTxHash());
                             }
                         });
             }
@@ -124,11 +125,11 @@ public class MainActivity extends BaseTitleBarActivity {
                 ComponentUtils.launchCompanyCertActivity(
                         MainActivity.this,
                         new CompanyCertParams.Builder(did, "北京百度科技有限公司").build(),
-                        new Consumer<CompanyCertResult>() {
+                        new Consumer<ChainResult>() {
                             @Override
-                            public void accept(CompanyCertResult companyCertResult) throws Exception {
+                            public void accept(ChainResult chainResult) throws Exception {
                                 //TODO 中心化系统进行记录
-                                ToastUtils.showToast("公司认证成功:" + companyCertResult);
+                                ToastUtils.showToast("公司认证成功:" + chainResult);
                             }
                         });
             }

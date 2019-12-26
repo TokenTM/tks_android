@@ -23,6 +23,7 @@ import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVM;
 import com.tokentm.sdk.exceptions.InvalidIdentityPwdException;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.ChainService;
@@ -235,19 +236,10 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
     public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         TokenTmClient.getService(IdentityService.class)
                 .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false)
-                .flatMap(new Function<String, ObservableSource<BindUDID>>() {
-
+                .map(new Function<ChainResult, BindUDID>() {
                     @Override
-                    public ObservableSource<BindUDID> apply(String uDid) throws Exception {
-                        return TokenTmClient.getService(ChainService.class)
-                                .getChainPublicKey(uDid, identityPwd.get(), uDid)
-                                .map(new Function<String, BindUDID>() {
-                                    @Override
-                                    public BindUDID apply(String chainPublicKey) throws Exception {
-                                        String chainAddress = TokenTmClient.getService(ChainService.class).getChainAddress(chainPublicKey);
-                                        return new BindUDID(uDid, phone.get(), chainAddress);
-                                    }
-                                });
+                    public BindUDID apply(ChainResult chainResult) throws Exception {
+                        return new BindUDID(chainResult, phone.get());
                     }
                 })
                 .compose(XXF.bindToLifecycle(this))
@@ -279,7 +271,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
                                     @Override
                                     public BindUDID apply(String chainPublicKey) throws Exception {
                                         String chainAddress = TokenTmClient.getService(ChainService.class).getChainAddress(chainPublicKey);
-                                        return new BindUDID(uDID.get(), phone.get(), chainAddress);
+                                        return new BindUDID(uDID.get(), chainAddress, null, chainPublicKey, null, phone.get());
                                     }
                                 });
                     }

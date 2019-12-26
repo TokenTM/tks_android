@@ -1,47 +1,36 @@
 package com.tokentm.sdk.components.identitypwd.model;
 
+import com.tokentm.sdk.model.ChainResult;
+
 import java.io.Serializable;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 绑定DID
  */
-public class BindUDID implements Serializable {
+public class BindUDID extends ChainResult implements Serializable {
 
-
-    /**
-     * chainAddress : string
-     * did : string
-     */
-    private String did;
     private String phone;
-    private String chainAddress;
 
-
-    public BindUDID(String did,String phone, String chainAddress) {
-        this.did = did;
-        this.phone=phone;
-        this.chainAddress = chainAddress;
+    public BindUDID(String did, String chainAddress, String txHash, String chainPublicKey, String dataPublicKey, String phone) {
+        super(did, chainAddress, txHash, chainPublicKey, dataPublicKey);
+        this.phone = phone;
     }
 
-    public String getDid() {
-        return did;
+    public BindUDID(ChainResult chainResult, String phone) {
+        super(chainResult.getDid(), chainResult.getChainAddress(), chainResult.getTxHash(), chainResult.getChainPublicKey(), chainResult.getDataPublicKey());
+        this.phone = phone;
     }
+
 
     public String getPhone() {
         return phone;
     }
 
-    public String getChainAddress() {
-        return chainAddress;
-    }
-
     @Override
     public String toString() {
         return "BindUDID{" +
-                "did='" + did + '\'' +
-                ", phone='" + phone + '\'' +
-                ", chainAddress='" + chainAddress + '\'' +
+                "phone='" + phone + '\'' +
                 '}';
     }
 }

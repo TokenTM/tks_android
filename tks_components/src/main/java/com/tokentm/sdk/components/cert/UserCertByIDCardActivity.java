@@ -12,14 +12,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsUserActivityCertByIdcardBinding;
 import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -33,7 +34,7 @@ import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 用户身份证认证
+ * @Description 用户身份证认证 返回{@link com.tokentm.sdk.model.ChainResult}
  */
 public class UserCertByIDCardActivity extends BaseTitleBarActivity implements UserCertByIDCardPresenter {
     /**
@@ -141,10 +142,10 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
                         )
                         .compose(XXF.bindToLifecycle(UserCertByIDCardActivity.this))
                         .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(UserCertByIDCardActivity.this)))
-                        .subscribe(new Consumer<String>() {
+                        .subscribe(new Consumer<ChainResult>() {
                             @Override
-                            public void accept(String s) throws Exception {
-                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, s));
+                            public void accept(ChainResult chainResult) throws Exception {
+                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
                                 finish();
                             }
                         });

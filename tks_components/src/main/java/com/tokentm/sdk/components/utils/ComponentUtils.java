@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
@@ -136,7 +137,7 @@ public class ComponentUtils {
      * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchUserCertActivity(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, Consumer<String> consumer) {
+    public static void launchUserCertActivity(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, Consumer<ChainResult> consumer) {
         XXF.startActivityForResult(
                 activity,
                 UserCertByIDCardActivity.getLauncher(activity,
@@ -149,10 +150,10 @@ public class ComponentUtils {
                         return activityResult.isOk();
                     }
                 })
-                .map(new Function<ActivityResult, String>() {
+                .map(new Function<ActivityResult, ChainResult>() {
                     @Override
-                    public String apply(ActivityResult activityResult) throws Exception {
-                        return activityResult.getData().getStringExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    public ChainResult apply(ActivityResult activityResult) throws Exception {
+                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
                     }
                 })
                 .take(1)
@@ -169,7 +170,7 @@ public class ComponentUtils {
      * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams, Consumer<CompanyCertResult> consumer) {
+    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams, Consumer<ChainResult> consumer) {
         XXF.startActivityForResult(
                 activity,
                 CompanyCertActivity.getLauncher(
@@ -183,10 +184,10 @@ public class ComponentUtils {
                         return activityResult.isOk();
                     }
                 })
-                .map(new Function<ActivityResult, CompanyCertResult>() {
+                .map(new Function<ActivityResult, ChainResult>() {
                     @Override
-                    public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
-                        return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    public ChainResult apply(ActivityResult activityResult) throws Exception {
+                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
                     }
                 })
                 .take(1)
