@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyFragmentUploadBusinessLicenseBinding;
-import com.xxf.view.actiondialog.BottomPicSelectDialog;
+import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
 
@@ -60,7 +60,9 @@ public class ChooseBusinessLicenseFragment extends BaseFragment implements PicSe
     }
 
     private void showPicSelectDialog() {
-        new BottomPicSelectDialog(getActivity(), new Consumer<String>() {
+
+        //直接进行拍照
+        SystemUtils.doTakePhoto(getActivity(), new Consumer<String>() {
             @Override
             public void accept(String imgPath) throws Exception {
                 localFilePath = imgPath;
@@ -74,7 +76,22 @@ public class ChooseBusinessLicenseFragment extends BaseFragment implements PicSe
 
                 binding.pdfView.setImageURI(Uri.fromFile(new File(imgPath)));
             }
-        }).show();
+        });
+//        new BottomPicSelectDialog(getActivity(), new Consumer<String>() {
+//            @Override
+//            public void accept(String imgPath) throws Exception {
+//                localFilePath = imgPath;
+//
+//                Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
+//                //高度填满
+//                float height = binding.pdfView.getMeasuredWidth() * (bitmap.getHeight() * 1.0f / bitmap.getWidth());
+//                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) height);
+//                binding.pdfView.setLayoutParams(layoutParams);
+//                bitmap.recycle();
+//
+//                binding.pdfView.setImageURI(Uri.fromFile(new File(imgPath)));
+//            }
+//        }).show();
     }
 
     @Override

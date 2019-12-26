@@ -149,12 +149,16 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                         @Override
                         public void accept(DialogInterface dialogInterface, String pwd) throws Exception {
                             dialogInterface.dismiss();
+                            String companyCreditCode = binding.companyCreditCodeTv.getText().toString().trim();
+                            if (TextUtils.isEmpty(companyCreditCode)) {
+                                companyCreditCode = null;
+                            }
                             TokenTmClient.getService(CertService.class)
                                     .companyCert(companyCertParams.getuDid(),
                                             pwd,
                                             companyCertParams.getCompanyName(),
                                             companyCertParams.getCompanyType(),
-                                            binding.companyCreditCodeTv.getText().toString().trim(),
+                                            companyCreditCode,
                                             new File(picPath)
                                     )
                                     .compose(XXF.bindToLifecycle(CompanyCertSubmitFileActivity.this))

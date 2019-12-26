@@ -10,17 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
 import com.tokentm.sdk.components.databinding.TksComponentsCompanyFragmentUploadOfficeLetterBinding;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.CertService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.actiondialog.BottomPicSelectDialog;
 import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
@@ -181,7 +180,8 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
     }
 
     private void showPicSelectDialog() {
-        new BottomPicSelectDialog(getActivity(), new Consumer<String>() {
+        //直接进行拍照
+        SystemUtils.doTakePhoto(getActivity(), new Consumer<String>() {
             @Override
             public void accept(String imgPath) throws Exception {
                 localFilePath = imgPath;
@@ -195,7 +195,22 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
 
                 binding.pdfView.setImageURI(Uri.fromFile(new File(imgPath)));
             }
-        }).show();
+        });
+//        new BottomPicSelectDialog(getActivity(), new Consumer<String>() {
+//            @Override
+//            public void accept(String imgPath) throws Exception {
+//                localFilePath = imgPath;
+//
+//                Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
+//                //高度填满
+//                float height = binding.pdfView.getMeasuredWidth() * (bitmap.getHeight() * 1.0f / bitmap.getWidth());
+//                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) height);
+//                binding.pdfView.setLayoutParams(layoutParams);
+//                bitmap.recycle();
+//
+//                binding.pdfView.setImageURI(Uri.fromFile(new File(imgPath)));
+//            }
+//        }).show();
     }
 
 
