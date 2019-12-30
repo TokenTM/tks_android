@@ -8,11 +8,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.CompanyCertResult;
-import com.tokentm.sdk.source.CommodityService;
+import com.tokentm.sdk.source.CertificateService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.databinding.CertificationDetailsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -20,6 +20,10 @@ import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
+
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATE_CONTENT;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATE_EXTRA_DATA;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -33,6 +37,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
     public static Intent getLauncher(Context context) {
         return new Intent(context, CertificationDetailsActivity.class);
     }
+
     String did;
 
     @Override
@@ -40,6 +45,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         super.onResume();
         did = DemoSp.getInstance().getLoginDID();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +81,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                     return;
                 }
                 ComponentUtils.launchCompanyCertificationInstructionsActivity(
-                        CertificationDetailsActivity.this, txHash,
+                        CertificationDetailsActivity.this, txHash, did,
                         new Consumer<String>() {
                             @Override
                             public void accept(String s) throws Exception {
@@ -149,7 +155,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
             }
         });
 
-        //开启发布证书
+        //发起证书
         binding.btReleaseCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,8 +182,11 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                                 dialogInterface.dismiss();
-                                TokenTmClient.getService(CommodityService.class)
-                                        .receive(did, identityPwd, certificateId)
+                                String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATE_CONTENT);
+                                String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATE_EXTRA_DATA);
+                                String toDid = DemoSp.getInstance().getString(SP_KEY_TO_DID);
+                                TokenTmClient.getService(CertificateService.class)
+                                        .confirm(did, identityPwd, certificateId, content, extraData, toDid)
                                         .compose(XXF.bindToLifecycle(CertificationDetailsActivity.this))
                                         .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CertificationDetailsActivity.this)))
                                         .subscribe(new Consumer<String>() {

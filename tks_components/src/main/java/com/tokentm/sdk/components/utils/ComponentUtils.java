@@ -232,10 +232,10 @@ public class ComponentUtils {
      * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchCompanyCertificationInstructionsActivity(FragmentActivity activity, String txHash, Consumer<String> consumer) {
+    public static void launchCompanyCertificationInstructionsActivity(FragmentActivity activity, String txHash, String did,Consumer<String> consumer) {
         XXF.startActivityForResult(
                 activity,
-                CompanyCertificationInstructionsActivity.getLauncher(activity, txHash), 7101)
+                CompanyCertificationInstructionsActivity.getLauncher(activity, txHash,did), 7101)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
                     public boolean test(ActivityResult activityResult) throws Exception {

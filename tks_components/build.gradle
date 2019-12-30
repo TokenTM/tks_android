@@ -29,7 +29,10 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation rootProject.ext.dependencies.design
     //注意 不要打包到tks_components中
+    // 架构仓库
     compileOnly rootProject.ext.dependencies.tks_test
+    compileOnly rootProject.ext.dependencies.tks_aar_test
     implementation project(path: ':lib_crop')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'//正式版本
+
 }

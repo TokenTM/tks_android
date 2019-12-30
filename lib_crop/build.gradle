@@ -31,5 +31,6 @@ dependencies {
     implementation rootProject.ext.dependencies.recyclerview
     //注意 不要打包到tks_components中
     compileOnly rootProject.ext.dependencies.tks_test
+    compileOnly rootProject.ext.dependencies.tks_aar_test
 
 }

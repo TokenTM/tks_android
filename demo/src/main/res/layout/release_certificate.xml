@@ -17,17 +17,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="商家名称:"
+                android:text="证书类型:"
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/seller_name_et"
+                android:id="@+id/et_certificate_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:text="每日一购"
+                android:text="优秀学生"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -40,17 +40,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="商品名称:"
+                android:text="证书内容:"
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/commodity_name"
+                android:id="@+id/et_certificate_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:text="特步运动鞋"
+                android:text="小雪荣获本年度优秀学生"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -63,17 +63,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="商品发货数量:"
+                android:text="存证失效日期:"
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/commodity_count"
+                android:id="@+id/et_certificate_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:text="3"
+                android:text="2019-12-30"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -86,11 +86,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="收货人:"
+                android:text="证书额外内容:"
                 android:textSize="20sp" />
 
             <EditText
-                android:id="@+id/to_buyer_name"
+                android:id="@+id/et_certificate_other_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:text="小雪也是三好学生"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="收证人:"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_to_receive"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -102,7 +125,7 @@
 
 
         <TextView
-            android:id="@+id/tks_components_company_confirm_receipt"
+            android:id="@+id/tv_send_certificate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -110,7 +133,7 @@
             android:background="#ff00c1ce"
             android:gravity="center"
             android:padding="20dp"
-            android:text="确认收货"
+            android:text="确认发证"
             android:textColor="#fff"
             android:textSize="20sp" />
     </LinearLayout>

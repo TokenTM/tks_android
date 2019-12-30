@@ -35,7 +35,10 @@ dependencies {
     //加载依赖库
     implementation project(path: ':tks_components')
     implementation rootProject.ext.dependencies.tks_test
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
+    implementation rootProject.ext.dependencies.tks_aar_test
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+    // 仅在debug包启用BlockCanary进行卡顿监控和提示的话，可以这么用
+    debugImplementation 'com.github.markzhai:blockcanary-android:1.5.0'
 
 }
 repositories {

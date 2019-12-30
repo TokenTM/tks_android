@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.tokentm.sdk.components.identitypwd.viewmodel.CompanyCertificationInstructionsVm" />
+
+        <import type="android.view.View" />
+    </data>
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,19 +27,33 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginRight="15dp"
                 android:paddingTop="20dp"
-                android:paddingBottom="14dp">
+                android:paddingBottom="14dp"
+                android:visibility="@{viewModel.isShowTop?View.VISIBLE:View.GONE}">
 
-                <ImageView
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="11dp"
-                    android:src="@mipmap/tks_components_certification_instructions_head" />
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:src="@mipmap/tks_components_certification_instructions_head" />
+
+                    <ImageView
+                        android:id="@+id/iv_v"
+                        android:layout_width="10.5dp"
+                        android:layout_height="11.5dp"
+                        android:layout_gravity="right|bottom"
+                        android:src="@mipmap/tks_components_v"
+                        android:visibility="@{viewModel.isShowV?View.VISIBLE:View.GONE}" />
+                </FrameLayout>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="11dp"
                     android:layout_weight="1"
                     android:lineSpacingExtra="2dp"
                     android:text="说明:  V标代表了企业已完成了企业名称,企业法人,统一信用代码,营业执照,授权许可证等实名验证信息验证,获得的标注证明."
@@ -39,13 +64,182 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                android:background="#fff1f1f1" />
+                android:background="#fff1f1f1"
+                android:visibility="@{viewModel.isShowTop?View.VISIBLE:View.GONE}" />
 
-            <FrameLayout
-                android:id="@+id/fl_content"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="4dp"
+                    android:drawableStart="@mipmap/tks_components_certification_instructions_rectangle"
+                    android:drawablePadding="3dp"
+                    android:text="认证详情如下"
+                    android:textColor="#ff374f66"
+                    android:textSize="17sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="上链序号："
+                    android:textColor="#ff374f66"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@={viewModel.txHash}"
+                    android:textColor="#ff737785"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff1f1f1" />
+
+                <!--上链状态：-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="上链状态："
+                    android:textColor="#ff374f66"
+                    android:textSize="14sp"
+                    android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
+                    tools:visibility="gone" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="8dp"
+                    android:background="#5552c41b"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
+                    tools:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="11dp"
+                        android:layout_height="11dp"
+                        android:layout_marginEnd="5dp"
+                        android:src="@mipmap/tks_components_certification_instructions_state" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.chainStateDesc}"
+                        android:textColor="#52C41B"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff1f1f1"
+                    android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
+                    tools:visibility="gone" />
+                <!--块-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="块："
+                    android:textColor="#ff374f66"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@={viewModel.block}"
+                    android:textColor="#ff737785"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff1f1f1" />
+                <!--时间戳：-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="时间戳："
+                    android:textColor="#ff374f66"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@={viewModel.timesTamp}"
+                    android:textColor="#ff737785"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff1f1f1" />
+                <!---->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="从："
+                    android:textColor="#ff374f66"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@={viewModel.fromAddr}"
+                    android:textColor="#ff737785"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff1f1f1" />
+                <!---->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="至："
+                    android:textColor="#ff374f66"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@={viewModel.toAddr}"
+                    android:textColor="#ff737785"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#fff1f1f1" />
+            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
