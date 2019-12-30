@@ -12,8 +12,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
 import com.tokentm.sdk.components.common.BaseAlertDialog;
-import com.tokentm.sdk.components.databinding.TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsDialogDecryptedByPwdWithStampAnimBinding;
 import com.tokentm.sdk.components.identitypwd.UserConfig;
 import com.tokentm.sdk.components.utils.KeyboardUtils;
 import com.tokentm.sdk.components.utils.PropertyAnimUtils;
@@ -31,31 +32,31 @@ import io.reactivex.functions.Consumer;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 身份密码输入对话框
  */
-public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
+public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
 
     private final boolean isWithStampAnim;
-    private TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding binding;
+    private TksComponentsDialogDecryptedByPwdWithStampAnimBinding binding;
     private String uDid;
 
     /**
      * 带盖章效果
      */
-    public static UserIdentityPwdInputDialog showUserIdentityPwdInputDialogWithStampAnim(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
-        return new UserIdentityPwdInputDialog(context, uDid, true, dialogConsumer);
+    public static IdentityPwdInputDialog showUserIdentityPwdInputDialogWithStampAnim(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
+        return new IdentityPwdInputDialog(context, uDid, true, dialogConsumer);
     }
 
     /**
      * 无盖章效果
      */
-    public static UserIdentityPwdInputDialog showUserIdentityPwdInputDialogNoStampAnim(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
-        return new UserIdentityPwdInputDialog(context, uDid, dialogConsumer);
+    public static IdentityPwdInputDialog showUserIdentityPwdInputDialogNoStampAnim(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
+        return new IdentityPwdInputDialog(context, uDid, dialogConsumer);
     }
 
-    private UserIdentityPwdInputDialog(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
+    private IdentityPwdInputDialog(@NonNull Context context, String uDid, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
         this(context, uDid, false, dialogConsumer);
     }
 
-    public UserIdentityPwdInputDialog(@NonNull Context context, String uDid, boolean isWithStampAnim, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
+    public IdentityPwdInputDialog(@NonNull Context context, String uDid, boolean isWithStampAnim, @Nullable BiConsumer<DialogInterface, String> dialogConsumer) {
         super(context, dialogConsumer);
         this.uDid = uDid;
         this.isWithStampAnim = isWithStampAnim;
@@ -69,7 +70,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         //设置window背景透明
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        binding = TksComponentsUserDialogDecryptedByPwdWithStampAnimBinding.inflate(getLayoutInflater());
+        binding = TksComponentsDialogDecryptedByPwdWithStampAnimBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -115,7 +116,7 @@ public class UserIdentityPwdInputDialog extends BaseAlertDialog<String> {
                 .subscribe(new Consumer<IdentityInfoStoreItem>() {
                     @Override
                     public void accept(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
-                        UserIdentityPwdDecryptActivity.launch(getContext(), identityInfoStoreItem, null);
+                        IdentityPwdDecryptActivity.launch(getContext(), identityInfoStoreItem, null);
                     }
                 });
     }

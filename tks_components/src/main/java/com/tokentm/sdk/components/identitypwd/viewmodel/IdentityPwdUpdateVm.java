@@ -14,7 +14,7 @@ import com.xxf.arch.viewmodel.XXFViewModel;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 设置身份密码vm
  */
-public class IdentityPwdUpdateVM extends XXFViewModel {
+public class IdentityPwdUpdateVm extends XXFViewModel {
 
     public ObservableField<String> identityPwd = new ObservableField<>();
     public ObservableBoolean identityPwdLengthRightful = new ObservableBoolean();
@@ -33,7 +33,7 @@ public class IdentityPwdUpdateVM extends XXFViewModel {
         }
     };
 
-    public IdentityPwdUpdateVM(@NonNull Application application) {
+    public IdentityPwdUpdateVm(@NonNull Application application) {
         super(application);
         this.reIdentityPwd.addOnPropertyChangedCallback(submitableCallback);
         this.identityPwd.addOnPropertyChangedCallback(submitableCallback);

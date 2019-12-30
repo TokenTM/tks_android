@@ -9,8 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tokentm.sdk.components.common.BaseAlertDialog;
-import com.tokentm.sdk.components.databinding.TksComponentsCompanyDialogEnterpriseCertificationBinding;
-import com.tokentm.sdk.components.identitypwd.presenter.CompanyEnterpriseCertificationPresenter;
+import com.tokentm.sdk.components.databinding.TksComponentsDialogEnterpriseCertificationBinding;
+import com.tokentm.sdk.components.identitypwd.presenter.EnterpriseCertificationPresenter;
 
 import io.reactivex.functions.BiConsumer;
 
@@ -18,12 +18,12 @@ import io.reactivex.functions.BiConsumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 前往企业认证弹窗
  */
-public class CompanyCompanyEnterpriseCertificationAlertDialog extends BaseAlertDialog<Boolean> implements CompanyEnterpriseCertificationPresenter {
+public class EnterpriseCertificationAlertDialog extends BaseAlertDialog<Boolean> implements EnterpriseCertificationPresenter {
 
 
-    private TksComponentsCompanyDialogEnterpriseCertificationBinding binding;
+    private TksComponentsDialogEnterpriseCertificationBinding binding;
 
-    public CompanyCompanyEnterpriseCertificationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+    public EnterpriseCertificationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
         super(context, dialogConsumer);
     }
 
@@ -35,7 +35,7 @@ public class CompanyCompanyEnterpriseCertificationAlertDialog extends BaseAlertD
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         //设置window背景透明
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        binding = TksComponentsCompanyDialogEnterpriseCertificationBinding.inflate(getLayoutInflater());
+        binding = TksComponentsDialogEnterpriseCertificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

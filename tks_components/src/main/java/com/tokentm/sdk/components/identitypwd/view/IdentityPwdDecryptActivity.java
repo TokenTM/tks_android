@@ -13,18 +13,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdDecryptBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityIdentityPwdDecryptBinding;
 import com.tokentm.sdk.components.identitypwd.model.StepModel;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdDecryptPresenter;
-import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdDecryptVM;
+import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdDecryptVm;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.model.NodeServiceDecryptedPartItem;
 import com.tokentm.sdk.model.NodeServiceEncryptedPartItem;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.IdentityService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -44,7 +44,7 @@ import io.reactivex.functions.Function;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 重置用户身份密码设置
  */
-public class UserIdentityPwdDecryptActivity extends BaseTitleBarActivity implements IdentityPwdDecryptPresenter {
+public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements IdentityPwdDecryptPresenter {
     //倒计时60秒
     private static final int SMS_DELAY = 60;
     private static final String KEY_DID_INFO = "did_info";
@@ -56,14 +56,14 @@ public class UserIdentityPwdDecryptActivity extends BaseTitleBarActivity impleme
     }
 
     public static Intent getLauncher(@NonNull Context context, @NonNull IdentityInfoStoreItem identityInfoStoreItem, @Nullable String phone) {
-        return new Intent(context, UserIdentityPwdDecryptActivity.class)
+        return new Intent(context, IdentityPwdDecryptActivity.class)
                 .putExtra(KEY_DID_INFO, identityInfoStoreItem)
                 .putExtra(KEY_PHONE, phone);
     }
 
     IdentityInfoStoreItem identityInfoStoreItem;
     private String phone;
-    TksComponentsUserActivityIdentityPwdDecryptBinding binding;
+    TksComponentsActivityIdentityPwdDecryptBinding binding;
     StepAdapter stepAdapter;
     List<List<NodeServiceEncryptedPartItem>> encryptIdentityPwdParts = new ArrayList<>();
     final SparseArray<NodeServiceDecryptedPartItem> decryptedPartItemSparseArray = new SparseArray<>();
@@ -71,7 +71,7 @@ public class UserIdentityPwdDecryptActivity extends BaseTitleBarActivity impleme
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsUserActivityIdentityPwdDecryptBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityIdentityPwdDecryptBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         loadData();
@@ -83,7 +83,7 @@ public class UserIdentityPwdDecryptActivity extends BaseTitleBarActivity impleme
         identityInfoStoreItem = (IdentityInfoStoreItem) getIntent().getSerializableExtra(KEY_DID_INFO);
         phone = getIntent().getStringExtra(KEY_PHONE);
 
-        binding.setViewModel(ViewModelProviders.of(this).get(IdentityPwdDecryptVM.class));
+        binding.setViewModel(ViewModelProviders.of(this).get(IdentityPwdDecryptVm.class));
         binding.setPresenter(this);
 
         binding.getViewModel().phone.set(phone);
@@ -120,7 +120,7 @@ public class UserIdentityPwdDecryptActivity extends BaseTitleBarActivity impleme
                 .sendSmsCode(phone.get())
                 .compose(XXF.bindToLifecycle(getActivity()))
                 .compose(XXF.<Boolean>bindToProgressHud(
-                        new ProgressHUDTransformerImpl.Builder(UserIdentityPwdDecryptActivity.this)
+                        new ProgressHUDTransformerImpl.Builder(IdentityPwdDecryptActivity.this)
                                 .setLoadingNotice("发送中..."))
                 )
                 .flatMap(new Function<Boolean, ObservableSource<Long>>() {
@@ -208,7 +208,7 @@ public class UserIdentityPwdDecryptActivity extends BaseTitleBarActivity impleme
 
     private void gotoPwdUpdatePage(ArrayList<NodeServiceDecryptedPartItem> decryptedPartItems) {
         XXF.startActivityForResult(this,
-                UserIdentityPwdUpdateActivity.getLauncher(
+                IdentityPwdUpdateActivity.getLauncher(
                         this,
                         identityInfoStoreItem,
                         decryptedPartItems), 2001)

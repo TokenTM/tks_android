@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 
-import com.tokentm.sdk.source.TokenTmClient;
-import com.tokentm.sdk.components.cert.adapter.UserPropertyRightsTransferRecordsAdapter;
+import com.tokentm.sdk.components.cert.adapter.PropertyRightsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsUserActivityPropertyRightsTransferRecordsBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityPropertyRightsTransferRecordsBinding;
 import com.tokentm.sdk.model.CertificateCommodityActionDTO;
 import com.tokentm.sdk.source.CommodityService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.view.databinding.statelayout.IStateLayoutVM;
@@ -27,13 +27,12 @@ import io.reactivex.functions.Consumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录
  */
-public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActivity
-        implements UserPropertyRightsTransferRecordsPresenter {
+public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity {
 
     private static final String KEY_DID = "did";
     private String did;
-    private TksComponentsUserActivityPropertyRightsTransferRecordsBinding binding;
-    private UserPropertyRightsTransferRecordsAdapter userCertificationRecordAdapter;
+    private TksComponentsActivityPropertyRightsTransferRecordsBinding binding;
+    private PropertyRightsTransferRecordsAdapter userCertificationRecordAdapter;
 
     public IStateLayoutVM stateLayoutVM = new StateLayoutVM(new Action() {
         @Override
@@ -43,14 +42,14 @@ public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActiv
     });
 
     public static Intent getLauncher(Context context, String did) {
-        return new Intent(context, UserPropertyRightsTransferRecordsActivity.class)
+        return new Intent(context, PropertyRightsTransferRecordsActivity.class)
                 .putExtra(KEY_DID, did);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsUserActivityPropertyRightsTransferRecordsBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityPropertyRightsTransferRecordsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         loadData();
@@ -62,7 +61,7 @@ public class UserPropertyRightsTransferRecordsActivity extends BaseTitleBarActiv
         did = getIntent().getStringExtra(KEY_DID);
         binding.setStateLayoutVM(stateLayoutVM);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerView.setAdapter(userCertificationRecordAdapter = new UserPropertyRightsTransferRecordsAdapter());
+        binding.recyclerView.setAdapter(userCertificationRecordAdapter = new PropertyRightsTransferRecordsAdapter());
         userCertificationRecordAdapter.registerAdapterDataObserver(new DataChangeAdapterObserver() {
             @Override
             protected void updateUI() {

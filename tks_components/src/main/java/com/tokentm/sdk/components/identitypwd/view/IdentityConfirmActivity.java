@@ -17,11 +17,11 @@ import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
-import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdSetBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.components.identitypwd.UserConfig;
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter;
-import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVM;
+import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVm;
 import com.tokentm.sdk.exceptions.InvalidIdentityPwdException;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
@@ -47,7 +47,7 @@ import io.reactivex.functions.Predicate;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 用户身份确认页面 返回{@link com.tokentm.sdk.components.identitypwd.model.BindUDID}
  */
-public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements IdentityPwdSetPresenter {
+public class IdentityConfirmActivity extends BaseTitleBarActivity implements IdentityPwdSetPresenter {
     //倒计时60秒
     private static final int SMS_DELAY = 60;
     private static final String KEY_PHONE = "phone";
@@ -57,18 +57,18 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
     }
 
     public static Intent getLauncher(Context context, String phone) {
-        return new Intent(context, UserIdentityConfirmActivity.class)
+        return new Intent(context, IdentityConfirmActivity.class)
                 .putExtra(KEY_PHONE, phone);
     }
 
-    TksComponentsUserActivityIdentityPwdSetBinding binding;
-    IdentityPwdSetVM viewModel;
+    TksComponentsActivityIdentityPwdSetBinding binding;
+    IdentityPwdSetVm viewModel;
     String phone;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsUserActivityIdentityPwdSetBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityIdentityPwdSetBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -77,7 +77,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
         phone = getIntent().getStringExtra(KEY_PHONE);
         setTitle("身份确认");
 
-        viewModel = ViewModelProviders.of(this).get(IdentityPwdSetVM.class);
+        viewModel = ViewModelProviders.of(this).get(IdentityPwdSetVm.class);
         viewModel.phone.set(phone);
 
         binding.setViewModel(viewModel);
@@ -176,7 +176,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
                 .sendSmsCode(phone.get())
                 .compose(XXF.bindToLifecycle(getActivity()))
                 .compose(XXF.<Boolean>bindToProgressHud(
-                        new ProgressHUDTransformerImpl.Builder(UserIdentityConfirmActivity.this)
+                        new ProgressHUDTransformerImpl.Builder(IdentityConfirmActivity.this)
                                 .setLoadingNotice("发送中..."))
                 )
                 .flatMap(new Function<Boolean, ObservableSource<Long>>() {
@@ -206,7 +206,7 @@ public class UserIdentityConfirmActivity extends BaseTitleBarActivity implements
     @Override
     public void onForgetIdentity(ObservableField<String> phone, ObservableField<String> uDID) {
         XXF.startActivityForResult(this,
-                UserIdentityPwdDecryptActivity.getLauncher(
+                IdentityPwdDecryptActivity.getLauncher(
                         this,
                         viewModel.identityInfo.get(),
                         phone.get()

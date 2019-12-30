@@ -6,11 +6,11 @@
 
         <variable
             name="viewModel"
-            type="com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVM" />
+            type="com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdUpdateVm" />
 
         <variable
             name="presenter"
-            type="com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter" />
+            type="com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdUpdatePresenter" />
 
         <import type="android.view.View" />
 
@@ -28,109 +28,16 @@
             android:orientation="vertical"
             android:padding="15dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:showDividers="middle|end">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="手机号"
-                    android:textColor="#ff374f66"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:hint="请输入手机号"
-                    android:inputType="number"
-                    android:maxLength="11"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="@={viewModel.phone}"
-                    android:textColor="#374F66"
-                    android:textSize="17sp" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tks_components_arch_divider_comm" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:text="验证码"
-                    android:textColor="#ff374f66"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="44dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="3"
-                        android:background="@null"
-                        android:hint="请输入验证码"
-                        android:inputType="number"
-                        android:maxLength="6"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="@={viewModel.smsCode}"
-                        android:textColor="#374F66"
-                        android:textSize="17sp" />
-
-                    <ProgressBar
-                        android:id="@+id/ck_pb"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginRight="10dp"
-                        android:visibility="@{viewModel.checkDIDProgressVisible?View.VISIBLE:View.INVISIBLE}" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/tks_components_user_bg_grayline_btn_374f66"
-                        android:enabled="@{viewModel.smsCountdown &lt;=0}"
-                        android:onClick="@{()->presenter.onSendSMSCode(viewModel.phone,viewModel.smsCountdown)}"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="5dp"
-                        android:paddingRight="13dp"
-                        android:paddingBottom="5dp"
-                        android:text='@{viewModel.smsCountdown &lt;=0?"获取验证码":viewModel.smsCountdown+"s"}'
-                        android:textColor="#374F66"
-                        android:textSize="15sp"
-                        tools:text="获取验证码" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tks_components_arch_divider_comm" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="@{viewModel.checkDIDData?View.VISIBLE:View.GONE}">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:paddingTop="25dp"
+                    android:layout_marginTop="15dp"
                     android:paddingBottom="10dp"
                     android:text="身份密码"
                     android:textColor="#ff374f66"
@@ -150,7 +57,7 @@
                         android:layout_weight="1"
                         android:background="@null"
                         android:gravity="center_vertical"
-                        android:hint="请输入您的身份密码"
+                        android:hint="请输入您的新身份密码"
                         android:inputType="textPassword"
                         android:maxLength="20"
                         android:maxLines="1"
@@ -167,34 +74,18 @@
                         android:src="@drawable/tks_components_base_ic_eye_selector" />
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tks_components_arch_divider_comm" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:onClick="@{()->presenter.onForgetIdentity(viewModel.phone,viewModel.did)}"
-                    android:padding="5dp"
-                    android:text="忘记身份密码?"
-                    android:textColor="#ffff820e"
-                    android:textSize="12sp"
-                    android:visibility="@{viewModel.isRegisterMode?View.GONE:View.VISIBLE}"
-                    tools:visibility="visible" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.isRegisterMode?View.VISIBLE:View.GONE}"
                     tools:visibility="visible">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -256,7 +147,7 @@
                             android:layout_weight="1"
                             android:background="@null"
                             android:gravity="center_vertical"
-                            android:hint="请确认您的身份密码"
+                            android:hint="请确认您的新身份密码"
                             android:inputType="textPassword"
                             android:maxLength="20"
                             android:maxLines="1"
@@ -295,7 +186,7 @@
                     android:layout_marginBottom="85dp"
                     android:background="@drawable/tks_components_base_btn_bg_selector"
                     android:enabled="@{viewModel.submitable}"
-                    android:onClick="@{()->viewModel.isRegisterMode?presenter.onIdentitySet(viewModel.phone,viewModel.smsCode,viewModel.identityPwd):presenter.onIdentityDecrypt(viewModel.did,viewModel.phone,viewModel.smsCode,viewModel.identityPwd)}"
+                    android:onClick="@{()->presenter.onIdentityUpdate(viewModel.identityPwd)}"
                     android:text="确认"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />

@@ -24,7 +24,7 @@
                 tools:ignore="MissingConstraints" />
 
             <Button
-                android:id="@+id/bt_cert_by_idcard"
+                android:id="@+id/bt_identity_authentication"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="身份证认证"
@@ -34,7 +34,7 @@
                 android:id="@+id/bt_cert_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="公司认证" />
+                android:text="企业/组织认证" />
 
             <Button
                 android:id="@+id/bt_backup"
@@ -58,7 +58,13 @@
                 tools:ignore="MissingConstraints" />
 
             <Button
-                android:id="@+id/bt_login_out"
+                android:id="@+id/bt_login_registration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="登录注册"
+                tools:ignore="MissingConstraints" />
+            <Button
+                android:id="@+id/bt_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="退出登陆"

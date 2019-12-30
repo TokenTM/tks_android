@@ -3,28 +3,28 @@
 
     <application>
         <activity
-            android:name=".identitypwd.view.UserIdentityConfirmActivity"
+            android:name=".identitypwd.view.IdentityConfirmActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.view.UserIdentityPwdDecryptActivity"
+            android:name=".identitypwd.view.IdentityPwdDecryptActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.view.UserIdentityPwdUpdateActivity"
+            android:name=".identitypwd.view.IdentityPwdUpdateActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".cert.UserPropertyRightsTransferRecordsActivity"
+            android:name=".cert.PropertyRightsTransferRecordsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".identitypwd.view.CompanyCertificationInstructionsActivity"
+            android:name=".identitypwd.view.CertificationInstructionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".identitypwd.view.CompanyCertificationDetailsActivity"
+            android:name=".identitypwd.view.CertificationDetailsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity

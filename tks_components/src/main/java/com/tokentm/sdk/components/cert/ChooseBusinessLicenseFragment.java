@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
-import com.tokentm.sdk.components.databinding.TksComponentsCompanyFragmentUploadBusinessLicenseBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsFragmentUploadBusinessLicenseBinding;
 import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
@@ -36,7 +36,7 @@ public class ChooseBusinessLicenseFragment extends BaseFragment implements PicSe
         return fragment;
     }
 
-    TksComponentsCompanyFragmentUploadBusinessLicenseBinding binding;
+    TksComponentsFragmentUploadBusinessLicenseBinding binding;
     CompanyCertParams companyCertParams;
     String localFilePath;
 
@@ -44,7 +44,7 @@ public class ChooseBusinessLicenseFragment extends BaseFragment implements PicSe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsCompanyFragmentUploadBusinessLicenseBinding.inflate(getLayoutInflater());
+        binding = TksComponentsFragmentUploadBusinessLicenseBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

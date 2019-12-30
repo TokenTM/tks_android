@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.tokentm.sdk.components.cert.recyclerview.BaseBindableAdapter;
 import com.tokentm.sdk.components.common.BarCodeUtil;
-import com.tokentm.sdk.components.databinding.TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsAdapterItemPropertyRightsTransferRecordsBinding;
 import com.tokentm.sdk.model.CertificateCommodityActionDTO;
 import com.tokentm.sdk.model.SellerBuyerinfoDTO;
 import com.xxf.view.recyclerview.adapter.BaseViewHolder;
@@ -19,18 +19,18 @@ import java.text.SimpleDateFormat;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录adapter
  */
-public class UserPropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding, CertificateCommodityActionDTO> {
+public class PropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsAdapterItemPropertyRightsTransferRecordsBinding, CertificateCommodityActionDTO> {
 
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
 
     @Override
-    protected TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
-        return TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding.inflate(inflater, viewGroup, false);
+    protected TksComponentsAdapterItemPropertyRightsTransferRecordsBinding onCreateBinding(LayoutInflater inflater, ViewGroup viewGroup, int viewType) {
+        return TksComponentsAdapterItemPropertyRightsTransferRecordsBinding.inflate(inflater, viewGroup, false);
     }
 
     @Override
-    public void onBindHolder(BaseViewHolder holder, TksComponentsUserAdapterItemPropertyRightsTransferRecordsBinding binding, @Nullable CertificateCommodityActionDTO certificateCommodityActionDTO, int index) {
+    public void onBindHolder(BaseViewHolder holder, TksComponentsAdapterItemPropertyRightsTransferRecordsBinding binding, @Nullable CertificateCommodityActionDTO certificateCommodityActionDTO, int index) {
         //发货收货 物品转移记录( 存证模型实现)的包装模型
         if (certificateCommodityActionDTO == null) {
             return;

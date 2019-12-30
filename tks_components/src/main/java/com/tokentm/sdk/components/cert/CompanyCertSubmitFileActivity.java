@@ -16,8 +16,8 @@ import android.widget.RadioGroup;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCompanySubmitFileBinding;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityCompanySubmitFileBinding;
+import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyType;
@@ -48,19 +48,19 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         context.startActivity(getLauncher(context, companyCertParams));
     }
 
-    public static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
+    private static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
         return new Intent(context, CompanyCertSubmitFileActivity.class)
                 .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }
 
-    TksComponentsCompanyActivityCompanySubmitFileBinding binding;
+    TksComponentsActivityCompanySubmitFileBinding binding;
     CompanyCertParams companyCertParams;
     SparseArray<Fragment> fragmentSparseArray = new SparseArray<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsCompanyActivityCompanySubmitFileBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityCompanySubmitFileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         loadData();
@@ -143,7 +143,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                 ToastUtils.showToast(String.format("请上传%s的资料", button.getText()));
                 return;
             }
-            UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(this,
+            IdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(this,
                     companyCertParams.getuDid(),
                     new BiConsumer<DialogInterface, String>() {
                         @Override

@@ -1,5 +1,6 @@
 package com.tokentm.sdk.uidemo;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,6 +18,14 @@ import io.reactivex.functions.Consumer;
  * @Description 登陆或者注册页面
  */
 public class LoginOrRegisterActivity extends AppCompatActivity {
+
+    public static void launch(Context context) {
+        context.startActivity(getLauncher(context));
+    }
+
+    private static Intent getLauncher(Context context) {
+        return new Intent(context, LoginOrRegisterActivity.class);
+    }
 
     ActivityLoginBinding binding;
 

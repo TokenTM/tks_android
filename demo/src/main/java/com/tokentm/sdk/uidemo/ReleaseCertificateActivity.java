@@ -9,10 +9,10 @@ import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.model.CertificateInitiateResultDTO;
+import com.tokentm.sdk.model.CertificateInitResult;
 import com.tokentm.sdk.source.CertificateService;
 import com.tokentm.sdk.source.TokenTmClient;
-import com.tokentm.sdk.uidemo.databinding.ReleaseCertificateBinding;
+import com.tokentm.sdk.uidemo.databinding.ActivityReleaseCertificateBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
@@ -35,17 +35,20 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
 
     private String did;
 
-    public static Intent getLauncher(Context context, String did) {
+    public static void launch(Context context,String did) {
+        context.startActivity(getLauncher(context,did));
+    }
+    private static Intent getLauncher(Context context, String did) {
         return new Intent(context, ReleaseCertificateActivity.class)
                 .putExtra(KEY_DID, did);
     }
 
-    ReleaseCertificateBinding binding;
+    ActivityReleaseCertificateBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ReleaseCertificateBinding.inflate(getLayoutInflater());
+        binding = ActivityReleaseCertificateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -56,28 +59,23 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
         binding.tvSendCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    //弹出校验身份密码
-                    ComponentUtils.showIdentityPwdDialog(
-                            ReleaseCertificateActivity.this,
-                            did,
-                            new BiConsumer<DialogInterface, String>() {
-                                @Override
-                                public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
-                                    dialogInterface.dismiss();
-                                    initiate(did
-                                            , identityPwd
-                                            , binding.etCertificateType.getText().toString()
-                                            , binding.etCertificateContent.getText().toString()
-                                            , binding.etCertificateOtherContent.getText().toString()
-                                            , System.currentTimeMillis()
-                                            , did);
-                                }
-                            });
-                } catch (NumberFormatException e) {
-                    ToastUtils.showToast("商品数量为数字");
-                }
-
+                //弹出校验身份密码
+                ComponentUtils.showIdentityPwdDialog(
+                        ReleaseCertificateActivity.this,
+                        did,
+                        new BiConsumer<DialogInterface, String>() {
+                            @Override
+                            public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
+                                dialogInterface.dismiss();
+                                initiate(did
+                                        , identityPwd
+                                        , binding.etCertificateType.getText().toString()
+                                        , binding.etCertificateContent.getText().toString()
+                                        , binding.etCertificateOtherContent.getText().toString()
+                                        , System.currentTimeMillis()
+                                        , did);
+                            }
+                        });
             }
         });
     }
@@ -101,11 +99,12 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
                 .initiate(uDID, identityPwd, type, content, extraData, expiryDate, toDID)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(ReleaseCertificateActivity.this)))
-                .subscribe(new Consumer<CertificateInitiateResultDTO>() {
+                .subscribe(new Consumer<CertificateInitResult>() {
                     @Override
-                    public void accept(CertificateInitiateResultDTO certificateInitiateResultDTO) throws Exception {
+                    public void accept(CertificateInitResult certificateInitResult) throws Exception {
                         //存储certificate_id
-                        DemoSp.getInstance().putString(SP_KEY_CERTIFICATE_ID, certificateInitiateResultDTO.getId());
+                        DemoSp.getInstance().putString(SP_KEY_CERTIFICATE_ID, certificateInitResult.getId());
+                        ToastUtils.showToast("发证成功");
                         finish();
                     }
                 });

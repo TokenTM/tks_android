@@ -10,11 +10,18 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.Logger;
 import com.xxf.arch.utils.ToastUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.plugins.RxJavaPlugins;
 
-public class BaseApplication extends Application {
+/**
+ * @author lqx  E-mail:herolqx@126.com
+ * @Description application
+ */
+public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
@@ -74,5 +81,23 @@ public class BaseApplication extends Application {
                 return ThrowableConvertUtils.convertThrowable2String(throwable);
             }
         });
+        disableAPIDialog();
+    }
+
+    /**
+     * 反射 禁止弹窗  提示Detected problems with API 弹窗
+     */
+    private void disableAPIDialog() {
+        try {
+            Class clazz = Class.forName("android.app.ActivityThread");
+            Method currentActivityThread = clazz.getDeclaredMethod("currentActivityThread");
+            currentActivityThread.setAccessible(true);
+            Object activityThread = currentActivityThread.invoke(null);
+            Field mHiddenApiWarningShown = clazz.getDeclaredField("mHiddenApiWarningShown");
+            mHiddenApiWarningShown.setAccessible(true);
+            mHiddenApiWarningShown.setBoolean(activityThread, true);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 }

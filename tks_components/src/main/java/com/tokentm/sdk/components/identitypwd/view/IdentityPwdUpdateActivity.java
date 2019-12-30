@@ -10,15 +10,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
-import com.tokentm.sdk.components.databinding.TksComponentsUserActivityIdentityPwdUpdateBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityIdentityPwdUpdateBinding;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdUpdatePresenter;
-import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdUpdateVM;
+import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdUpdateVm;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.model.NodeServiceDecryptedPartItem;
 import com.tokentm.sdk.source.IdentityService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 
@@ -30,7 +30,7 @@ import io.reactivex.functions.Consumer;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 身份密码修改
  */
-public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity implements IdentityPwdUpdatePresenter {
+public class IdentityPwdUpdateActivity extends BaseTitleBarActivity implements IdentityPwdUpdatePresenter {
 
     private static final String KEY_DID_INFO = "did_info";
     private static final String KEY_DECRPT_PWD = "decrpt_pwd";
@@ -40,19 +40,19 @@ public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity implemen
     }
 
     public static Intent getLauncher(@NonNull Context context, @NonNull IdentityInfoStoreItem identityInfoStoreItem, @Nullable ArrayList<NodeServiceDecryptedPartItem> decryptedParts) {
-        return new Intent(context, UserIdentityPwdUpdateActivity.class)
+        return new Intent(context, IdentityPwdUpdateActivity.class)
                 .putExtra(KEY_DID_INFO, identityInfoStoreItem)
                 .putExtra(KEY_DECRPT_PWD, decryptedParts);
     }
 
-    TksComponentsUserActivityIdentityPwdUpdateBinding binding;
+    TksComponentsActivityIdentityPwdUpdateBinding binding;
     private IdentityInfoStoreItem identityInfoStoreItem;
     ArrayList<NodeServiceDecryptedPartItem> decryptedParts;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsUserActivityIdentityPwdUpdateBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityIdentityPwdUpdateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -63,7 +63,7 @@ public class UserIdentityPwdUpdateActivity extends BaseTitleBarActivity implemen
         decryptedParts = (ArrayList<NodeServiceDecryptedPartItem>) getIntent().getSerializableExtra(KEY_DECRPT_PWD);
 
         binding.setPresenter(this);
-        binding.setViewModel(ViewModelProviders.of(this).get(IdentityPwdUpdateVM.class));
+        binding.setViewModel(ViewModelProviders.of(this).get(IdentityPwdUpdateVm.class));
 
         //设置密文或者明文显示
         binding.identityPwdHideIv.setOnClickListener(new View.OnClickListener() {

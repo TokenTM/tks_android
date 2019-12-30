@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.cert;
+package com.tokentm.sdk.components.identitypwd.viewmodel;
 
 import android.app.Application;
 import android.databinding.Observable;

@@ -16,7 +16,7 @@ import com.xxf.arch.viewmodel.XXFViewModel;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 设置身份密码vm
  */
-public class IdentityPwdSetVM extends XXFViewModel {
+public class IdentityPwdSetVm extends XXFViewModel {
 
     public ObservableField<String> phone = new ObservableField<>();
     public ObservableLong smsCountdown = new ObservableLong();
@@ -55,7 +55,7 @@ public class IdentityPwdSetVM extends XXFViewModel {
         }
     };
 
-    public IdentityPwdSetVM(@NonNull Application application) {
+    public IdentityPwdSetVm(@NonNull Application application) {
         super(application);
         this.reIdentityPwd.addOnPropertyChangedCallback(submitableCallback);
         this.identityPwd.addOnPropertyChangedCallback(submitableCallback);

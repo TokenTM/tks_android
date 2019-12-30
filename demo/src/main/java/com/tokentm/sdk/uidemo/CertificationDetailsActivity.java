@@ -10,10 +10,10 @@ import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertificateService;
 import com.tokentm.sdk.source.TokenTmClient;
-import com.tokentm.sdk.uidemo.databinding.CertificationDetailsBinding;
+import com.tokentm.sdk.uidemo.databinding.ActivityCertificationDetailsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
@@ -31,10 +31,13 @@ import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
  */
 public class CertificationDetailsActivity extends BaseTitleBarActivity {
 
+    private ActivityCertificationDetailsBinding binding;
 
-    private CertificationDetailsBinding binding;
+    public static void launch(Context context) {
+        context.startActivity(getLauncher(context));
+    }
 
-    public static Intent getLauncher(Context context) {
+    private static Intent getLauncher(Context context) {
         return new Intent(context, CertificationDetailsActivity.class);
     }
 
@@ -49,7 +52,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = CertificationDetailsBinding.inflate(getLayoutInflater());
+        binding = ActivityCertificationDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -60,15 +63,8 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                ComponentUtils.launchUserPropertyRightsTransferRecordsActivity(
-                        CertificationDetailsActivity.this, did,
-                        new Consumer<CompanyCertResult>() {
-                            @Override
-                            public void accept(CompanyCertResult companyCertResult) throws Exception {
-                                //TODO 处理物权转移记录返回值
-                            }
-                        });
+                ComponentUtils.launchPropertyRightsTransferRecordsActivity(
+                        getActivity(), did);
             }
         });
         //开启认证说明
@@ -80,14 +76,8 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                     ToastUtils.showToast("请先发布证书 并 确认证书");
                     return;
                 }
-                ComponentUtils.launchCompanyCertificationInstructionsActivity(
-                        CertificationDetailsActivity.this, txHash, did,
-                        new Consumer<String>() {
-                            @Override
-                            public void accept(String s) throws Exception {
-                                //TODO 处理认证说明返回值
-                            }
-                        });
+                ComponentUtils.launchCertificationInstructionsActivity(
+                        getActivity(), txHash, did);
             }
         });
         //开启认证详情
@@ -99,22 +89,16 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                     ToastUtils.showToast("请先发布证书 并 确认证书");
                     return;
                 }
-                ComponentUtils.launchUserCertificationDetailsActivity(
-                        CertificationDetailsActivity.this, txHash,
-                        new Consumer<String>() {
-                            @Override
-                            public void accept(String s) throws Exception {
-                                //TODO 处理认证详情返回值
-                            }
-                        });
+                ComponentUtils.launchCertificationDetailsActivity(
+                        getActivity(), txHash);
             }
         });
         //开启 企业认证 弹窗
         binding.btCreateIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ComponentUtils.showCompanyCompanyEnterpriseCertificationAlertDialog(
-                        CertificationDetailsActivity.this,
+                ComponentUtils.showEnterpriseCertificationAlertDialog(
+                        getActivity(),
                         new BiConsumer<DialogInterface, Boolean>() {
                             @Override
                             public void accept(DialogInterface dialogInterface, Boolean identityPwd) throws Exception {
@@ -129,8 +113,8 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateUserIdentityAuthenticationAlertDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ComponentUtils.showUserIdentityAuthenticationAlertDialog(
-                        CertificationDetailsActivity.this,
+                ComponentUtils.showIdentityAuthenticationAlertDialog(
+                        getActivity(),
                         new BiConsumer<DialogInterface, Boolean>() {
                             @Override
                             public void accept(DialogInterface dialogInterface, Boolean identityPwd) throws Exception {
@@ -144,14 +128,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateChainCertification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ComponentUtils.launchCompanyChainCertificationActivity(
-                        CertificationDetailsActivity.this,
-                        new Consumer<CompanyCertResult>() {
-                            @Override
-                            public void accept(CompanyCertResult companyCertResult) throws Exception {
-                                //TODO 处理开启链信认证回值
-                            }
-                        });
+                ComponentUtils.launchChainCertificationActivity(getActivity());
             }
         });
 
@@ -160,7 +137,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
                 //开启发证demo页面
-                v.getContext().startActivity(ReleaseCertificateActivity.getLauncher(CertificationDetailsActivity.this, did));
+                ReleaseCertificateActivity.launch(getActivity(), did);
             }
         });
 
@@ -176,7 +153,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                 }
                 //弹出校验身份密码
                 ComponentUtils.showIdentityPwdDialog(
-                        CertificationDetailsActivity.this, did,
+                        getActivity(), did,
                         new BiConsumer<DialogInterface, String>() {
                             @SuppressLint("CheckResult")
                             @Override
@@ -187,13 +164,13 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                                 String toDid = DemoSp.getInstance().getString(SP_KEY_TO_DID);
                                 TokenTmClient.getService(CertificateService.class)
                                         .confirm(did, identityPwd, certificateId, content, extraData, toDid)
-                                        .compose(XXF.bindToLifecycle(CertificationDetailsActivity.this))
+                                        .compose(XXF.bindToLifecycle(getActivity()))
                                         .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CertificationDetailsActivity.this)))
-                                        .subscribe(new Consumer<String>() {
+                                        .subscribe(new Consumer<ChainResult>() {
                                             @Override
-                                            public void accept(String txHash) throws Exception {
-                                                ToastUtils.showToast(txHash);
-                                                DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, txHash);
+                                            public void accept(ChainResult chainResult) throws Exception {
+                                                ToastUtils.showToast(chainResult.getTxHash());
+                                                DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
                                             }
                                         });
                             }

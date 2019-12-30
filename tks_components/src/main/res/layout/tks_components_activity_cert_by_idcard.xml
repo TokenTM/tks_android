@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.tokentm.sdk.components.cert.UserCertByIDCardVM" />
+            type="com.tokentm.sdk.components.identitypwd.viewmodel.UserCertByIDCardVM" />
 
     </data>
 

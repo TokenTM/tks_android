@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdDecryptVM" />
+            type="com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdDecryptVm" />
 
         <variable
             name="presenter"

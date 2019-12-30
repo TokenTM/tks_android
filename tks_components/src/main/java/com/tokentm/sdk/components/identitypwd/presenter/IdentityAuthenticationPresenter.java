@@ -2,9 +2,9 @@ package com.tokentm.sdk.components.identitypwd.presenter;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
- * @Description 企业认证
+ * @Description 身份认证
  */
-public interface CompanyEnterpriseCertificationPresenter {
+public interface IdentityAuthenticationPresenter {
 
     /**
      * 去认证

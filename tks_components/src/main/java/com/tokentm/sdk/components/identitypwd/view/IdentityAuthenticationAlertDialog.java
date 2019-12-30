@@ -9,8 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.tokentm.sdk.components.common.BaseAlertDialog;
-import com.tokentm.sdk.components.databinding.TksComponentsUserDialogIdentityAuthenticationBinding;
-import com.tokentm.sdk.components.identitypwd.presenter.UserIdentityAuthenticationPresenter;
+import com.tokentm.sdk.components.databinding.TksComponentsDialogIdentityAuthenticationBinding;
+import com.tokentm.sdk.components.identitypwd.presenter.IdentityAuthenticationPresenter;
 
 import io.reactivex.functions.BiConsumer;
 
@@ -18,11 +18,11 @@ import io.reactivex.functions.BiConsumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 前往身份认证弹窗
  */
-public class UserIdentityAuthenticationAlertDialog extends BaseAlertDialog<Boolean> implements UserIdentityAuthenticationPresenter {
+public class IdentityAuthenticationAlertDialog extends BaseAlertDialog<Boolean> implements IdentityAuthenticationPresenter {
 
-    private TksComponentsUserDialogIdentityAuthenticationBinding binding;
+    private TksComponentsDialogIdentityAuthenticationBinding binding;
 
-    public UserIdentityAuthenticationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+    public IdentityAuthenticationAlertDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, Boolean> dialogConsumer) {
         super(context, dialogConsumer);
     }
 
@@ -34,7 +34,7 @@ public class UserIdentityAuthenticationAlertDialog extends BaseAlertDialog<Boole
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         //设置window背景透明
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        binding = TksComponentsUserDialogIdentityAuthenticationBinding.inflate(getLayoutInflater());
+        binding = TksComponentsDialogIdentityAuthenticationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

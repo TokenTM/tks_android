@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
-import com.tokentm.sdk.components.databinding.TksComponentsCompanyFragmentUploadOfficeLetterBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsFragmentUploadOfficeLetterBinding;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.CertService;
@@ -51,7 +51,7 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
         return fragment;
     }
 
-    TksComponentsCompanyFragmentUploadOfficeLetterBinding binding;
+    TksComponentsFragmentUploadOfficeLetterBinding binding;
     CompanyCertParams companyCertParams;
     String localFilePath;
 
@@ -67,7 +67,7 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsCompanyFragmentUploadOfficeLetterBinding.inflate(getLayoutInflater());
+        binding = TksComponentsFragmentUploadOfficeLetterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         loadData();

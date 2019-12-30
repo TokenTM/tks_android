@@ -5,28 +5,25 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
-import com.tokentm.sdk.components.identitypwd.model.BindUDID;
-import com.tokentm.sdk.model.ChainResult;
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
+import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
-import com.tokentm.sdk.components.cert.UserPropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.view.CompanyCertificationDetailsActivity;
-import com.tokentm.sdk.components.identitypwd.view.CompanyCertificationInstructionsActivity;
-import com.tokentm.sdk.components.identitypwd.view.CompanyCompanyEnterpriseCertificationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityAuthenticationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityConfirmActivity;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdDecryptActivity;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
-import com.tokentm.sdk.model.CompanyCertResult;
+import com.tokentm.sdk.components.identitypwd.model.BindUDID;
+import com.tokentm.sdk.components.identitypwd.view.CertificationDetailsActivity;
+import com.tokentm.sdk.components.identitypwd.view.CertificationInstructionsActivity;
+import com.tokentm.sdk.components.identitypwd.view.EnterpriseCertificationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.view.IdentityAuthenticationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
+import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
+import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.IdentityService;
+import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
-import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
 import io.reactivex.ObservableSource;
@@ -51,7 +48,7 @@ public class ComponentUtils {
     @SuppressLint("CheckResult")
     public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, Consumer<BindUDID> consumer) {
         XXF.startActivityForResult(activity,
-                UserIdentityConfirmActivity.getLauncher(activity, userPhone),
+                IdentityConfirmActivity.getLauncher(activity, userPhone),
                 7000)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
@@ -88,7 +85,7 @@ public class ComponentUtils {
                     public ObservableSource<ActivityResult> apply(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
                         return XXF.startActivityForResult(
                                 activity,
-                                UserIdentityPwdDecryptActivity.getLauncher(activity, identityInfoStoreItem, null),
+                                IdentityPwdDecryptActivity.getLauncher(activity, identityInfoStoreItem, null),
                                 1007
                         );
                     }
@@ -104,7 +101,7 @@ public class ComponentUtils {
      * @param dialogConsumer
      */
     public static void showIdentityPwdDialog(FragmentActivity activity, String uDID, BiConsumer<DialogInterface, String> dialogConsumer) {
-        UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(activity, uDID, dialogConsumer)
+        IdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(activity, uDID, dialogConsumer)
                 .show();
     }
 
@@ -114,9 +111,8 @@ public class ComponentUtils {
      * @param activity
      * @param dialogConsumer
      */
-    public static void showCompanyCompanyEnterpriseCertificationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
-        new CompanyCompanyEnterpriseCertificationAlertDialog(activity, dialogConsumer)
-                .show();
+    public static void showEnterpriseCertificationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+        new EnterpriseCertificationAlertDialog(activity, dialogConsumer).show();
     }
 
     /**
@@ -125,8 +121,8 @@ public class ComponentUtils {
      * @param activity
      * @param dialogConsumer
      */
-    public static void showUserIdentityAuthenticationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
-        new UserIdentityAuthenticationAlertDialog(activity, dialogConsumer).show();
+    public static void showIdentityAuthenticationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
+        new IdentityAuthenticationAlertDialog(activity, dialogConsumer).show();
     }
 
     /**
@@ -134,32 +130,10 @@ public class ComponentUtils {
      *
      * @param activity
      * @param userCertByIDCardParams
-     * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchUserCertActivity(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, Consumer<ChainResult> consumer) {
-        XXF.startActivityForResult(
-                activity,
-                UserCertByIDCardActivity.getLauncher(activity,
-                        userCertByIDCardParams
-                ),
-                7100)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
-                .map(new Function<ActivityResult, ChainResult>() {
-                    @Override
-                    public ChainResult apply(ActivityResult activityResult) throws Exception {
-                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                    }
-                })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
-                .subscribe(consumer);
+    public static void launchUserCertActivity(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams) {
+        UserCertByIDCardActivity.launch(activity, userCertByIDCardParams);
     }
 
     /**
@@ -167,148 +141,49 @@ public class ComponentUtils {
      *
      * @param activity
      * @param companyCertParams
-     * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams, Consumer<ChainResult> consumer) {
-        XXF.startActivityForResult(
-                activity,
-                CompanyCertActivity.getLauncher(
-                        activity,
-                        companyCertParams
-                ),
-                7101)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
-                .map(new Function<ActivityResult, ChainResult>() {
-                    @Override
-                    public ChainResult apply(ActivityResult activityResult) throws Exception {
-                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                    }
-                })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
-                .subscribe(consumer);
+    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams) {
+        CompanyCertActivity.launch(activity, companyCertParams);
     }
 
     /**
      * 启动 物权转移 页面
      *
      * @param activity
-     * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchUserPropertyRightsTransferRecordsActivity(FragmentActivity activity, String did, Consumer<CompanyCertResult> consumer) {
-        XXF.startActivityForResult(
-                activity,
-                UserPropertyRightsTransferRecordsActivity.getLauncher(activity, did), 7101)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
-                .map(new Function<ActivityResult, CompanyCertResult>() {
-                    @Override
-                    public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
-                        return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                    }
-                })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
-                .subscribe(consumer);
+    public static void launchPropertyRightsTransferRecordsActivity(FragmentActivity activity, String did) {
+        PropertyRightsTransferRecordsActivity.getLauncher(activity, did);
     }
 
     /**
      * 启动 认证说明 页面
      *
      * @param activity
-     * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchCompanyCertificationInstructionsActivity(FragmentActivity activity, String txHash, String did,Consumer<String> consumer) {
-        XXF.startActivityForResult(
-                activity,
-                CompanyCertificationInstructionsActivity.getLauncher(activity, txHash,did), 7101)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
-                .map(new Function<ActivityResult, String>() {
-                    @Override
-                    public String apply(ActivityResult activityResult) throws Exception {
-                        return (String) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                    }
-                })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
-                .subscribe(consumer);
+    public static void launchCertificationInstructionsActivity(FragmentActivity activity, String txHash, String did) {
+        CertificationInstructionsActivity.getLauncher(activity, txHash, did);
     }
 
     /**
      * 启动 认证详情 页面
      *
      * @param activity
-     * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchUserCertificationDetailsActivity(FragmentActivity activity, String txHash, Consumer<String> consumer) {
-        XXF.startActivityForResult(
-                activity,
-                CompanyCertificationDetailsActivity.getLauncher(activity, txHash), 7101)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
-                .map(new Function<ActivityResult, String>() {
-                    @Override
-                    public String apply(ActivityResult activityResult) throws Exception {
-                        return (String) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                    }
-                })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
-                .subscribe(consumer);
+    public static void launchCertificationDetailsActivity(FragmentActivity activity, String txHash) {
+        CertificationDetailsActivity.getLauncher(activity, txHash);
     }
 
     /**
      * 开启链信认证
      *
      * @param activity
-     * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchCompanyChainCertificationActivity(FragmentActivity activity, Consumer<CompanyCertResult> consumer) {
-        XXF.startActivityForResult(
-                activity,
-                CompanyChainCertificationActivity.getLauncher(activity), 7101)
-                .filter(new Predicate<ActivityResult>() {
-                    @Override
-                    public boolean test(ActivityResult activityResult) throws Exception {
-                        return activityResult.isOk();
-                    }
-                })
-                .map(new Function<ActivityResult, CompanyCertResult>() {
-                    @Override
-                    public CompanyCertResult apply(ActivityResult activityResult) throws Exception {
-                        return (CompanyCertResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
-                    }
-                })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
-                .subscribe(consumer);
+    public static void launchChainCertificationActivity(FragmentActivity activity) {
+        CompanyChainCertificationActivity.launch(activity);
     }
 }

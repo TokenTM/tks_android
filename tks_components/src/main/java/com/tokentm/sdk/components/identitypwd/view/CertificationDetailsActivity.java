@@ -10,13 +10,13 @@ import com.tokentm.sdk.components.identitypwd.viewmodel.CompanyCertificationDeta
  * @author lqx  E-mail:herolqx@126.com
  * @Description 认证详情
  */
-public class CompanyCertificationDetailsActivity extends CompanyCertificationInstructionsActivity {
+public class CertificationDetailsActivity extends CertificationInstructionsActivity {
 
     private static final String TX_HASH = "tx_hash";
 
 
     public static Intent getLauncher(FragmentActivity activity, String txHash) {
-        return new Intent(activity, CompanyCertificationDetailsActivity.class)
+        return new Intent(activity, CertificationDetailsActivity.class)
                 .putExtra(TX_HASH, txHash);
     }
 

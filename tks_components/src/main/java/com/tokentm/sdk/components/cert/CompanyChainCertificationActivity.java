@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityChainCertificationBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityChainCertificationBinding;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -15,16 +15,20 @@ import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityChainC
  */
 public class CompanyChainCertificationActivity extends BaseTitleBarActivity {
 
-    public static Intent getLauncher(Context context) {
+    public static void launch(Context context) {
+        context.startActivity(getLauncher(context));
+    }
+
+    private static Intent getLauncher(Context context) {
         return new Intent(context, CompanyChainCertificationActivity.class);
     }
 
-    TksComponentsCompanyActivityChainCertificationBinding binding;
+    TksComponentsActivityChainCertificationBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsCompanyActivityChainCertificationBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityChainCertificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         loadData();

@@ -7,23 +7,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsCompanyActivityCertificationInstructionsBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityCertificationInstructionsBinding;
 import com.tokentm.sdk.components.identitypwd.viewmodel.CompanyCertificationInstructionsVm;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
  * @Description 认证说明
  */
-public class CompanyCertificationInstructionsActivity extends BaseTitleBarActivity {
+public class CertificationInstructionsActivity extends BaseTitleBarActivity {
 
     private static final String TX_HASH = "tx_hash";
     private static final String DID = "did";
 
-    TksComponentsCompanyActivityCertificationInstructionsBinding binding;
+    TksComponentsActivityCertificationInstructionsBinding binding;
 
 
     public static Intent getLauncher(FragmentActivity activity, String txHash, String did) {
-        Intent intent = new Intent(activity, CompanyCertificationInstructionsActivity.class);
+        Intent intent = new Intent(activity, CertificationInstructionsActivity.class);
         intent.putExtra(TX_HASH, txHash);
         intent.putExtra(DID, did);
         return intent;
@@ -32,7 +32,7 @@ public class CompanyCertificationInstructionsActivity extends BaseTitleBarActivi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsCompanyActivityCertificationInstructionsBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityCertificationInstructionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         initData();

@@ -1,7 +1,6 @@
 package com.tokentm.sdk.components.cert;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,8 +13,9 @@ import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsUserActivityCertByIdcardBinding;
-import com.tokentm.sdk.components.identitypwd.view.UserIdentityPwdInputDialog;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityCertByIdcardBinding;
+import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.viewmodel.UserCertByIDCardVM;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.model.ChainResult;
@@ -24,6 +24,7 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
@@ -46,13 +47,13 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
         context.startActivity(getLauncher(context, userCertByIDCardParams));
     }
 
-    public static Intent getLauncher(Context context, UserCertByIDCardParams userCertByIDCardParams) {
+    private static Intent getLauncher(Context context, UserCertByIDCardParams userCertByIDCardParams) {
         return new Intent(context, UserCertByIDCardActivity.class)
                 .putExtra(KEY_CERT_PARAMS, userCertByIDCardParams);
     }
 
 
-    TksComponentsUserActivityCertByIdcardBinding binding;
+    TksComponentsActivityCertByIdcardBinding binding;
     UserCertByIDCardVM viewModel;
     UserCertByIDCardParams certByIDCardParams;
 
@@ -60,7 +61,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsUserActivityCertByIdcardBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityCertByIdcardBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }
@@ -126,7 +127,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
 
     @Override
     public void onUserCert(ObservableField<String> userName, ObservableField<String> userIDCard, ObservableField<String> userIDCardFrontPic, ObservableField<String> userIDCardBackPic, ObservableField<String> userIDCardHandedPic) {
-        UserIdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(this, certByIDCardParams.getuDid(), new BiConsumer<DialogInterface, String>() {
+        IdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(this, certByIDCardParams.getuDid(), new BiConsumer<DialogInterface, String>() {
             @Override
             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                 dialogInterface.dismiss();
@@ -145,8 +146,8 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
                         .subscribe(new Consumer<ChainResult>() {
                             @Override
                             public void accept(ChainResult chainResult) throws Exception {
-                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
                                 finish();
+                                ToastUtils.showToast("实名认证成功:" + chainResult.getTxHash());
                             }
                         });
             }

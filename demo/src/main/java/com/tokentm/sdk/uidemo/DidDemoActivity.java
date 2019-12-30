@@ -1,6 +1,8 @@
 package com.tokentm.sdk.uidemo;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -9,7 +11,7 @@ import android.view.View;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.uidemo.databinding.DidActivityBinding;
+import com.tokentm.sdk.uidemo.databinding.ActivityDidBinding;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -19,12 +21,20 @@ import io.reactivex.functions.Consumer;
  * @Description 生成did
  */
 public class DidDemoActivity extends BaseTitleBarActivity {
-    DidActivityBinding binding;
+    ActivityDidBinding binding;
+
+    public static void launch(Context context) {
+        context.startActivity(getLauncher(context));
+    }
+
+    private static Intent getLauncher(Context context) {
+        return new Intent(context, DidDemoActivity.class);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DidActivityBinding.inflate(getLayoutInflater());
+        binding = ActivityDidBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
     }

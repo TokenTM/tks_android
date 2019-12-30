@@ -1,7 +1,6 @@
 package com.tokentm.sdk.uidemo;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,7 +8,6 @@ import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.StoreItem;
 import com.tokentm.sdk.source.StoreService;
 import com.tokentm.sdk.source.TokenTmClient;
@@ -51,7 +49,7 @@ public class MainActivity extends BaseTitleBarActivity {
         binding.btCreateDid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(new Intent(v.getContext(), DidDemoActivity.class));
+                DidDemoActivity.launch(getActivity());
             }
         });
         binding.btBackup.setOnClickListener(new View.OnClickListener() {
@@ -97,41 +95,23 @@ public class MainActivity extends BaseTitleBarActivity {
                         });
             }
         });
-        binding.btCertByIdcard.setOnClickListener(new View.OnClickListener() {
+        binding.btIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ComponentUtils.launchUserCertActivity(
-                        MainActivity.this,
-                        new UserCertByIDCardParams.Builder(did)
+                        getActivity()
+                        , new UserCertByIDCardParams.Builder(did)
                                 .setUserName("小炫风")
                                 .setUserIDCard("511324198901090148")
-                                .build(),
-
-                        new Consumer<ChainResult>() {
-                            @Override
-                            public void accept(ChainResult chainResult) throws Exception {
-                                //TODO 中心化系统进行记录
-                                ToastUtils.showToast("实名认证成功:" + chainResult.getTxHash());
-                            }
-                        });
+                                .build());
             }
         });
         binding.btCertCompany.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
-
-                ComponentUtils.launchCompanyCertActivity(
-                        MainActivity.this,
-                        new CompanyCertParams.Builder(did, "北京百度科技有限公司").build(),
-                        new Consumer<ChainResult>() {
-                            @Override
-                            public void accept(ChainResult chainResult) throws Exception {
-                                //TODO 中心化系统进行记录
-                                ToastUtils.showToast("公司认证成功:" + chainResult);
-                            }
-                        });
+                ComponentUtils.launchCompanyCertActivity(getActivity(),
+                        new CompanyCertParams.Builder(did, "北京百度科技有限公司").build());
             }
         });
         //开启认证详情
@@ -139,16 +119,24 @@ public class MainActivity extends BaseTitleBarActivity {
             @SuppressLint("CheckResult")
             @Override
             public void onClick(View v) {
-                v.getContext().startActivity(CertificationDetailsActivity.getLauncher(v.getContext()));
+                CertificationDetailsActivity.launch(v.getContext());
             }
         });
 
-        binding.btLoginOut.setOnClickListener(new View.OnClickListener() {
+        binding.btLoginRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DemoSp.getInstance().logout();
+                LoginOrRegisterActivity.launch(getActivity());
+                finish();
+            }
+        });
 
-                startActivity(new Intent(MainActivity.this, LoginOrRegisterActivity.class));
+        binding.btLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DemoSp.getInstance().logout();
+                LoginOrRegisterActivity.launch(getActivity());
                 finish();
             }
         });
