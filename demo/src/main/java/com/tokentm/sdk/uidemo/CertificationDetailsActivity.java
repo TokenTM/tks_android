@@ -128,7 +128,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateChainCertification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ComponentUtils.launchChainCertificationActivity(getActivity());
+                ChainCertificationActivity.launch(getActivity());
             }
         });
 

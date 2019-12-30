@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
-import com.tokentm.sdk.components.cert.CompanyChainCertificationActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
@@ -25,6 +24,8 @@ import com.tokentm.sdk.source.IdentityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.functions.BiConsumer;
@@ -74,12 +75,12 @@ public class ComponentUtils {
      *
      * @param activity
      * @param uDID
-     * @param consumer
      */
-    public static void launchForgotIdentityPwd(FragmentActivity activity, String uDID, Consumer<ActivityResult> consumer) {
+    public static void launchForgotIdentityPwd(FragmentActivity activity, ProgressHUDProvider progressHUD, String uDID) {
         TokenTmClient.getService(IdentityService.class)
                 .getUDID(uDID)
                 .compose(XXF.bindToErrorNotice())
+                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder((progressHUD))))
                 .flatMap(new Function<IdentityInfoStoreItem, ObservableSource<ActivityResult>>() {
                     @Override
                     public ObservableSource<ActivityResult> apply(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
@@ -89,7 +90,7 @@ public class ComponentUtils {
                                 1007
                         );
                     }
-                });
+                }).subscribe();
     }
 
 
@@ -175,15 +176,5 @@ public class ComponentUtils {
     @SuppressLint("CheckResult")
     public static void launchCertificationDetailsActivity(FragmentActivity activity, String txHash) {
         CertificationDetailsActivity.getLauncher(activity, txHash);
-    }
-
-    /**
-     * 开启链信认证
-     *
-     * @param activity
-     */
-    @SuppressLint("CheckResult")
-    public static void launchChainCertificationActivity(FragmentActivity activity) {
-        CompanyChainCertificationActivity.launch(activity);
     }
 }

@@ -8,16 +8,7 @@ import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.model.StoreItem;
-import com.tokentm.sdk.source.StoreService;
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
-import com.xxf.arch.XXF;
-import com.xxf.arch.utils.ToastUtils;
-
-import java.util.List;
-
-import io.reactivex.functions.Consumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -55,44 +46,13 @@ public class MainActivity extends BaseTitleBarActivity {
         binding.btBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                StoreItem<String> storeItem = new StoreItem<>();
-                storeItem.setDid(did);
-                storeItem.setDataId(did);
-                storeItem.setDataType("testType");
-                storeItem.setData(String.format("android_x_%s", System.currentTimeMillis()));
-                TokenTmClient.getService(StoreService.class)
-                        .store(storeItem)
-                        .compose(XXF.bindToErrorNotice())
-                        .subscribe(new Consumer<Long>() {
-                            @Override
-                            public void accept(Long aLong) throws Exception {
-                                ToastUtils.showToast("备份成功");
-                            }
-                        });
+                BackupActivity.launch(getActivity(),did);
             }
         });
         binding.btGetBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TokenTmClient.getService(StoreService.class)
-                        .getStore(did, "testType", did)
-                        .compose(XXF.bindToErrorNotice())
-                        .subscribe(new Consumer<StoreItem<String>>() {
-                            @Override
-                            public void accept(StoreItem<String> stringStoreItem) throws Exception {
-                                ToastUtils.showToast("备份获取1:" + stringStoreItem.getData());
-                            }
-                        });
-                TokenTmClient.getService(StoreService.class)
-                        .getStore(did, "testType")
-                        .compose(XXF.bindToErrorNotice())
-                        .subscribe(new Consumer<List<StoreItem<String>>>() {
-                            @Override
-                            public void accept(List<StoreItem<String>> storeItems) throws Exception {
-                                ToastUtils.showToast("备份获取2:" + storeItems.size());
-                            }
-                        });
+                GetBackupActivity.launch(getActivity(),did);
             }
         });
         binding.btIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
