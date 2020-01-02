@@ -27,8 +27,6 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,11 +78,10 @@ public class ComponentUtils {
      * @param activity
      * @param uDID
      */
-    public static void launchForgotIdentityPwd(FragmentActivity activity, ProgressHUDProvider progressHUD, String uDID) {
+    public static void launchForgotIdentityPwd(FragmentActivity activity, String uDID, Consumer<ActivityResult> consumer) {
         TokenTmClient.getService(IdentityService.class)
                 .getUDID(uDID)
                 .compose(XXF.bindToErrorNotice())
-                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder((progressHUD))))
                 .flatMap(new Function<IdentityInfoStoreItem, ObservableSource<ActivityResult>>() {
                     @Override
                     public ObservableSource<ActivityResult> apply(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
@@ -94,7 +91,7 @@ public class ComponentUtils {
                                 1007
                         );
                     }
-                }).subscribe();
+                }).subscribe(consumer);
     }
 
 

@@ -12,6 +12,7 @@ import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityChainCertificationBinding;
 import com.tokentm.sdk.uidemo.prensenter.IChainCertificationPresenter;
+import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.Consumer;
@@ -68,7 +69,14 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
     @Override
     public void onRetrieveIdentityPassword() {
         String did = DemoSp.getInstance().getLoginDID();
-        ComponentUtils.launchForgotIdentityPwd(getActivity(), ChainCertificationActivity.this, did);
+        ComponentUtils.launchForgotIdentityPwd(getActivity(), did, new Consumer<ActivityResult>() {
+            @Override
+            public void accept(ActivityResult activityResult) throws Exception {
+                if (activityResult!=null){
+                    ToastUtils.showToast("修改成功");
+                }
+            }
+        });
     }
 
     @Override
