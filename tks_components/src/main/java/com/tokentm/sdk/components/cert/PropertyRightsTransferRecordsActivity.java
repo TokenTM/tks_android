@@ -10,7 +10,6 @@ import com.tokentm.sdk.components.cert.adapter.PropertyRightsTransferRecordsAdap
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityPropertyRightsTransferRecordsBinding;
 import com.tokentm.sdk.model.TransferCommodityActionDTO;
-import com.tokentm.sdk.model.TransferInfoDTO;
 import com.tokentm.sdk.source.CommodityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
@@ -46,7 +45,7 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
         context.startActivity(getLauncher(context, did));
     }
 
-    private static Intent getLauncher(Context context, String id) {
+    public static Intent getLauncher(Context context, String id) {
         return new Intent(context, PropertyRightsTransferRecordsActivity.class)
                 .putExtra(KEY_ID,id );
     }

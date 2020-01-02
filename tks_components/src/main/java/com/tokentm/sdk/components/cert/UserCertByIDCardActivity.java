@@ -1,6 +1,7 @@
 package com.tokentm.sdk.components.cert;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,7 +25,6 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
@@ -47,7 +47,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
         context.startActivity(getLauncher(context, userCertByIDCardParams));
     }
 
-    private static Intent getLauncher(Context context, UserCertByIDCardParams userCertByIDCardParams) {
+    public static Intent getLauncher(Context context, UserCertByIDCardParams userCertByIDCardParams) {
         return new Intent(context, UserCertByIDCardActivity.class)
                 .putExtra(KEY_CERT_PARAMS, userCertByIDCardParams);
     }
@@ -146,8 +146,8 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
                         .subscribe(new Consumer<ChainResult>() {
                             @Override
                             public void accept(ChainResult chainResult) throws Exception {
+                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
                                 finish();
-                                ToastUtils.showToast("实名认证成功:" + chainResult.getTxHash());
                             }
                         });
             }

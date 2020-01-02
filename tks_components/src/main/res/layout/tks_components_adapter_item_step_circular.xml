@@ -9,12 +9,6 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <View
-            android:id="@+id/step_line"
-            android:layout_width="100dp"
-            android:layout_height="5dp"
-            android:background="#ff00c1ce" />
-
         <TextView
             android:id="@+id/step_tv"
             android:layout_width="26dp"

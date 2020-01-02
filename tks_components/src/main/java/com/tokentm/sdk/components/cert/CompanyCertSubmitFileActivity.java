@@ -48,7 +48,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         context.startActivity(getLauncher(context, companyCertParams));
     }
 
-    private static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
+    public static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
         return new Intent(context, CompanyCertSubmitFileActivity.class)
                 .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }

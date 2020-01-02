@@ -72,7 +72,12 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                 , new UserCertByIDCardParams.Builder(did)
                         .setUserName("")
                         .setUserIDCard("")
-                        .build());
+                        .build(), new Consumer<ChainResult>() {
+                    @Override
+                    public void accept(ChainResult chainResult) throws Exception {
+                        ToastUtils.showToast("认证成功");
+                    }
+                });
     }
 
     @Override
@@ -109,7 +114,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                     public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                         dialogInterface.dismiss();
                         TokenTmClient.getService(CommodityService.class)
-                                .receive(did, identityPwd, goodsId,goodsName,goodsNumber)
+                                .receive(did, identityPwd, goodsId, goodsName, goodsNumber)
                                 .compose(XXF.bindToLifecycle(getActivity()))
                                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
                                 .subscribe(new Consumer<ChainResult>() {

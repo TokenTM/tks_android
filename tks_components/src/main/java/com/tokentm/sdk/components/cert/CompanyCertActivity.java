@@ -1,6 +1,8 @@
 package com.tokentm.sdk.components.cert;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +12,17 @@ import android.view.View;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityCompanySelectTypeBinding;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyType;
+import com.xxf.arch.XXF;
+import com.xxf.arch.core.activityresult.ActivityResult;
+
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 公司认证
+ * @Description 企业/组织认证
  */
 public class CompanyCertActivity extends BaseTitleBarActivity {
 
@@ -27,7 +35,7 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
         context.startActivity(getLauncher(context, companyCertParams));
     }
 
-    private static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
+    public static Intent getLauncher(Context context, CompanyCertParams companyCertParams) {
         return new Intent(context, CompanyCertActivity.class)
                 .putExtra(KEY_CERT_PARAMS, companyCertParams);
     }
@@ -62,10 +70,29 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
 
     @SuppressLint("CheckResult")
     private void goNext(CompanyType companyType) {
-        CompanyCertSubmitFileActivity.launch(
+        XXF.startActivityForResult(
                 getActivity(),
-                new CompanyCertParams.Builder(companyCertParams)
-                        .setCompanyType(companyType)
-                        .build());
+                CompanyCertSubmitFileActivity.getLauncher(
+                        getActivity(),
+                        new CompanyCertParams.Builder(companyCertParams)
+                                .setCompanyType(companyType)
+                                .build()),
+                1001)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .compose(XXF.bindUntilEvent(getActivity(), Lifecycle.Event.ON_DESTROY))
+                .take(1)
+                .subscribe(new Consumer<ActivityResult>() {
+                    @Override
+                    public void accept(ActivityResult activityResult) throws Exception {
+                        ChainResult chainResult = (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                        finish();
+                    }
+                });
     }
 }

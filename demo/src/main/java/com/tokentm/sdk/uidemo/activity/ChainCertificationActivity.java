@@ -8,9 +8,13 @@ import android.support.annotation.Nullable;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityChainCertificationBinding;
 import com.tokentm.sdk.uidemo.prensenter.IChainCertificationPresenter;
+import com.xxf.arch.utils.ToastUtils;
+
+import io.reactivex.functions.Consumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -51,7 +55,14 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
     public void onOpenCompanyCert() {
         String did = DemoSp.getInstance().getLoginDID();
         ComponentUtils.launchCompanyCertActivity(getActivity(),
-                new CompanyCertParams.Builder(did, "").build());
+                new CompanyCertParams.Builder(did, "").build(), new Consumer<ChainResult>() {
+                    @Override
+                    public void accept(ChainResult chainResult) throws Exception {
+                        if (chainResult.getTxHash() != null) {
+                            ToastUtils.showToast("认证成功");
+                        }
+                    }
+                });
     }
 
     @Override

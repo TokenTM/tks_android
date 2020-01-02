@@ -19,11 +19,13 @@ import com.tokentm.sdk.components.identitypwd.view.IdentityAuthenticationAlertDi
 import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.IdentityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
+import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
@@ -135,19 +137,63 @@ public class ComponentUtils {
      * @param userCertByIDCardParams
      */
     @SuppressLint("CheckResult")
-    public static void launchUserCertActivity(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams) {
-        UserCertByIDCardActivity.launch(activity, userCertByIDCardParams);
+    public static void launchUserCertActivity(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, Consumer<ChainResult> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                UserCertByIDCardActivity.getLauncher(activity,
+                        userCertByIDCardParams
+                ),
+                7100)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .map(new Function<ActivityResult, ChainResult>() {
+                    @Override
+                    public ChainResult apply(ActivityResult activityResult) throws Exception {
+                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(consumer);
     }
 
     /**
-     * 启动公司认证 页面
+     * 启动企业/组织认证 页面
      *
      * @param activity
      * @param companyCertParams
+     * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams) {
-        CompanyCertActivity.launch(activity, companyCertParams);
+    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams, Consumer<ChainResult> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                CompanyCertActivity.getLauncher(
+                        activity,
+                        companyCertParams
+                ),
+                7101)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .map(new Function<ActivityResult, ChainResult>() {
+                    @Override
+                    public ChainResult apply(ActivityResult activityResult) throws Exception {
+                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .take(1)
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
+                .compose(XXF.bindToErrorNotice())
+                .subscribe(consumer);
     }
 
     /**
@@ -183,11 +229,11 @@ public class ComponentUtils {
     /**
      * 是否显示
      */
-    public static void isShowIdentityDescription(String did,Consumer<Boolean> consumer){
+    public static void isShowIdentityDescription(String did, Consumer<Boolean> consumer) {
         TokenTmClient.getService(CertService.class)
                 .isUserCert(did)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(consumer);
-    }
 
+    }
 }

@@ -8,10 +8,14 @@ import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.View;
 
 import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
@@ -89,8 +93,16 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
         binding.getViewModel().phone.set(phone);
 
         binding.recyclerView.setAdapter(stepAdapter = new StepAdapter());
-        stepAdapter.bindData(true, generateSteps(3));
 
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
+        binding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+            }
+        });
+        binding.recyclerView.setLayoutManager(gridLayoutManager);
+        stepAdapter.bindData(true, generateSteps(5));
 
         binding.getViewModel().step.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
@@ -101,9 +113,15 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
     }
 
     private List<StepModel> generateSteps(int stepCount) {
+
         List<StepModel> stepModels = new ArrayList<>();
         for (int i = 0; i < stepCount; i++) {
-            stepModels.add(new StepModel(R.drawable.tks_components_step_cheked, R.drawable.tks_components_step_uncheked));
+            if (i % 2 == 0) {
+                stepModels.add(new StepModel(StepAdapter.CIRCULAR, R.drawable.tks_components_step_cheked, R.drawable.tks_components_step_uncheked));
+            } else {
+                stepModels.add(new StepModel(StepAdapter.LINE, R.drawable.tks_components_step_cheked, R.drawable.tks_components_step_uncheked));
+            }
+
         }
         return stepModels;
     }
