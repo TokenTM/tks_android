@@ -46,7 +46,7 @@ public class BackupActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
-        setTitle("发布证书");
+        setTitle("备份数据");
         did = getIntent().getStringExtra(KEY_DID);
         binding.tvBackup.setOnClickListener(new View.OnClickListener() {
             @Override

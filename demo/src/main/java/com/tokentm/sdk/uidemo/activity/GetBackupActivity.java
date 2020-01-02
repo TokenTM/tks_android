@@ -52,7 +52,6 @@ public class GetBackupActivity extends BaseTitleBarActivity {
         binding.tvGetBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 TokenTmClient.getService(StoreService.class)
                         .getStore(did,binding.etDataType.getText().toString().trim(), binding.etDataId.getText().toString().trim())
                         .compose(XXF.bindToErrorNotice())

@@ -22,6 +22,7 @@ import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
+
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
@@ -50,7 +51,6 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
     protected void onResume() {
         super.onResume();
         did = DemoSp.getInstance().getLoginDID();
-        //是否显示身份说明
         ComponentUtils.isShowIdentityDescription(did, new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
@@ -193,7 +193,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                                         if (chainResult.getTxHash() != null) {
                                             ToastUtils.showToast("取消证书成功");
                                             DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
-                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID,"");
+                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID, "");
                                         } else {
                                             ToastUtils.showToast("取消证书失败");
                                         }

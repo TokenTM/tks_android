@@ -22,7 +22,6 @@
             <View style="@style/MainPageDividerStyle" />
 
             <TextView
-                android:id="@+id/tv_identity_authentication"
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -32,6 +31,7 @@
             <View style="@style/MainPageLineStyle" />
 
             <TextView
+                android:id="@+id/tv_identity_authentication"
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

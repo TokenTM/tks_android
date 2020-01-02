@@ -28,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         Observable.just(true)
-                .delay(3, TimeUnit.SECONDS)
+                .delay(0, TimeUnit.SECONDS)
                 .compose(XXF.bindToLifecycle(this))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Boolean>() {
