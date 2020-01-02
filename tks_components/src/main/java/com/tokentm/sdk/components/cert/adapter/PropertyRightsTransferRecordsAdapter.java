@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import com.tokentm.sdk.components.cert.recyclerview.BaseBindableAdapter;
 import com.tokentm.sdk.components.common.BarCodeUtil;
 import com.tokentm.sdk.components.databinding.TksComponentsAdapterItemPropertyRightsTransferRecordsBinding;
-import com.tokentm.sdk.model.CertificateCommodityActionDTO;
 import com.tokentm.sdk.model.SellerBuyerinfoDTO;
+import com.tokentm.sdk.model.TransferCommodityActionDTO;
 import com.xxf.view.recyclerview.adapter.BaseViewHolder;
 
 import java.text.SimpleDateFormat;
@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录adapter
  */
-public class PropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsAdapterItemPropertyRightsTransferRecordsBinding, CertificateCommodityActionDTO> {
+public class PropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<TksComponentsAdapterItemPropertyRightsTransferRecordsBinding, TransferCommodityActionDTO> {
 
     @SuppressLint("SimpleDateFormat")
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -30,7 +30,7 @@ public class PropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<Tk
     }
 
     @Override
-    public void onBindHolder(BaseViewHolder holder, TksComponentsAdapterItemPropertyRightsTransferRecordsBinding binding, @Nullable CertificateCommodityActionDTO certificateCommodityActionDTO, int index) {
+    public void onBindHolder(BaseViewHolder holder, TksComponentsAdapterItemPropertyRightsTransferRecordsBinding binding, @Nullable TransferCommodityActionDTO certificateCommodityActionDTO, int index) {
         //发货收货 物品转移记录( 存证模型实现)的包装模型
         if (certificateCommodityActionDTO == null) {
             return;

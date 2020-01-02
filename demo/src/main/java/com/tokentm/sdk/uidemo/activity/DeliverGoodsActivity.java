@@ -9,7 +9,7 @@ import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.model.CertificateInitResult;
+import com.tokentm.sdk.model.TransferInitResult;
 import com.tokentm.sdk.source.CommodityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.DemoSp;
@@ -21,7 +21,9 @@ import com.xxf.arch.utils.ToastUtils;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_CERTIFICATE_ID;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_ID;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NAME;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NUMBER;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -69,6 +71,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
                                 initiate(did
                                         , identityPwd
                                         , binding.etSellerName.getText().toString()
+                                        ,"type"
                                         , binding.etCommodityName.getText().toString()
                                         , 3
                                         , did
@@ -82,16 +85,18 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
     /**
      * 发货
      */
-    private void initiate(final String uDID, final String identityPwd, final String sellerName, String commodityName, final int commodityCount, final String toBuyerUDID, final String toBuyerName) {
+    private void initiate(final String uDID, final String identityPwd, final String sellerName, String commodityType, String commodityName, final int commodityCount, final String toBuyerUDID, final String toBuyerName) {
+        DemoSp.getInstance().putString(SP_KEY_GOODS_NAME, commodityName);
+        DemoSp.getInstance().putInt(SP_KEY_GOODS_NUMBER, commodityCount);
         TokenTmClient.getService(CommodityService.class)
-                .send(uDID, identityPwd, sellerName, commodityName, commodityCount, toBuyerUDID, toBuyerName)
+                .send(uDID, identityPwd, sellerName, commodityType, commodityName, commodityCount, toBuyerUDID, toBuyerName)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(DeliverGoodsActivity.this)))
-                .subscribe(new Consumer<CertificateInitResult>() {
+                .subscribe(new Consumer<TransferInitResult>() {
                     @Override
-                    public void accept(CertificateInitResult certificateInitResult) throws Exception {
+                    public void accept(TransferInitResult transferInitResult) throws Exception {
                         //存储certificate_id
-                        DemoSp.getInstance().putString(SP_KEY_GOODS_CERTIFICATE_ID, certificateInitResult.getId());
+                        DemoSp.getInstance().putString(SP_KEY_GOODS_ID, transferInitResult.getId());
                         ToastUtils.showToast("发货成功");
                         finish();
                     }

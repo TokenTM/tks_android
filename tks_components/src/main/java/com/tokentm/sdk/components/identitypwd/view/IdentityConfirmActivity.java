@@ -234,8 +234,9 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
     @SuppressLint("CheckResult")
     @Override
     public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
+        //TODO createUDID最后的参数是邀请码
         TokenTmClient.getService(IdentityService.class)
-                .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false)
+                .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false,"")
                 .map(new Function<ChainResult, BindUDID>() {
                     @Override
                     public BindUDID apply(ChainResult chainResult) throws Exception {

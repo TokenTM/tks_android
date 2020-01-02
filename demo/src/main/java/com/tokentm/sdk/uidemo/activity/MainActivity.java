@@ -25,6 +25,8 @@ import io.reactivex.functions.Consumer;
 
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NAME;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NUMBER;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
 
 /**
@@ -91,8 +93,10 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onReceiveGoods() {
-        String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_CERTIFICATE_ID);
-        if (TextUtils.isEmpty(certificateId)) {
+        String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
+        String goodsName = DemoSp.getInstance().getString(SP_KEY_GOODS_NAME);
+        int goodsNumber = DemoSp.getInstance().getInt(SP_KEY_GOODS_NUMBER);
+        if (TextUtils.isEmpty(goodsId)) {
             ToastUtils.showToast("请先发货");
             return;
         }
@@ -105,7 +109,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                     public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                         dialogInterface.dismiss();
                         TokenTmClient.getService(CommodityService.class)
-                                .receive(did, identityPwd, certificateId)
+                                .receive(did, identityPwd, goodsId,goodsName,goodsNumber)
                                 .compose(XXF.bindToLifecycle(getActivity()))
                                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
                                 .subscribe(new Consumer<ChainResult>() {

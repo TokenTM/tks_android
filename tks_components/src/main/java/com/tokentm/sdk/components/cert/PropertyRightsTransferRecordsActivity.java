@@ -9,7 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.tokentm.sdk.components.cert.adapter.PropertyRightsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityPropertyRightsTransferRecordsBinding;
-import com.tokentm.sdk.model.CertificateCommodityActionDTO;
+import com.tokentm.sdk.model.TransferCommodityActionDTO;
+import com.tokentm.sdk.model.TransferInfoDTO;
 import com.tokentm.sdk.source.CommodityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
@@ -29,8 +30,8 @@ import io.reactivex.functions.Consumer;
  */
 public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity {
 
-    private static final String KEY_DID = "did";
-    private String did;
+    private static final String KEY_ID = "id";
+    private String id;
     private TksComponentsActivityPropertyRightsTransferRecordsBinding binding;
     private PropertyRightsTransferRecordsAdapter userCertificationRecordAdapter;
 
@@ -45,9 +46,9 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
         context.startActivity(getLauncher(context, did));
     }
 
-    private static Intent getLauncher(Context context, String did) {
+    private static Intent getLauncher(Context context, String id) {
         return new Intent(context, PropertyRightsTransferRecordsActivity.class)
-                .putExtra(KEY_DID, did);
+                .putExtra(KEY_ID,id );
     }
 
     @Override
@@ -62,7 +63,7 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
 
     private void initView() {
         setTitle("物权转移记录");
-        did = getIntent().getStringExtra(KEY_DID);
+        id = getIntent().getStringExtra(KEY_ID);
         binding.setStateLayoutVM(stateLayoutVM);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(userCertificationRecordAdapter = new PropertyRightsTransferRecordsAdapter());
@@ -78,14 +79,16 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
      * 加载数据
      */
     private void loadData() {
-        TokenTmClient.getService(CommodityService.class).getActionRecords(did)
+
+        TokenTmClient.getService(CommodityService.class).getCommodityTransferActionRecords(id)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(new Consumer<List<CertificateCommodityActionDTO>>() {
+                .subscribe(new Consumer<List<TransferCommodityActionDTO>>() {
                     @Override
-                    public void accept(List<CertificateCommodityActionDTO> certificateCommodityActionDTOS) throws Exception {
-                        userCertificationRecordAdapter.bindData(true,certificateCommodityActionDTOS);
+                    public void accept(List<TransferCommodityActionDTO> transferCommodityActionDTOS) throws Exception {
+                        userCertificationRecordAdapter.bindData(true, transferCommodityActionDTOS);
                     }
                 });
+
     }
 }

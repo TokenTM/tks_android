@@ -15,7 +15,9 @@ public class DemoSp extends SharedPreferenceWrapper {
     /**
      * 发货得到的证书id
      */
-    public static final String SP_KEY_GOODS_CERTIFICATE_ID = "sp_key_goods_certificate_id";
+    public static final String SP_KEY_GOODS_ID = "sp_key_goods_id";
+    public static final String SP_KEY_GOODS_NAME = "sp_key_goods_name";
+    public static final String SP_KEY_GOODS_NUMBER= "sp_key_goods_number";
     /**
      * 发证得到的证书id
      */
