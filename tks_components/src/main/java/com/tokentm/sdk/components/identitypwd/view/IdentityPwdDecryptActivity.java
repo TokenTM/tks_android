@@ -8,14 +8,10 @@ import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
-import android.view.View;
 
 import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
@@ -32,9 +28,11 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -66,7 +64,6 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
     }
 
     IdentityInfoStoreItem identityInfoStoreItem;
-    private String phone;
     TksComponentsActivityIdentityPwdDecryptBinding binding;
     StepAdapter stepAdapter;
     List<List<NodeServiceEncryptedPartItem>> encryptIdentityPwdParts = new ArrayList<>();
@@ -85,7 +82,7 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
     private void initView() {
         setTitle("重置身份密码");
         identityInfoStoreItem = (IdentityInfoStoreItem) getIntent().getSerializableExtra(KEY_DID_INFO);
-        phone = getIntent().getStringExtra(KEY_PHONE);
+        String phone = getIntent().getStringExtra(KEY_PHONE);
 
         binding.setViewModel(ViewModelProviders.of(this).get(IdentityPwdDecryptVm.class));
         binding.setPresenter(this);
@@ -93,35 +90,22 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
         binding.getViewModel().phone.set(phone);
 
         binding.recyclerView.setAdapter(stepAdapter = new StepAdapter());
+        stepAdapter.bindData(true, generateSteps(3));
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 5);
-        binding.recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                super.getItemOffsets(outRect, view, parent, state);
-            }
-        });
-        binding.recyclerView.setLayoutManager(gridLayoutManager);
-        stepAdapter.bindData(true, generateSteps(5));
 
         binding.getViewModel().step.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
                 stepAdapter.setStep(binding.getViewModel().step.get());
+                binding.getViewModel().smsCode.set("");
             }
         });
     }
 
     private List<StepModel> generateSteps(int stepCount) {
-
         List<StepModel> stepModels = new ArrayList<>();
         for (int i = 0; i < stepCount; i++) {
-            if (i % 2 == 0) {
-                stepModels.add(new StepModel(StepAdapter.CIRCULAR, R.drawable.tks_components_step_cheked, R.drawable.tks_components_step_uncheked));
-            } else {
-                stepModels.add(new StepModel(StepAdapter.LINE, R.drawable.tks_components_step_cheked, R.drawable.tks_components_step_uncheked));
-            }
-
+            stepModels.add(new StepModel(R.drawable.tks_components_step_cheked, R.drawable.tks_components_step_uncheked));
         }
         return stepModels;
     }
@@ -134,6 +118,10 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
 
     @Override
     public void onSendSMSCode(ObservableField<String> phone, ObservableLong smsCountdown) {
+        if (phone.get() == null || Objects.equals(phone.get(), "")) {
+            ToastUtils.showToast("请输入手机号");
+            return;
+        }
         TokenTmClient.getService(BasicService.class)
                 .sendSmsCode(phone.get())
                 .compose(XXF.bindToLifecycle(getActivity()))

@@ -10,14 +10,9 @@ public class StepModel {
     private int selectIcon;
     private int unSelectIcon;
 
-    public StepModel(int viewType, int selectIcon, int unSelectIcon) {
-        this.viewType = viewType;
+    public StepModel(int selectIcon, int unSelectIcon) {
         this.selectIcon = selectIcon;
         this.unSelectIcon = unSelectIcon;
-    }
-
-    public int getViewType() {
-        return viewType;
     }
 
     public int getSelectIcon() {

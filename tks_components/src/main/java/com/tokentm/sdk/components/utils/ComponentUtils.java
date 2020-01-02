@@ -28,7 +28,6 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -78,20 +77,33 @@ public class ComponentUtils {
      * @param activity
      * @param uDID
      */
-    public static void launchForgotIdentityPwd(FragmentActivity activity, String uDID, Consumer<ActivityResult> consumer) {
+    public static void launchForgotIdentityPwd(FragmentActivity activity, String uDID, Consumer<Boolean> consumer) {
         TokenTmClient.getService(IdentityService.class)
                 .getUDID(uDID)
                 .compose(XXF.bindToErrorNotice())
-                .flatMap(new Function<IdentityInfoStoreItem, ObservableSource<ActivityResult>>() {
+                .subscribe(new Consumer<IdentityInfoStoreItem>() {
                     @Override
-                    public ObservableSource<ActivityResult> apply(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
-                        return XXF.startActivityForResult(
+                    public void accept(IdentityInfoStoreItem identityInfoStoreItem) throws Exception {
+                        XXF.startActivityForResult(
                                 activity,
                                 IdentityPwdDecryptActivity.getLauncher(activity, identityInfoStoreItem, null),
-                                1007
-                        );
+                                1007)
+                                .filter(new Predicate<ActivityResult>() {
+                                    @Override
+                                    public boolean test(ActivityResult activityResult) throws Exception {
+                                        return activityResult.isOk();
+                                    }
+                                })
+                                .take(1)
+                                .map(new Function<ActivityResult, Boolean>() {
+                                    @Override
+                                    public Boolean apply(ActivityResult activityResult) throws Exception {
+                                        return (Boolean) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                                    }
+                                })
+                                .subscribe(consumer);
                     }
-                }).subscribe(consumer);
+                });
     }
 
 
@@ -226,9 +238,11 @@ public class ComponentUtils {
     /**
      * 是否显示
      */
-    public static void isShowIdentityDescription(String did, Consumer<Boolean> consumer) {
+    public static void isShowIdentityDescription(FragmentActivity activity, String did, Consumer<Boolean> consumer) {
         TokenTmClient.getService(CertService.class)
                 .isUserCert(did)
+                .compose(XXF.bindToLifecycle(activity))
+                .compose(XXF.bindToErrorNotice())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(consumer);
 

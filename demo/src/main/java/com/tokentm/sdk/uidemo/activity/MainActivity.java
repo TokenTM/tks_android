@@ -53,7 +53,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
     protected void onResume() {
         super.onResume();
         did = DemoSp.getInstance().getLoginDID();
-        ComponentUtils.isShowIdentityDescription(did, new Consumer<Boolean>() {
+        ComponentUtils.isShowIdentityDescription(this, did, new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 binding.tvIdentityAuthentication.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
