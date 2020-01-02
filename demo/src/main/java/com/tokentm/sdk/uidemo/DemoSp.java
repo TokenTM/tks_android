@@ -11,10 +11,18 @@ public class DemoSp extends SharedPreferenceWrapper {
 
 
     public static final String SP_KEY_LOGIN = "sp_key_login";
-    public static final String SP_KEY_CERTIFICATE_ID = "sp_key_certificate_id";
+
+    /**
+     * 发货得到的证书id
+     */
+    public static final String SP_KEY_GOODS_CERTIFICATE_ID = "sp_key_goods_certificate_id";
+    /**
+     * 发证得到的证书id
+     */
+    public static final String SP_KEY_CERTIFICATION_CERTIFICATE_ID = "sp_key_certification_certificate_id";
     public static final String SP_KEY_TX_HASH = "sp_key_tx_hash";
-    public static final String SP_KEY_CERTIFICATE_CONTENT = "sp_key_certificate_content";
-    public static final String SP_KEY_CERTIFICATE_EXTRA_DATA = "sp_key_certificate_extra_data";
+    public static final String SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT = "sp_key_certification_certificate_content";
+    public static final String SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA = "sp_key_certification_certificate_extra_data";
     public static final String SP_KEY_TO_DID = "sp_key_to_did";
 
     private static volatile DemoSp INSTANCE;

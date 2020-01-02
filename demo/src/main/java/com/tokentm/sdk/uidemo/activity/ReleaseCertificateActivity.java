@@ -1,4 +1,4 @@
-package com.tokentm.sdk.uidemo;
+package com.tokentm.sdk.uidemo.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +12,7 @@ import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.CertificateInitResult;
 import com.tokentm.sdk.source.CertificateService;
 import com.tokentm.sdk.source.TokenTmClient;
+import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityReleaseCertificateBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -20,9 +21,9 @@ import com.xxf.arch.utils.ToastUtils;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATE_CONTENT;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATE_EXTRA_DATA;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATE_ID;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
 
 /**
@@ -35,9 +36,10 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
 
     private String did;
 
-    public static void launch(Context context,String did) {
-        context.startActivity(getLauncher(context,did));
+    public static void launch(Context context, String did) {
+        context.startActivity(getLauncher(context, did));
     }
+
     private static Intent getLauncher(Context context, String did) {
         return new Intent(context, ReleaseCertificateActivity.class)
                 .putExtra(KEY_DID, did);
@@ -92,8 +94,8 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
      * @param toDID       指定下一级接受人  可以先模拟自己给自己发
      */
     private void initiate(String uDID, String identityPwd, String type, String content, String extraData, long expiryDate, String toDID) {
-        DemoSp.getInstance().putString(SP_KEY_CERTIFICATE_CONTENT, content);
-        DemoSp.getInstance().putString(SP_KEY_CERTIFICATE_EXTRA_DATA, extraData);
+        DemoSp.getInstance().putString(SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT, content);
+        DemoSp.getInstance().putString(SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA, extraData);
         DemoSp.getInstance().putString(SP_KEY_TO_DID, toDID);
         TokenTmClient.getService(CertificateService.class)
                 .initiate(uDID, identityPwd, type, content, extraData, expiryDate, toDID)
@@ -103,7 +105,7 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
                     @Override
                     public void accept(CertificateInitResult certificateInitResult) throws Exception {
                         //存储certificate_id
-                        DemoSp.getInstance().putString(SP_KEY_CERTIFICATE_ID, certificateInitResult.getId());
+                        DemoSp.getInstance().putString(SP_KEY_CERTIFICATION_CERTIFICATE_ID, certificateInitResult.getId());
                         ToastUtils.showToast("发证成功");
                         finish();
                     }

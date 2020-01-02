@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:padding="@dimen/base_dp_30"
@@ -18,17 +17,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="证书类型:"
+                android:text="商家名称:"
                 android:textSize="@dimen/base_dp_15" />
 
             <EditText
-                android:id="@+id/et_certificate_type"
-                android:layout_width="match_parent"
+                android:id="@+id/et_seller_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:hint="请输入证书类型"
+                android:hint="请输入商家名称"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
@@ -41,41 +40,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="证书内容:"
+                android:text="商品名称:"
                 android:textSize="@dimen/base_dp_15" />
 
             <EditText
-                android:id="@+id/et_certificate_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
-                android:background="@null"
-                android:hint="请输入证书内容"
-                android:textSize="@dimen/base_dp_15" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
-
-            <TextView
+                android:id="@+id/et_commodity_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="证书额外内容:"
-                android:textSize="@dimen/base_dp_15" />
-
-            <EditText
-                android:id="@+id/et_certificate_other_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:hint="证书附加内容"
+                android:hint="请输入商品名称"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
@@ -88,23 +63,70 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="收证人:"
+                android:text="商品发货数量:"
                 android:textSize="@dimen/base_dp_15" />
 
             <EditText
-                android:id="@+id/et_to_receive"
-                android:layout_width="match_parent"
+                android:inputType="number"
+                android:id="@+id/et_commodity_count"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:hint="收证人did"
+                android:hint="请输入商品发货数量"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="收货人姓名:"
+                android:textSize="@dimen/base_dp_15" />
+
+            <EditText
+                android:id="@+id/et_to_buyer_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:hint="请输入收货人姓名"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="收货人did:"
+                android:textSize="@dimen/base_dp_15" />
+
+            <EditText
+                android:id="@+id/et_to_buyer_did"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:hint="请输入收货人did"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
 
         <TextView
-            android:id="@+id/tv_send_certificate"
+            android:id="@+id/tv_send_goods"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
@@ -112,7 +134,7 @@
             android:background="#ff00c1ce"
             android:gravity="center"
             android:padding="20dp"
-            android:text="确认发证"
+            android:text="确认发货"
             android:textColor="#fff"
             android:textSize="@dimen/base_dp_15" />
     </LinearLayout>

@@ -20,6 +20,7 @@ import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
+import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.IdentityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
@@ -28,6 +29,7 @@ import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
 import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -155,7 +157,7 @@ public class ComponentUtils {
      */
     @SuppressLint("CheckResult")
     public static void launchPropertyRightsTransferRecordsActivity(FragmentActivity activity, String did) {
-        PropertyRightsTransferRecordsActivity.getLauncher(activity, did);
+        PropertyRightsTransferRecordsActivity.launch(activity, did);
     }
 
     /**
@@ -164,8 +166,8 @@ public class ComponentUtils {
      * @param activity
      */
     @SuppressLint("CheckResult")
-    public static void launchCertificationInstructionsActivity(FragmentActivity activity, String txHash, String did) {
-        CertificationInstructionsActivity.getLauncher(activity, txHash, did);
+    public static void launchCertificationInstructionsActivity(FragmentActivity activity, String did) {
+        CertificationInstructionsActivity.launch(activity, did);
     }
 
     /**
@@ -174,7 +176,18 @@ public class ComponentUtils {
      * @param activity
      */
     @SuppressLint("CheckResult")
-    public static void launchCertificationDetailsActivity(FragmentActivity activity, String txHash) {
-        CertificationDetailsActivity.getLauncher(activity, txHash);
+    public static void launchCertificationDetailsActivity(FragmentActivity activity, String did) {
+        CertificationDetailsActivity.launch(activity, did);
     }
+
+    /**
+     * 是否显示
+     */
+    public static void isShowIdentityDescription(String did,Consumer<Boolean> consumer){
+        TokenTmClient.getService(CertService.class)
+                .isUserCert(did)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(consumer);
+    }
+
 }

@@ -1,0 +1,222 @@
+package com.tokentm.sdk.uidemo.activity;
+
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+
+import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
+import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.model.ChainResult;
+import com.tokentm.sdk.source.CertificateService;
+import com.tokentm.sdk.source.CommodityService;
+import com.tokentm.sdk.source.TokenTmClient;
+import com.tokentm.sdk.uidemo.DemoSp;
+import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
+import com.tokentm.sdk.uidemo.prensenter.IMainPresenter;
+import com.xxf.arch.XXF;
+import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.utils.ToastUtils;
+
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Consumer;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
+
+/**
+ * @author lqx  E-mail:herolqx@126.com
+ * @Description 首页
+ */
+public class MainActivity extends BaseTitleBarActivity implements IMainPresenter {
+
+
+    ActivityMainBinding binding;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        binding.setPresenter(this);
+        initView();
+    }
+
+    String did;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        did = DemoSp.getInstance().getLoginDID();
+        //是否显示身份说明
+        ComponentUtils.isShowIdentityDescription(did, new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                binding.tvIdentityAuthentication.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
+            }
+        });
+    }
+
+    private void initView() {
+        setTitle("首页");
+    }
+
+    @Override
+    public void onIdentityAuthentication() {
+        ComponentUtils.launchUserCertActivity(
+                getActivity()
+                , new UserCertByIDCardParams.Builder(did)
+                        .setUserName("")
+                        .setUserIDCard("")
+                        .build());
+    }
+
+    @Override
+    public void onIdentityDescription() {
+        ComponentUtils.launchCertificationInstructionsActivity(getActivity(), did);
+    }
+
+    @Override
+    public void onOpenChainCertification() {
+        ChainCertificationActivity.launch(getActivity());
+    }
+
+    @Override
+    public void onDeliverGoods() {
+        //开启发货页面
+        DeliverGoodsActivity.launch(getActivity(), did);
+    }
+
+    @Override
+    public void onReceiveGoods() {
+        String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_CERTIFICATE_ID);
+        if (TextUtils.isEmpty(certificateId)) {
+            ToastUtils.showToast("请先发货");
+            return;
+        }
+        //弹出校验身份密码
+        ComponentUtils.showIdentityPwdDialog(
+                getActivity(), did,
+                new BiConsumer<DialogInterface, String>() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
+                        dialogInterface.dismiss();
+                        TokenTmClient.getService(CommodityService.class)
+                                .receive(did, identityPwd, certificateId)
+                                .compose(XXF.bindToLifecycle(getActivity()))
+                                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
+                                .subscribe(new Consumer<ChainResult>() {
+                                    @Override
+                                    public void accept(ChainResult chainResult) throws Exception {
+                                        if (chainResult.getTxHash() != null) {
+                                            ToastUtils.showToast("确认收货成功");
+                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
+                                        } else {
+                                            ToastUtils.showToast("确认收货失败");
+                                        }
+                                    }
+                                });
+                    }
+                });
+    }
+
+    @Override
+    public void onCertification() {
+        //开启发证页面
+        ReleaseCertificateActivity.launch(getActivity(), did);
+    }
+
+    @Override
+    public void onConfirmCertificate() {
+        String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID);
+        if (TextUtils.isEmpty(certificateId)) {
+            ToastUtils.showToast("请先发证");
+            return;
+        }
+        //弹出校验身份密码
+        ComponentUtils.showIdentityPwdDialog(
+                getActivity(), did,
+                new BiConsumer<DialogInterface, String>() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
+                        dialogInterface.dismiss();
+                        String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
+                        String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA);
+                        String toDid = DemoSp.getInstance().getString(SP_KEY_TO_DID);
+                        TokenTmClient.getService(CertificateService.class)
+                                .confirm(did, identityPwd, certificateId, content, extraData, toDid)
+                                .compose(XXF.bindToLifecycle(getActivity()))
+                                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
+                                .subscribe(new Consumer<ChainResult>() {
+                                    @Override
+                                    public void accept(ChainResult chainResult) throws Exception {
+                                        if (chainResult.getTxHash() != null) {
+                                            ToastUtils.showToast("确认证书成功");
+                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
+                                        } else {
+                                            ToastUtils.showToast("确认证书失败");
+                                        }
+                                    }
+                                });
+                    }
+                });
+    }
+
+    @Override
+    public void onDisabledCertificate() {
+        String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID);
+        if (TextUtils.isEmpty(certificateId)) {
+            ToastUtils.showToast("请先发证");
+            return;
+        }
+        //弹出校验身份密码
+        ComponentUtils.showIdentityPwdDialog(
+                getActivity(), did,
+                new BiConsumer<DialogInterface, String>() {
+                    @SuppressLint("CheckResult")
+                    @Override
+                    public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
+                        dialogInterface.dismiss();
+                        String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
+                        String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA);
+                        TokenTmClient.getService(CertificateService.class)
+                                .disabled(did, identityPwd, certificateId, content, extraData)
+                                .compose(XXF.bindToLifecycle(getActivity()))
+                                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
+                                .subscribe(new Consumer<ChainResult>() {
+                                    @Override
+                                    public void accept(ChainResult chainResult) throws Exception {
+                                        if (chainResult.getTxHash() != null) {
+                                            ToastUtils.showToast("取消证书成功");
+                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
+                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID,"");
+                                        } else {
+                                            ToastUtils.showToast("取消证书失败");
+                                        }
+                                    }
+                                });
+                    }
+                });
+    }
+
+    @Override
+    public void onBackup() {
+        BackupActivity.launch(getActivity(), did);
+    }
+
+    @Override
+    public void onGetBackup() {
+        GetBackupActivity.launch(getActivity(), did);
+    }
+
+    @Override
+    public void onLogout() {
+        DemoSp.getInstance().logout();
+        LoginOrRegisterActivity.launch(getActivity());
+        finish();
+    }
+}

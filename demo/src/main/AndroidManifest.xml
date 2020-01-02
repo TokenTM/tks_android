@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.tokentm.sdk.uidemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -10,8 +11,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name="com.tokentm.sdk.uidemo.SplashActivity">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name="com.tokentm.sdk.uidemo.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,30 +21,33 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tokentm.sdk.uidemo.DidDemoActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.DidDemoActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.MainActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.DeliverGoodsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.LoginOrRegisterActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.CertificationDetailsActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.LoginOrRegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.ReleaseCertificateActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.CertificationDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.ChainCertificationActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.ReleaseCertificateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tokentm.sdk.uidemo.activity.ChainCertificationActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.BackupActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.BackupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.GetBackupActivity"
+            android:name="com.tokentm.sdk.uidemo.activity.GetBackupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>

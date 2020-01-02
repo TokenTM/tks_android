@@ -1,4 +1,4 @@
-package com.tokentm.sdk.uidemo;
+package com.tokentm.sdk.uidemo.activity;
 
 import android.content.Context;
 import android.content.Intent;

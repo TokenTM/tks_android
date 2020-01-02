@@ -1,74 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="presenter"
+            type="com.tokentm.sdk.uidemo.prensenter.IMainPresenter" />
+    </data>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:context=".demo.MainActivity">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <View style="@style/MainPageDividerStyle" />
 
-            <Button
-                android:id="@+id/bt_create_did"
+            <TextView
+                android:id="@+id/tv_identity_authentication"
+                style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="DID"
-                tools:ignore="MissingConstraints" />
+                android:onClick="@{()->presenter.onIdentityAuthentication()}"
+                android:text="身份认证" />
 
-            <Button
-                android:id="@+id/bt_identity_authentication"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="身份证认证"
-                tools:ignore="MissingConstraints" />
+            <View style="@style/MainPageLineStyle" />
 
-            <Button
-                android:id="@+id/bt_cert_company"
+            <TextView
+                style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="企业/组织认证" />
+                android:onClick="@{()->presenter.onIdentityDescription()}"
+                android:text="身份说明" />
 
-            <Button
-                android:id="@+id/bt_backup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="备份数据"
-                tools:ignore="MissingConstraints" />
+            <View style="@style/MainPageLineStyle" />
 
-            <Button
-                android:id="@+id/bt_get_backup"
+            <TextView
+                android:onClick="@{()->presenter.onOpenChainCertification()}"
+                style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="获取备份数据"
-                tools:ignore="MissingConstraints" />
+                android:text="链信认证" />
 
-            <Button
-                android:id="@+id/bt_certification_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="开启认证详情"
-                tools:ignore="MissingConstraints" />
+            <View style="@style/MainPageDividerStyle" />
 
-            <Button
-                android:id="@+id/bt_login_registration"
+            <TextView
+                style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="登录注册"
-                tools:ignore="MissingConstraints" />
-            <Button
-                android:id="@+id/bt_logout"
+                android:onClick="@{()->presenter.onDeliverGoods()}"
+                android:text="发货" />
+
+            <View style="@style/MainPageLineStyle" />
+
+            <TextView
+                style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="退出登陆"
-                tools:ignore="MissingConstraints" />
+                android:onClick="@{()->presenter.onReceiveGoods()}"
+                android:text="收货" />
+
+            <View style="@style/MainPageDividerStyle" />
+
+            <TextView
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->presenter.onCertification()}"
+                android:text="发证" />
+
+            <View style="@style/MainPageLineStyle" />
+
+            <TextView
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="@{()->presenter.onConfirmCertificate()}"
+                android:text="确认证" />
+
+            <View style="@style/MainPageLineStyle" />
+
+            <TextView
+                android:onClick="@{()->presenter.onDisabledCertificate()}"
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="取消证" />
+
+            <View style="@style/MainPageDividerStyle" />
+
+            <TextView
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="@{()->presenter.onBackup()}"
+                android:text="备份" />
+
+            <View style="@style/MainPageLineStyle" />
+
+            <TextView
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="@{()->presenter.onGetBackup()}"
+                android:text="获取备份" />
+
+            <View style="@style/MainPageDividerStyle" />
+
+            <TextView
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="@{()->presenter.onLogout()}"
+                android:text="退出登录" />
+
         </LinearLayout>
     </ScrollView>
 </layout>

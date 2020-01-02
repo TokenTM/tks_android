@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -13,20 +12,24 @@
         tools:context=".demo.MainActivity">
 
         <EditText
+            android:textSize="@dimen/base_dp_20"
             android:id="@+id/login_phone_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:padding="20dp"
-            android:text="17611639080" />
+            android:hint="输入手机号"
+            android:maxLines="1" />
 
-        <Button
+        <TextView
             android:id="@+id/bt_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/base_dp_30"
+            android:background="@drawable/tks_components_base_btn_bg"
+            android:gravity="center"
+            android:padding="@dimen/base_dp_15"
             android:text="登陆/注册"
-            tools:ignore="MissingConstraints" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/base_dp_20" />
 
     </LinearLayout>
 </layout>

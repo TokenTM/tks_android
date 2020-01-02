@@ -1,63 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+        <variable
+            name="presenter"
+            type="com.tokentm.sdk.uidemo.prensenter.IChainCertificationPresenter" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp"
         android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/fl_retrieve_identity_password"
+        <View style="@style/MainPageDividerStyle" />
+
+        <TextView
+            style="@style/MainPageTextViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:onClick="@{()->presenter.onRetrieveIdentityPassword()}"
+            android:text="找回身份密码" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:text="找回身份密码"
-                android:textColor="#ff374f66"
-                android:textSize="15sp" />
+        <View style="@style/MainPageLineStyle" />
 
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_gravity="right|center_vertical"
-                android:src="@mipmap/tks_components_user_chain_certification_right_arrow" />
-        </FrameLayout>
-
-        <View
+        <TextView
+            style="@style/MainPageTextViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#F1F1F1" />
+            android:layout_height="wrap_content"
+            android:onClick="@{()->presenter.onOpenCompanyCert()}"
+            android:text="企业认证" />
 
-        <FrameLayout
-            android:id="@+id/fl_identity_certification"
+        <View style="@style/MainPageLineStyle" />
+
+        <TextView
+            style="@style/MainPageTextViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:onClick="@{()->presenter.onPropertyRightsTransferRecords()}"
+            android:text="物权转移记录" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="14dp"
-                android:paddingBottom="14dp"
-                android:text="身份认证"
-                android:textColor="#ff374f66"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_width="10dp"
-                android:layout_height="16dp"
-                android:layout_gravity="right|center_vertical"
-                android:src="@mipmap/tks_components_user_chain_certification_right_arrow" />
-        </FrameLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#F1F1F1" />
+        <View style="@style/MainPageDividerStyle" />
     </LinearLayout>
 </layout>

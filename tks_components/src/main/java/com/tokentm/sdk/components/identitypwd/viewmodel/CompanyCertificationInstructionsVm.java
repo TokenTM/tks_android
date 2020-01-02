@@ -1,11 +1,13 @@
 package com.tokentm.sdk.components.identitypwd.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.databinding.Observable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
+import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainInfoDTO;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.ChainService;
@@ -15,8 +17,10 @@ import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.viewmodel.XXFViewModel;
 import com.xxf.arch.widget.progresshud.ProgressHUDProvider;
 
-import io.reactivex.functions.BiFunction;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -27,15 +31,15 @@ public class CompanyCertificationInstructionsVm extends XXFViewModel {
     /**
      * 是否显示认证说明顶部buju
      */
-    public ObservableBoolean isShowTop = new ObservableBoolean();
+    public ObservableBoolean isShowTop = new ObservableBoolean(true);
     /**
      * 是否显示v标
      */
-    public ObservableBoolean isShowV = new ObservableBoolean();
+    public ObservableBoolean isShowV = new ObservableBoolean(true);
     /**
      * 上链状态
      */
-    public ObservableBoolean chainState = new ObservableBoolean();
+    public ObservableBoolean chainState = new ObservableBoolean(true);
     /**
      * 上链状态描述
      */
@@ -76,6 +80,8 @@ public class CompanyCertificationInstructionsVm extends XXFViewModel {
             public void onPropertyChanged(Observable sender, int propertyId) {
                 if (chainState.get()) {
                     chainStateDesc.set("成功");
+                } else {
+                    chainStateDesc.set("失败");
                 }
             }
         });
@@ -85,25 +91,25 @@ public class CompanyCertificationInstructionsVm extends XXFViewModel {
     /**
      * 请求认证说明接口数据
      */
-    public void loadData(ProgressHUDProvider progressHUDProvider, String txHashString, String did) {
-        io.reactivex.Observable.zip(
-                TokenTmClient.getService(ChainService.class)
-                        .getChainInfo(txHashString)
-                , TokenTmClient.getService(CertService.class)
-                        .isUserCert(did)
-                , new BiFunction<ChainInfoDTO, Boolean, ChainInfoDTO>() {
+    @SuppressLint("CheckResult")
+    public void loadData(ProgressHUDProvider progressHUDProvider, String did) {
+        TokenTmClient.getService(CertService.class)
+                .getUserCertByIDCardInfo(did)
+                .flatMap(new Function<CertUserInfoStoreItem, ObservableSource<ChainInfoDTO>>() {
                     @Override
-                    public ChainInfoDTO apply(ChainInfoDTO chainInfoDTO, Boolean aBoolean) throws Exception {
-                        //实名认证并且上链成功才显示v标
-                        isShowV.set(aBoolean && chainInfoDTO.isSuccess());
-                        return chainInfoDTO;
+                    public ObservableSource<ChainInfoDTO> apply(CertUserInfoStoreItem certUserInfoStoreItem) throws Exception {
+                        return TokenTmClient.getService(ChainService.class)
+                                .getChainInfo(certUserInfoStoreItem.getTxHash());
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .compose(bindToLifecycle())
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(progressHUDProvider)))
                 .subscribe(new Consumer<ChainInfoDTO>() {
                     @Override
                     public void accept(ChainInfoDTO chainInfoDTO) throws Exception {
+                        //实名认证并且上链成功才显示v标
+                        isShowV.set(chainInfoDTO.isSuccess() && chainInfoDTO.isConfirm());
                         //设置上链状态,失败则隐藏显示
                         chainState.set(chainInfoDTO.isSuccess());
                         fromAddr.set(chainInfoDTO.getFrom());

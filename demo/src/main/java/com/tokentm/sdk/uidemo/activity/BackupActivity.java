@@ -1,4 +1,4 @@
-package com.tokentm.sdk.uidemo;
+package com.tokentm.sdk.uidemo.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +51,6 @@ public class BackupActivity extends BaseTitleBarActivity {
         binding.tvBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 StoreItem<String> storeItem = new StoreItem<>();
                 storeItem.setDid(did);
                 storeItem.setDataId(binding.etDataId.getText().toString().trim());
@@ -65,6 +64,7 @@ public class BackupActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(Long aLong) throws Exception {
                                 ToastUtils.showToast("备份成功");
+                                finish();
                             }
                         });
             }

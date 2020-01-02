@@ -4,31 +4,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="30dp"
         android:background="@android:color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/base_dp_30">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="@dimen/base_dp_30">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="数据Id:"
-                android:textSize="20sp" />
+                android:textSize="@dimen/base_dp_15" />
 
             <EditText
                 android:id="@+id/et_data_id"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="@dimen/base_dp_20"
                 android:background="@null"
-                android:text="et_data_id"
-                android:textSize="20sp" />
+                android:hint="数据id"
+                android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,17 +41,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="数据类型:"
-                android:textSize="20sp" />
+                android:textSize="@dimen/base_dp_15" />
 
             <EditText
                 android:id="@+id/et_data_type"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="@dimen/base_dp_20"
                 android:background="@null"
-                android:text="token_type"
-                android:textSize="20sp" />
+                android:hint="数据类型"
+                android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,17 +64,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="数据内容:"
-                android:textSize="20sp" />
+                android:textSize="@dimen/base_dp_15" />
 
             <EditText
                 android:id="@+id/et_data_content"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="@dimen/base_dp_20"
                 android:background="@null"
-                android:text="这是一个天大的秘密"
-                android:textSize="20sp" />
+                android:hint="请输入数据正文"
+                android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
 
@@ -86,9 +86,9 @@
             android:layout_marginTop="30dp"
             android:background="#ff00c1ce"
             android:gravity="center"
-            android:padding="20dp"
+            android:padding="@dimen/base_dp_20"
             android:text="备份"
             android:textColor="#fff"
-            android:textSize="20sp" />
+            android:textSize="@dimen/base_dp_15" />
     </LinearLayout>
 </layout>

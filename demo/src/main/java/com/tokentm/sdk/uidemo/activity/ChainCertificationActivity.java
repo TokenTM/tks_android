@@ -1,20 +1,22 @@
-package com.tokentm.sdk.uidemo;
+package com.tokentm.sdk.uidemo.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 
+import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityChainCertificationBinding;
+import com.tokentm.sdk.uidemo.prensenter.IChainCertificationPresenter;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
  * @Description 链信认证
  */
-public class ChainCertificationActivity extends BaseTitleBarActivity {
+public class ChainCertificationActivity extends BaseTitleBarActivity implements IChainCertificationPresenter {
 
     public static void launch(Context context) {
         context.startActivity(getLauncher(context));
@@ -31,6 +33,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityChainCertificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.setPresenter(this);
         initView();
         loadData();
     }
@@ -38,17 +41,29 @@ public class ChainCertificationActivity extends BaseTitleBarActivity {
 
     private void initView() {
         setTitle("链信认证");
-        //找回身份密码
-        binding.flRetrieveIdentityPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String loginDID = DemoSp.getInstance().getLoginDID();
-                ComponentUtils.launchForgotIdentityPwd(getActivity(),ChainCertificationActivity.this,loginDID);
-            }
-        });
     }
 
     private void loadData() {
+
     }
 
+    @Override
+    public void onOpenCompanyCert() {
+        String did = DemoSp.getInstance().getLoginDID();
+        ComponentUtils.launchCompanyCertActivity(getActivity(),
+                new CompanyCertParams.Builder(did, "").build());
+    }
+
+    @Override
+    public void onRetrieveIdentityPassword() {
+        String did = DemoSp.getInstance().getLoginDID();
+        ComponentUtils.launchForgotIdentityPwd(getActivity(), ChainCertificationActivity.this, did);
+    }
+
+    @Override
+    public void onPropertyRightsTransferRecords() {
+        String did = DemoSp.getInstance().getLoginDID();
+        ComponentUtils.launchPropertyRightsTransferRecordsActivity(
+                getActivity(), did);
+    }
 }

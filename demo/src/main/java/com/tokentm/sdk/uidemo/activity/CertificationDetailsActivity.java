@@ -1,4 +1,4 @@
-package com.tokentm.sdk.uidemo;
+package com.tokentm.sdk.uidemo.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,6 +13,7 @@ import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertificateService;
 import com.tokentm.sdk.source.TokenTmClient;
+import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityCertificationDetailsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -21,8 +22,8 @@ import com.xxf.arch.utils.ToastUtils;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATE_CONTENT;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATE_EXTRA_DATA;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT;
+import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
 
 /**
@@ -77,7 +78,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                     return;
                 }
                 ComponentUtils.launchCertificationInstructionsActivity(
-                        getActivity(), txHash, did);
+                        getActivity(), did);
             }
         });
         //开启认证详情
@@ -146,7 +147,7 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
             @Override
             public void onClick(View v) {
 
-                String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATE_ID);
+                String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID);
                 if (TextUtils.isEmpty(certificateId)) {
                     ToastUtils.showToast("请先发证");
                     return;
@@ -159,8 +160,8 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                                 dialogInterface.dismiss();
-                                String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATE_CONTENT);
-                                String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATE_EXTRA_DATA);
+                                String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
+                                String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA);
                                 String toDid = DemoSp.getInstance().getString(SP_KEY_TO_DID);
                                 TokenTmClient.getService(CertificateService.class)
                                         .confirm(did, identityPwd, certificateId, content, extraData, toDid)

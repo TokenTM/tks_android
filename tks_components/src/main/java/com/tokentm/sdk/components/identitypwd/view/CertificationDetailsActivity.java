@@ -1,8 +1,10 @@
 package com.tokentm.sdk.components.identitypwd.view;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.tokentm.sdk.components.identitypwd.viewmodel.CompanyCertificationDetailsVm;
 
@@ -12,12 +14,15 @@ import com.tokentm.sdk.components.identitypwd.viewmodel.CompanyCertificationDeta
  */
 public class CertificationDetailsActivity extends CertificationInstructionsActivity {
 
-    private static final String TX_HASH = "tx_hash";
+    private static final String DID = "did";
 
+    public static void launch(@NonNull Context context, @Nullable String did) {
+        context.startActivity(getLauncher(context, did));
+    }
 
-    public static Intent getLauncher(FragmentActivity activity, String txHash) {
-        return new Intent(activity, CertificationDetailsActivity.class)
-                .putExtra(TX_HASH, txHash);
+    public static Intent getLauncher(Context context, String did) {
+        return new Intent(context, CertificationDetailsActivity.class)
+                .putExtra(DID, did);
     }
 
     @Override
@@ -29,7 +34,7 @@ public class CertificationDetailsActivity extends CertificationInstructionsActiv
     protected void initData() {
         CompanyCertificationDetailsVm viewModel = ViewModelProviders.of(this).get(CompanyCertificationDetailsVm.class);
         binding.setViewModel(viewModel);
-        String txHash = getIntent().getStringExtra(TX_HASH);
-        viewModel.loadData(this, txHash);
+        String did = getIntent().getStringExtra(DID);
+        viewModel.loadData(this, did);
     }
 }

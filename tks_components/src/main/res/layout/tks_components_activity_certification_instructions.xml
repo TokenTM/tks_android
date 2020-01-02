@@ -71,7 +71,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginEnd="15dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -114,33 +114,32 @@
                     android:layout_marginTop="10dp"
                     android:text="上链状态："
                     android:textColor="#ff374f66"
-                    android:textSize="14sp"
-                    android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
-                    tools:visibility="gone" />
+                    android:textSize="14sp"/>
 
                 <LinearLayout
+                    android:select="@{viewModel.chainState}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
                     android:layout_marginTop="8dp"
-                    android:background="#5552c41b"
+                    android:background="@drawable/tks_components_chain_state_ll_bg"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="5dp"
-                    android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
-                    tools:visibility="gone">
+                    android:padding="5dp">
 
                     <ImageView
+                        android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
                         android:layout_width="11dp"
                         android:layout_height="11dp"
                         android:layout_marginEnd="5dp"
                         android:src="@mipmap/tks_components_certification_instructions_state" />
 
                     <TextView
+                        android:select="@{viewModel.chainState}"
+                        android:textColor="@drawable/tks_components_chain_state_text_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@={viewModel.chainStateDesc}"
-                        android:textColor="#52C41B"
+                        android:text="@{viewModel.chainStateDesc}"
                         android:textSize="13sp" />
                 </LinearLayout>
 

@@ -1,4 +1,4 @@
-package com.tokentm.sdk.uidemo;
+package com.tokentm.sdk.uidemo.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +9,9 @@ import android.view.View;
 
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityLoginBinding;
+import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.Consumer;
 
@@ -37,6 +39,11 @@ public class LoginOrRegisterActivity extends AppCompatActivity {
         binding.btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String phone = binding.loginPhoneEt.getText().toString().trim();
+                if ("".equals(phone) && phone.length() != 11) {
+                    ToastUtils.showToast("请输入手机号");
+                    return;
+                }
                 //注册 登陆 都需要
                 ComponentUtils.launchUserIdentityConfirmActivity(
                         LoginOrRegisterActivity.this,

@@ -1,4 +1,4 @@
-package com.tokentm.sdk.uidemo;
+package com.tokentm.sdk.uidemo.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +11,7 @@ import android.view.View;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityDidBinding;
 
 import io.reactivex.functions.BiConsumer;
@@ -55,7 +56,7 @@ public class DidDemoActivity extends BaseTitleBarActivity {
             public void onClick(View v) {
                 ComponentUtils.launchUserIdentityConfirmActivity(
                         DidDemoActivity.this,
-                        "17611639080",
+                        "",
                         new Consumer<BindUDID>() {
                             @Override
                             public void accept(BindUDID bindUDID) throws Exception {

@@ -1,4 +1,28 @@
 <resources>
 
+    <style name="MainPageTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/base_color_333333</item>
+        <item name="android:textSize">@dimen/base_dp_15</item>
+        <item name="android:drawableEnd">
+            @mipmap/tks_components_user_chain_certification_right_arrow
+        </item>
+        <item name="android:padding">@dimen/base_dp_15</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
 
+    <style name="MainPageDividerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/base_dp_10</item>
+        <item name="android:background">@color/base_color_F1F1F1</item>
+    </style>
+
+    <style name="MainPageLineStyle">
+        <item name="android:layout_marginStart">@dimen/base_dp_15</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/base_dp_1</item>
+        <item name="android:background">@color/base_color_F1F1F1</item>
+    </style>
 </resources>

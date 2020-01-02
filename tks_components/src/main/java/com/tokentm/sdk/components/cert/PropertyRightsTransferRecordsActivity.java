@@ -41,7 +41,11 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
         }
     });
 
-    public static Intent getLauncher(Context context, String did) {
+    public static void launch(Context context, String did) {
+        context.startActivity(getLauncher(context, did));
+    }
+
+    private static Intent getLauncher(Context context, String did) {
         return new Intent(context, PropertyRightsTransferRecordsActivity.class)
                 .putExtra(KEY_DID, did);
     }
