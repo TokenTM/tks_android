@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 
 import com.tokentm.sdk.components.cert.adapter.PropertyRightsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
@@ -41,13 +40,13 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
         }
     });
 
-    public static void launch(Context context, String did) {
-        context.startActivity(getLauncher(context, did));
+    public static void launch(Context context, String id) {
+        context.startActivity(getLauncher(context, id));
     }
 
     public static Intent getLauncher(Context context, String id) {
         return new Intent(context, PropertyRightsTransferRecordsActivity.class)
-                .putExtra(KEY_ID,id );
+                .putExtra(KEY_ID, id);
     }
 
     @Override
@@ -64,7 +63,6 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
         setTitle("物权转移记录");
         id = getIntent().getStringExtra(KEY_ID);
         binding.setStateLayoutVM(stateLayoutVM);
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(userCertificationRecordAdapter = new PropertyRightsTransferRecordsAdapter());
         userCertificationRecordAdapter.registerAdapterDataObserver(new DataChangeAdapterObserver() {
             @Override
@@ -79,7 +77,8 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
      */
     private void loadData() {
 
-        TokenTmClient.getService(CommodityService.class).getCommodityTransferActionRecords(id)
+        TokenTmClient.getService(CommodityService.class)
+                .getCommodityTransferActionRecords(id)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
                 .subscribe(new Consumer<List<TransferCommodityActionDTO>>() {

@@ -211,8 +211,8 @@ public class ComponentUtils {
      * @param activity
      */
     @SuppressLint("CheckResult")
-    public static void launchPropertyRightsTransferRecordsActivity(FragmentActivity activity, String did) {
-        PropertyRightsTransferRecordsActivity.launch(activity, did);
+    public static void launchPropertyRightsTransferRecordsActivity(FragmentActivity activity, String id) {
+        PropertyRightsTransferRecordsActivity.launch(activity, id);
     }
 
     /**

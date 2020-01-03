@@ -3,6 +3,7 @@ package com.tokentm.sdk.uidemo.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
@@ -11,6 +12,8 @@ import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityChainCertificationBinding;
+import com.tokentm.sdk.uidemo.dialog.InputCompanyNameFragmentDialog;
+import com.tokentm.sdk.uidemo.dialog.OnInputCompanyNameListener;
 import com.tokentm.sdk.uidemo.prensenter.IChainCertificationPresenter;
 import com.xxf.arch.utils.ToastUtils;
 
@@ -54,15 +57,20 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
     @Override
     public void onOpenCompanyCert() {
         String did = DemoSp.getInstance().getLoginDID();
-        ComponentUtils.launchCompanyCertActivity(getActivity(),
-                new CompanyCertParams.Builder(did, "").build(), new Consumer<ChainResult>() {
-                    @Override
-                    public void accept(ChainResult chainResult) throws Exception {
-                        if (chainResult.getTxHash() != null) {
-                            ToastUtils.showToast("认证成功");
-                        }
-                    }
-                });
+        InputCompanyNameFragmentDialog.newInstance(new OnInputCompanyNameListener() {
+            @Override
+            public void onInputCompanyName(@NonNull String companyName) {
+                ComponentUtils.launchCompanyCertActivity(getActivity(),
+                        new CompanyCertParams.Builder(did, companyName).build(), new Consumer<ChainResult>() {
+                            @Override
+                            public void accept(ChainResult chainResult) throws Exception {
+                                if (chainResult.getTxHash() != null) {
+                                    ToastUtils.showToast("认证成功");
+                                }
+                            }
+                        });
+            }
+        }).show(getSupportFragmentManager(), InputCompanyNameFragmentDialog.class.getSimpleName());
     }
 
     @Override
@@ -80,8 +88,8 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
 
     @Override
     public void onPropertyRightsTransferRecords() {
-        String did = DemoSp.getInstance().getLoginDID();
+        String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
         ComponentUtils.launchPropertyRightsTransferRecordsActivity(
-                getActivity(), did);
+                getActivity(), goodsId);
     }
 }

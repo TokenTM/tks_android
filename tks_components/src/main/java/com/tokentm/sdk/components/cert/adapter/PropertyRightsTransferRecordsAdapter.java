@@ -47,7 +47,7 @@ public class PropertyRightsTransferRecordsAdapter extends BaseBindableAdapter<Tk
         //描述信息
         //sellerName:"每日一淘“,//买家(指店家,非个体)
         //buyerName:”人名”//买家(个体)
-        binding.userPropertyRightsTransferRecordsDescriptionTv.setText(sellerBuyerInfo.getSellerName() + sellerBuyerInfo.getBuyerName());
+        binding.userPropertyRightsTransferRecordsDescriptionTv.setText("商家名称:" + sellerBuyerInfo.getSellerName());
         //物品名称
         binding.userPropertyRightsTransferRecordsItemNameTv.setText("物品名称:" + sellerBuyerInfo.getCommodityName());
         //发货时间

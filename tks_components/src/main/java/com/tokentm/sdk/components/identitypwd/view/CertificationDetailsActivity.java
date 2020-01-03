@@ -35,6 +35,6 @@ public class CertificationDetailsActivity extends CertificationInstructionsActiv
         CompanyCertificationDetailsVm viewModel = ViewModelProviders.of(this).get(CompanyCertificationDetailsVm.class);
         binding.setViewModel(viewModel);
         String did = getIntent().getStringExtra(DID);
-        viewModel.loadData(this, did);
+        loadData(did);
     }
 }

@@ -49,6 +49,7 @@ public class StepAdapter extends BaseBindableAdapter<TksComponentsAdapterItemSte
         binding.stepLineRight.setVisibility(index + 1 == getDataSize() ? View.GONE : View.VISIBLE);
         binding.stepTv.setBackgroundResource(isSelected ? stepModel.getSelectIcon() : stepModel.getUnSelectIcon());
         binding.stepTv.setText(String.valueOf(index + 1));
-        binding.stepTv.setTextColor(isSelected ? 0xff0099db : 0xFFFFFF);
+        binding.stepTv.setTextColor(isSelected ? 0xff0099db : 0xffFFFFFF);
+
     }
 }

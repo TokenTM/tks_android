@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->presenter.onCertification()}"
-                android:text="发证" />
+                android:text="发布证书" />
 
             <View style="@style/MainPageLineStyle" />
 
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->presenter.onConfirmCertificate()}"
-                android:text="确认证" />
+                android:text="确认证书" />
 
             <View style="@style/MainPageLineStyle" />
 
@@ -90,7 +90,7 @@
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="取消证" />
+                android:text="取消证书" />
 
             <View style="@style/MainPageDividerStyle" />
 

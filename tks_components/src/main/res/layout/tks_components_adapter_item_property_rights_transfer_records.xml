@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -104,13 +105,11 @@
                     tools:src="@mipmap/tks_components_user_ic_certfication_code" />
 
                 <TextView
+                    android:textSize="9dp"
                     android:id="@+id/user_certification_code_tv"
-                    android:layout_width="292dp"
-                    android:layout_height="13dp"
-                    android:textColor="#ff374f66"
-                    android:textSize="9.5sp"
-                    android:textStyle="bold"
-                    tools:text="692349566923495669234956692349566923495669234956692349566923495" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ff374f66" />
             </LinearLayout>
         </LinearLayout>
 

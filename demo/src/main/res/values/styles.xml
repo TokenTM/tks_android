@@ -25,4 +25,10 @@
         <item name="android:layout_height">@dimen/base_dp_1</item>
         <item name="android:background">@color/base_color_F1F1F1</item>
     </style>
+
+    <style name="AnimBottomDialog" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
 </resources>

@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="@{()->presenter.onRetrieveIdentityPassword()}"
-            android:text="找回身份密码" />
+            android:text="身份密码找回" />
 
         <View style="@style/MainPageLineStyle" />
 

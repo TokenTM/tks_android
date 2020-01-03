@@ -114,10 +114,9 @@
                     android:layout_marginTop="10dp"
                     android:text="上链状态："
                     android:textColor="#ff374f66"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
                 <LinearLayout
-                    android:select="@{viewModel.chainState}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="3dp"
@@ -125,21 +124,22 @@
                     android:background="@drawable/tks_components_chain_state_ll_bg"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:padding="5dp">
+                    android:padding="5dp"
+                    android:select="@{viewModel.chainState}">
 
                     <ImageView
-                        android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
                         android:layout_width="11dp"
                         android:layout_height="11dp"
                         android:layout_marginEnd="5dp"
-                        android:src="@mipmap/tks_components_certification_instructions_state" />
+                        android:src="@mipmap/tks_components_certification_instructions_state"
+                        android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}" />
 
                     <TextView
-                        android:select="@{viewModel.chainState}"
-                        android:textColor="@drawable/tks_components_chain_state_text_color"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:select="@{viewModel.chainState}"
                         android:text="@{viewModel.chainStateDesc}"
+                        android:textColor="@drawable/tks_components_chain_state_text_color"
                         android:textSize="13sp" />
                 </LinearLayout>
 
@@ -148,8 +148,7 @@
                     android:layout_height="0.5dp"
                     android:layout_marginTop="10dp"
                     android:background="#fff1f1f1"
-                    android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}"
-                    tools:visibility="gone" />
+                    android:visibility="@{viewModel.chainState?View.VISIBLE:View.GONE}" />
                 <!--块-->
                 <TextView
                     android:layout_width="wrap_content"

@@ -12,9 +12,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
+import android.view.View;
 
 import com.tokentm.sdk.components.R;
-import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.common.BaseActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityIdentityPwdDecryptBinding;
 import com.tokentm.sdk.components.identitypwd.model.StepModel;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdDecryptPresenter;
@@ -44,9 +45,9 @@ import io.reactivex.functions.Function;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 重置用户身份密码设置
+ * @Description 身份密码找回
  */
-public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements IdentityPwdDecryptPresenter {
+public class IdentityPwdDecryptActivity extends BaseActivity implements IdentityPwdDecryptPresenter {
     //倒计时60秒
     private static final int SMS_DELAY = 60;
     private static final String KEY_DID_INFO = "did_info";
@@ -80,7 +81,7 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
 
 
     private void initView() {
-        setTitle("重置身份密码");
+        setTitle("身份密码找回");
         identityInfoStoreItem = (IdentityInfoStoreItem) getIntent().getSerializableExtra(KEY_DID_INFO);
         String phone = getIntent().getStringExtra(KEY_PHONE);
 
@@ -89,6 +90,12 @@ public class IdentityPwdDecryptActivity extends BaseTitleBarActivity implements 
 
         binding.getViewModel().phone.set(phone);
 
+        binding.ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         binding.recyclerView.setAdapter(stepAdapter = new StepAdapter());
         stepAdapter.bindData(true, generateSteps(3));
 

@@ -71,10 +71,10 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
                                 initiate(did
                                         , identityPwd
                                         , binding.etSellerName.getText().toString()
-                                        ,"type"
+                                        , "commodityType"
                                         , binding.etCommodityName.getText().toString()
-                                        , 3
-                                        , did
+                                        , Integer.valueOf(binding.etCommodityCount.getText().toString())
+                                        , binding.etToBuyerName.getText().toString().trim()
                                         , did);
                             }
                         });

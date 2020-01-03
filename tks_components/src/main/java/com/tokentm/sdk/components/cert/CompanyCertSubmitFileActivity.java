@@ -68,9 +68,14 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
 
     private void initView() {
-        setTitle("企业认证");
-        companyCertParams = (CompanyCertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
 
+        companyCertParams = (CompanyCertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
+        CompanyType companyType = companyCertParams.getCompanyType();
+        if (companyType.equals(CompanyType.TYPE_COMPANY)){
+            setTitle("企业认证");
+        }else {
+            setTitle("组织认证");
+        }
         binding.companyNameTv.setText(companyCertParams.getCompanyName());
         binding.companyCreditCodeTv.setText(companyCertParams.getCompanyCreditCode());
 
