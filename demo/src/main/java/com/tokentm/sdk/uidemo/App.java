@@ -3,9 +3,7 @@ package com.tokentm.sdk.uidemo;
 import android.app.Application;
 import android.util.Log;
 
-import com.github.moduth.blockcanary.BlockCanary;
 import com.tokentm.sdk.source.TokenTmClient;
-import com.tokentm.sdk.uidemo.tools.AppContext;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.Logger;
 import com.xxf.arch.utils.ToastUtils;
@@ -25,7 +23,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        BlockCanary.install(this, new AppContext()).start();
+        //BlockCanary.install(this, new AppContext()).start();
         RxJavaPlugins.setErrorHandler(new Consumer<Throwable>() {
             @Override
             public void accept(Throwable throwable) throws Exception {

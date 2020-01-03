@@ -89,6 +89,10 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
     @Override
     public void onPropertyRightsTransferRecords() {
         String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
+        if ("".equals(goodsId)) {
+            ToastUtils.showToast("请先发货");
+            return;
+        }
         ComponentUtils.launchPropertyRightsTransferRecordsActivity(
                 getActivity(), goodsId);
     }

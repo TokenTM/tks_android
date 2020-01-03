@@ -5,12 +5,11 @@ import android.arch.lifecycle.Lifecycle;
 import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 
-import com.tokentm.sdk.components.cert.CompanyCertActivity;
+import com.tokentm.sdk.components.cert.CompanyCertSubmitFileActivity;
 import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
-import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.identitypwd.view.CertificationDetailsActivity;
 import com.tokentm.sdk.components.identitypwd.view.CertificationInstructionsActivity;
@@ -20,12 +19,12 @@ import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.model.ChainResult;
+import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.IdentityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
-import com.xxf.arch.activity.XXFActivity;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -33,6 +32,8 @@ import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
+
+import static com.xxf.arch.activity.XXFActivity.KEY_ACTIVITY_RESULT;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -61,7 +62,7 @@ public class ComponentUtils {
                 .map(new Function<ActivityResult, BindUDID>() {
                     @Override
                     public BindUDID apply(ActivityResult activityResult) throws Exception {
-                        return (BindUDID) activityResult.getData().getSerializableExtra(BaseTitleBarActivity.KEY_ACTIVITY_RESULT);
+                        return (BindUDID) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
                 .take(1)
@@ -98,7 +99,7 @@ public class ComponentUtils {
                                 .map(new Function<ActivityResult, Boolean>() {
                                     @Override
                                     public Boolean apply(ActivityResult activityResult) throws Exception {
-                                        return (Boolean) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                                        return (Boolean) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                                     }
                                 })
                                 .subscribe(consumer);
@@ -162,7 +163,7 @@ public class ComponentUtils {
                 .map(new Function<ActivityResult, ChainResult>() {
                     @Override
                     public ChainResult apply(ActivityResult activityResult) throws Exception {
-                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                        return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
                 .take(1)
@@ -172,7 +173,7 @@ public class ComponentUtils {
     }
 
     /**
-     * 启动企业/组织认证 页面
+     * 启动企业 页面
      *
      * @param activity
      * @param companyCertParams
@@ -182,26 +183,25 @@ public class ComponentUtils {
     public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams, Consumer<ChainResult> consumer) {
         XXF.startActivityForResult(
                 activity,
-                CompanyCertActivity.getLauncher(
-                        activity,
-                        companyCertParams
-                ),
-                7101)
+                CompanyCertSubmitFileActivity.getLauncher(activity,
+                        new CompanyCertParams.Builder(companyCertParams)
+                                .setCompanyType(CompanyType.TYPE_COMPANY)
+                                .build()),
+                1001)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
                     public boolean test(ActivityResult activityResult) throws Exception {
                         return activityResult.isOk();
                     }
                 })
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
+                .take(1)
                 .map(new Function<ActivityResult, ChainResult>() {
                     @Override
                     public ChainResult apply(ActivityResult activityResult) throws Exception {
-                        return (ChainResult) activityResult.getData().getSerializableExtra(XXFActivity.KEY_ACTIVITY_RESULT);
+                        return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
-                .take(1)
-                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
-                .compose(XXF.bindToErrorNotice())
                 .subscribe(consumer);
     }
 

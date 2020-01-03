@@ -12,11 +12,16 @@ import android.widget.LinearLayout;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
 import com.tokentm.sdk.components.databinding.TksComponentsFragmentUploadBusinessLicenseBinding;
+import com.tokentm.sdk.crop.Crop;
+import com.tokentm.sdk.crop.util.CropUtils;
+import com.xxf.arch.XXF;
+import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.view.actiondialog.SystemUtils;
 
 import java.io.File;
 
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -65,16 +70,33 @@ public class ChooseBusinessLicenseFragment extends BaseFragment implements PicSe
         SystemUtils.doTakePhoto(getActivity(), new Consumer<String>() {
             @Override
             public void accept(String imgPath) throws Exception {
-                localFilePath = imgPath;
+                XXF.startActivityForResult(getActivity(), CropUtils.getUCropLauncher(getActivity(), imgPath), Crop.REQUEST_CROP)
+                        .filter(new Predicate<ActivityResult>() {
+                            @Override
+                            public boolean test(ActivityResult activityResult) throws Exception {
+                                return activityResult.isOk();
+                            }
+                        }).
+                        take(1)
+                        .subscribe(new Consumer<ActivityResult>() {
+                            @Override
+                            public void accept(ActivityResult activityResult) throws Exception {
+                                Uri resultUri = Crop.getOutput(activityResult.getData());
+                                if (resultUri != null) {
+                                    localFilePath = resultUri.getPath();
 
-                Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
-                //高度填满
-                float height = binding.pdfView.getMeasuredWidth() * (bitmap.getHeight() * 1.0f / bitmap.getWidth());
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) height);
-                binding.pdfView.setLayoutParams(layoutParams);
-                bitmap.recycle();
+                                    Bitmap bitmap = BitmapFactory.decodeFile(imgPath);
+                                    //高度填满
+                                    float height = binding.pdfView.getMeasuredWidth() * (bitmap.getHeight() * 1.0f / bitmap.getWidth());
+                                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) height);
+                                    binding.pdfView.setLayoutParams(layoutParams);
+                                    bitmap.recycle();
 
-                binding.pdfView.setImageURI(Uri.fromFile(new File(imgPath)));
+                                    binding.pdfView.setImageURI(Uri.fromFile(new File(imgPath)));
+                                }
+                            }
+                        });
+
             }
         });
 //        new BottomPicSelectDialog(getActivity(), new Consumer<String>() {
