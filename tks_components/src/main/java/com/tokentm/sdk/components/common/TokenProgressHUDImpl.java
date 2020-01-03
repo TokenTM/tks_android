@@ -40,10 +40,10 @@ public class TokenProgressHUDImpl implements ProgressHUD {
 
     @UiThread
     public void detachedContext() {
-        this.actionContext = null;
         if (progressHUD != null) {
             progressHUD.dismissImmediatelyLossState();
         }
+        this.actionContext = null;
     }
 
     /**
