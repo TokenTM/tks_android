@@ -12,6 +12,7 @@ import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityLoginBinding;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.Consumer;
 
@@ -39,6 +40,9 @@ public class LoginOrRegisterActivity extends AppCompatActivity {
         binding.btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 String phone = binding.loginPhoneEt.getText().toString().trim();
                 if ("".equals(phone) && phone.length() != 11) {
                     ToastUtils.showToast("请输入手机号");

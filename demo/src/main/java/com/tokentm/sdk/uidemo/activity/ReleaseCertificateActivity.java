@@ -17,6 +17,7 @@ import com.tokentm.sdk.uidemo.databinding.ActivityReleaseCertificateBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -62,6 +63,9 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
         binding.tvSendCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 //弹出校验身份密码
                 ComponentUtils.showIdentityPwdDialog(
                         ReleaseCertificateActivity.this,

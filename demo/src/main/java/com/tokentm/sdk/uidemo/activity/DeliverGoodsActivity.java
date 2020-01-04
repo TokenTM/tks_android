@@ -17,6 +17,7 @@ import com.tokentm.sdk.uidemo.databinding.ActivityDeliverGoodsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -59,6 +60,9 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
         binding.tvSendGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 //弹出校验身份密码
                 ComponentUtils.showIdentityPwdDialog(
                         DeliverGoodsActivity.this,

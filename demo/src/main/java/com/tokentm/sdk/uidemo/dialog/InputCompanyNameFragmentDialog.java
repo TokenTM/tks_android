@@ -16,6 +16,7 @@ import com.tokentm.sdk.uidemo.databinding.InputCompanyNameDialogBinding;
 import com.tokentm.sdk.uidemo.utils.DisplayUtils;
 import com.xxf.arch.fragment.XXFDialogFragment;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -52,6 +53,9 @@ public class InputCompanyNameFragmentDialog extends XXFDialogFragment {
         binding.tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 String companyName = binding.etInputCompanyName.getText().toString().trim();
                 if ("".equals(companyName)) {
                     ToastUtils.showToast("公司名称不能为空");
@@ -67,6 +71,9 @@ public class InputCompanyNameFragmentDialog extends XXFDialogFragment {
         binding.tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 dismiss();
             }
         });

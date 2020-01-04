@@ -37,6 +37,7 @@ import com.tokentm.sdk.crop.view.OverlayView;
 import com.tokentm.sdk.crop.view.TransformImageView;
 import com.tokentm.sdk.crop.view.widget.AspectRatioTextView;
 import com.tokentm.sdk.crop.view.widget.HorizontalProgressWheelView;
+import com.xxf.view.utils.RAUtils;
 import com.xxf.view.utils.StatusBarUtils;
 
 import java.lang.annotation.Retention;
@@ -414,6 +415,9 @@ public class CropActivity extends AppCompatActivity {
             cropAspectRatioView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (!RAUtils.isLegalDefault()) {
+                        return;
+                    }
                     mGestureCropImageView.setTargetAspectRatio(
                             ((AspectRatioTextView) ((ViewGroup) v).getChildAt(0)).getAspectRatio(v.isSelected()));
                     mGestureCropImageView.setImageToWrapCropBounds();
@@ -453,12 +457,18 @@ public class CropActivity extends AppCompatActivity {
         findViewById(R.id.wrapper_reset_rotate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 resetRotation();
             }
         });
         findViewById(R.id.wrapper_rotate_by_angle).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 rotateByAngle(90);
             }
         });
@@ -517,6 +527,9 @@ public class CropActivity extends AppCompatActivity {
     private final View.OnClickListener mStateClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (!RAUtils.isLegalDefault()) {
+                return;
+            }
             if (!v.isSelected()) {
                 setWidgetState(v.getId());
             }

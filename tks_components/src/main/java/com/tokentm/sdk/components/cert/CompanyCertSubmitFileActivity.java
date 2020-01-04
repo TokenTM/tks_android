@@ -27,6 +27,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.FragmentUtils;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 import java.io.File;
 
@@ -95,6 +96,9 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         binding.okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 companyCert();
             }
         });

@@ -13,6 +13,7 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.databinding.ActivityGetBackupBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -52,6 +53,9 @@ public class GetBackupActivity extends BaseTitleBarActivity {
         binding.tvGetBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 TokenTmClient.getService(StoreService.class)
                         .getStore(did,binding.etDataType.getText().toString().trim(), binding.etDataId.getText().toString().trim())
                         .compose(XXF.bindToErrorNotice())

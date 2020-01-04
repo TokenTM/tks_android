@@ -24,6 +24,7 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -81,6 +82,9 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
         binding.cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 hideSoftInput();
                 dismiss();
             }
@@ -88,6 +92,9 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
         binding.okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 hideSoftInput();
                 submit();
             }
@@ -96,6 +103,9 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
         binding.identityPwdForgetTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 forgotIdentityPwd();
             }
         });
@@ -110,6 +120,9 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
     }
 
     private void forgotIdentityPwd() {
+        if (!RAUtils.isLegalDefault()) {
+            return;
+        }
         TokenTmClient.getService(IdentityService.class)
                 .getUDID(uDid)
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
@@ -128,6 +141,9 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
 //    }
 
     private void submit() {
+        if (!RAUtils.isLegalDefault()) {
+            return;
+        }
         if (TextUtils.isEmpty(binding.identityPwdEt.getText())) {
             ToastUtils.showToast("请输入身份密码");
             return;

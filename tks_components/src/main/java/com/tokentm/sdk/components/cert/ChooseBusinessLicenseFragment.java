@@ -17,6 +17,7 @@ import com.tokentm.sdk.crop.util.CropUtils;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.view.actiondialog.SystemUtils;
+import com.xxf.view.utils.RAUtils;
 
 import java.io.File;
 
@@ -59,6 +60,9 @@ public class ChooseBusinessLicenseFragment extends BaseFragment implements PicSe
         binding.pdfView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 showPicSelectDialog();
             }
         });

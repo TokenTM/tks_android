@@ -19,6 +19,7 @@ import com.tokentm.sdk.uidemo.databinding.ActivityConfirmCertificateBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -81,6 +82,9 @@ public class ConfirmCertificateActivity extends BaseTitleBarActivity {
         binding.tvConfirmCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()) {
+                    return;
+                }
                 String did = DemoSp.getInstance().getLoginDID();
                 //弹出校验身份密码
                 ComponentUtils.showIdentityPwdDialog(
