@@ -28,7 +28,7 @@ import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
- * @Description 发布证书demo
+ * @Description 发布证书
  */
 public class ReleaseCertificateActivity extends BaseTitleBarActivity {
 
@@ -58,6 +58,7 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
     private void initView() {
         setTitle("发布证书");
         did = getIntent().getStringExtra(KEY_DID);
+        binding.etToReceive.setText(did);
         binding.tvSendCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,11 +72,11 @@ public class ReleaseCertificateActivity extends BaseTitleBarActivity {
                                 dialogInterface.dismiss();
                                 initiate(did
                                         , identityPwd
-                                        , binding.etCertificateType.getText().toString()
-                                        , binding.etCertificateContent.getText().toString()
-                                        , binding.etCertificateOtherContent.getText().toString()
+                                        , binding.etCertificateType.getText().toString().trim()
+                                        , binding.etCertificateContent.getText().toString().trim()
+                                        , binding.etCertificateOtherContent.getText().toString().trim()
                                         , System.currentTimeMillis()
-                                        , did);
+                                        , binding.etToReceive.getText().toString().trim());
                             }
                         });
             }

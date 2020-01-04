@@ -10,7 +10,6 @@ import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
-import com.tokentm.sdk.source.CertificateService;
 import com.tokentm.sdk.source.CommodityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.DemoSp;
@@ -23,11 +22,8 @@ import com.xxf.arch.utils.ToastUtils;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NAME;
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NUMBER;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_TO_DID;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -145,34 +141,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
             ToastUtils.showToast("请先发证");
             return;
         }
-        //弹出校验身份密码
-        ComponentUtils.showIdentityPwdDialog(
-                getActivity(), did,
-                new BiConsumer<DialogInterface, String>() {
-                    @SuppressLint("CheckResult")
-                    @Override
-                    public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
-                        dialogInterface.dismiss();
-                        String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
-                        String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA);
-                        String toDid = DemoSp.getInstance().getString(SP_KEY_TO_DID);
-                        TokenTmClient.getService(CertificateService.class)
-                                .confirm(did, identityPwd, certificateId, content, extraData, toDid)
-                                .compose(XXF.bindToLifecycle(getActivity()))
-                                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
-                                .subscribe(new Consumer<ChainResult>() {
-                                    @Override
-                                    public void accept(ChainResult chainResult) throws Exception {
-                                        if (chainResult.getTxHash() != null) {
-                                            ToastUtils.showToast("确认证书成功");
-                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
-                                        } else {
-                                            ToastUtils.showToast("确认证书失败");
-                                        }
-                                    }
-                                });
-                    }
-                });
+        ConfirmCertificateActivity.launch(getActivity(),certificateId);
     }
 
     @Override
@@ -182,34 +151,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
             ToastUtils.showToast("请先发证");
             return;
         }
-        //弹出校验身份密码
-        ComponentUtils.showIdentityPwdDialog(
-                getActivity(), did,
-                new BiConsumer<DialogInterface, String>() {
-                    @SuppressLint("CheckResult")
-                    @Override
-                    public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
-                        dialogInterface.dismiss();
-                        String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
-                        String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA);
-                        TokenTmClient.getService(CertificateService.class)
-                                .disabled(did, identityPwd, certificateId, content, extraData)
-                                .compose(XXF.bindToLifecycle(getActivity()))
-                                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
-                                .subscribe(new Consumer<ChainResult>() {
-                                    @Override
-                                    public void accept(ChainResult chainResult) throws Exception {
-                                        if (chainResult.getTxHash() != null) {
-                                            ToastUtils.showToast("取消证书成功");
-                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
-                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID, "");
-                                        } else {
-                                            ToastUtils.showToast("取消证书失败");
-                                        }
-                                    }
-                                });
-                    }
-                });
+        CancelCertificateActivity.launch(getActivity(),certificateId);
     }
 
     @Override

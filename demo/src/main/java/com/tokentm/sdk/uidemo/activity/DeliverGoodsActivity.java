@@ -57,6 +57,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
     private void initView() {
         setTitle("发货");
         did = getIntent().getStringExtra(KEY_DID);
+        binding.etToBuyerDid.setText(did);
         binding.tvSendGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +76,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
                                         , binding.etCommodityName.getText().toString()
                                         , Integer.valueOf(binding.etCommodityCount.getText().toString())
                                         , binding.etToBuyerName.getText().toString().trim()
-                                        , did);
+                                        , binding.etToBuyerDid.getText().toString().trim());
                             }
                         });
             }
