@@ -1,7 +1,5 @@
 package com.tokentm.sdk.uidemo.activity;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,20 +8,12 @@ import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
-import com.tokentm.sdk.source.CommodityService;
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.uidemo.prensenter.IMainPresenter;
-import com.xxf.arch.XXF;
-import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
 
-import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
-
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NAME;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NUMBER;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -95,37 +85,11 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
     @Override
     public void onReceiveGoods() {
         String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
-        String goodsName = DemoSp.getInstance().getString(SP_KEY_GOODS_NAME);
-        int goodsNumber = DemoSp.getInstance().getInt(SP_KEY_GOODS_NUMBER);
         if (TextUtils.isEmpty(goodsId)) {
             ToastUtils.showToast("请先发货");
             return;
         }
-        //弹出校验身份密码
-        ComponentUtils.showIdentityPwdDialog(
-                getActivity(), did,
-                new BiConsumer<DialogInterface, String>() {
-                    @SuppressLint("CheckResult")
-                    @Override
-                    public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
-                        dialogInterface.dismiss();
-                        TokenTmClient.getService(CommodityService.class)
-                                .receive(did, identityPwd, goodsId, goodsName, goodsNumber)
-                                .compose(XXF.bindToLifecycle(getActivity()))
-                                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(MainActivity.this)))
-                                .subscribe(new Consumer<ChainResult>() {
-                                    @Override
-                                    public void accept(ChainResult chainResult) throws Exception {
-                                        if (chainResult.getTxHash() != null) {
-                                            ToastUtils.showToast("确认收货成功");
-                                            DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
-                                        } else {
-                                            ToastUtils.showToast("确认收货失败");
-                                        }
-                                    }
-                                });
-                    }
-                });
+        ReceiveGoodsActivity.launch(getActivity(),goodsId);
     }
 
     @Override

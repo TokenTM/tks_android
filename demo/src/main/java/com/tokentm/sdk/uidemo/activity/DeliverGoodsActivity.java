@@ -22,8 +22,6 @@ import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
 import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_ID;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NAME;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_GOODS_NUMBER;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -71,10 +69,10 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
                                 dialogInterface.dismiss();
                                 initiate(did
                                         , identityPwd
-                                        , binding.etSellerName.getText().toString()
-                                        , "commodityType"
-                                        , binding.etCommodityName.getText().toString()
-                                        , Integer.valueOf(binding.etCommodityCount.getText().toString())
+                                        , binding.etSellerName.getText().toString().trim()
+                                        , binding.etCommodityType.getText().toString().trim()
+                                        , binding.etCommodityName.getText().toString().trim()
+                                        , Integer.valueOf(binding.etCommodityCount.getText().toString().trim())
                                         , binding.etToBuyerName.getText().toString().trim()
                                         , binding.etToBuyerDid.getText().toString().trim());
                             }
@@ -86,9 +84,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
     /**
      * 发货
      */
-    private void initiate(final String uDID, final String identityPwd, final String sellerName, String commodityType, String commodityName, final int commodityCount, final String toBuyerUDID, final String toBuyerName) {
-        DemoSp.getInstance().putString(SP_KEY_GOODS_NAME, commodityName);
-        DemoSp.getInstance().putInt(SP_KEY_GOODS_NUMBER, commodityCount);
+    private void initiate(final String uDID, final String identityPwd, final String sellerName, String commodityType, String commodityName, final int commodityCount, final String toBuyerName,final String toBuyerUDID) {
         TokenTmClient.getService(CommodityService.class)
                 .send(uDID, identityPwd, sellerName, commodityType, commodityName, commodityCount, toBuyerUDID, toBuyerName)
                 .compose(XXF.bindToLifecycle(this))
@@ -96,7 +92,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
                 .subscribe(new Consumer<TransferInitResult>() {
                     @Override
                     public void accept(TransferInitResult transferInitResult) throws Exception {
-                        //存储certificate_id
+                        //存储goods_id
                         DemoSp.getInstance().putString(SP_KEY_GOODS_ID, transferInitResult.getId());
                         ToastUtils.showToast("发货成功");
                         finish();

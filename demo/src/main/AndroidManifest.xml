@@ -33,6 +33,9 @@
             android:name="com.tokentm.sdk.uidemo.activity.ConfirmCertificateActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.tokentm.sdk.uidemo.activity.ReceiveGoodsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.tokentm.sdk.uidemo.activity.CancelCertificateActivity"
 
             android:screenOrientation="portrait" />
