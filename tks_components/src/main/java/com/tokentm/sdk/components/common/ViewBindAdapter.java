@@ -4,8 +4,6 @@ import android.databinding.BindingAdapter;
 import android.databinding.adapters.ViewBindingAdapter;
 import android.view.View;
 
-import com.xxf.view.utils.RAUtils;
-
 import io.reactivex.functions.Action;
 
 /**
@@ -33,9 +31,6 @@ public class ViewBindAdapter extends ViewBindingAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 if (action != null) {
                     try {
                         action.run();

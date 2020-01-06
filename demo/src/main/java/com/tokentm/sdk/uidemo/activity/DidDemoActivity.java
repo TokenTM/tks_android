@@ -13,7 +13,6 @@ import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityDidBinding;
-import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -55,9 +54,6 @@ public class DidDemoActivity extends BaseTitleBarActivity {
         binding.didBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 ComponentUtils.launchUserIdentityConfirmActivity(
                         DidDemoActivity.this,
                         "",
@@ -75,9 +71,6 @@ public class DidDemoActivity extends BaseTitleBarActivity {
         binding.checkPwdBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 ComponentUtils.showIdentityPwdDialog(
                         DidDemoActivity.this,
                         did,

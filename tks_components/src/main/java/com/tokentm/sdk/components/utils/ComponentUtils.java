@@ -21,13 +21,11 @@ import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
-import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.IdentityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -117,6 +115,18 @@ public class ComponentUtils {
      */
     public static void showIdentityPwdDialog(FragmentActivity activity, String uDID, BiConsumer<DialogInterface, String> dialogConsumer) {
         IdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(activity, uDID, dialogConsumer)
+                .show();
+    }
+
+    /**
+     * show 身份密码输入框带盖章动画dialog
+     *
+     * @param activity
+     * @param uDID
+     * @param dialogConsumer
+     */
+    public static void showIdentityPwdDialogWithStampAnim(FragmentActivity activity, String uDID, BiConsumer<DialogInterface, String> dialogConsumer) {
+        IdentityPwdInputDialog.showUserIdentityPwdInputDialogWithStampAnim(activity, uDID, dialogConsumer)
                 .show();
     }
 
@@ -233,18 +243,5 @@ public class ComponentUtils {
     @SuppressLint("CheckResult")
     public static void launchCertificationDetailsActivity(FragmentActivity activity, String did) {
         CertificationDetailsActivity.launch(activity, did);
-    }
-
-    /**
-     * 是否显示
-     */
-    public static void isShowIdentityDescription(FragmentActivity activity, String did, Consumer<Boolean> consumer) {
-        TokenTmClient.getService(CertService.class)
-                .isUserCert(did)
-                .compose(XXF.bindToLifecycle(activity))
-                .compose(XXF.bindToErrorNotice())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(consumer);
-
     }
 }

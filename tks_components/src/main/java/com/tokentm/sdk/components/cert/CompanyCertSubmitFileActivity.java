@@ -72,9 +72,9 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
         companyCertParams = (CompanyCertParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
         CompanyType companyType = companyCertParams.getCompanyType();
-        if (companyType.equals(CompanyType.TYPE_COMPANY)){
+        if (companyType.equals(CompanyType.TYPE_COMPANY)) {
             setTitle("企业认证");
-        }else {
+        } else {
             setTitle("组织认证");
         }
         binding.companyNameTv.setText(companyCertParams.getCompanyName());
@@ -96,9 +96,6 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         binding.okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 companyCert();
             }
         });
@@ -137,6 +134,9 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
     }
 
     private void companyCert() {
+        if (!RAUtils.isLegalDefault()) {
+            return;
+        }
         if (binding.radioGroup.getCheckedRadioButtonId() == binding.rbBusinessLicense.getId()
                 && TextUtils.isEmpty(binding.companyCreditCodeTv.getText())) {
             ToastUtils.showToast("请填写企业社会统一信用代码!");

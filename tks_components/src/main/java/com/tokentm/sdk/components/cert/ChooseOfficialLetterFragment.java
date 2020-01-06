@@ -24,7 +24,6 @@ import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
 import com.xxf.view.actiondialog.SystemUtils;
-import com.xxf.view.utils.RAUtils;
 
 import java.io.File;
 import java.io.InputStream;
@@ -83,18 +82,12 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
         binding.downloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 downloadPic(binding.pdfView);
             }
         });
         binding.uploadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 showPicSelectDialog();
             }
         });

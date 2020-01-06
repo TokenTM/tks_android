@@ -26,6 +26,7 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.view.actiondialog.SystemUtils;
+import com.xxf.view.utils.RAUtils;
 
 import java.io.File;
 
@@ -127,6 +128,9 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
 
     @Override
     public void onUserCert(ObservableField<String> userName, ObservableField<String> userIDCard, ObservableField<String> userIDCardFrontPic, ObservableField<String> userIDCardBackPic, ObservableField<String> userIDCardHandedPic) {
+        if (!RAUtils.isLegalDefault()) {
+            return;
+        }
         IdentityPwdInputDialog.showUserIdentityPwdInputDialogNoStampAnim(this, certByIDCardParams.getuDid(), new BiConsumer<DialogInterface, String>() {
             @Override
             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {

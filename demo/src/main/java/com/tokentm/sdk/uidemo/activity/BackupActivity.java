@@ -14,6 +14,7 @@ import com.tokentm.sdk.uidemo.databinding.ActivityBackupBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
+import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.Consumer;
 
@@ -51,6 +52,9 @@ public class BackupActivity extends BaseTitleBarActivity {
         binding.tvBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!RAUtils.isLegalDefault()){
+                    return;
+                }
                 StoreItem<String> storeItem = new StoreItem<>();
                 storeItem.setDid(did);
                 storeItem.setDataId(binding.etDataId.getText().toString().trim());

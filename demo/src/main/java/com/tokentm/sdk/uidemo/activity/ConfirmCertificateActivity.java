@@ -55,6 +55,8 @@ public class ConfirmCertificateActivity extends BaseTitleBarActivity {
     }
 
     private void initData() {
+        String content = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
+        binding.etCertificateContent.setText(content);
         TokenTmClient.getService(CertificateService.class)
                 .getCertificate(certificateId)
                 .compose(XXF.bindToLifecycle(getActivity()))
@@ -62,7 +64,6 @@ public class ConfirmCertificateActivity extends BaseTitleBarActivity {
                 .subscribe(new Consumer<CertificateInfoDTO>() {
                     @Override
                     public void accept(CertificateInfoDTO certificateInfoDTO) throws Exception {
-                        binding.etCertificateContent.setText(certificateInfoDTO.getContent());
                         binding.etToReceive.setText(certificateInfoDTO.getDid());
                         binding.etCertificateType.setText(certificateInfoDTO.getType());
                         if (certificateInfoDTO.getSignature() != null && certificateInfoDTO.getSignature().size() > 0) {

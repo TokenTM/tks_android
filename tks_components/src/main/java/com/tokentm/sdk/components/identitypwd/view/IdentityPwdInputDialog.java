@@ -120,9 +120,6 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
     }
 
     private void forgotIdentityPwd() {
-        if (!RAUtils.isLegalDefault()) {
-            return;
-        }
         TokenTmClient.getService(IdentityService.class)
                 .getUDID(uDid)
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
@@ -141,9 +138,6 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
 //    }
 
     private void submit() {
-        if (!RAUtils.isLegalDefault()) {
-            return;
-        }
         if (TextUtils.isEmpty(binding.identityPwdEt.getText())) {
             ToastUtils.showToast("请输入身份密码");
             return;

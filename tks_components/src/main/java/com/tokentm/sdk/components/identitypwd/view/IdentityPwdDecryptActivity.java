@@ -30,7 +30,6 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.utils.RAUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,6 @@ public class IdentityPwdDecryptActivity extends BaseActivity implements Identity
     private static final int SMS_DELAY = 60;
     private static final String KEY_DID_INFO = "did_info";
     private static final String KEY_PHONE = "phone";
-
 
     public static void launch(@NonNull Context context, @NonNull IdentityInfoStoreItem identityInfoStoreItem, @Nullable String phone) {
         context.startActivity(getLauncher(context, identityInfoStoreItem, phone));
@@ -94,9 +92,6 @@ public class IdentityPwdDecryptActivity extends BaseActivity implements Identity
         binding.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 finish();
             }
         });
@@ -237,6 +232,7 @@ public class IdentityPwdDecryptActivity extends BaseActivity implements Identity
                             setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, true));
                             finish();
                         } else {
+                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, false));
                             finish();
                         }
                     }

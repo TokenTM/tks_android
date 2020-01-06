@@ -18,7 +18,6 @@ import com.tokentm.sdk.uidemo.databinding.ActivityCertificationDetailsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
@@ -65,9 +64,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreatePropertyRightsTransferRecords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 ComponentUtils.launchPropertyRightsTransferRecordsActivity(
                         getActivity(), did);
             }
@@ -76,9 +72,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateCertificationInstructions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 String txHash = DemoSp.getInstance().getString(DemoSp.SP_KEY_TX_HASH);
                 if (TextUtils.isEmpty(txHash)) {
                     ToastUtils.showToast("请先发布证书 并 确认证书");
@@ -92,9 +85,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateCertificationDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 String txHash = DemoSp.getInstance().getString(DemoSp.SP_KEY_TX_HASH);
                 if (TextUtils.isEmpty(txHash)) {
                     ToastUtils.showToast("请先发布证书 并 确认证书");
@@ -108,9 +98,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateIdentityAuthentication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 ComponentUtils.showEnterpriseCertificationAlertDialog(
                         getActivity(),
                         new BiConsumer<DialogInterface, Boolean>() {
@@ -127,9 +114,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateUserIdentityAuthenticationAlertDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 ComponentUtils.showIdentityAuthenticationAlertDialog(
                         getActivity(),
                         new BiConsumer<DialogInterface, Boolean>() {
@@ -145,9 +129,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateChainCertification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 ChainCertificationActivity.launch(getActivity());
             }
         });
@@ -156,9 +137,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btReleaseCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 //开启发证demo页面
                 ReleaseCertificateActivity.launch(getActivity(), did);
             }
@@ -168,9 +146,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btConfirmCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID);
                 if (TextUtils.isEmpty(certificateId)) {
                     ToastUtils.showToast("请先发证");

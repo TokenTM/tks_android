@@ -33,7 +33,6 @@ import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.rxjava.transformer.internal.UILifeTransformerImpl;
-import com.xxf.view.utils.RAUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -93,9 +92,6 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
         binding.identityPwdHideIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 v.setSelected(!v.isSelected());
                 if (v.isSelected()) {
                     CompatUtils.showTextForPlain(binding.identityPwdEt);
@@ -107,9 +103,6 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
         binding.identityRepwdHideIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 v.setSelected(!v.isSelected());
                 if (v.isSelected()) {
                     CompatUtils.showTextForPlain(binding.identityRepwdEt);

@@ -88,7 +88,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
     /**
      * 发货
      */
-    private void initiate(final String uDID, final String identityPwd, final String sellerName, String commodityType, String commodityName, final int commodityCount, final String toBuyerName,final String toBuyerUDID) {
+    private void initiate(final String uDID, final String identityPwd, final String sellerName, String commodityType, String commodityName, final int commodityCount, final String toBuyerName, final String toBuyerUDID) {
         TokenTmClient.getService(CommodityService.class)
                 .send(uDID, identityPwd, sellerName, commodityType, commodityName, commodityCount, toBuyerUDID, toBuyerName)
                 .compose(XXF.bindToLifecycle(this))

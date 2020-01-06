@@ -16,7 +16,6 @@ import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyType;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
-import com.xxf.view.utils.RAUtils;
 
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -58,18 +57,12 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
         binding.llCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 goNext(CompanyType.TYPE_COMPANY);
             }
         });
         binding.llOrg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 goNext(CompanyType.TYPE_ORGANIZATION);
             }
         });

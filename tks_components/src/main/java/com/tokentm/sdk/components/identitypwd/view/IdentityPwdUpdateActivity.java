@@ -21,7 +21,6 @@ import com.tokentm.sdk.source.IdentityService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
-import com.xxf.view.utils.RAUtils;
 
 import java.util.ArrayList;
 
@@ -70,9 +69,6 @@ public class IdentityPwdUpdateActivity extends BaseTitleBarActivity implements I
         binding.identityPwdHideIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 v.setSelected(!v.isSelected());
                 if (v.isSelected()) {
                     CompatUtils.showTextForPlain(binding.identityPwdEt);
@@ -84,9 +80,6 @@ public class IdentityPwdUpdateActivity extends BaseTitleBarActivity implements I
         binding.identityRepwdHideIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
                 v.setSelected(!v.isSelected());
                 if (v.isSelected()) {
                     CompatUtils.showTextForPlain(binding.identityRepwdEt);
