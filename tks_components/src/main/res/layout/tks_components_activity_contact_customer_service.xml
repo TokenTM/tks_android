@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/tks_components_ic_contact_customer_service_top_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_authentication"
+                    android:layout_width="182dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="63dp"
+                    android:src="@mipmap/tks_components_ic_contact_customer_service_top_authentication"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="19dp"
+                    android:background="@mipmap/tks_components_ic_contact_customer_service_bg"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_authentication">
+
+                    <ImageView
+                        android:layout_width="171dp"
+                        android:layout_height="171dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="59dp"
+                        android:src="@mipmap/tks_components_ic_contact_customer_service_wechat" />
+
+                    <TextView
+                        android:id="@+id/tv_show_we_chat_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="13dp"
+                        android:textColor="#ff666666"
+                        android:textSize="15dp"
+                        tools:text="微信ID:Blockchain_Union001" />
+
+                    <TextView
+                        android:id="@+id/tv_show_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="7dp"
+                        android:textColor="#ff666666"
+                        android:textSize="15dp"
+                        tools:text="运营联系邮箱:mingxu@staff.token.tm" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="80dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_copy_we_chat_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:background="@drawable/tks_components_bg_fdd983_f79130"
+                            android:gravity="center"
+                            android:paddingStart="23dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="23dp"
+                            android:paddingBottom="10dp"
+                            android:text="复制微信ID"
+                            android:textColor="#ffffffff"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tv_send_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/tks_components_bg_00deb1_009ee0"
+                            android:gravity="center"
+                            android:paddingStart="23dp"
+                            android:paddingTop="10dp"
+                            android:paddingEnd="23dp"
+                            android:paddingBottom="10dp"
+                            android:text="发送邮件"
+                            android:textColor="#ffffffff"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+
+        </ScrollView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="49dp">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingEnd="25dp"
+                android:src="@mipmap/tks_components_ic_title_back" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:maxWidth="250dp"
+                android:text="联系客服"
+                android:textColor="@android:color/white"
+                android:textSize="17dp" />
+        </FrameLayout>
+    </FrameLayout>
+
+</layout>

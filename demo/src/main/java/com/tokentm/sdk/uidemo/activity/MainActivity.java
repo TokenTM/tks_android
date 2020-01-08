@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.identitypwd.view.ContactCustomerServiceActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertService;
@@ -102,12 +103,13 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 //                        });
 //            }
 //        }).show(getSupportFragmentManager(), InputCompanyNameFragmentDialog.class.getSimpleName());
-        ComponentUtils.launchChangeIdentityPwd(getActivity(), did, new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                ToastUtils.showToast(aBoolean ? "修改成功" : "修改失败");
-            }
-        });
+        ContactCustomerServiceActivity.launch(getActivity(),"d");
+//        ComponentUtils.launchChangeIdentityPwd(getActivity(), did, new Consumer<Boolean>() {
+//            @Override
+//            public void accept(Boolean aBoolean) throws Exception {
+//                ToastUtils.showToast(aBoolean ? "修改成功" : "修改失败");
+//            }
+//        });
     }
 
     @Override
