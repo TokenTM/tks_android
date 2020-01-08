@@ -1,5 +1,6 @@
 package com.tokentm.sdk.components.identitypwd.view;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -41,6 +42,7 @@ import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 
 /**
@@ -212,29 +214,36 @@ public class IdentityPwdDecryptActivity extends BaseActivity implements Identity
                                 decryptedPartItems.add(decryptedPartItemSparseArray.get(i));
                             }
                             gotoPwdUpdatePage(decryptedPartItems);
-
                         }
                     }
                 });
     }
 
+    @SuppressLint("CheckResult")
     private void gotoPwdUpdatePage(ArrayList<NodeServiceDecryptedPartItem> decryptedPartItems) {
         XXF.startActivityForResult(this,
                 IdentityPwdUpdateActivity.getLauncher(
                         this,
                         identityInfoStoreItem,
                         decryptedPartItems), 2001)
-                .take(1)
-                .subscribe(new Consumer<ActivityResult>() {
+                .filter(new Predicate<ActivityResult>() {
                     @Override
-                    public void accept(ActivityResult activityResult) throws Exception {
-                        if (activityResult.isOk()) {
-                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, true));
-                            finish();
-                        } else {
-                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, false));
-                            finish();
-                        }
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .take(1)
+                .map(new Function<ActivityResult, Boolean>() {
+                    @Override
+                    public Boolean apply(ActivityResult activityResult) throws Exception {
+                        return activityResult.getData().getBooleanExtra(KEY_ACTIVITY_RESULT, false);
+                    }
+                })
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, aBoolean));
+                        finish();
                     }
                 });
     }

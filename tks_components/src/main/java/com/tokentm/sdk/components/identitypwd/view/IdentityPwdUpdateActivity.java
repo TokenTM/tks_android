@@ -28,7 +28,7 @@ import io.reactivex.functions.Consumer;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 身份密码修改
+ * @Description 通过找回密码多次验证码-->身份密码修改
  */
 public class IdentityPwdUpdateActivity extends BaseTitleBarActivity implements IdentityPwdUpdatePresenter {
 
@@ -99,7 +99,7 @@ public class IdentityPwdUpdateActivity extends BaseTitleBarActivity implements I
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
-                        setResult(Activity.RESULT_OK, getIntent());
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, aBoolean));
                         finish();
                     }
                 });

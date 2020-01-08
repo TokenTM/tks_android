@@ -16,6 +16,7 @@ import com.tokentm.sdk.components.identitypwd.view.CertificationInstructionsActi
 import com.tokentm.sdk.components.identitypwd.view.EnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.IdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
+import com.tokentm.sdk.components.identitypwd.view.IdentityPwdChangeActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.model.ChainResult;
@@ -96,12 +97,36 @@ public class ComponentUtils {
                                 .map(new Function<ActivityResult, Boolean>() {
                                     @Override
                                     public Boolean apply(ActivityResult activityResult) throws Exception {
-                                        return (Boolean) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                                        return activityResult.getData().getBooleanExtra(KEY_ACTIVITY_RESULT, false);
                                     }
                                 })
                                 .subscribe(consumer);
                     }
                 });
+    }
+
+    /**
+     * 修改身份密码
+     */
+    public static void launchChangeIdentityPwd(FragmentActivity activity, String did, Consumer<Boolean> consumer) {
+        XXF.startActivityForResult(activity,
+                IdentityPwdChangeActivity.getLauncher(
+                        activity,
+                        did), 2001)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .take(1)
+                .map(new Function<ActivityResult, Boolean>() {
+                    @Override
+                    public Boolean apply(ActivityResult activityResult) throws Exception {
+                        return activityResult.getData().getBooleanExtra(KEY_ACTIVITY_RESULT, false);
+                    }
+                })
+                .subscribe(consumer);
     }
 
 

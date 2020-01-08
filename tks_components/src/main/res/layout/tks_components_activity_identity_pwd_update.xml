@@ -37,8 +37,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:paddingBottom="10dp"
+                    android:paddingTop="25dp"
                     android:text="身份密码"
                     android:textColor="#ff374f66"
                     android:textSize="16sp"
@@ -128,7 +127,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="25dp"
-                        android:paddingBottom="10dp"
                         android:text="确认身份密码"
                         android:textColor="#ff374f66"
                         android:textSize="16sp"
@@ -171,9 +169,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="温馨提示：身份密码将作为您链信宝的唯一身份凭证，用于领取您的区块链数字身份及保护您的数据安全。链信宝不存储您的任何密码信息，请放心设置。"
+                        android:layout_marginTop="45dp"
+                        android:lineSpacingExtra="6dp"
+                        android:text="温馨提示：身份密码用于管理用户私钥，即授权调用本地私钥行使数字权益。您的私有权益数据加密存储于本地和云端，没有私钥将无法解开使用，请务必牢记身份密码。"
                         android:textColor="#ffff820e"
                         android:textSize="13sp" />
                 </LinearLayout>

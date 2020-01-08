@@ -63,7 +63,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="温馨提示：为了增强您的私域数据安全，身份密码采取了双重加密技术，分片存储在服务终端。因此，需要您多次获取并输入验证码才可完成重置密码操作。 "
+                        android:lineSpacingExtra="6dp"
+                        android:text="温馨提示：在初始设置时，系统自动将身份密码多层切片加密后随机散布备份于不同节点。因此需要多步骤才可找回并重置。为了您身份密码管理的安全，请耐心有序操作。"
                         android:textColor="#ffff820e"
                         android:textSize="12sp" />
 
