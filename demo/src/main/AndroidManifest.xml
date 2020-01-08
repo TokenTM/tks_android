@@ -49,10 +49,6 @@
             android:name="com.tokentm.sdk.uidemo.activity.ReleaseCertificateActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.tokentm.sdk.uidemo.activity.ChainCertificationActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name="com.tokentm.sdk.uidemo.activity.BackupActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

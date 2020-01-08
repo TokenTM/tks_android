@@ -20,6 +20,7 @@ import com.tokentm.sdk.components.common.CompatUtils;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.components.identitypwd.UserConfig;
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
+import com.tokentm.sdk.components.identitypwd.model.IdentityLayout;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVm;
 import com.tokentm.sdk.exceptions.InvalidIdentityPwdException;
@@ -41,7 +42,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
-
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
@@ -75,7 +75,7 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
 
     private void initView() {
         phone = getIntent().getStringExtra(KEY_PHONE);
-        setTitle("身份确认");
+        setTitle("身份密码");
 
         viewModel = ViewModelProviders.of(this).get(IdentityPwdSetVm.class);
         viewModel.phone.set(phone);
@@ -137,15 +137,35 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
 
                     @Override
                     public void onSubscribe() {
-                        viewModel.checkDIDData.set(false);
-                        viewModel.checkDIDProgressVisible.set(true);
+                        viewModel.submitable.set(false);
+                        viewModel.checkDidProgressVisible.set(true);
                     }
 
                     @Override
                     public void onNext(IdentityInfoStoreItem identityInfoStoreItem) {
-                        viewModel.checkDIDData.set(true);
+                        //老用户
+                        if (identityInfoStoreItem != null && identityInfoStoreItem.available()) {
+                            TokenTmClient.getService(IdentityService.class)
+                                    .isLogined(identityInfoStoreItem.getDid())
+                                    .subscribe(new Consumer<Boolean>() {
+                                        @Override
+                                        public void accept(Boolean aBoolean) throws Exception {
+                                            //有缓存记录
+                                            if (aBoolean) {
+                                                viewModel.identityLayout.set(IdentityLayout.OLD_USER_HAVE_CACHE);
+                                            } else {
+                                                //没有缓存记录
+                                                viewModel.identityLayout.set(IdentityLayout.OLD_USER_NO_CACHE);
+                                            }
+                                        }
+                                    });
+                        } else {
+                            //新用户
+                            viewModel.identityLayout.set(IdentityLayout.NEW_USER);
+                        }
+                        viewModel.identityLayout.notifyChange();
                         viewModel.identityInfo.set(identityInfoStoreItem);
-                        viewModel.checkDIDProgressVisible.set(false);
+                        viewModel.checkDidProgressVisible.set(false);
                     }
 
                     @Override
@@ -154,14 +174,14 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
 
                     @Override
                     public void onError(Throwable throwable) {
-                        viewModel.checkDIDData.set(false);
-                        viewModel.checkDIDProgressVisible.set(false);
+                        viewModel.submitable.set(false);
+                        viewModel.checkDidProgressVisible.set(false);
                     }
 
                     @Override
                     public void onCancel() {
-                        viewModel.checkDIDData.set(false);
-                        viewModel.checkDIDProgressVisible.set(false);
+                        viewModel.submitable.set(false);
+                        viewModel.checkDidProgressVisible.set(false);
                     }
                 })
                 .compose(XXF.bindToLifecycle(this))
@@ -231,12 +251,19 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
     }
 
 
+    /**
+     * 新用户
+     *
+     * @param phone
+     * @param smsCode
+     * @param identityPwd
+     */
     @SuppressLint("CheckResult")
     @Override
     public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         //TODO createUDID最后的参数是邀请码
         TokenTmClient.getService(IdentityService.class)
-                .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false,"")
+                .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false, "")
                 .map(new Function<ChainResult, BindUDID>() {
                     @Override
                     public BindUDID apply(ChainResult chainResult) throws Exception {
@@ -255,6 +282,14 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
                 });
     }
 
+    /**
+     * 老用户无缓存
+     *
+     * @param uDID
+     * @param phone
+     * @param smsCode
+     * @param identityPwd
+     */
     @Override
     public void onIdentityDecrypt(ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         TokenTmClient.getService(IdentityService.class)
@@ -287,5 +322,36 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
                         finish();
                     }
                 });
+    }
+
+    /**
+     * 老用户的有缓存记录登录
+     *
+     * @param did
+     * @param phone
+     */
+    private void oldUsersHaveCacheLogin(String did, String phone) {
+        //完成登录
+        BindUDID bindUdid = new BindUDID(did, null, null, null, null, phone);
+        //返回uDid
+        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, bindUdid));
+        finish();
+    }
+
+    @Override
+    public void onIdentityChoice(ObservableField<IdentityLayout> identityLayout, ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
+        switch (identityLayout.get()) {
+            case NEW_USER:
+                onIdentitySet(phone, smsCode, identityPwd);
+                break;
+            case OLD_USER_NO_CACHE:
+                onIdentityDecrypt(uDID, phone, smsCode, identityPwd);
+                break;
+            case OLD_USER_HAVE_CACHE:
+                oldUsersHaveCacheLogin(uDID.get(), phone.get());
+                break;
+            default:
+                break;
+        }
     }
 }

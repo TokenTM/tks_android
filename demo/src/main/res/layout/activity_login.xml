@@ -12,6 +12,7 @@
         tools:context=".demo.MainActivity">
 
         <EditText
+            android:inputType="phone"
             android:textSize="@dimen/base_dp_20"
             android:id="@+id/login_phone_et"
             android:layout_width="match_parent"

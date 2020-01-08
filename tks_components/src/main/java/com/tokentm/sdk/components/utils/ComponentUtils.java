@@ -69,7 +69,6 @@ public class ComponentUtils {
                 .subscribe(consumer);
     }
 
-
     /**
      * 忘记身份密码
      *

@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertService;
@@ -54,6 +55,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                         binding.tvIdentityAuthentication.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
                     }
                 });
+
     }
 
     private void initView() {

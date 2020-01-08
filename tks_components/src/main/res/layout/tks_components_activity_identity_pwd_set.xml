@@ -26,7 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,8 +36,9 @@
                 android:showDividers="middle|end">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingTop="25dp"
                     android:text="手机号"
                     android:textColor="#ff374f66"
                     android:textSize="16sp"
@@ -62,9 +64,9 @@
                     android:src="@drawable/tks_components_arch_divider_comm" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:paddingTop="25dp"
                     android:text="验证码"
                     android:textColor="#ff374f66"
                     android:textSize="16sp"
@@ -76,9 +78,8 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-
                     <EditText
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
                         android:background="@null"
@@ -96,7 +97,7 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_marginRight="10dp"
-                        android:visibility="@{viewModel.checkDIDProgressVisible?View.VISIBLE:View.INVISIBLE}" />
+                        android:visibility="@{viewModel.checkDidProgressVisible?View.VISIBLE:View.GONE}" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -122,73 +123,80 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="@{viewModel.checkDIDData?View.VISIBLE:View.GONE}">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:paddingTop="25dp"
-                    android:paddingBottom="10dp"
-                    android:text="身份密码"
-                    android:textColor="#ff374f66"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                android:visibility="@{viewModel.isShowIdentityPassword?View.VISIBLE:View.GONE}">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/identity_pwd_et"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:gravity="center_vertical"
-                        android:hint="请输入您的身份密码"
-                        android:inputType="textPassword"
-                        android:maxLength="20"
-                        android:maxLines="1"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="@={viewModel.identityPwd}"
-                        android:textSize="15sp" />
+                        android:paddingTop="25dp"
+                        android:text="身份密码"
+                        android:textColor="#ff374f66"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/identity_pwd_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请输入您的身份密码"
+                            android:inputType="textPassword"
+                            android:maxLength="20"
+                            android:maxLines="1"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="@={viewModel.identityPwd}"
+                            android:textSize="15sp" />
+
+
+                        <ImageView
+                            android:id="@+id/identity_pwd_hide_iv"
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
+                            android:src="@drawable/tks_components_base_ic_eye_selector" />
+                    </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/identity_pwd_hide_iv"
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/tks_components_base_ic_eye_selector" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/tks_components_arch_divider_comm" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:onClick="@{()->presenter.onForgetIdentity(viewModel.phone,viewModel.did)}"
+                        android:padding="5dp"
+                        android:text="忘记身份密码?"
+                        android:textColor="#ffff820e"
+                        android:textSize="12sp"
+                        android:visibility="@{viewModel.isShowForgetIdentity?View.VISIBLE:View.GONE}"
+                        tools:visibility="visible" />
+
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tks_components_arch_divider_comm" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:onClick="@{()->presenter.onForgetIdentity(viewModel.phone,viewModel.did)}"
-                    android:padding="5dp"
-                    android:text="忘记身份密码?"
-                    android:textColor="#ffff820e"
-                    android:textSize="12sp"
-                    android:visibility="@{viewModel.isRegisterMode?View.GONE:View.VISIBLE}"
-                    tools:visibility="visible" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.isRegisterMode?View.VISIBLE:View.GONE}"
+                    android:visibility="@{viewModel.isShowConfirmIdentityPassword?View.VISIBLE:View.GONE}"
                     tools:visibility="visible">
 
                     <LinearLayout
@@ -237,7 +245,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="25dp"
-                        android:paddingBottom="10dp"
                         android:text="确认身份密码"
                         android:textColor="#ff374f66"
                         android:textSize="16sp"
@@ -267,8 +274,10 @@
 
                         <ImageView
                             android:id="@+id/identity_repwd_hide_iv"
-                            android:layout_width="20dp"
+                            android:layout_width="48dp"
                             android:layout_height="match_parent"
+                            android:paddingStart="14dp"
+                            android:paddingEnd="14dp"
                             android:src="@drawable/tks_components_base_ic_eye_selector" />
                     </LinearLayout>
 
@@ -277,29 +286,31 @@
                         android:layout_height="0.5dp"
                         android:background="@drawable/tks_components_arch_divider_comm" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:text="温馨提示：身份密码将作为您链信宝的唯一身份凭证，用于领取您的区块链数字身份及保护您的数据安全。链信宝不存储您的任何密码信息，请放心设置。"
-                        android:textColor="#ffff820e"
-                        android:textSize="13sp" />
+
                 </LinearLayout>
 
-
-                <Button
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:layout_marginBottom="85dp"
-                    android:background="@drawable/tks_components_base_btn_bg_selector"
-                    android:enabled="@{viewModel.submitable}"
-                    android:onClick="@{()->viewModel.isRegisterMode?presenter.onIdentitySet(viewModel.phone,viewModel.smsCode,viewModel.identityPwd):presenter.onIdentityDecrypt(viewModel.did,viewModel.phone,viewModel.smsCode,viewModel.identityPwd)}"
-                    android:text="确认"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp" />
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:lineSpacingExtra="6dp"
+                android:text="温馨提示：身份密码用于管理用户私钥，即授权调用本地私钥行使数字权益。您的私有权益数据加密存储于本地和云端，没有私钥将无法解开使用，请务必牢记身份密码。"
+                android:textColor="#ffff820e"
+                android:textSize="13sp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="34dp"
+                android:background="@drawable/tks_components_base_btn_bg_selector"
+                android:enabled="@{viewModel.submitable}"
+                android:onClick="@{()->presenter.onIdentityChoice(viewModel.identityLayout,viewModel.did,viewModel.phone,viewModel.smsCode,viewModel.identityPwd)}"
+                android:text="确认"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
         </LinearLayout>
     </ScrollView>
 </layout>
