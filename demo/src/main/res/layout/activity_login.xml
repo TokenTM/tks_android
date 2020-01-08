@@ -12,13 +12,14 @@
         tools:context=".demo.MainActivity">
 
         <EditText
-            android:inputType="phone"
-            android:textSize="@dimen/base_dp_20"
             android:id="@+id/login_phone_et"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="输入手机号"
-            android:maxLines="1" />
+            android:inputType="number"
+            android:maxLength="11"
+            android:maxLines="1"
+            android:textSize="@dimen/base_dp_20" />
 
         <TextView
             android:id="@+id/bt_login"

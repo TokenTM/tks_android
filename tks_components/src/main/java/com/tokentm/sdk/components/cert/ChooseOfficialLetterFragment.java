@@ -150,16 +150,16 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
     @SuppressLint("CheckResult")
     private void loadData() {
         TokenTmClient.getService(CertService.class)
-                .getUserCertByIDCardInfo(companyCertParams.getuDid())
+                .getUserCertStoreInfo(companyCertParams.getuDid())
                 .flatMap(new Function<CertUserInfoStoreItem, ObservableSource<Bitmap>>() {
                     @Override
                     public ObservableSource<Bitmap> apply(CertUserInfoStoreItem certUserInfoStoreItem) throws Exception {
                         return TokenTmClient.getService(BasicService.class)
                                 .getOrgLetterImage(
                                         companyCertParams.getuDid(),
-                                        companyCertParams.getCompanyName(),
-                                        certUserInfoStoreItem.getIdentityCode(),
-                                        certUserInfoStoreItem.getName())
+                                        "",
+                                        "",
+                                        "")
                                 .map(new Function<InputStream, Bitmap>() {
                                     @Override
                                     public Bitmap apply(InputStream inputStream) throws Exception {

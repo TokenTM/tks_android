@@ -136,7 +136,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                 dialogInterface.dismiss();
                 TokenTmClient.getService(CertService.class)
-                        .userCertByIDCard(
+                        .userCert(
                                 certByIDCardParams.getuDid(),
                                 identityPwd,
                                 userName.get(),

@@ -50,9 +50,9 @@
                 android:id="@+id/bt_create_user_identity_authentication_alert_dialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="弹窗前往身份认证"
+                android:ellipsize="middle"
+                android:singleLine="true"
+                android:text="弹窗前往身fdfdfdfdfdfdfffffffffffffffffffffff份认证"
                 tools:ignore="MissingConstraints" />
 
             <Button

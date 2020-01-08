@@ -24,18 +24,21 @@
                 android:textColor="#ff374f66"
                 android:textSize="15sp" />
 
-            <TextView
+            <EditText
+                android:hint="必填"
+                android:maxWidth="10dp"
+                android:singleLine="true"
+                android:background="@null"
                 android:id="@+id/company_name_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:ellipsize="end"
+                android:ellipsize="middle"
                 android:gravity="right|center_vertical"
-                android:maxLines="1"
                 android:paddingRight="15dp"
                 android:textColor="#ff374f66"
                 android:textSize="15sp"
-                tools:text="北京投肯科技有限公司" />
+                android:text="北京投肯科技有限公司" />
         </LinearLayout>
 
         <LinearLayout
@@ -56,6 +59,9 @@
                 android:textSize="15sp" />
 
             <EditText
+                android:inputType="number"
+                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:maxLength="18"
                 android:id="@+id/company_credit_code_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -89,14 +95,15 @@
                 android:textColor="#ff374f66"
                 android:textSize="15sp" />
 
-            <TextView
+            <EditText
+                android:hint="必填"
+                android:background="@null"
                 android:id="@+id/legal_person_name_tv"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:gravity="right|center_vertical"
-                android:maxLines="1"
                 android:paddingRight="15dp"
                 android:textColor="#ff374f66"
                 android:textSize="15sp"
@@ -120,7 +127,7 @@
                 android:drawablePadding="5dp"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
-                android:text="营业执照认证"
+                android:text="证书认证"
                 android:textColor="#ff374f66"
                 android:textSize="15sp" />
 

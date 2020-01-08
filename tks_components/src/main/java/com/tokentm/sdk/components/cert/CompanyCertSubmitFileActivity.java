@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityCompanySubmitFileBinding;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.components.utils.IgnoreSpacesInputFilter;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyType;
@@ -77,9 +79,17 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         } else {
             setTitle("组织认证");
         }
-        binding.companyNameTv.setText(companyCertParams.getCompanyName());
+        String companyName = companyCertParams.getCompanyName();
+        //当传过来的值是空,那就可编辑,否则不可编辑
+        if (companyName == null || "".equals(companyName.trim())) {
+            binding.companyNameTv.setFocusable(true);
+        }else {
+            binding.companyNameTv.setFocusable(false);
+        }
+        binding.companyNameTv.setText(companyName);
         binding.companyCreditCodeTv.setText(companyCertParams.getCompanyCreditCode());
-
+        //去空格和限制6个字
+        binding.legalPersonNameTv.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter(), new InputFilter.LengthFilter(6)});
 
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -106,7 +116,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
     private void loadData() {
         TokenTmClient.getService(CertService.class)
-                .getUserCertByIDCardInfo(companyCertParams.getuDid())
+                .getUserCertStoreInfo(companyCertParams.getuDid())
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(new Consumer<CertUserInfoStoreItem>() {
@@ -143,6 +153,11 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
             return;
         }
 
+        if (TextUtils.isEmpty(binding.companyNameTv.getText().toString().trim())) {
+            ToastUtils.showToast("请填写工商注册名字");
+            return;
+        }
+
         Fragment currFragment = getOrNewFragment(binding.radioGroup.getCheckedRadioButtonId());
         if (currFragment instanceof PicSelectPresenter) {
             PicSelectPresenter picSelectPresenter = (PicSelectPresenter) currFragment;
@@ -159,13 +174,10 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                         public void accept(DialogInterface dialogInterface, String pwd) throws Exception {
                             dialogInterface.dismiss();
                             String companyCreditCode = binding.companyCreditCodeTv.getText().toString().trim();
-                            if (TextUtils.isEmpty(companyCreditCode)) {
-                                companyCreditCode = null;
-                            }
                             TokenTmClient.getService(CertService.class)
                                     .companyCert(companyCertParams.getuDid(),
                                             pwd,
-                                            companyCertParams.getCompanyName(),
+                                            binding.companyNameTv.getText().toString().trim(),
                                             companyCertParams.getCompanyType(),
                                             companyCreditCode,
                                             new File(picPath)

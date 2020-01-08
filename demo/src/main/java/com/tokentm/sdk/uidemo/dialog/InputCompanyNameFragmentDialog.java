@@ -51,11 +51,7 @@ public class InputCompanyNameFragmentDialog extends XXFDialogFragment {
         binding.tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String companyName = binding.etInputCompanyName.getText().toString().trim();
-                if ("".equals(companyName)) {
-                    ToastUtils.showToast("公司名称不能为空");
-                    return;
-                }
+                String companyName = binding.etInputCompanyName.getText().toString();
                 if (listener != null) {
                     listener.onInputCompanyName(companyName);
                 }

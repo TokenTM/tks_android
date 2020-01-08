@@ -293,7 +293,7 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
     @Override
     public void onIdentityDecrypt(ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         TokenTmClient.getService(IdentityService.class)
-                .decryptUDID(uDID.get(), phone.get(), smsCode.get(), identityPwd.get())
+                .loginUDID(uDID.get(), phone.get(), smsCode.get(), identityPwd.get())
                 .flatMap(new Function<Boolean, ObservableSource<BindUDID>>() {
 
                     @Override

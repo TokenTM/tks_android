@@ -1,18 +1,21 @@
 package com.tokentm.sdk.uidemo.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
+import com.tokentm.sdk.uidemo.dialog.InputCompanyNameFragmentDialog;
+import com.tokentm.sdk.uidemo.dialog.OnInputCompanyNameListener;
 import com.tokentm.sdk.uidemo.prensenter.IMainPresenter;
 import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
@@ -88,7 +91,21 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onOpenChainCertification() {
-        ChainCertificationActivity.launch(getActivity());
+        String did = DemoSp.getInstance().getLoginDID();
+        InputCompanyNameFragmentDialog.newInstance(new OnInputCompanyNameListener() {
+            @Override
+            public void onInputCompanyName(@NonNull String companyName) {
+                ComponentUtils.launchCompanyCertActivity(getActivity(),
+                        new CompanyCertParams.Builder(did, companyName).build(), new Consumer<ChainResult>() {
+                            @Override
+                            public void accept(ChainResult chainResult) throws Exception {
+                                if (chainResult.getTxHash() != null) {
+                                    ToastUtils.showToast("认证成功");
+                                }
+                            }
+                        });
+            }
+        }).show(getSupportFragmentManager(), InputCompanyNameFragmentDialog.class.getSimpleName());
     }
 
     @Override
