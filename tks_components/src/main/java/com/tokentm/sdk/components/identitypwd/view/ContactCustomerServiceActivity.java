@@ -16,6 +16,7 @@ import com.xxf.view.actiondialog.SystemUtils;
 /**
  * @author lqx  E-mail:herolqx@126.com
  * @Description 联系客服
+ * TODO 改成h5   https://bcard.tokentm.net/h5/share/relate-service.html
  */
 public class ContactCustomerServiceActivity extends BaseActivity {
 

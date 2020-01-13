@@ -13,6 +13,7 @@ import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.identitypwd.view.CertificationDetailsActivity;
 import com.tokentm.sdk.components.identitypwd.view.CertificationInstructionsActivity;
+import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.identitypwd.view.EnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.IdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
@@ -267,5 +268,29 @@ public class ComponentUtils {
     @SuppressLint("CheckResult")
     public static void launchCertificationDetailsActivity(FragmentActivity activity, String did) {
         CertificationDetailsActivity.launch(activity, did);
+    }
+
+    public static void launchChainCertification(FragmentActivity activity, String uTxHash, String cTxHash, String uDid, String cDid, Consumer<ChainResult> consumer) {
+        XXF.startActivityForResult(
+                activity,
+                ChainCertificationActivity.getLauncher(activity,
+                        uTxHash, cTxHash, uDid, cDid),
+                1002)
+                .filter(new Predicate<ActivityResult>() {
+                    @Override
+                    public boolean test(ActivityResult activityResult) throws Exception {
+                        return activityResult.isOk();
+                    }
+                })
+                .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
+                .take(1)
+                .map(new Function<ActivityResult, ChainResult>() {
+                    @Override
+                    public ChainResult apply(ActivityResult activityResult) throws Exception {
+                        return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .subscribe(consumer);
+
     }
 }

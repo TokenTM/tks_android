@@ -150,7 +150,7 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
     @SuppressLint("CheckResult")
     private void loadData() {
         TokenTmClient.getService(CertService.class)
-                .getUserCertStoreInfo(companyCertParams.getuDid())
+                .getLatestUserCertStoreInfo(companyCertParams.getuDid())
                 .flatMap(new Function<CertUserInfoStoreItem, ObservableSource<Bitmap>>() {
                     @Override
                     public ObservableSource<Bitmap> apply(CertUserInfoStoreItem certUserInfoStoreItem) throws Exception {

@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertificateService;
@@ -130,7 +129,6 @@ public class CertificationDetailsActivity extends BaseTitleBarActivity {
         binding.btCreateChainCertification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ChainCertificationActivity.launch(getActivity());
             }
         });
 

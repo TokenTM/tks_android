@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="presenter"
+            type="com.tokentm.sdk.components.identitypwd.presenter.IChainCertificationPresenter" />
+
+        <variable
+            name="stateLayoutVM"
+            type="com.xxf.view.databinding.statelayout.IStateLayoutVM" />
+
+        <variable
+            name="viewModel"
+            type="com.tokentm.sdk.components.identitypwd.viewmodel.ChainCertificationVm" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:drawableStart="@mipmap/tks_components_certification_instructions_rectangle"
+            android:drawablePadding="3dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="链信服务"
+            android:textColor="#ff374f66"
+            android:textSize="17dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_chain_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:text="@{viewModel.showChainServiceInfo}"
+            android:textColor="#ffff820e"
+            android:textSize="13dp"
+            android:visibility="@{viewModel.showChainServiceInfoView?View.VISIBLE:View.GONE}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#fff1f1f1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:drawableStart="@mipmap/tks_components_certification_instructions_rectangle"
+            android:drawablePadding="3dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="链信说明"
+            android:textColor="#ff374f66"
+            android:textSize="17dp" />
+
+        <com.xxf.view.loading.AlphaStateLayout
+            style="@style/style_alpha_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:emptyDesc="@{stateLayoutVM.getEmptyDesc()}"
+            bind:emptyIcon="@{stateLayoutVM.getEmptyIcon()}"
+            bind:errorDesc="@{stateLayoutVM.getErrorDesc()}"
+            bind:errorIcon="@{stateLayoutVM.getErrorIcon()}"
+            bind:layoutState="@{stateLayoutVM.getLayoutState()}"
+            bind:retryListener="@{stateLayoutVM.getRetryAction()}">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="19dp"
+                        android:layout_marginEnd="19dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="上链状态"
+                            android:textColor="#ff374f66"
+                            android:textSize="14sp" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:background="#FFFEEDED"
+                                android:drawableLeft="@mipmap/tks_components_ic_chain_state_fail"
+                                android:drawablePadding="5dp"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingStart="5dp"
+                                android:paddingTop="3dp"
+                                android:paddingEnd="5dp"
+                                android:paddingBottom="3dp"
+                                android:text="失败"
+                                android:textColor="#FFFA4343"
+                                android:textSize="12dp"
+                                android:visibility="@{(viewModel.chainIdentityState &amp;&amp; viewModel.chainCompanyState)?View.GONE:View.VISIBLE}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:background="#FFEEF9E9"
+                                android:drawableLeft="@mipmap/tks_components_icon_checked_green"
+                                android:drawablePadding="5dp"
+                                android:lineSpacingExtra="3dp"
+                                android:paddingStart="5dp"
+                                android:paddingTop="3dp"
+                                android:paddingEnd="5dp"
+                                android:paddingBottom="3dp"
+                                android:text="成功"
+                                android:textColor="#FF52C41B"
+                                android:textSize="12dp"
+                                android:visibility="@{(viewModel.chainIdentityState &amp;&amp; viewModel.chainCompanyState)?View.VISIBLE:View.GONE}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right|center_vertical"
+                                android:background="@drawable/tks_components_user_bg_grayline_btn_fa4343"
+                                android:onClick="@{()->presenter.retryChain()}"
+                                android:paddingStart="7dp"
+                                android:paddingTop="3dp"
+                                android:paddingEnd="7dp"
+                                android:paddingBottom="3dp"
+                                android:text="重新上链"
+                                android:textColor="#fffa4343"
+                                android:textSize="11sp"
+                                android:visibility="@{(viewModel.chainIdentityState &amp;&amp; viewModel.chainCompanyState)?View.GONE:View.VISIBLE}" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="8dp"
+                            android:text="因为网络通讯不稳定，需要输入身份密码重新上链"
+                            android:textColor="#ffff820e"
+                            android:textSize="13dp"
+                            android:visibility="@{(viewModel.chainIdentityState &amp;&amp; viewModel.chainCompanyState)?View.GONE:View.VISIBLE}" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="@{(viewModel.chainIdentityState &amp;&amp; viewModel.chainCompanyState)?View.VISIBLE:View.GONE}">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="19dp"
+                            android:layout_marginEnd="19dp"
+                            android:orientation="vertical">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#fff1f1f1" />
+
+                            <TextView
+                                android:id="@+id/tv_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="上链序号"
+                                android:textColor="#ff374f66"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:lineSpacingExtra="3dp"
+                                android:text="@{viewModel.txHash}"
+                                android:textColor="#ff737785"
+                                android:textSize="13sp"
+                                tools:text="0x0c8f89da973e6a130e29834af824f820x0c8f89da973e6a130e29834af824f82" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="19dp"
+                            android:layout_marginEnd="19dp"
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.showLoadMoreChainInfoView?View.GONE:View.VISIBLE}">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#fff1f1f1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="区块高度"
+                                android:textColor="#ff374f66"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:lineSpacingExtra="3dp"
+                                android:text="@{viewModel.blockNumber}"
+                                android:textColor="#ff737785"
+                                android:textSize="13sp"
+                                tools:text="7329742" />
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#fff1f1f1" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="时间戳"
+                                android:textColor="#ff374f66"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:lineSpacingExtra="3dp"
+                                android:text="@{viewModel.timesTamp}"
+                                android:textColor="#ff737785"
+                                android:textSize="13sp"
+                                tools:text="2019.12.24  18:30:20" />
+                        </LinearLayout>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="#fff"
+                            android:onClick="@{()->presenter.clickChainInfo()}">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="加载更多"
+                                android:textColor="#FF737785"
+                                android:textSize="12dp"
+                                android:visibility="@{viewModel.showLoadMoreChainInfoView?View.VISIBLE:View.GONE}" />
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="6dp"
+                                android:layout_gravity="center"
+                                android:src="@mipmap/tks_components_ic_pack_up"
+                                android:visibility="@{viewModel.showLoadMoreChainInfoView?View.GONE:View.VISIBLE}" />
+
+                        </FrameLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="#f1f1f1" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="19dp"
+                            android:layout_marginEnd="19dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="认证状态"
+                                android:textColor="#ff374f66"
+                                android:textSize="14sp" />
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="6dp"
+                                android:paddingBottom="6dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:background="#FFFEEDED"
+                                    android:drawableLeft="@mipmap/tks_components_ic_chain_state_fail"
+                                    android:drawablePadding="5dp"
+                                    android:lineSpacingExtra="3dp"
+                                    android:paddingStart="5dp"
+                                    android:paddingTop="3dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingBottom="3dp"
+                                    android:text="失败"
+                                    android:textColor="#FFFA4343"
+                                    android:textSize="12dp"
+                                    android:visibility="@{(viewModel.identityCertificationState&amp;&amp;viewModel.companyCertificationState)?View.GONE:View.VISIBLE}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:background="#FFEEF9E9"
+                                    android:drawableLeft="@mipmap/tks_components_icon_checked_green"
+                                    android:drawablePadding="5dp"
+                                    android:lineSpacingExtra="3dp"
+                                    android:paddingStart="5dp"
+                                    android:paddingTop="3dp"
+                                    android:paddingEnd="5dp"
+                                    android:paddingBottom="3dp"
+                                    android:text="成功"
+                                    android:textColor="#FF52C41B"
+                                    android:textSize="12dp"
+                                    android:visibility="@{(viewModel.identityCertificationState&amp;&amp;viewModel.companyCertificationState)?View.VISIBLE:View.GONE}" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:background="@drawable/tks_components_user_bg_grayline_btn_fa4343"
+                                    android:onClick="@{()->presenter.retryCertification()}"
+                                    android:paddingStart="7dp"
+                                    android:paddingTop="3dp"
+                                    android:paddingEnd="7dp"
+                                    android:paddingBottom="3dp"
+                                    android:text="再次认证"
+                                    android:textColor="#fffa4343"
+                                    android:textSize="11sp"
+                                    android:visibility="@{(viewModel.identityCertificationState&amp;&amp;viewModel.companyCertificationState)?View.GONE:View.VISIBLE}" />
+
+                            </FrameLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingBottom="8dp"
+                                android:text="@{viewModel.certificationFailDesc}"
+                                android:textColor="#ffff820e"
+                                android:textSize="13dp"
+                                android:visibility="@{(viewModel.identityCertificationState&amp;&amp;viewModel.companyCertificationState)?View.GONE:View.VISIBLE}" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:visibility="@{(viewModel.identityCertificationState&amp;&amp;viewModel.companyCertificationState)?View.VISIBLE:View.GONE}">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <View
+                                        android:layout_width="match_parent"
+                                        android:layout_height="1dp"
+                                        android:layout_marginTop="10dp"
+                                        android:background="#fff1f1f1" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10dp"
+                                        android:text="认证说明"
+                                        android:textColor="#ff374f66"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="6dp"
+                                        android:lineSpacingExtra="3dp"
+                                        android:text="链信认证将您提交的认证信息进行校验，认证结果加密上链存储。每项信息会生成数据指纹，方便第三方查询比对，确认可信性。"
+                                        android:textColor="#ff737785"
+                                        android:textSize="13sp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:visibility="@{viewModel.showLoadMoreCertificationInfoView?View.GONE:View.VISIBLE}">
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        android:visibility="@{viewModel.showIdentityName?View.VISIBLE:View.GONE}">
+
+                                        <View
+                                            android:layout_width="match_parent"
+                                            android:layout_height="1dp"
+                                            android:layout_marginTop="10dp"
+                                            android:background="#fff1f1f1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="10dp"
+                                            android:text="姓名:"
+                                            android:textColor="#ff374f66"
+                                            android:textSize="14sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="6dp"
+                                            android:lineSpacingExtra="3dp"
+                                            android:text="@{viewModel.identityName}"
+                                            android:textColor="#ff737785"
+                                            android:textSize="13sp"
+                                            tools:text="李峰峰" />
+
+                                        <View
+                                            android:layout_width="match_parent"
+                                            android:layout_height="1dp"
+                                            android:layout_marginTop="10dp"
+                                            android:background="#fff1f1f1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="10dp"
+                                            android:text="身份证号:"
+                                            android:textColor="#ff374f66"
+                                            android:textSize="14sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="6dp"
+                                            android:lineSpacingExtra="3dp"
+                                            android:text="@{viewModel.identityCode}"
+                                            android:textColor="#ff737785"
+                                            android:textSize="13sp"
+                                            tools:text="1311231441190182746" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        android:visibility="@{viewModel.showCompanyName?View.VISIBLE:View.GONE}">
+
+                                        <View
+                                            android:layout_width="match_parent"
+                                            android:layout_height="1dp"
+                                            android:layout_marginTop="10dp"
+                                            android:background="#fff1f1f1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="10dp"
+                                            android:text="企业名称:"
+                                            android:textColor="#ff374f66"
+                                            android:textSize="14sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="6dp"
+                                            android:lineSpacingExtra="3dp"
+                                            android:text="@{viewModel.companyName}"
+                                            android:textColor="#ff737785"
+                                            android:textSize="13sp"
+                                            tools:text="小米科技" />
+
+                                        <View
+                                            android:layout_width="match_parent"
+                                            android:layout_height="1dp"
+                                            android:layout_marginTop="10dp"
+                                            android:background="#fff1f1f1" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="10dp"
+                                            android:text="统一社会信用代码:"
+                                            android:textColor="#ff374f66"
+                                            android:textSize="14sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="6dp"
+                                            android:lineSpacingExtra="3dp"
+                                            android:text="@{viewModel.companyCode}"
+                                            android:textColor="#ff737785"
+                                            android:textSize="13sp"
+                                            tools:text="7234927459275987593457" />
+                                    </LinearLayout>
+                                </LinearLayout>
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="50dp"
+                                    android:background="#fff"
+                                    android:onClick="@{()->presenter.clickCertificationInfo()}">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:text="加载更多"
+                                        android:textColor="#FF737785"
+                                        android:textSize="12dp"
+                                        android:visibility="@{viewModel.showLoadMoreCertificationInfoView?View.VISIBLE:View.GONE}" />
+
+                                    <ImageView
+                                        android:layout_width="10dp"
+                                        android:layout_height="6dp"
+                                        android:layout_gravity="center"
+                                        android:src="@mipmap/tks_components_ic_pack_up"
+                                        android:visibility="@{viewModel.showLoadMoreCertificationInfoView?View.GONE:View.VISIBLE}" />
+                                </FrameLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+        </com.xxf.view.loading.AlphaStateLayout>
+    </LinearLayout>
+</layout>

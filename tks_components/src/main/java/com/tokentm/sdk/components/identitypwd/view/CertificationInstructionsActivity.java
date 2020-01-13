@@ -70,7 +70,7 @@ public class CertificationInstructionsActivity extends BaseTitleBarActivity {
     @SuppressLint("CheckResult")
     public void loadData( String did) {
         TokenTmClient.getService(CertService.class)
-                .getUserCertStoreInfo(did)
+                .getLatestUserCertStoreInfo(did)
                 .flatMap(new Function<CertUserInfoStoreItem, ObservableSource<ChainInfoDTO>>() {
                     @Override
                     public ObservableSource<ChainInfoDTO> apply(CertUserInfoStoreItem certUserInfoStoreItem) throws Exception {

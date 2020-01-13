@@ -40,6 +40,7 @@ import io.reactivex.functions.Consumer;
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 公司认证 提交文件
  * 返回值 @{@link com.tokentm.sdk.model.ChainResult}
+ * TODO 企业认证,营业执照法人认证问题,在认证的时候默认比对申请人的信息和法人是否匹配,如果不匹配是无法通过公司认证,待定(是否可以叫叫人代替法人认证)
  */
 public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
     /**
@@ -80,14 +81,18 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
             setTitle("组织认证");
         }
         String companyName = companyCertParams.getCompanyName();
+        String companyCreditCode = companyCertParams.getCompanyCreditCode();
         //当传过来的值是空,那就可编辑,否则不可编辑
         if (companyName == null || "".equals(companyName.trim())) {
             binding.companyNameTv.setFocusable(true);
         }else {
+            binding.companyNameTv.setText(companyName);
             binding.companyNameTv.setFocusable(false);
         }
-        binding.companyNameTv.setText(companyName);
-        binding.companyCreditCodeTv.setText(companyCertParams.getCompanyCreditCode());
+        if (companyCreditCode == null || "".equals(companyCreditCode.trim())) {
+            binding.companyCreditCodeTv.setText(companyCreditCode);
+        }
+
         //去空格和限制6个字
         binding.legalPersonNameTv.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter(), new InputFilter.LengthFilter(6)});
 
@@ -116,7 +121,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
 
     private void loadData() {
         TokenTmClient.getService(CertService.class)
-                .getUserCertStoreInfo(companyCertParams.getuDid())
+                .getLatestUserCertStoreInfo(companyCertParams.getuDid())
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(new Consumer<CertUserInfoStoreItem>() {
