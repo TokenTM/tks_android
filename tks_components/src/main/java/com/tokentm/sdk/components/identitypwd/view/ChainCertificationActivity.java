@@ -106,11 +106,17 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
 
 
     private void initView() {
-        setTitle("链信认证");
         uDid = getIntent().getStringExtra(KEY_U_DID);
         uTxHash = getIntent().getStringExtra(KEY_U_TX_HASH);
         cDid = getIntent().getStringExtra(KEY_C_DID);
         cTxHash = getIntent().getStringExtra(KEY_C_TX_HASH);
+        getTitleBar().setTitleBarTitle("链信认证")
+                .setTitleBarRightText("更多", new io.reactivex.functions.Action() {
+                    @Override
+                    public void run() {
+                        ChainServiceMoreActivity.launch(getActivity(),uDid);
+                    }
+                });
         ChainServiceAdapter chainServiceAdapter = new ChainServiceAdapter();
         List<ChainServiceModel> chainServiceModelList = new ArrayList<>();
         chainServiceModelList.add(new ChainServiceModel(R.mipmap.tks_components_identity_authentication, "身份认证", IDENTITY_AUTHENTICATION));
