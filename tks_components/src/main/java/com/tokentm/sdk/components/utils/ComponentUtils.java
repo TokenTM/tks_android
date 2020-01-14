@@ -14,6 +14,7 @@ import com.tokentm.sdk.components.identitypwd.model.BindUDID;
 import com.tokentm.sdk.components.identitypwd.view.CertificationDetailsActivity;
 import com.tokentm.sdk.components.identitypwd.view.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
+import com.tokentm.sdk.components.identitypwd.view.ChainCertificationOtherActivity;
 import com.tokentm.sdk.components.identitypwd.view.EnterpriseCertificationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.IdentityAuthenticationAlertDialog;
 import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
@@ -270,6 +271,16 @@ public class ComponentUtils {
         CertificationDetailsActivity.launch(activity, did);
     }
 
+    /**
+     * 查看自己 链信服务
+     *
+     * @param activity
+     * @param uTxHash
+     * @param cTxHash
+     * @param uDid
+     * @param cDid
+     * @param consumer
+     */
     public static void launchChainCertification(FragmentActivity activity, String uTxHash, String cTxHash, String uDid, String cDid, Consumer<ChainResult> consumer) {
         XXF.startActivityForResult(
                 activity,
@@ -291,6 +302,21 @@ public class ComponentUtils {
                     }
                 })
                 .subscribe(consumer);
+
+    }
+
+    /**
+     * 别人查看 链信服务
+     *
+     * @param activity
+     * @param oTxHash
+     * @param cTxHash
+     * @param oDid
+     * @param cDid
+     */
+    public static void launchChainCertificationOther(FragmentActivity activity, String oTxHash, String cTxHash, String oDid, String cDid) {
+        ChainCertificationOtherActivity.launch(activity,
+                oTxHash, cTxHash, oDid, cDid);
 
     }
 }

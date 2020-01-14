@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="stateLayoutVM"
+            type="com.xxf.view.databinding.statelayout.IStateLayoutVM" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        android:paddingBottom="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:drawableStart="@mipmap/tks_components_certification_instructions_rectangle"
+            android:drawablePadding="3dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:text="详情说明"
+            android:textColor="#ff374f66"
+            android:textSize="17dp" />
+
+        <com.xxf.view.loading.AlphaStateLayout
+            style="@style/style_alpha_state"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            bind:emptyDesc="@{stateLayoutVM.getEmptyDesc()}"
+            bind:emptyIcon="@{stateLayoutVM.getEmptyIcon()}"
+            bind:errorDesc="@{stateLayoutVM.getErrorDesc()}"
+            bind:errorIcon="@{stateLayoutVM.getErrorIcon()}"
+            bind:layoutState="@{stateLayoutVM.getLayoutState()}"
+            bind:retryListener="@{stateLayoutVM.getRetryAction()}">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_show_other_chain_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        </com.xxf.view.loading.AlphaStateLayout>
+    </LinearLayout>
+</layout>

@@ -10,6 +10,7 @@ public interface IMainPresenter {
      * 身份认证
      */
     void onIdentityAuthentication();
+
     /**
      * 身份说明
      */
@@ -19,6 +20,12 @@ public interface IMainPresenter {
      * 开启链信认证页面
      */
     void onOpenChainCertification();
+
+    /**
+     * 开启链信认证页面 别人查看
+     */
+    void onOpenChainCertificationOther();
+
     /**
      * 发货
      */

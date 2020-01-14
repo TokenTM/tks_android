@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.tokentm.sdk.components.identitypwd.model.ChainServiceOtherItem" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textColor="#ff374f66"
+                android:textSize="14sp"
+                tools:text="上链状态" />
+
+            <FrameLayout
+                android:id="@+id/fl_state"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_fail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="#FFFEEDED"
+                    android:drawableLeft="@mipmap/tks_components_ic_chain_state_fail"
+                    android:drawablePadding="5dp"
+                    android:lineSpacingExtra="3dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="3dp"
+                    android:text="失败"
+                    android:textColor="#FFFA4343"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_success"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="#FFEEF9E9"
+                    android:drawableLeft="@mipmap/tks_components_icon_checked_green"
+                    android:drawablePadding="5dp"
+                    android:lineSpacingExtra="3dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="3dp"
+                    android:text="成功"
+                    android:textColor="#FF52C41B"
+                    android:textSize="12dp" />
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="3dp"
+                android:paddingTop="6dp"
+                android:textColor="#ff737785"
+                android:textSize="13sp"
+                tools:text="0x0c8f89da973e6a130e29834af824f820x0c8f89da973e6a130e29834af824f82"
+                tools:visibility="gone" />
+
+            <View
+                android:id="@+id/view_line_1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="#fff1f1f1" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view_line_10"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="20dp"
+            android:background="#fff1f1f1" />
+    </LinearLayout>
+
+</layout>

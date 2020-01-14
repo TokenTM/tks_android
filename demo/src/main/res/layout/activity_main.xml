@@ -46,6 +46,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="链信认证" />
+            <View style="@style/MainPageLineStyle" />
+
+            <TextView
+                android:onClick="@{()->presenter.onOpenChainCertificationOther()}"
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="链信认证(别人查看)" />
 
             <View style="@style/MainPageDividerStyle" />
 

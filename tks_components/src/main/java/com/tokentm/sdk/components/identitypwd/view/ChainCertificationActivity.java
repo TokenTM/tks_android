@@ -193,8 +193,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                             viewModel.txHash.set(chainInfoDTO.getHash());
                             viewModel.blockNumber.set(chainInfoDTO.getBlockNumber());
                             viewModel.timesTamp.set(TimeUtils.formatUtc(chainInfoDTO.getTimestamp()));
-                            //TODO 要改成chainInfoDTO.isSuccess()
-                            viewModel.chainIdentityState.set(true);
+                            viewModel.chainIdentityState.set(chainInfoDTO.isSuccess());
                             //记录身份认证上链失败
                             viewModel.chainFailInfo.set(ChainCertificationVm.IDENTITY);
                             return viewModel.chainIdentityState.get();
@@ -210,8 +209,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                     .filter(new Predicate<ChainedContractStoreInfoDTO>() {
                         @Override
                         public boolean test(ChainedContractStoreInfoDTO chainedContractStoreInfoDTO) throws Exception {
-                            // TODO chainedContractStoreInfoDTO.isActived()
-                            viewModel.identityCertificationState.set(false);
+                            viewModel.identityCertificationState.set(chainedContractStoreInfoDTO.isActived());
                             //身份认证成功
                             if (viewModel.identityCertificationState.get()) {
                                 viewModel.identityName.set(chainedContractStoreInfoDTO.getClaimMap().get("name").getValue());
@@ -238,8 +236,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                             viewModel.txHash.set(chainInfoDTO.getHash());
                             viewModel.blockNumber.set(chainInfoDTO.getBlockNumber());
                             viewModel.timesTamp.set(TimeUtils.formatUtc(chainInfoDTO.getTimestamp()));
-                            //TODO chainInfoDTO.isSuccess()
-                            viewModel.chainCompanyState.set(true);
+                            viewModel.chainCompanyState.set(chainInfoDTO.isSuccess());
                             //记录企业认证上链失败
                             viewModel.chainFailInfo.set(ChainCertificationVm.COMPANY);
                             return viewModel.chainCompanyState.get();

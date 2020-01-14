@@ -89,27 +89,6 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
     @Override
     public void onOpenChainCertification() {
         String did = DemoSp.getInstance().getLoginDID();
-//        InputCompanyNameFragmentDialog.newInstance(new OnInputCompanyNameListener() {
-//            @Override
-//            public void onInputCompanyName(@NonNull String companyName) {
-//                ComponentUtils.launchCompanyCertActivity(getActivity(),
-//                        new CompanyCertParams.Builder(did, companyName).build(), new Consumer<ChainResult>() {
-//                            @Override
-//                            public void accept(ChainResult chainResult) throws Exception {
-//                                if (chainResult.getTxHash() != null) {
-//                                    ToastUtils.showToast("认证成功");
-//                                }
-//                            }
-//                        });
-//            }
-//        }).show(getSupportFragmentManager(), InputCompanyNameFragmentDialog.class.getSimpleName());
-//        ContactCustomerServiceActivity.launch(getActivity(),"d");
-//        ComponentUtils.launchChangeIdentityPwd(getActivity(), did, new Consumer<Boolean>() {
-//            @Override
-//            public void accept(Boolean aBoolean) throws Exception {
-//                ToastUtils.showToast(aBoolean ? "修改成功" : "修改失败");
-//            }
-//        });
         //0x787a723e6aaa64b4de6e1386e4222cfbc5a9f3438517d6cf67748379fee52b35
         //did:ttm:c33e988cfad04538babdd6bc18a41e81499696966ecba9b5140b39c2
         ComponentUtils.launchChainCertification(getActivity(),
@@ -125,6 +104,13 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onOpenChainCertificationOther() {
+        ComponentUtils.launchChainCertificationOther(getActivity(),
+                DemoSp.getInstance().getString(DemoSp.SP_KEY_IDENTITY_TX_HASH), "0x787a723e6aaa64b4de6e1386e4222cfbc5a9f3438517d6cf67748379fee52b35", did,
+                "did:ttm:c33e988cfad04538babdd6bc18a41e81499696966ecba9b5140b39c2");
     }
 
     @Override

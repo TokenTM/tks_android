@@ -76,7 +76,7 @@
             android:drawablePadding="3dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="链信说明"
+            android:text="详情说明"
             android:textColor="#ff374f66"
             android:textSize="17dp" />
 
