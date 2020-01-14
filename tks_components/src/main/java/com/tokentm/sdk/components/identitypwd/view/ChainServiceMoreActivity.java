@@ -74,7 +74,7 @@ public class ChainServiceMoreActivity extends BaseTitleBarActivity {
         binding.tvContactCustomerService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                WebViewActivity.launch(getActivity(),"https://bcard.tokentm.net/h5/share/relate-service.html");
             }
         });
     }
