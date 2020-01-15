@@ -17,6 +17,7 @@ import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityChainCertificationBinding;
 import com.tokentm.sdk.components.identitypwd.adapter.ChainServiceAdapter;
+import com.tokentm.sdk.components.identitypwd.model.CertificationResultParams;
 import com.tokentm.sdk.components.identitypwd.model.ChainServiceModel;
 import com.tokentm.sdk.components.identitypwd.presenter.IChainCertificationPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.ChainCertificationVm;
@@ -65,6 +66,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
     private static final String KEY_U_DID = "u_did";
     private static final String KEY_C_DID = "c_did";
 
+    private CertificationResultParams.Builder certificationResultParamsBuilder = new CertificationResultParams.Builder();
     private String uDid;
     private String uTxHash;
     private String cDid;
@@ -144,8 +146,9 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                     , new Consumer<ChainResult>() {
                                         @Override
                                         public void accept(ChainResult chainResult) throws Exception {
+                                            certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
                                             //将结果返回
-                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                             finish();
                                         }
                                     });
@@ -167,7 +170,8 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                     , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                         @Override
                                         public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
-                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                                            certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                             finish();
                                         }
                                     });
@@ -331,7 +335,8 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                 .subscribe(new Consumer<ChainResult>() {
                                     @Override
                                     public void accept(ChainResult chainResult) throws Exception {
-                                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                                        certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                         finish();
                                     }
                                 });
@@ -344,7 +349,8 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                 .subscribe(new Consumer<ChainResult>() {
                                     @Override
                                     public void accept(ChainResult chainResult) throws Exception {
-                                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                                        certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                         finish();
                                     }
                                 });
@@ -365,7 +371,8 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                         , new Consumer<ChainResult>() {
                             @Override
                             public void accept(ChainResult chainResult) throws Exception {
-                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                                certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                 finish();
                             }
                         });
@@ -377,7 +384,8 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                         , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                             @Override
                             public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
-                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                                certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                 finish();
                             }
                         });

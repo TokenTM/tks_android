@@ -17,12 +17,14 @@ public class DemoSp extends SharedPreferenceWrapper {
      */
     public static final String SP_KEY_GOODS_ID = "sp_key_goods_id";
     public static final String SP_KEY_GOODS_NAME = "sp_key_goods_name";
-    public static final String SP_KEY_GOODS_NUMBER= "sp_key_goods_number";
+    public static final String SP_KEY_GOODS_NUMBER = "sp_key_goods_number";
     /**
      * 发证得到的证书id
      */
     public static final String SP_KEY_CERTIFICATION_CERTIFICATE_ID = "sp_key_certification_certificate_id";
     public static final String SP_KEY_COMPANY_TX_HASH = "sp_key_company_tx_hash";
+    public static final String SP_KEY_COMPANY_DID = "sp_key_company_did";
+    public static final String SP_KEY_IDENTITY_DID = "sp_key_identity_did";
     public static final String SP_KEY_IDENTITY_TX_HASH = "sp_key_identity_tx_hash";
     public static final String SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT = "sp_key_certification_certificate_content";
     public static final String SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA = "sp_key_certification_certificate_extra_data";

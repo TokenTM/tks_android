@@ -1,25 +1,26 @@
 package com.tokentm.sdk.uidemo.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
+import com.tokentm.sdk.components.identitypwd.model.CertificationResultParams;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
-import com.tokentm.sdk.source.CertService;
-import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
+import com.tokentm.sdk.uidemo.dialog.InputCompanyNameFragmentDialog;
+import com.tokentm.sdk.uidemo.dialog.InputIdentityAndCompanyParamsDialog;
+import com.tokentm.sdk.uidemo.dialog.OnInputCompanyNameListener;
+import com.tokentm.sdk.uidemo.dialog.OnInputIdentityCompanyparamsListener;
 import com.tokentm.sdk.uidemo.prensenter.IMainPresenter;
-import com.xxf.arch.XXF;
 import com.xxf.arch.utils.ToastUtils;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -46,18 +47,6 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
     protected void onResume() {
         super.onResume();
         did = DemoSp.getInstance().getLoginDID();
-        TokenTmClient.getService(CertService.class)
-                .isUserCert(did)
-                .compose(XXF.bindToLifecycle(getActivity()))
-                .compose(XXF.bindToErrorNotice())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        binding.tvIdentityAuthentication.setVisibility(aBoolean ? View.VISIBLE : View.GONE);
-                    }
-                });
-
     }
 
     private void initView() {
@@ -71,59 +60,61 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                 , new UserCertByIDCardParams.Builder(did)
                         .setUserName("")
                         .setUserIDCard("")
-                        .build(), new Consumer<ChainResult>() {
+                        .build()
+                , new Consumer<ChainResult>() {
                     @Override
                     public void accept(ChainResult chainResult) throws Exception {
-                        if (chainResult.getTxHash() != null && !"".equals(chainResult.getTxHash())) {
-                            DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_TX_HASH, chainResult.getTxHash());
-                            ToastUtils.showToast("认证成功");
-                        } else {
-                            ToastUtils.showToast("认证失败");
-                        }
+                        saveIdentityCertification(chainResult);
+
                     }
                 });
     }
 
     @Override
     public void onCompanyCertification() {
-        ComponentUtils.launchCompanyCertActivity(getActivity(), new CompanyCertParams.Builder(did, "fdfd").build()
-                , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
-                    @Override
-                    public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
-
-                    }
-                });
-    }
-
-    @Override
-    public void onIdentityDescription() {
-        ComponentUtils.launchCertificationInstructionsActivity(getActivity(), did);
+        InputCompanyNameFragmentDialog.newInstance(new OnInputCompanyNameListener() {
+            @Override
+            public void onInputCompanyName(@NonNull String companyName) {
+                ComponentUtils.launchCompanyCertActivity(getActivity(), new CompanyCertParams.Builder(did, companyName).build()
+                        , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
+                            @Override
+                            public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
+                                saveICompanyCertification(chainResult);
+                            }
+                        });
+            }
+        }).show(getSupportFragmentManager(), InputCompanyNameFragmentDialog.class.getName());
     }
 
     @Override
     public void onOpenChainCertification() {
-        //0x787a723e6aaa64b4de6e1386e4222cfbc5a9f3438517d6cf67748379fee52b35
-        //did:ttm:c33e988cfad04538babdd6bc18a41e81499696966ecba9b5140b39c2
-        ComponentUtils.launchChainCertification(getActivity(),
-                DemoSp.getInstance().getString(DemoSp.SP_KEY_IDENTITY_TX_HASH), "0x787a723e6aaa64b4de6e1386e4222cfbc5a9f3438517d6cf67748379fee52b35", did,
-                "did:ttm:c33e988cfad04538babdd6bc18a41e81499696966ecba9b5140b39c2", new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
+        String uTxHash = DemoSp.getInstance().getString(DemoSp.SP_KEY_IDENTITY_TX_HASH);
+        String cTxHash = DemoSp.getInstance().getString(DemoSp.SP_KEY_COMPANY_TX_HASH);
+        String uDid = DemoSp.getInstance().getString(DemoSp.SP_KEY_IDENTITY_DID);
+        String cDid = DemoSp.getInstance().getString(DemoSp.SP_KEY_COMPANY_DID);
+        ComponentUtils.launchChainCertificationActivity(getActivity(),
+                uTxHash, cTxHash, uDid, cDid, new Consumer<CertificationResultParams>() {
                     @Override
-                    public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
-                        if (chainResult.getTxHash() != null && !"".equals(chainResult.getTxHash())) {
-                            DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_TX_HASH, chainResult.getTxHash());
-                            ToastUtils.showToast("认证成功");
-                        } else {
-                            ToastUtils.showToast("认证失败");
-                        }
+                    public void accept(CertificationResultParams certificationResultParams) throws Exception {
+                        saveIdentityCertification(certificationResultParams.getIdentityCertificationResult());
+                        saveICompanyCertification(certificationResultParams.getCompanyCertificationResult());
                     }
                 });
     }
 
     @Override
     public void onOpenChainCertificationOther() {
-        ComponentUtils.launchChainCertificationOther(getActivity(),
-                DemoSp.getInstance().getString(DemoSp.SP_KEY_IDENTITY_TX_HASH), "0x787a723e6aaa64b4de6e1386e4222cfbc5a9f3438517d6cf67748379fee52b35", did,
-                "did:ttm:c33e988cfad04538babdd6bc18a41e81499696966ecba9b5140b39c2");
+        InputIdentityAndCompanyParamsDialog.newInstance(new OnInputIdentityCompanyparamsListener() {
+            @Override
+            public void getIdentityCompanyParams(@NonNull String identityTxHash, @NonNull String companyTxHash, @NonNull String identityDid, @NonNull String companyDid) {
+                ComponentUtils.launchChainCertificationOther(getActivity()
+                        , identityTxHash
+                        , companyTxHash
+                        , identityDid
+                        , companyDid);
+            }
+        }).show(getSupportFragmentManager(), InputIdentityAndCompanyParamsDialog.class.getName());
+
     }
 
     @Override
@@ -131,7 +122,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
         ComponentUtils.showIdentityCertificationDialogNotForce(getActivity(), new UserCertByIDCardParams.Builder(did).build(), new Consumer<ChainResult>() {
             @Override
             public void accept(ChainResult chainResult) throws Exception {
-
+                saveIdentityCertification(chainResult);
             }
         });
     }
@@ -141,15 +132,11 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
         ComponentUtils.showIdentityAndCompanyCertificationDialogNotForce(getActivity()
                 , new UserCertByIDCardParams.Builder(did).build()
                 , new CompanyCertParams.Builder(did, "").build()
-                , new Consumer<ChainResult>() {
+                , new Consumer<CertificationResultParams>() {
                     @Override
-                    public void accept(ChainResult chainResult) throws Exception {
-                        XXF.getLogger().d(chainResult.toString() + "身份");
-                    }
-                }, new Consumer<ChainResult>() {
-                    @Override
-                    public void accept(ChainResult chainResult) throws Exception {
-                        XXF.getLogger().d(chainResult.toString() + "企业");
+                    public void accept(CertificationResultParams certificationResultParams) throws Exception {
+                        saveIdentityCertification(certificationResultParams.getIdentityCertificationResult());
+                        saveICompanyCertification(certificationResultParams.getCompanyCertificationResult());
                     }
                 });
     }
@@ -172,7 +159,8 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onGoodsRecord() {
-        ComponentUtils.launchPropertyRightsTransferRecordsActivity(getActivity(), DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID));
+        String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
+        ComponentUtils.launchPropertyRightsTransferRecordsActivity(getActivity(), goodsId);
     }
 
     @Override
@@ -217,4 +205,29 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
         LoginOrRegisterActivity.launch(getActivity());
         finish();
     }
+
+    private void saveIdentityCertification(ChainResult chainResult) {
+        if (chainResult != null) {
+            if (chainResult.getTxHash() != null && !"".equals(chainResult.getTxHash())) {
+                DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_TX_HASH, chainResult.getTxHash());
+                DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_DID, chainResult.getDid());
+                ToastUtils.showToast("身份认证成功");
+            } else {
+                ToastUtils.showToast("身份认证失败");
+            }
+        }
+    }
+
+    private void saveICompanyCertification(ChainCertResult<CompanyCertInfoStoreItem> companyCertificationResult) {
+        if (companyCertificationResult != null) {
+            if (companyCertificationResult.getTxHash() != null && !"".equals(companyCertificationResult.getTxHash())) {
+                DemoSp.getInstance().putString(DemoSp.SP_KEY_COMPANY_TX_HASH, companyCertificationResult.getTxHash());
+                DemoSp.getInstance().putString(DemoSp.SP_KEY_COMPANY_DID, companyCertificationResult.getDid());
+                ToastUtils.showToast("企业认证成功");
+            } else {
+                ToastUtils.showToast("企业认证失败");
+            }
+        }
+    }
+
 }

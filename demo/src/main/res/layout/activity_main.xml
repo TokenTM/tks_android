@@ -40,16 +40,6 @@
             <View style="@style/MainPageLineStyle" />
 
             <TextView
-                android:id="@+id/tv_identity_authentication"
-                style="@style/MainPageTextViewStyle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="@{()->presenter.onIdentityDescription()}"
-                android:text="身份说明" />
-
-            <View style="@style/MainPageLineStyle" />
-
-            <TextView
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -143,7 +133,6 @@
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:onClick="@{()->presenter.onBackup()}"
                 android:text="备份" />
 
@@ -153,7 +142,6 @@
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:onClick="@{()->presenter.onGetBackup()}"
                 android:text="获取备份" />
 
@@ -163,7 +151,6 @@
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:onClick="@{()->presenter.onLogout()}"
                 android:text="退出登录" />
 

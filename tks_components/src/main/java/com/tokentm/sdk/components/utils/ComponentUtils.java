@@ -11,8 +11,7 @@ import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.identitypwd.model.BindUDID;
-import com.tokentm.sdk.components.identitypwd.view.CertificationDetailsActivity;
-import com.tokentm.sdk.components.identitypwd.view.CertificationInstructionsActivity;
+import com.tokentm.sdk.components.identitypwd.model.CertificationResultParams;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationOtherActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityAndCompanyCertificationDialog;
@@ -31,7 +30,6 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
-import io.reactivex.ObservableSource;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -164,58 +162,26 @@ public class ComponentUtils {
      *
      * @param activity
      */
-    public static void showIdentityAndCompanyCertificationDialogNotForce(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, CompanyCertParams companyCertParams, Consumer<ChainResult> identityCertificationResult, Consumer<ChainResult> companyCertificationResult) {
+    public static void showIdentityAndCompanyCertificationDialogNotForce(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, CompanyCertParams companyCertParams, Consumer<CertificationResultParams> certificationResultParamsConsumer) {
         new IdentityAndCompanyCertificationDialog(activity, new BiConsumer<DialogInterface, Boolean>() {
             @Override
             public void accept(DialogInterface dialogInterface, Boolean aBoolean) throws Exception {
                 //启动身份认证,非强制
                 if (aBoolean) {
-                    XXF.startActivityForResult(
-                            activity,
-                            UserCertByIDCardActivity.getLauncher(activity,
-                                    new UserCertByIDCardParams.Builder(userCertByIDCardParams).build()
-                            ),
-                            7100)
-                            .filter(new Predicate<ActivityResult>() {
+                    launchUserCertActivity(activity, userCertByIDCardParams, new Consumer<ChainResult>() {
+                        @Override
+                        public void accept(ChainResult chainResult) throws Exception {
+                            CertificationResultParams.Builder certificationResultParams = new CertificationResultParams.Builder();
+                            certificationResultParams.setIdentityCertificationResult(chainResult);
+                            launchCompanyCertActivity(activity, companyCertParams, new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                 @Override
-                                public boolean test(ActivityResult activityResult) throws Exception {
-                                    return activityResult.isOk();
+                                public void accept(ChainCertResult<CompanyCertInfoStoreItem> companyCertInfoStoreItemChainCertResult) throws Exception {
+                                    certificationResultParams.setCompanyCertificationResult(companyCertInfoStoreItemChainCertResult);
+                                    certificationResultParamsConsumer.accept(certificationResultParams.build());
                                 }
-                            })
-                            .map(new Function<ActivityResult, ChainResult>() {
-                                @Override
-                                public ChainResult apply(ActivityResult activityResult) throws Exception {
-                                    return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
-                                }
-                            })
-                            .take(1)
-                            .doOnNext(identityCertificationResult)
-                            .flatMap(new Function<ChainResult, ObservableSource<ChainResult>>() {
-                                @Override
-                                public ObservableSource<ChainResult> apply(ChainResult chainResult) throws Exception {
-                                    return XXF.startActivityForResult(
-                                            activity,
-                                            CompanyCertSubmitFileActivity.getLauncher(activity,
-                                                    new CompanyCertParams.Builder(companyCertParams)
-                                                            .setCompanyType(CompanyType.TYPE_COMPANY)
-                                                            .build()),
-                                            1001)
-                                            .filter(new Predicate<ActivityResult>() {
-                                                @Override
-                                                public boolean test(ActivityResult activityResult) throws Exception {
-                                                    return activityResult.isOk();
-                                                }
-                                            })
-                                            .map(new Function<ActivityResult, ChainResult>() {
-                                                @Override
-                                                public ChainResult apply(ActivityResult activityResult) throws Exception {
-                                                    return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
-                                                }
-                                            })
-                                            .take(1);
-                                }
-                            })
-                            .subscribe(companyCertificationResult);
+                            });
+                        }
+                    });
                 }
             }
         }).show();
@@ -315,26 +281,6 @@ public class ComponentUtils {
     }
 
     /**
-     * 启动 认证说明 页面
-     *
-     * @param activity
-     */
-    @SuppressLint("CheckResult")
-    public static void launchCertificationInstructionsActivity(FragmentActivity activity, String did) {
-        CertificationInstructionsActivity.launch(activity, did);
-    }
-
-    /**
-     * 启动 认证详情 页面
-     *
-     * @param activity
-     */
-    @SuppressLint("CheckResult")
-    public static void launchCertificationDetailsActivity(FragmentActivity activity, String did) {
-        CertificationDetailsActivity.launch(activity, did);
-    }
-
-    /**
      * 查看自己 链信服务
      *
      * @param activity
@@ -344,7 +290,7 @@ public class ComponentUtils {
      * @param cDid
      * @param consumer
      */
-    public static void launchChainCertification(FragmentActivity activity, String uTxHash, String cTxHash, String uDid, String cDid, Consumer<ChainCertResult<CompanyCertInfoStoreItem>> consumer) {
+    public static void launchChainCertificationActivity(FragmentActivity activity, String uTxHash, String cTxHash, String uDid, String cDid, Consumer<CertificationResultParams> consumer) {
         XXF.startActivityForResult(
                 activity,
                 ChainCertificationActivity.getLauncher(activity,
@@ -358,10 +304,10 @@ public class ComponentUtils {
                 })
                 .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .take(1)
-                .map(new Function<ActivityResult, ChainCertResult<CompanyCertInfoStoreItem>>() {
+                .map(new Function<ActivityResult, CertificationResultParams>() {
                     @Override
-                    public ChainCertResult<CompanyCertInfoStoreItem> apply(ActivityResult activityResult) throws Exception {
-                        return (ChainCertResult<CompanyCertInfoStoreItem>) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                    public CertificationResultParams apply(ActivityResult activityResult) throws Exception {
+                        return (CertificationResultParams) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
                 .subscribe(consumer);

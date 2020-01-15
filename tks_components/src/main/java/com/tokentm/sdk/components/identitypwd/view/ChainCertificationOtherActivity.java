@@ -112,9 +112,9 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
      */
     @SuppressLint("CheckResult")
     private void getChainInfo() {
-        List<ChainServiceOtherItem> chainItems = new ArrayList<>();
-        List<ChainServiceOtherItem> certificationItems = new ArrayList<>();
         if (!TextUtils.isEmpty(oTxHash) && !TextUtils.isEmpty(cTxHash) && !TextUtils.isEmpty(oDid) && !TextUtils.isEmpty(cDid)) {
+            List<ChainServiceOtherItem> chainItems = new ArrayList<>();
+            List<ChainServiceOtherItem> certificationItems = new ArrayList<>();
             //1. 判断身份上链状态
             TokenTmClient.getService(ChainService.class)
                     .getChainInfo(oTxHash)
@@ -241,5 +241,6 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
             //数据为空
             stateLayoutVM.setLayoutState(ViewState.VIEW_STATE_EMPTY);
         }
+
     }
 }

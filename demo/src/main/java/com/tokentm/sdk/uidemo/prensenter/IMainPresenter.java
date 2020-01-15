@@ -16,11 +16,6 @@ public interface IMainPresenter {
     void onCompanyCertification();
 
     /**
-     * 身份说明
-     */
-    void onIdentityDescription();
-
-    /**
      * 开启链信认证页面
      */
     void onOpenChainCertification();

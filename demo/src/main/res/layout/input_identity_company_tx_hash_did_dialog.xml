@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_dp_15"
+            android:layout_marginEnd="@dimen/base_dp_15"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/base_dp_10"
+            android:paddingBottom="@dimen/base_dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户txHash"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/et_identity_tx_hash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_dp_15"
+                android:background="@null"
+                android:hint="请输入用户txHash"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_dp_1"
+            android:background="@color/base_color_DDDDDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_dp_15"
+            android:layout_marginEnd="@dimen/base_dp_15"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/base_dp_10"
+            android:paddingBottom="@dimen/base_dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="企业txHash"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/et_company_tx_hash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_dp_15"
+                android:background="@null"
+                android:hint="请输入企业txHash"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_dp_1"
+            android:background="@color/base_color_DDDDDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_dp_15"
+            android:layout_marginEnd="@dimen/base_dp_15"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/base_dp_10"
+            android:paddingBottom="@dimen/base_dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="用户did"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/et_identity_did"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_dp_15"
+                android:background="@null"
+                android:hint="请输入用户did"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_dp_1"
+            android:background="@color/base_color_DDDDDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_dp_15"
+            android:layout_marginEnd="@dimen/base_dp_15"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/base_dp_10"
+            android:paddingBottom="@dimen/base_dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="企业did"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/et_company_did"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_dp_15"
+                android:background="@null"
+                android:hint="请输入企业did"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_dp_1"
+            android:background="@color/base_color_DDDDDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_dp_50"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@color/base_color_999999"
+                android:textSize="@dimen/base_dp_18"
+                tools:text="取消" />
+
+            <View
+                android:layout_width="@dimen/base_dp_1"
+                android:layout_height="match_parent"
+                android:background="@color/base_color_DDDDDD" />
+
+            <TextView
+                android:id="@+id/tv_ok"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/base_color_00c1ce"
+                android:textSize="@dimen/base_dp_18" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+</layout>
