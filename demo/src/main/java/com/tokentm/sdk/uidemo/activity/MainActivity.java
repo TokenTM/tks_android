@@ -158,9 +158,14 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
     }
 
     @Override
+    public void onTransferGoods() {
+
+    }
+
+    @Override
     public void onGoodsRecord() {
         String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
-        ComponentUtils.launchPropertyRightsTransferRecordsActivity(getActivity(), goodsId);
+        ComponentUtils.launchGoodsTransferRecordsActivity(getActivity(), goodsId);
     }
 
     @Override

@@ -97,6 +97,15 @@
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{()->presenter.onTransferGoods()}"
+                android:text="转移物品" />
+
+            <View style="@style/MainPageLineStyle" />
+
+            <TextView
+                style="@style/MainPageTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:onClick="@{()->presenter.onGoodsRecord()}"
                 android:text="物权转移记录" />
 

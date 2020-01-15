@@ -21,9 +21,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tokentm.sdk.uidemo.activity.DidDemoActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.tokentm.sdk.uidemo.activity.DeliverGoodsActivity"
             android:screenOrientation="portrait" />
         <activity

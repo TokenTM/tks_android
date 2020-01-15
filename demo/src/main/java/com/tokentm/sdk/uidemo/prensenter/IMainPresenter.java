@@ -10,7 +10,8 @@ public interface IMainPresenter {
      * 身份认证
      */
     void onIdentityCertification();
- /**
+
+    /**
      * 企业认证
      */
     void onCompanyCertification();
@@ -44,6 +45,11 @@ public interface IMainPresenter {
      * 收货
      */
     void onReceiveGoods();
+
+    /**
+     * 转换货物
+     */
+    void onTransferGoods();
 
     /**
      * 物权转移记录

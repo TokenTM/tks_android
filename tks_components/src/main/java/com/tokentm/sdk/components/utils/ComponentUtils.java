@@ -45,7 +45,7 @@ public class ComponentUtils {
 
     /**
      * 启动身份确认页面
-     *
+     * 已记录到doc/勿动
      * @param activity
      * @param userPhone
      * @param consumer  返回uDID
@@ -75,7 +75,7 @@ public class ComponentUtils {
 
     /**
      * 忘记身份密码
-     *
+     * 已记录到doc/勿动
      * @param activity
      * @param uDID
      */
@@ -110,6 +110,7 @@ public class ComponentUtils {
 
     /**
      * 修改身份密码
+     * 已记录到doc/勿动
      */
     public static void launchChangeIdentityPwd(FragmentActivity activity, String did, Consumer<Boolean> consumer) {
         XXF.startActivityForResult(activity,
@@ -135,7 +136,7 @@ public class ComponentUtils {
 
     /**
      * show 身份密码输入框dialog
-     *
+     * 已记录到doc/勿动
      * @param activity
      * @param uDID
      * @param dialogConsumer
@@ -159,7 +160,7 @@ public class ComponentUtils {
 
     /**
      * show 身份认证和企业认证 dialog  非强制
-     *
+     * 已记录doc
      * @param activity
      */
     public static void showIdentityAndCompanyCertificationDialogNotForce(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, CompanyCertParams companyCertParams, Consumer<CertificationResultParams> certificationResultParamsConsumer) {
@@ -189,7 +190,7 @@ public class ComponentUtils {
 
     /**
      * show 身份认证 dialog  非强制
-     *
+     * 已记录doc
      * @param activity
      * @param consumer
      */
@@ -207,7 +208,7 @@ public class ComponentUtils {
 
     /**
      * 启动用户实名认证 页面
-     *
+     * 已记录doc
      * @param activity
      * @param userCertByIDCardParams
      */
@@ -239,7 +240,7 @@ public class ComponentUtils {
 
     /**
      * 启动企业 页面
-     *
+     * 已记录doc
      * @param activity
      * @param companyCertParams
      * @param consumer
@@ -272,17 +273,17 @@ public class ComponentUtils {
 
     /**
      * 启动 物权转移 页面
-     *
+     * 已记录doc
      * @param activity
      */
     @SuppressLint("CheckResult")
-    public static void launchPropertyRightsTransferRecordsActivity(FragmentActivity activity, String id) {
+    public static void launchGoodsTransferRecordsActivity(FragmentActivity activity, String id) {
         PropertyRightsTransferRecordsActivity.launch(activity, id);
     }
 
     /**
      * 查看自己 链信服务
-     *
+     * 已记录doc
      * @param activity
      * @param uTxHash
      * @param cTxHash
@@ -315,8 +316,8 @@ public class ComponentUtils {
     }
 
     /**
-     * 别人查看 链信服务
-     *
+     * 查看别人链信服务
+     * 已记录doc
      * @param activity
      * @param oTxHash
      * @param cTxHash
