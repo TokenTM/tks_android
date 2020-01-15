@@ -186,6 +186,10 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                         public void accept(DialogInterface dialogInterface, String pwd) throws Exception {
                             dialogInterface.dismiss();
                             String companyCreditCode = binding.companyCreditCodeTv.getText().toString().trim();
+                            //注意 接口不让传递为""这样的空串,否则报签名问题
+                            if (TextUtils.isEmpty(companyCreditCode)) {
+                                companyCreditCode = null;
+                            }
                             TokenTmClient.getService(CertService.class)
                                     .companyCert(companyCertParams.getuDid(),
                                             pwd,
