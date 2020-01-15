@@ -1,7 +1,7 @@
 package com.tokentm.sdk.uidemo.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
@@ -18,11 +18,11 @@ import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.uidemo.dialog.InputCompanyNameFragmentDialog;
 import com.tokentm.sdk.uidemo.dialog.InputIdentityAndCompanyParamsDialog;
-import com.tokentm.sdk.uidemo.dialog.OnInputCompanyNameListener;
-import com.tokentm.sdk.uidemo.dialog.OnInputIdentityCompanyparamsListener;
+import com.tokentm.sdk.uidemo.dialog.InputIdentityCompanyParams;
 import com.tokentm.sdk.uidemo.prensenter.IMainPresenter;
 import com.xxf.arch.utils.ToastUtils;
 
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -73,9 +73,9 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onCompanyCertification() {
-        InputCompanyNameFragmentDialog.newInstance(new OnInputCompanyNameListener() {
+        new InputCompanyNameFragmentDialog(getActivity(), new BiConsumer<DialogInterface, String>() {
             @Override
-            public void onInputCompanyName(@NonNull String companyName) {
+            public void accept(DialogInterface dialogInterface, String companyName) throws Exception {
                 ComponentUtils.launchCompanyCertActivity(getActivity(),
                         new CompanyCertParams.Builder(did, companyName)
                                 .setCompanyType(CompanyType.TYPE_COMPANY)
@@ -87,7 +87,7 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                             }
                         });
             }
-        }).show(getSupportFragmentManager(), InputCompanyNameFragmentDialog.class.getName());
+        }).show();
     }
 
     @Override
@@ -108,17 +108,16 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onOpenChainCertificationOther() {
-        InputIdentityAndCompanyParamsDialog.newInstance(new OnInputIdentityCompanyparamsListener() {
+        new InputIdentityAndCompanyParamsDialog(getActivity(), new BiConsumer<DialogInterface, InputIdentityCompanyParams>() {
             @Override
-            public void getIdentityCompanyParams(@NonNull String identityTxHash, @NonNull String companyTxHash, @NonNull String identityDid, @NonNull String companyDid) {
+            public void accept(DialogInterface dialogInterface, InputIdentityCompanyParams inputIdentityCompanyParams) throws Exception {
                 ComponentUtils.launchChainCertificationOther(getActivity()
-                        , identityTxHash
-                        , companyTxHash
-                        , identityDid
-                        , companyDid);
+                        , inputIdentityCompanyParams.getIdentityTxHash()
+                        , inputIdentityCompanyParams.getCompanyTxHash()
+                        , inputIdentityCompanyParams.getIdentityDid()
+                        , inputIdentityCompanyParams.getCompanyDid());
             }
-        }).show(getSupportFragmentManager(), InputIdentityAndCompanyParamsDialog.class.getName());
-
+        }).show();
     }
 
     @Override

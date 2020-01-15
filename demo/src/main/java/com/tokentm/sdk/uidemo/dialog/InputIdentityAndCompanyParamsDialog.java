@@ -1,37 +1,29 @@
 package com.tokentm.sdk.uidemo.dialog;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
-import com.tokentm.sdk.uidemo.R;
+import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.uidemo.databinding.InputIdentityCompanyTxHashDidDialogBinding;
-import com.xxf.arch.fragment.XXFDialogFragment;
 import com.xxf.arch.utils.ToastUtils;
+
+import io.reactivex.functions.BiConsumer;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
  * @Description 查看他人链信认证的时候, 调用
  */
-public class InputIdentityAndCompanyParamsDialog extends XXFDialogFragment {
+public class InputIdentityAndCompanyParamsDialog extends BaseAlertDialog<InputIdentityCompanyParams> {
 
-    private final static String LISTENER = "listener";
     InputIdentityCompanyTxHashDidDialogBinding binding;
 
-    public static InputIdentityAndCompanyParamsDialog newInstance(OnInputIdentityCompanyparamsListener listener) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(LISTENER, listener);
-        InputIdentityAndCompanyParamsDialog inputCompanyNameFragmentDialog = new InputIdentityAndCompanyParamsDialog();
-        inputCompanyNameFragmentDialog.setArguments(bundle);
-        return inputCompanyNameFragmentDialog;
+    public InputIdentityAndCompanyParamsDialog(@NonNull Context context, @Nullable BiConsumer<DialogInterface, InputIdentityCompanyParams> dialogConsumer) {
+        super(context, dialogConsumer);
     }
 
     @Override
@@ -43,11 +35,7 @@ public class InputIdentityAndCompanyParamsDialog extends XXFDialogFragment {
     }
 
     private void initView() {
-        Bundle arguments = getArguments();
-        if (arguments == null) {
-            return;
-        }
-        OnInputIdentityCompanyparamsListener listener = (OnInputIdentityCompanyparamsListener) arguments.getSerializable(LISTENER);
+        setCancelable(false);
         binding.tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,13 +46,13 @@ public class InputIdentityAndCompanyParamsDialog extends XXFDialogFragment {
                 if (!TextUtils.isEmpty(etIdentityTxHash)
                         && !TextUtils.isEmpty(etCompanyTxHash)
                         && !TextUtils.isEmpty(etIdentityDid)
-                        && !TextUtils.isEmpty(etCompanyDid) && listener != null) {
-                    listener.getIdentityCompanyParams(etIdentityTxHash, etCompanyTxHash, etIdentityDid, etCompanyDid);
-                    dismiss();
+                        && !TextUtils.isEmpty(etCompanyDid)) {
+                    InputIdentityCompanyParams inputIdentityCompanyParams = new InputIdentityCompanyParams(etIdentityTxHash, etCompanyTxHash, etIdentityDid, etCompanyDid);
+                    setResult(inputIdentityCompanyParams);
                 } else {
                     ToastUtils.showToast("数据不能为空");
                 }
-
+                dismiss();
             }
         });
 
@@ -74,25 +62,5 @@ public class InputIdentityAndCompanyParamsDialog extends XXFDialogFragment {
                 dismiss();
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Window win = getDialog().getWindow();
-        FragmentActivity activity = getActivity();
-        // 一定要设置Background，如果不设置，window属性设置无效
-        if (win != null && activity != null) {
-            win.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            DisplayMetrics dm = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
-            WindowManager.LayoutParams params = win.getAttributes();
-            params.gravity = Gravity.CENTER;
-            // 使用ViewGroup.LayoutParams，以便Dialog 宽度充满整个屏幕
-            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            win.setAttributes(params);
-            win.getAttributes().windowAnimations = R.style.AnimBottomDialog;
-        }
     }
 }
