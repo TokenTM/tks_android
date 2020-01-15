@@ -17,15 +17,15 @@ import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityChainCertificationBinding;
 import com.tokentm.sdk.components.identitypwd.adapter.ChainServiceAdapter;
-import com.tokentm.sdk.components.identitypwd.model.CertificationResultParams;
+import com.tokentm.sdk.components.identitypwd.model.CertificationResultWrapper;
 import com.tokentm.sdk.components.identitypwd.model.ChainServiceModel;
 import com.tokentm.sdk.components.identitypwd.presenter.IChainCertificationPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.ChainCertificationVm;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.utils.TimeUtils;
+import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainInfoDTO;
-import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.ChainedContractStoreInfoDTO;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.model.CompanyType;
@@ -66,7 +66,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
     private static final String KEY_U_DID = "u_did";
     private static final String KEY_C_DID = "c_did";
 
-    private CertificationResultParams.Builder certificationResultParamsBuilder = new CertificationResultParams.Builder();
+    private CertificationResultWrapper.Builder certificationResultParamsBuilder = new CertificationResultWrapper.Builder();
     private String uDid;
     private String uTxHash;
     private String cDid;
@@ -142,10 +142,10 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                             ComponentUtils.launchUserCertActivity(getActivity(),
                                     new UserCertByIDCardParams
                                             .Builder(uDid)
-                                            .build()
-                                    , new Consumer<ChainResult>() {
+                                            .build(),
+                                    new Consumer<ChainCertResult<CertUserInfoStoreItem>>() {
                                         @Override
-                                        public void accept(ChainResult chainResult) throws Exception {
+                                        public void accept(ChainCertResult<CertUserInfoStoreItem> chainResult) throws Exception {
                                             certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
                                             //将结果返回
                                             setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
@@ -170,7 +170,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                     , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                         @Override
                                         public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
-                                            certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                            certificationResultParamsBuilder.setCompanyCertificationResult(chainResult);
                                             setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                             finish();
                                         }
@@ -332,9 +332,9 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                 .reUserCert(uDid, s, uTxHash)
                                 .compose(XXF.bindToLifecycle(getActivity()))
                                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(ChainCertificationActivity.this)))
-                                .subscribe(new Consumer<ChainResult>() {
+                                .subscribe(new Consumer<ChainCertResult<CertUserInfoStoreItem>>() {
                                     @Override
-                                    public void accept(ChainResult chainResult) throws Exception {
+                                    public void accept(ChainCertResult<CertUserInfoStoreItem> chainResult) throws Exception {
                                         certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
                                         setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                         finish();
@@ -346,10 +346,10 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                 .reCompanyCert(uDid, s, cTxHash)
                                 .compose(XXF.bindToLifecycle(getActivity()))
                                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(ChainCertificationActivity.this)))
-                                .subscribe(new Consumer<ChainResult>() {
+                                .subscribe(new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                     @Override
-                                    public void accept(ChainResult chainResult) throws Exception {
-                                        certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                    public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
+                                        certificationResultParamsBuilder.setCompanyCertificationResult(chainResult);
                                         setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                         finish();
                                     }
@@ -368,9 +368,9 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
             case ChainCertificationVm.IDENTITY:
                 ComponentUtils.launchUserCertActivity(getActivity(), new UserCertByIDCardParams.Builder(uDid)
                                 .build()
-                        , new Consumer<ChainResult>() {
+                        , new Consumer<ChainCertResult<CertUserInfoStoreItem>>() {
                             @Override
-                            public void accept(ChainResult chainResult) throws Exception {
+                            public void accept(ChainCertResult<CertUserInfoStoreItem> chainResult) throws Exception {
                                 certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
                                 setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                 finish();
@@ -384,7 +384,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                         , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                             @Override
                             public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
-                                certificationResultParamsBuilder.setIdentityCertificationResult(chainResult);
+                                certificationResultParamsBuilder.setCompanyCertificationResult(chainResult);
                                 setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certificationResultParamsBuilder.build()));
                                 finish();
                             }

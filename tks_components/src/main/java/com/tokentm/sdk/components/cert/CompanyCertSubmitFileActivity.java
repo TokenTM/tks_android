@@ -41,8 +41,7 @@ import io.reactivex.functions.Consumer;
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 公司认证 提交文件
- * 返回值 @{@link com.tokentm.sdk.model.ChainResult}
- * TODO 企业认证,营业执照法人认证问题,在认证的时候默认比对申请人的信息和法人是否匹配,如果不匹配是无法通过公司认证,待定(是否可以叫叫人代替法人认证)
+ * 返回值 @{@link ChainCertResult<CompanyCertInfoStoreItem>}
  */
 public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
     /**
@@ -54,6 +53,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
      * 默认是法人认证
      */
     private CompanyAuthMode companyAuthMode = CompanyAuthMode.BY_LEGAL_PERSON;
+
     public static void launch(Context context, CompanyCertParams companyCertParams) {
         context.startActivity(getLauncher(context, companyCertParams));
     }

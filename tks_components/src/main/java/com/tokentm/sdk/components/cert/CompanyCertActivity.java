@@ -12,17 +12,21 @@ import android.view.View;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityCompanySelectTypeBinding;
+import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainResult;
+import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.model.CompanyType;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 企业/组织认证
+ * 返回值 @{@link ChainCertResult < CompanyCertInfoStoreItem >}
  */
 public class CompanyCertActivity extends BaseTitleBarActivity {
 
@@ -86,11 +90,16 @@ public class CompanyCertActivity extends BaseTitleBarActivity {
                 })
                 .compose(XXF.bindUntilEvent(getActivity(), Lifecycle.Event.ON_DESTROY))
                 .take(1)
-                .subscribe(new Consumer<ActivityResult>() {
+                .map(new Function<ActivityResult, ChainCertResult<CompanyCertInfoStoreItem>>() {
                     @Override
-                    public void accept(ActivityResult activityResult) throws Exception {
-                        ChainResult chainResult = (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
-                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                    public ChainCertResult<CompanyCertInfoStoreItem> apply(ActivityResult activityResult) throws Exception {
+                        return (ChainCertResult<CompanyCertInfoStoreItem>) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                    }
+                })
+                .subscribe(new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
+                    @Override
+                    public void accept(ChainCertResult<CompanyCertInfoStoreItem> companyCertInfoStoreItemChainCertResult) throws Exception {
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, companyCertInfoStoreItemChainCertResult));
                         finish();
                     }
                 });

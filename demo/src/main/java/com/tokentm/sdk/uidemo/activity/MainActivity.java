@@ -7,11 +7,13 @@ import android.text.TextUtils;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.identitypwd.model.CertificationResultParams;
+import com.tokentm.sdk.components.identitypwd.model.CertificationResultWrapper;
 import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
+import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.uidemo.dialog.InputCompanyNameFragmentDialog;
@@ -60,12 +62,11 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
                 , new UserCertByIDCardParams.Builder(did)
                         .setUserName("")
                         .setUserIDCard("")
-                        .build()
-                , new Consumer<ChainResult>() {
+                        .build(),
+                new Consumer<ChainCertResult<CertUserInfoStoreItem>>() {
                     @Override
-                    public void accept(ChainResult chainResult) throws Exception {
+                    public void accept(ChainCertResult<CertUserInfoStoreItem> chainResult) throws Exception {
                         saveIdentityCertification(chainResult);
-
                     }
                 });
     }
@@ -75,7 +76,10 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
         InputCompanyNameFragmentDialog.newInstance(new OnInputCompanyNameListener() {
             @Override
             public void onInputCompanyName(@NonNull String companyName) {
-                ComponentUtils.launchCompanyCertActivity(getActivity(), new CompanyCertParams.Builder(did, companyName).build()
+                ComponentUtils.launchCompanyCertActivity(getActivity(),
+                        new CompanyCertParams.Builder(did, companyName)
+                                .setCompanyType(CompanyType.TYPE_COMPANY)
+                                .build()
                         , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                             @Override
                             public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
@@ -93,11 +97,11 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
         String uDid = DemoSp.getInstance().getString(DemoSp.SP_KEY_IDENTITY_DID);
         String cDid = DemoSp.getInstance().getString(DemoSp.SP_KEY_COMPANY_DID);
         ComponentUtils.launchChainCertificationActivity(getActivity(),
-                uTxHash, cTxHash, uDid, cDid, new Consumer<CertificationResultParams>() {
+                uTxHash, cTxHash, uDid, cDid, new Consumer<CertificationResultWrapper>() {
                     @Override
-                    public void accept(CertificationResultParams certificationResultParams) throws Exception {
-                        saveIdentityCertification(certificationResultParams.getIdentityCertificationResult());
-                        saveICompanyCertification(certificationResultParams.getCompanyCertificationResult());
+                    public void accept(CertificationResultWrapper certificationResultWrapper) throws Exception {
+                        saveIdentityCertification(certificationResultWrapper.getIdentityCertificationResult());
+                        saveICompanyCertification(certificationResultWrapper.getCompanyCertificationResult());
                     }
                 });
     }
@@ -119,9 +123,9 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onShowIdentityCertificationDialog() {
-        ComponentUtils.showIdentityCertificationDialogNotForce(getActivity(), new UserCertByIDCardParams.Builder(did).build(), new Consumer<ChainResult>() {
+        ComponentUtils.showIdentityCertificationDialogNotForce(getActivity(), new UserCertByIDCardParams.Builder(did).build(), new Consumer<ChainCertResult<CertUserInfoStoreItem>>() {
             @Override
-            public void accept(ChainResult chainResult) throws Exception {
+            public void accept(ChainCertResult<CertUserInfoStoreItem> chainResult) throws Exception {
                 saveIdentityCertification(chainResult);
             }
         });
@@ -132,11 +136,11 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
         ComponentUtils.showIdentityAndCompanyCertificationDialogNotForce(getActivity()
                 , new UserCertByIDCardParams.Builder(did).build()
                 , new CompanyCertParams.Builder(did, "").build()
-                , new Consumer<CertificationResultParams>() {
+                , new Consumer<CertificationResultWrapper>() {
                     @Override
-                    public void accept(CertificationResultParams certificationResultParams) throws Exception {
-                        saveIdentityCertification(certificationResultParams.getIdentityCertificationResult());
-                        saveICompanyCertification(certificationResultParams.getCompanyCertificationResult());
+                    public void accept(CertificationResultWrapper certificationResultWrapper) throws Exception {
+                        saveIdentityCertification(certificationResultWrapper.getIdentityCertificationResult());
+                        saveICompanyCertification(certificationResultWrapper.getCompanyCertificationResult());
                     }
                 });
     }

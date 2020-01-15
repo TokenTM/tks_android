@@ -1,6 +1,7 @@
 package com.tokentm.sdk.components.cert.model;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.tokentm.sdk.model.CompanyType;
 
@@ -30,9 +31,13 @@ public class CompanyCertParams implements Serializable {
         private String companyCreditCode;
         private Serializable tag;
 
-        public Builder(@NonNull String uDid, @NonNull String companyName) {
+        /**
+         * @param uDid
+         * @param companyName 名字可空,比如不知道认证什么公司的情况下
+         */
+        public Builder(@NonNull String uDid, @Nullable String companyName) {
             this.uDid = Objects.requireNonNull(uDid);
-            this.companyName = Objects.requireNonNull(companyName);
+            this.companyName = companyName;
         }
 
         public Builder(CompanyCertParams companyCertParams) {

@@ -19,7 +19,10 @@ import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.components.identitypwd.viewmodel.UserCertByIDCardVM;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
+import com.tokentm.sdk.model.CertUserInfoStoreItem;
+import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainResult;
+import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
@@ -36,7 +39,8 @@ import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 用户身份证认证 返回{@link com.tokentm.sdk.model.ChainResult}
+ * @Description 用户身份证认证
+ *  返回值 @{@link ChainCertResult< CompanyCertInfoStoreItem >}
  */
 public class UserCertByIDCardActivity extends BaseTitleBarActivity implements UserCertByIDCardPresenter {
     /**
@@ -147,10 +151,10 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
                         )
                         .compose(XXF.bindToLifecycle(UserCertByIDCardActivity.this))
                         .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(UserCertByIDCardActivity.this)))
-                        .subscribe(new Consumer<ChainResult>() {
+                        .subscribe(new Consumer<ChainCertResult<CertUserInfoStoreItem>>() {
                             @Override
-                            public void accept(ChainResult chainResult) throws Exception {
-                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                            public void accept(ChainCertResult<CertUserInfoStoreItem> certUserInfoStoreItemChainCertResult) throws Exception {
+                                setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, certUserInfoStoreItemChainCertResult));
                                 finish();
                             }
                         });
