@@ -21,7 +21,9 @@ import com.tokentm.sdk.components.databinding.TksComponentsActivityCompanySubmit
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
 import com.tokentm.sdk.components.utils.IgnoreSpacesInputFilter;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
-import com.tokentm.sdk.model.ChainResult;
+import com.tokentm.sdk.model.ChainCertResult;
+import com.tokentm.sdk.model.CompanyAuthMode;
+import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.TokenTmClient;
@@ -48,6 +50,10 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
      */
     private static final String KEY_CERT_PARAMS = "companyCertParams";
 
+    /**
+     * 默认是法人认证
+     */
+    private CompanyAuthMode companyAuthMode = CompanyAuthMode.BY_LEGAL_PERSON;
     public static void launch(Context context, CompanyCertParams companyCertParams) {
         context.startActivity(getLauncher(context, companyCertParams));
     }
@@ -83,11 +89,10 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         String companyName = companyCertParams.getCompanyName();
         String companyCreditCode = companyCertParams.getCompanyCreditCode();
         //当传过来的值是空,那就可编辑,否则不可编辑
-        if (companyName == null || "".equals(companyName.trim())) {
-            binding.companyNameTv.setFocusable(true);
-        }else {
+        if (companyName != null || !"".equals(companyName.trim())) {
             binding.companyNameTv.setText(companyName);
             binding.companyNameTv.setFocusable(false);
+            binding.companyNameTv.setFocusableInTouchMode(false);
         }
         if (companyCreditCode == null || "".equals(companyCreditCode.trim())) {
             binding.companyCreditCodeTv.setText(companyCreditCode);
@@ -100,9 +105,11 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (checkedId == binding.rbBusinessLicense.getId()) {
+                    companyAuthMode = CompanyAuthMode.BY_LEGAL_PERSON;
                     binding.companyCreditCodeTv.setHint("必填");
                 } else if (checkedId == binding.rbOfficialLetter.getId()) {
                     binding.companyCreditCodeTv.setHint("选填");
+                    companyAuthMode = CompanyAuthMode.BY_OFFICIAL_LETTER;
                 }
                 FragmentUtils.switchFragment(getSupportFragmentManager(), getOrNewFragment(checkedId), binding.flContent.getId());
             }
@@ -182,6 +189,7 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                             TokenTmClient.getService(CertService.class)
                                     .companyCert(companyCertParams.getuDid(),
                                             pwd,
+                                            companyAuthMode,
                                             binding.companyNameTv.getText().toString().trim(),
                                             companyCertParams.getCompanyType(),
                                             companyCreditCode,
@@ -189,10 +197,10 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
                                     )
                                     .compose(XXF.bindToLifecycle(CompanyCertSubmitFileActivity.this))
                                     .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CompanyCertSubmitFileActivity.this)))
-                                    .subscribe(new Consumer<ChainResult>() {
+                                    .subscribe(new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                         @Override
-                                        public void accept(ChainResult chainResult) throws Exception {
-                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
+                                        public void accept(ChainCertResult<CompanyCertInfoStoreItem> companyCertInfoStoreItemChainCertResult) throws Exception {
+                                            setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, companyCertInfoStoreItemChainCertResult));
                                             finish();
                                         }
                                     });

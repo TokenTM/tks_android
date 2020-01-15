@@ -15,13 +15,15 @@ import com.tokentm.sdk.components.identitypwd.view.CertificationDetailsActivity;
 import com.tokentm.sdk.components.identitypwd.view.CertificationInstructionsActivity;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationOtherActivity;
-import com.tokentm.sdk.components.identitypwd.view.EnterpriseCertificationAlertDialog;
-import com.tokentm.sdk.components.identitypwd.view.IdentityAuthenticationAlertDialog;
+import com.tokentm.sdk.components.identitypwd.view.IdentityAndCompanyCertificationDialog;
+import com.tokentm.sdk.components.identitypwd.view.IdentityCertificationNotForceDialog;
 import com.tokentm.sdk.components.identitypwd.view.IdentityConfirmActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdChangeActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainResult;
+import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.IdentityService;
@@ -29,6 +31,7 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.xxf.arch.XXF;
 import com.xxf.arch.core.activityresult.ActivityResult;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -157,23 +160,83 @@ public class ComponentUtils {
     }
 
     /**
-     * show 企业认证 dialog
+     * show 身份认证和企业认证 dialog  非强制
      *
      * @param activity
-     * @param dialogConsumer
      */
-    public static void showEnterpriseCertificationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
-        new EnterpriseCertificationAlertDialog(activity, dialogConsumer).show();
+    public static void showIdentityAndCompanyCertificationDialogNotForce(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, CompanyCertParams companyCertParams, Consumer<ChainResult> identityCertificationResult, Consumer<ChainResult> companyCertificationResult) {
+        new IdentityAndCompanyCertificationDialog(activity, new BiConsumer<DialogInterface, Boolean>() {
+            @Override
+            public void accept(DialogInterface dialogInterface, Boolean aBoolean) throws Exception {
+                //启动身份认证,非强制
+                if (aBoolean) {
+                    XXF.startActivityForResult(
+                            activity,
+                            UserCertByIDCardActivity.getLauncher(activity,
+                                    new UserCertByIDCardParams.Builder(userCertByIDCardParams).build()
+                            ),
+                            7100)
+                            .filter(new Predicate<ActivityResult>() {
+                                @Override
+                                public boolean test(ActivityResult activityResult) throws Exception {
+                                    return activityResult.isOk();
+                                }
+                            })
+                            .map(new Function<ActivityResult, ChainResult>() {
+                                @Override
+                                public ChainResult apply(ActivityResult activityResult) throws Exception {
+                                    return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                                }
+                            })
+                            .take(1)
+                            .doOnNext(identityCertificationResult)
+                            .flatMap(new Function<ChainResult, ObservableSource<ChainResult>>() {
+                                @Override
+                                public ObservableSource<ChainResult> apply(ChainResult chainResult) throws Exception {
+                                    return XXF.startActivityForResult(
+                                            activity,
+                                            CompanyCertSubmitFileActivity.getLauncher(activity,
+                                                    new CompanyCertParams.Builder(companyCertParams)
+                                                            .setCompanyType(CompanyType.TYPE_COMPANY)
+                                                            .build()),
+                                            1001)
+                                            .filter(new Predicate<ActivityResult>() {
+                                                @Override
+                                                public boolean test(ActivityResult activityResult) throws Exception {
+                                                    return activityResult.isOk();
+                                                }
+                                            })
+                                            .map(new Function<ActivityResult, ChainResult>() {
+                                                @Override
+                                                public ChainResult apply(ActivityResult activityResult) throws Exception {
+                                                    return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                                                }
+                                            })
+                                            .take(1);
+                                }
+                            })
+                            .subscribe(companyCertificationResult);
+                }
+            }
+        }).show();
     }
 
     /**
-     * show 身份认证 dialog
+     * show 身份认证 dialog  非强制
      *
      * @param activity
-     * @param dialogConsumer
+     * @param consumer
      */
-    public static void showIdentityAuthenticationAlertDialog(FragmentActivity activity, BiConsumer<DialogInterface, Boolean> dialogConsumer) {
-        new IdentityAuthenticationAlertDialog(activity, dialogConsumer).show();
+    public static void showIdentityCertificationDialogNotForce(FragmentActivity activity, UserCertByIDCardParams userCertByIDCardParams, Consumer<ChainResult> consumer) {
+        new IdentityCertificationNotForceDialog(activity, new BiConsumer<DialogInterface, Boolean>() {
+            @Override
+            public void accept(DialogInterface dialogInterface, Boolean aBoolean) throws Exception {
+                //启动身份认证,非强制
+                if (aBoolean) {
+                    launchUserCertActivity(activity, new UserCertByIDCardParams.Builder(userCertByIDCardParams).build(), consumer);
+                }
+            }
+        }).show();
     }
 
     /**
@@ -216,7 +279,7 @@ public class ComponentUtils {
      * @param consumer
      */
     @SuppressLint("CheckResult")
-    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams, Consumer<ChainResult> consumer) {
+    public static void launchCompanyCertActivity(FragmentActivity activity, CompanyCertParams companyCertParams, Consumer<ChainCertResult<CompanyCertInfoStoreItem>> consumer) {
         XXF.startActivityForResult(
                 activity,
                 CompanyCertSubmitFileActivity.getLauncher(activity,
@@ -232,10 +295,10 @@ public class ComponentUtils {
                 })
                 .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .take(1)
-                .map(new Function<ActivityResult, ChainResult>() {
+                .map(new Function<ActivityResult, ChainCertResult<CompanyCertInfoStoreItem>>() {
                     @Override
-                    public ChainResult apply(ActivityResult activityResult) throws Exception {
-                        return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                    public ChainCertResult<CompanyCertInfoStoreItem> apply(ActivityResult activityResult) throws Exception {
+                        return (ChainCertResult<CompanyCertInfoStoreItem>) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
                 .subscribe(consumer);
@@ -281,7 +344,7 @@ public class ComponentUtils {
      * @param cDid
      * @param consumer
      */
-    public static void launchChainCertification(FragmentActivity activity, String uTxHash, String cTxHash, String uDid, String cDid, Consumer<ChainResult> consumer) {
+    public static void launchChainCertification(FragmentActivity activity, String uTxHash, String cTxHash, String uDid, String cDid, Consumer<ChainCertResult<CompanyCertInfoStoreItem>> consumer) {
         XXF.startActivityForResult(
                 activity,
                 ChainCertificationActivity.getLauncher(activity,
@@ -295,10 +358,10 @@ public class ComponentUtils {
                 })
                 .compose(XXF.bindUntilEvent(activity, Lifecycle.Event.ON_DESTROY))
                 .take(1)
-                .map(new Function<ActivityResult, ChainResult>() {
+                .map(new Function<ActivityResult, ChainCertResult<CompanyCertInfoStoreItem>>() {
                     @Override
-                    public ChainResult apply(ActivityResult activityResult) throws Exception {
-                        return (ChainResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                    public ChainCertResult<CompanyCertInfoStoreItem> apply(ActivityResult activityResult) throws Exception {
+                        return (ChainCertResult<CompanyCertInfoStoreItem>) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
                 .subscribe(consumer);

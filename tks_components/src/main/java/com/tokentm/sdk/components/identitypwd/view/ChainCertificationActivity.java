@@ -22,9 +22,11 @@ import com.tokentm.sdk.components.identitypwd.presenter.IChainCertificationPrese
 import com.tokentm.sdk.components.identitypwd.viewmodel.ChainCertificationVm;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.components.utils.TimeUtils;
+import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainInfoDTO;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.ChainedContractStoreInfoDTO;
+import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.ChainService;
@@ -49,8 +51,8 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
-import static com.tokentm.sdk.components.identitypwd.model.ChainServiceType.COMPANY_AUTHENTICATION;
-import static com.tokentm.sdk.components.identitypwd.model.ChainServiceType.IDENTITY_AUTHENTICATION;
+import static com.tokentm.sdk.components.identitypwd.model.CertificationType.COMPANY_CERTIFICATION;
+import static com.tokentm.sdk.components.identitypwd.model.CertificationType.IDENTITY_CERTIFICATION;
 
 /**
  * @author lqx  E-mail:herolqx@126.com
@@ -114,20 +116,20 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                 .setTitleBarRightText("更多", new io.reactivex.functions.Action() {
                     @Override
                     public void run() {
-                        ChainServiceMoreActivity.launch(getActivity(),uDid);
+                        ChainServiceMoreActivity.launch(getActivity(), uDid);
                     }
                 });
         ChainServiceAdapter chainServiceAdapter = new ChainServiceAdapter();
         List<ChainServiceModel> chainServiceModelList = new ArrayList<>();
-        chainServiceModelList.add(new ChainServiceModel(R.mipmap.tks_components_identity_authentication, "身份认证", IDENTITY_AUTHENTICATION));
-        chainServiceModelList.add(new ChainServiceModel(R.mipmap.tks_components_company_authentication, "企业认证", COMPANY_AUTHENTICATION));
+        chainServiceModelList.add(new ChainServiceModel(R.mipmap.tks_components_identity_authentication, "身份认证", IDENTITY_CERTIFICATION));
+        chainServiceModelList.add(new ChainServiceModel(R.mipmap.tks_components_company_authentication, "企业认证", COMPANY_CERTIFICATION));
         chainServiceAdapter.bindData(true, chainServiceModelList);
         chainServiceAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(BaseRecyclerAdapter adapter, BaseViewHolder holder, View itemView, int index) {
                 ChainServiceModel chainServiceModel = (ChainServiceModel) adapter.getData().get(index);
-                switch (chainServiceModel.getChainServiceType()) {
-                    case IDENTITY_AUTHENTICATION:
+                switch (chainServiceModel.getCertificationType()) {
+                    case IDENTITY_CERTIFICATION:
                         //如果
                         if (viewModel.identityCertificationState.get()) {
                             viewModel.showChainServiceInfoView.set(true);
@@ -149,7 +151,7 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                     });
                         }
                         break;
-                    case COMPANY_AUTHENTICATION:
+                    case COMPANY_CERTIFICATION:
                         //如果
                         if (viewModel.companyCertificationState.get()) {
                             viewModel.showChainServiceInfoView.set(true);
@@ -162,9 +164,9 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                                             .Builder(uDid, "")
                                             .setCompanyType(CompanyType.TYPE_COMPANY)
                                             .build()
-                                    , new Consumer<ChainResult>() {
+                                    , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                         @Override
-                                        public void accept(ChainResult chainResult) throws Exception {
+                                        public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
                                             setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
                                             finish();
                                         }
@@ -372,9 +374,9 @@ public class ChainCertificationActivity extends BaseTitleBarActivity implements 
                 ComponentUtils.launchCompanyCertActivity(getActivity(), new CompanyCertParams.Builder(uDid, "")
                                 .setCompanyType(CompanyType.TYPE_COMPANY)
                                 .build()
-                        , new Consumer<ChainResult>() {
+                        , new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                             @Override
-                            public void accept(ChainResult chainResult) throws Exception {
+                            public void accept(ChainCertResult<CompanyCertInfoStoreItem> chainResult) throws Exception {
                                 setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, chainResult));
                                 finish();
                             }

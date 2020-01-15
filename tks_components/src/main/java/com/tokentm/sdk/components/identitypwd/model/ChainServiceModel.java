@@ -10,16 +10,16 @@ public class ChainServiceModel {
 
     private int selectIcon;
     private String title;
-    private ChainServiceType chainServiceType;
+    private CertificationType certificationType;
 
 
     public ChainServiceModel() {
     }
 
-    public ChainServiceModel(int selectIcon, String title,ChainServiceType chainServiceType) {
+    public ChainServiceModel(int selectIcon, String title, CertificationType certificationType) {
         this.selectIcon = selectIcon;
         this.title = title;
-        this.chainServiceType = chainServiceType;
+        this.certificationType = certificationType;
     }
 
     public int getSelectIcon() {
@@ -38,11 +38,11 @@ public class ChainServiceModel {
         this.title = title;
     }
 
-    public ChainServiceType getChainServiceType() {
-        return chainServiceType;
+    public CertificationType getCertificationType() {
+        return certificationType;
     }
 
-    public void setChainServiceType(ChainServiceType chainServiceType) {
-        this.chainServiceType = chainServiceType;
+    public void setCertificationType(CertificationType certificationType) {
+        this.certificationType = certificationType;
     }
 }

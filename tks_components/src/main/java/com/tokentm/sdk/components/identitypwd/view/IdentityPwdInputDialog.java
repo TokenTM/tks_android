@@ -65,12 +65,7 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Window dialogWindow = this.getWindow();
-        dialogWindow.requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        //设置window背景透明
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         binding = TksComponentsDialogDecryptedByPwdWithStampAnimBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();

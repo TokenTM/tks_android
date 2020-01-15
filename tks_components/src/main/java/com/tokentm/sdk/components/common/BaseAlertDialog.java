@@ -7,7 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
+import com.xxf.arch.XXF;
 import com.xxf.arch.dialog.XXFAlertDialog;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 
@@ -38,7 +43,18 @@ public class BaseAlertDialog<R extends Serializable> extends XXFAlertDialog<R> {
     @CallSuper
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Window dialogWindow = this.getWindow();
+        dialogWindow.requestFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        //设置window背景透明
+        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        WindowManager.LayoutParams params = dialogWindow.getAttributes();
+        params.width = (int) (dm.widthPixels * 0.72 + 0.5);
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        dialogWindow.setAttributes(params);
         if (this.getOwnerActivity() != null) {
             tokenProgressHUD = new TokenProgressHUDImpl(this.getOwnerActivity());
         } else if (this.getContext() instanceof ContextWrapper) {

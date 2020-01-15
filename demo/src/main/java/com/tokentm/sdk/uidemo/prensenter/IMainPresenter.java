@@ -9,7 +9,11 @@ public interface IMainPresenter {
     /**
      * 身份认证
      */
-    void onIdentityAuthentication();
+    void onIdentityCertification();
+ /**
+     * 企业认证
+     */
+    void onCompanyCertification();
 
     /**
      * 身份说明
@@ -27,6 +31,16 @@ public interface IMainPresenter {
     void onOpenChainCertificationOther();
 
     /**
+     * 开启身份认证弹窗(强制)
+     */
+    void onShowIdentityCertificationDialog();
+
+    /**
+     * 身份和企业认证弹窗
+     */
+    void onShowIdentityAndCompanyCertificationDialog();
+
+    /**
      * 发货
      */
     void onDeliverGoods();
@@ -35,6 +49,11 @@ public interface IMainPresenter {
      * 收货
      */
     void onReceiveGoods();
+
+    /**
+     * 物权转移记录
+     */
+    void onGoodsRecord();
 
     /**
      * 发证
