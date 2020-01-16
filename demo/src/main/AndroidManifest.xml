@@ -24,6 +24,9 @@
             android:name="com.tokentm.sdk.uidemo.activity.DeliverGoodsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.tokentm.sdk.uidemo.activity.TransferGoodsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.tokentm.sdk.uidemo.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity

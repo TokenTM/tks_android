@@ -16,6 +16,7 @@ import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityMainBinding;
 import com.tokentm.sdk.uidemo.dialog.InputCompanyNameFragmentDialog;
+import com.tokentm.sdk.uidemo.dialog.InputGoodsIdDialog;
 import com.tokentm.sdk.uidemo.dialog.InputIdentityAndCompanyParamsDialog;
 import com.tokentm.sdk.uidemo.dialog.InputIdentityCompanyParams;
 import com.tokentm.sdk.uidemo.prensenter.IMainPresenter;
@@ -151,17 +152,22 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onReceiveGoods() {
-        String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
-        if (TextUtils.isEmpty(goodsId)) {
-            ToastUtils.showToast("请先发货");
-            return;
-        }
-        ReceiveGoodsActivity.launch(getActivity(), goodsId);
+        new InputGoodsIdDialog(getActivity(), new BiConsumer<DialogInterface, String>() {
+            @Override
+            public void accept(DialogInterface dialogInterface, String goodsId) throws Exception {
+                ReceiveGoodsActivity.launch(getActivity(), did, goodsId);
+            }
+        }).show();
     }
 
     @Override
     public void onTransferGoods() {
-
+        new InputGoodsIdDialog(getActivity(), new BiConsumer<DialogInterface, String>() {
+            @Override
+            public void accept(DialogInterface dialogInterface, String goodsId) throws Exception {
+                TransferGoodsActivity.launch(getActivity(), did, goodsId);
+            }
+        }).show();
     }
 
     @Override
