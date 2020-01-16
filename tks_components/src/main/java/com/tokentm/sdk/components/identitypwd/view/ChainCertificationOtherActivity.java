@@ -112,10 +112,14 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
      */
     @SuppressLint("CheckResult")
     private void getChainInfo() {
-        if (!TextUtils.isEmpty(oTxHash) && !TextUtils.isEmpty(cTxHash) && !TextUtils.isEmpty(oDid) && !TextUtils.isEmpty(cDid)) {
+        //1.判断身份hash和身份did 是否为空
+        if (TextUtils.isEmpty(oTxHash) || TextUtils.isEmpty(oDid)) {
+            //为空 显示数据为空布局
+            stateLayoutVM.setLayoutState(ViewState.VIEW_STATE_EMPTY);
+        } else {
             List<ChainServiceOtherItem> chainItems = new ArrayList<>();
             List<ChainServiceOtherItem> certificationItems = new ArrayList<>();
-            //1. 判断身份上链状态
+            //2.请求身份链信息
             TokenTmClient.getService(ChainService.class)
                     .getChainInfo(oTxHash)
                     .filter(new Predicate<ChainInfoDTO>() {
@@ -134,12 +138,14 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
                                 //如果失败就没有下面的认证信息
                                 certificationItems.clear();
                             }
+                            //3. 上链成功 才请求身份认证信息
                             return state;
                         }
                     })
                     .flatMap(new Function<ChainInfoDTO, ObservableSource<ChainedContractStoreInfoDTO>>() {
                         @Override
                         public ObservableSource<ChainedContractStoreInfoDTO> apply(ChainInfoDTO chainInfoDTO) throws Exception {
+                            //4. 请求身份认证信息
                             return TokenTmClient.getService(CertService.class)
                                     .getUserCertContractInfo(oDid);
                         }
@@ -156,13 +162,21 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
                             } else {
                                 certificationItems.add(new ChainServiceOtherItem("认证状态：", "", VIEW_TYPE_STATE, false));
                             }
+                            //5. 身份信息认证通过  才请求公司上链信息
                             return active;
+                        }
+                    })
+                    .filter(new Predicate<ChainedContractStoreInfoDTO>() {
+                        @Override
+                        public boolean test(ChainedContractStoreInfoDTO chainedContractStoreInfoDTO) throws Exception {
+                            //6. 判断公司hash和did是否为空  如果为空,则不请求上链信息和公司认证信息,则只显示身份相关的链信息和认证信息
+                            return TextUtils.isEmpty(cTxHash) || TextUtils.isEmpty(cDid);
                         }
                     })
                     .flatMap(new Function<ChainedContractStoreInfoDTO, ObservableSource<ChainInfoDTO>>() {
                         @Override
                         public ObservableSource<ChainInfoDTO> apply(ChainedContractStoreInfoDTO chainedContractStoreInfoDTO) throws Exception {
-                            //请求企业上链信息
+                            //7. 请求公司上链信息
                             return TokenTmClient.getService(ChainService.class)
                                     .getChainInfo(cTxHash);
                         }
@@ -183,12 +197,14 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
                                 //如果失败就没有下面的认证信息
                                 certificationItems.clear();
                             }
+                            //8. 企业上链成功才会请求  企业认证信息
                             return state;
                         }
                     })
                     .flatMap(new Function<ChainInfoDTO, ObservableSource<ChainedContractStoreInfoDTO>>() {
                         @Override
                         public ObservableSource<ChainedContractStoreInfoDTO> apply(ChainInfoDTO chainInfoDTO) throws Exception {
+                            //9. 请求企业认证信息
                             return TokenTmClient.getService(CertService.class)
                                     .getCompanyCertContractInfo(cDid);
                         }
@@ -204,6 +220,7 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
                                 certificationItems.clear();
                                 chainItems.add(new ChainServiceOtherItem("认证状态", "", VIEW_TYPE_STATE, false));
                             }
+                            //10. 企业认证通过
                             return active;
                         }
                     })
@@ -237,10 +254,6 @@ public class ChainCertificationOtherActivity extends BaseTitleBarActivity {
                         }
                     })
                     .subscribe();
-        } else {
-            //数据为空
-            stateLayoutVM.setLayoutState(ViewState.VIEW_STATE_EMPTY);
         }
-
     }
 }

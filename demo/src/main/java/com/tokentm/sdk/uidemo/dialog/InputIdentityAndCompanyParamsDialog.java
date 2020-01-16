@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.uidemo.databinding.InputIdentityCompanyTxHashDidDialogBinding;
-import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
 
@@ -43,15 +41,8 @@ public class InputIdentityAndCompanyParamsDialog extends BaseAlertDialog<InputId
                 String etCompanyTxHash = binding.etCompanyTxHash.getText().toString().trim();
                 String etIdentityDid = binding.etIdentityDid.getText().toString().trim();
                 String etCompanyDid = binding.etCompanyDid.getText().toString().trim();
-                if (!TextUtils.isEmpty(etIdentityTxHash)
-                        && !TextUtils.isEmpty(etCompanyTxHash)
-                        && !TextUtils.isEmpty(etIdentityDid)
-                        && !TextUtils.isEmpty(etCompanyDid)) {
-                    InputIdentityCompanyParams inputIdentityCompanyParams = new InputIdentityCompanyParams(etIdentityTxHash, etCompanyTxHash, etIdentityDid, etCompanyDid);
-                    setResult(inputIdentityCompanyParams);
-                } else {
-                    ToastUtils.showToast("数据不能为空");
-                }
+                InputIdentityCompanyParams inputIdentityCompanyParams = new InputIdentityCompanyParams(etIdentityTxHash, etCompanyTxHash, etIdentityDid, etCompanyDid);
+                setResult(inputIdentityCompanyParams);
                 dismiss();
             }
         });
