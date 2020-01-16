@@ -20,7 +20,6 @@ import com.tokentm.sdk.uidemo.databinding.ActivityReceiveGoodsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.arch.utils.ToastUtils;
-import com.xxf.view.utils.RAUtils;
 
 import java.util.List;
 
@@ -105,10 +104,6 @@ public class ReceiveGoodsActivity extends BaseTitleBarActivity {
         binding.tvReceiveGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()) {
-                    return;
-                }
-                String did = DemoSp.getInstance().getLoginDID();
                 //弹出校验身份密码
                 ComponentUtils.showIdentityPwdDialog(
                         getActivity(), did,

@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.tokentm.sdk.components.cert.CompanyCertActivity;
 import com.tokentm.sdk.components.cert.CompanyCertSubmitFileActivity;
-import com.tokentm.sdk.components.cert.PropertyRightsTransferRecordsActivity;
+import com.tokentm.sdk.components.cert.GoodsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
@@ -290,7 +290,7 @@ public class ComponentUtils {
      */
     @SuppressLint("CheckResult")
     public static void launchGoodsTransferRecordsActivity(FragmentActivity activity, String id) {
-        PropertyRightsTransferRecordsActivity.launch(activity, id);
+        GoodsTransferRecordsActivity.launch(activity, id);
     }
 
     /**

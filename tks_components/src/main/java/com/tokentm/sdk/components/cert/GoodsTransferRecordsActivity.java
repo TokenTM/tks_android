@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.tokentm.sdk.components.cert.adapter.PropertyRightsTransferRecordsAdapter;
+import com.tokentm.sdk.components.cert.adapter.GoodsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
-import com.tokentm.sdk.components.databinding.TksComponentsActivityPropertyRightsTransferRecordsBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsActivityGoodsTransferRecordsBinding;
+import com.tokentm.sdk.model.SellerBuyerinfoDTO;
 import com.tokentm.sdk.model.TransferCommodityActionDTO;
 import com.tokentm.sdk.source.CommodityService;
 import com.tokentm.sdk.source.TokenTmClient;
@@ -19,6 +20,7 @@ import com.xxf.view.loading.ViewState;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
@@ -26,12 +28,12 @@ import io.reactivex.functions.Consumer;
  * @author lqx  E-mail:herolqx@126.com
  * @Description 物权转移记录
  */
-public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity {
+public class GoodsTransferRecordsActivity extends BaseTitleBarActivity {
 
-    private static final String KEY_ID = "id";
-    private String id;
-    private TksComponentsActivityPropertyRightsTransferRecordsBinding binding;
-    private PropertyRightsTransferRecordsAdapter userCertificationRecordAdapter;
+    private static final String KEY_GOODS_ID = "goods_id";
+    private String goodsId;
+    private TksComponentsActivityGoodsTransferRecordsBinding binding;
+    private GoodsTransferRecordsAdapter userCertificationRecordAdapter;
 
     public IStateLayoutVM stateLayoutVM = new StateLayoutVM(new Action() {
         @Override
@@ -40,19 +42,19 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
         }
     });
 
-    public static void launch(Context context, String id) {
-        context.startActivity(getLauncher(context, id));
+    public static void launch(Context context, String goodsId) {
+        context.startActivity(getLauncher(context, goodsId));
     }
 
-    public static Intent getLauncher(Context context, String id) {
-        return new Intent(context, PropertyRightsTransferRecordsActivity.class)
-                .putExtra(KEY_ID, id);
+    public static Intent getLauncher(Context context, String goodsId) {
+        return new Intent(context, GoodsTransferRecordsActivity.class)
+                .putExtra(KEY_GOODS_ID, goodsId);
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = TksComponentsActivityPropertyRightsTransferRecordsBinding.inflate(getLayoutInflater());
+        binding = TksComponentsActivityGoodsTransferRecordsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         loadData();
@@ -61,9 +63,9 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
 
     private void initView() {
         setTitle("物权转移记录");
-        id = getIntent().getStringExtra(KEY_ID);
+        goodsId = getIntent().getStringExtra(KEY_GOODS_ID);
         binding.setStateLayoutVM(stateLayoutVM);
-        binding.recyclerView.setAdapter(userCertificationRecordAdapter = new PropertyRightsTransferRecordsAdapter());
+        binding.recyclerView.setAdapter(userCertificationRecordAdapter = new GoodsTransferRecordsAdapter());
         userCertificationRecordAdapter.registerAdapterDataObserver(new DataChangeAdapterObserver() {
             @Override
             protected void updateUI() {
@@ -76,15 +78,20 @@ public class PropertyRightsTransferRecordsActivity extends BaseTitleBarActivity 
      * 加载数据
      */
     private void loadData() {
-
         TokenTmClient.getService(CommodityService.class)
-                .getCommodityTransferActionRecords(id)
+                .getCommodityTransferActionRecords(goodsId)
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<TransferCommodityActionDTO>>() {
                     @Override
                     public void accept(List<TransferCommodityActionDTO> transferCommodityActionDTOS) throws Exception {
-                        userCertificationRecordAdapter.bindData(true, transferCommodityActionDTOS);
+                        if (transferCommodityActionDTOS != null && transferCommodityActionDTOS.size() > 0) {
+                            SellerBuyerinfoDTO sellerBuyerinfo = transferCommodityActionDTOS.get(transferCommodityActionDTOS.size() - 1).getSellerBuyerinfo();
+                            binding.tvGoodsName.setText(String.format("物品名称 : %s",sellerBuyerinfo.getCommodityName()));
+                            binding.tvGoodsNumber.setText(String.format("交易数量 : %s",sellerBuyerinfo.getCommodityCount()));
+                            userCertificationRecordAdapter.bindData(true, transferCommodityActionDTOS);
+                        }
                     }
                 });
 

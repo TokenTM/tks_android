@@ -172,8 +172,12 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onGoodsRecord() {
-        String goodsId = DemoSp.getInstance().getString(DemoSp.SP_KEY_GOODS_ID);
-        ComponentUtils.launchGoodsTransferRecordsActivity(getActivity(), goodsId);
+        new InputGoodsIdDialog(getActivity(), new BiConsumer<DialogInterface, String>() {
+            @Override
+            public void accept(DialogInterface dialogInterface, String goodsId) throws Exception {
+                ComponentUtils.launchGoodsTransferRecordsActivity(getActivity(), goodsId);
+            }
+        }).show();
     }
 
     @Override
