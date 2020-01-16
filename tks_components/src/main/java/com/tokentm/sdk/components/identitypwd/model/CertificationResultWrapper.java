@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
-import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 
 import java.io.Serializable;
@@ -66,7 +65,7 @@ public class CertificationResultWrapper implements Serializable {
         this.companyCertificationResult = companyCertificationResult;
     }
 
-    public ChainResult getIdentityCertificationResult() {
+    public ChainCertResult<CertUserInfoStoreItem> getIdentityCertificationResult() {
         return identityCertificationResult;
     }
 

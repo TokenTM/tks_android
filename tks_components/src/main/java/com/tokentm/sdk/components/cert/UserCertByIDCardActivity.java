@@ -12,16 +12,17 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
+import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityCertByIdcardBinding;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.view.WebViewActivity;
 import com.tokentm.sdk.components.identitypwd.viewmodel.UserCertByIDCardVM;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
-import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.source.CertService;
 import com.tokentm.sdk.source.TokenTmClient;
@@ -33,6 +34,7 @@ import com.xxf.view.utils.RAUtils;
 
 import java.io.File;
 
+import io.reactivex.functions.Action;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -40,7 +42,7 @@ import io.reactivex.functions.Predicate;
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
  * @Description 用户身份证认证
- *  返回值 @{@link ChainCertResult< CompanyCertInfoStoreItem >}
+ * 返回值 @{@link ChainCertResult< CompanyCertInfoStoreItem >}
  */
 public class UserCertByIDCardActivity extends BaseTitleBarActivity implements UserCertByIDCardPresenter {
     /**
@@ -73,7 +75,13 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
 
     private void initView() {
         certByIDCardParams = (UserCertByIDCardParams) getIntent().getSerializableExtra(KEY_CERT_PARAMS);
-        setTitle("身份证认证");
+        getTitleBar().setTitleBarTitle("身份证认证")
+                .setTitleBarRightIcon(R.mipmap.tks_components_ic_help, new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        WebViewActivity.launch(getActivity(),"https://bcard.tokentm.net/h5/share/auth-reason.html");
+                    }
+                });
         viewModel = ViewModelProviders.of(this).get(UserCertByIDCardVM.class);
         binding.setViewModel(viewModel);
         binding.setPresenter(this);

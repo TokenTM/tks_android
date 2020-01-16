@@ -176,9 +176,9 @@ public class ComponentUtils {
                 if (aBoolean) {
                     launchUserCertActivity(activity, userCertByIDCardParams, new Consumer<ChainCertResult<CertUserInfoStoreItem>>() {
                         @Override
-                        public void accept(ChainCertResult<CertUserInfoStoreItem> chainResult) throws Exception {
+                        public void accept(ChainCertResult<CertUserInfoStoreItem> certUserInfoStoreResult) throws Exception {
                             CertificationResultWrapper.Builder certificationResultParams = new CertificationResultWrapper.Builder();
-                            certificationResultParams.setIdentityCertificationResult(chainResult);
+                            certificationResultParams.setIdentityCertificationResult(certUserInfoStoreResult);
                             launchCompanyCertActivity(activity, companyCertParams, new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                 @Override
                                 public void accept(ChainCertResult<CompanyCertInfoStoreItem> companyCertInfoStoreItemChainCertResult) throws Exception {

@@ -11,7 +11,6 @@ import com.tokentm.sdk.components.identitypwd.model.CertificationResultWrapper;
 import com.tokentm.sdk.components.utils.ComponentUtils;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
-import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
 import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.uidemo.DemoSp;
@@ -214,11 +213,11 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
         finish();
     }
 
-    private void saveIdentityCertification(ChainResult chainResult) {
-        if (chainResult != null) {
-            if (chainResult.getTxHash() != null && !"".equals(chainResult.getTxHash())) {
-                DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_TX_HASH, chainResult.getTxHash());
-                DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_DID, chainResult.getDid());
+    private void saveIdentityCertification(ChainCertResult<CertUserInfoStoreItem> identityCertificationResult) {
+        if (identityCertificationResult != null) {
+            if (identityCertificationResult.getTxHash() != null && !"".equals(identityCertificationResult.getTxHash())) {
+                DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_TX_HASH, identityCertificationResult.getTxHash());
+                DemoSp.getInstance().putString(DemoSp.SP_KEY_IDENTITY_DID, identityCertificationResult.getDid());
                 ToastUtils.showToast("身份认证成功");
             } else {
                 ToastUtils.showToast("身份认证失败");

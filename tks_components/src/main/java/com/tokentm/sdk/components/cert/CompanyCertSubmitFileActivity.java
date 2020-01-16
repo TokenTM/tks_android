@@ -15,10 +15,12 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityCompanySubmitFileBinding;
 import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.view.WebViewActivity;
 import com.tokentm.sdk.components.utils.IgnoreSpacesInputFilter;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
@@ -35,6 +37,7 @@ import com.xxf.view.utils.RAUtils;
 
 import java.io.File;
 
+import io.reactivex.functions.Action;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
@@ -86,17 +89,18 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         } else {
             setTitle("组织认证");
         }
+        getTitleBar().setTitleBarRightIcon(R.mipmap.tks_components_ic_help, new Action() {
+            @Override
+            public void run() throws Exception {
+                WebViewActivity.launch(getActivity(), "https://bcard.tokentm.net/h5/share/auth-reason.html");
+            }
+        });
         String companyName = companyCertParams.getCompanyName();
         String companyCreditCode = companyCertParams.getCompanyCreditCode();
         //当传过来的值是空,那就可编辑,否则不可编辑
-        if (companyName != null || !"".equals(companyName.trim())) {
-            binding.companyNameTv.setText(companyName);
-            binding.companyNameTv.setFocusable(false);
-            binding.companyNameTv.setFocusableInTouchMode(false);
-        }
-        if (companyCreditCode == null || "".equals(companyCreditCode.trim())) {
-            binding.companyCreditCodeTv.setText(companyCreditCode);
-        }
+        binding.companyNameTv.setText(companyName);
+        binding.companyNameTv.setFocusable(TextUtils.isEmpty(companyName));
+        binding.companyNameTv.setFocusableInTouchMode(TextUtils.isEmpty(companyName));
 
         //去空格和限制6个字
         binding.legalPersonNameTv.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter(), new InputFilter.LengthFilter(6)});
