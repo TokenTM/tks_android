@@ -116,7 +116,7 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
 
     private void forgotIdentityPwd() {
         TokenTmClient.getService(IdentityService.class)
-                .getUDID(uDid)
+                .getUDIDStoreInfo(uDid)
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
                 .subscribe(new Consumer<IdentityInfoStoreItem>() {
                     @Override

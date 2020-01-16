@@ -11,7 +11,7 @@ import com.tokentm.sdk.components.cert.GoodsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
-import com.tokentm.sdk.components.identitypwd.model.BindUDID;
+import com.tokentm.sdk.components.identitypwd.model.UDIDResult;
 import com.tokentm.sdk.components.identitypwd.model.CertificationResultWrapper;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationOtherActivity;
@@ -54,7 +54,7 @@ public class ComponentUtils {
      * @param consumer           返回uDID
      */
     @SuppressLint("CheckResult")
-    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, boolean showInvitationCode, Consumer<BindUDID> consumer) {
+    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, boolean showInvitationCode, Consumer<UDIDResult> consumer) {
         XXF.startActivityForResult(activity,
                 IdentityConfirmActivity.getLauncher(activity, userPhone, showInvitationCode),
                 7000)
@@ -64,10 +64,10 @@ public class ComponentUtils {
                         return activityResult.isOk();
                     }
                 })
-                .map(new Function<ActivityResult, BindUDID>() {
+                .map(new Function<ActivityResult, UDIDResult>() {
                     @Override
-                    public BindUDID apply(ActivityResult activityResult) throws Exception {
-                        return (BindUDID) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                    public UDIDResult apply(ActivityResult activityResult) throws Exception {
+                        return (UDIDResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
                 .take(1)
@@ -85,7 +85,7 @@ public class ComponentUtils {
      */
     public static void launchForgotIdentityPwd(FragmentActivity activity, String uDID, Consumer<Boolean> consumer) {
         TokenTmClient.getService(IdentityService.class)
-                .getUDID(uDID)
+                .getUDIDStoreInfo(uDID)
                 .compose(XXF.bindToErrorNotice())
                 .subscribe(new Consumer<IdentityInfoStoreItem>() {
                     @Override

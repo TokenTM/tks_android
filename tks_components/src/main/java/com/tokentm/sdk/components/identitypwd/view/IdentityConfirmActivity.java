@@ -19,12 +19,14 @@ import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.common.CompatUtils;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityIdentityPwdSetBinding;
 import com.tokentm.sdk.components.identitypwd.UserConfig;
-import com.tokentm.sdk.components.identitypwd.model.BindUDID;
+import com.tokentm.sdk.components.identitypwd.model.UDIDResult;
 import com.tokentm.sdk.components.identitypwd.model.IdentityLayout;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdSetPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdSetVm;
 import com.tokentm.sdk.exceptions.InvalidIdentityPwdException;
 import com.tokentm.sdk.model.ChainResult;
+import com.tokentm.sdk.model.ChainSignedResult;
+import com.tokentm.sdk.model.DIDSignature;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.BasicService;
 import com.tokentm.sdk.source.ChainService;
@@ -45,7 +47,7 @@ import io.reactivex.functions.Predicate;
 
 /**
  * @author youxuan  E-mail:xuanyouwu@163.com
- * @Description 用户身份确认页面 返回{@link com.tokentm.sdk.components.identitypwd.model.BindUDID}
+ * @Description 用户身份确认页面 返回{@link com.tokentm.sdk.components.identitypwd.model.UDIDResult}
  */
 public class IdentityConfirmActivity extends BaseTitleBarActivity implements IdentityPwdSetPresenter {
     //倒计时60秒
@@ -136,7 +138,7 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
      */
     private void checkDid(ObservableField<String> phone, ObservableField<String> smsCode) {
         TokenTmClient.getService(IdentityService.class)
-                .getUDID(phone.get(), smsCode.get())
+                .getUDIDStoreInfo(phone.get(), smsCode.get())
                 .compose(new UILifeTransformerImpl<IdentityInfoStoreItem>() {
 
                     @Override
@@ -264,22 +266,22 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
      */
     @SuppressLint("CheckResult")
     @Override
-    public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd,ObservableField<String> invitationCode) {
+    public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd, ObservableField<String> invitationCode) {
         TokenTmClient.getService(IdentityService.class)
                 .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false, invitationCode.get())
-                .map(new Function<ChainResult, BindUDID>() {
+                .map(new Function<ChainSignedResult<DIDSignature>, UDIDResult>() {
                     @Override
-                    public BindUDID apply(ChainResult chainResult) throws Exception {
-                        return new BindUDID(chainResult, phone.get());
+                    public UDIDResult apply(ChainSignedResult<DIDSignature> didSignatureChainSignedResult) throws Exception {
+                        return new UDIDResult(phone.get(), didSignatureChainSignedResult);
                     }
                 })
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(new Consumer<BindUDID>() {
+                .subscribe(new Consumer<UDIDResult>() {
                     @Override
-                    public void accept(BindUDID bindUDID) throws Exception {
+                    public void accept(UDIDResult udidResult) throws Exception {
                         //返回uDid
-                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, bindUDID));
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, udidResult));
                         finish();
                     }
                 });
@@ -297,31 +299,19 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
     public void onIdentityDecrypt(ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
         TokenTmClient.getService(IdentityService.class)
                 .loginUDID(uDID.get(), phone.get(), smsCode.get(), identityPwd.get())
-                .flatMap(new Function<Boolean, ObservableSource<BindUDID>>() {
-
+                .map(new Function<ChainSignedResult<DIDSignature>, UDIDResult>() {
                     @Override
-                    public ObservableSource<BindUDID> apply(Boolean isDecrypt) throws Exception {
-                        if (!isDecrypt) {
-                            return io.reactivex.Observable.error(new InvalidIdentityPwdException());
-                        }
-                        return TokenTmClient.getService(ChainService.class)
-                                .getChainPublicKey(uDID.get(), identityPwd.get(), uDID.get())
-                                .map(new Function<String, BindUDID>() {
-                                    @Override
-                                    public BindUDID apply(String chainPublicKey) throws Exception {
-                                        String chainAddress = TokenTmClient.getService(ChainService.class).getChainAddress(chainPublicKey);
-                                        return new BindUDID(uDID.get(), chainAddress, null, chainPublicKey, null, phone.get());
-                                    }
-                                });
+                    public UDIDResult apply(ChainSignedResult<DIDSignature> didSignatureChainSignedResult) throws Exception {
+                        return new UDIDResult(phone.get(), didSignatureChainSignedResult);
                     }
                 })
                 .compose(XXF.bindToLifecycle(this))
                 .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(this)))
-                .subscribe(new Consumer<BindUDID>() {
+                .subscribe(new Consumer<UDIDResult>() {
                     @Override
-                    public void accept(BindUDID bindUDID) throws Exception {
+                    public void accept(UDIDResult udidResult) throws Exception {
                         //返回uDid
-                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, bindUDID));
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, udidResult));
                         finish();
                     }
                 });
@@ -334,18 +324,31 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
      * @param phone
      */
     private void oldUsersHaveCacheLogin(String did, String phone) {
-        //完成登录
-        BindUDID bindUdid = new BindUDID(did, null, null, null, null, phone);
-        //返回uDid
-        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, bindUdid));
-        finish();
+        TokenTmClient.getService(IdentityService.class)
+                .getLoginCache(did)
+                .map(new Function<ChainSignedResult<DIDSignature>, UDIDResult>() {
+                    @Override
+                    public UDIDResult apply(ChainSignedResult<DIDSignature> didSignatureChainSignedResult) throws Exception {
+                        return new UDIDResult(phone, didSignatureChainSignedResult);
+                    }
+                })
+                .compose(XXF.bindToErrorNotice())
+                .compose(XXF.bindToLifecycle(this))
+                .subscribe(new Consumer<UDIDResult>() {
+                    @Override
+                    public void accept(UDIDResult udidResult) throws Exception {
+                        //返回uDid
+                        setResult(Activity.RESULT_OK, getIntent().putExtra(KEY_ACTIVITY_RESULT, udidResult));
+                        finish();
+                    }
+                });
     }
 
     @Override
     public void onIdentityChoice(ObservableField<IdentityLayout> identityLayout, ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd, ObservableField<String> invitationCode) {
         switch (identityLayout.get()) {
             case NEW_USER:
-                onIdentitySet(phone, smsCode, identityPwd,invitationCode);
+                onIdentitySet(phone, smsCode, identityPwd, invitationCode);
                 break;
             case OLD_USER_NO_CACHE:
                 onIdentityDecrypt(uDID, phone, smsCode, identityPwd);
