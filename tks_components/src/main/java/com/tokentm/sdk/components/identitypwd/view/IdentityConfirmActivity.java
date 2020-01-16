@@ -51,19 +51,22 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
     //倒计时60秒
     private static final int SMS_DELAY = 60;
     private static final String KEY_PHONE = "phone";
+    private static final String KEY_SHOW_INVITATION_CODE = "show_invitation_code";
 
-    public static void launch(Context context, String phone) {
-        context.startActivity(getLauncher(context, phone));
+    public static void launch(Context context, String phone, boolean showInvitationCode) {
+        context.startActivity(getLauncher(context, phone, showInvitationCode));
     }
 
-    public static Intent getLauncher(Context context, String phone) {
+    public static Intent getLauncher(Context context, String phone, boolean showInvitationCode) {
         return new Intent(context, IdentityConfirmActivity.class)
-                .putExtra(KEY_PHONE, phone);
+                .putExtra(KEY_PHONE, phone)
+                .putExtra(KEY_SHOW_INVITATION_CODE, showInvitationCode);
     }
 
     TksComponentsActivityIdentityPwdSetBinding binding;
     IdentityPwdSetVm viewModel;
     String phone;
+    boolean showInvitationCode;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,11 +78,12 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
 
     private void initView() {
         phone = getIntent().getStringExtra(KEY_PHONE);
+        showInvitationCode = getIntent().getBooleanExtra(KEY_SHOW_INVITATION_CODE, false);
         setTitle("身份密码");
 
         viewModel = ViewModelProviders.of(this).get(IdentityPwdSetVm.class);
         viewModel.phone.set(phone);
-
+        viewModel.showInvitationCode.set(showInvitationCode);
         binding.setViewModel(viewModel);
         binding.setPresenter(this);
 
@@ -260,10 +264,9 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
      */
     @SuppressLint("CheckResult")
     @Override
-    public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
-        //TODO createUDID最后的参数是邀请码
+    public void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd,ObservableField<String> invitationCode) {
         TokenTmClient.getService(IdentityService.class)
-                .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false, "")
+                .createUDID(phone.get(), smsCode.get(), identityPwd.get(), false, invitationCode.get())
                 .map(new Function<ChainResult, BindUDID>() {
                     @Override
                     public BindUDID apply(ChainResult chainResult) throws Exception {
@@ -339,10 +342,10 @@ public class IdentityConfirmActivity extends BaseTitleBarActivity implements Ide
     }
 
     @Override
-    public void onIdentityChoice(ObservableField<IdentityLayout> identityLayout, ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd) {
+    public void onIdentityChoice(ObservableField<IdentityLayout> identityLayout, ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd, ObservableField<String> invitationCode) {
         switch (identityLayout.get()) {
             case NEW_USER:
-                onIdentitySet(phone, smsCode, identityPwd);
+                onIdentitySet(phone, smsCode, identityPwd,invitationCode);
                 break;
             case OLD_USER_NO_CACHE:
                 onIdentityDecrypt(uDID, phone, smsCode, identityPwd);

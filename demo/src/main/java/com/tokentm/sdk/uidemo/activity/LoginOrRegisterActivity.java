@@ -41,7 +41,7 @@ public class LoginOrRegisterActivity extends AppCompatActivity {
                 //注册 登陆 都需要
                 ComponentUtils.launchUserIdentityConfirmActivity(
                         LoginOrRegisterActivity.this,
-                        binding.loginPhoneEt.getText().toString(),
+                        binding.loginPhoneEt.getText().toString(), false,
                         new Consumer<BindUDID>() {
                             @Override
                             public void accept(BindUDID bindUDID) throws Exception {

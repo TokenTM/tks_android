@@ -286,6 +286,44 @@
                         android:layout_height="0.5dp"
                         android:background="@drawable/tks_components_arch_divider_comm" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:visibility="@{(viewModel.isShowConfirmIdentityPassword&amp;&amp;viewModel.showInvitationCode)?View.VISIBLE:View.GONE}">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="25dp"
+                            android:text="邀请码"
+                            android:textColor="#ff374f66"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:gravity="center_vertical"
+                            android:hint="请确认邀请码"
+                            android:inputType="text"
+                            android:maxLength="20"
+                            android:maxLines="1"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:text="@={viewModel.invitationCode}"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@drawable/tks_components_arch_divider_comm" />
+
 
                 </LinearLayout>
 
@@ -307,7 +345,7 @@
                 android:layout_marginBottom="34dp"
                 android:background="@drawable/tks_components_base_btn_bg_selector"
                 android:enabled="@{viewModel.submitable}"
-                android:onClick="@{()->presenter.onIdentityChoice(viewModel.identityLayout,viewModel.did,viewModel.phone,viewModel.smsCode,viewModel.identityPwd)}"
+                android:onClick="@{()->presenter.onIdentityChoice(viewModel.identityLayout,viewModel.did,viewModel.phone,viewModel.smsCode,viewModel.identityPwd,viewModel.invitationCode)}"
                 android:text="确认"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />

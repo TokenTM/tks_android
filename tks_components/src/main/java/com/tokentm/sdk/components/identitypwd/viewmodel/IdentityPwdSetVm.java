@@ -68,7 +68,15 @@ public class IdentityPwdSetVm extends XXFViewModel {
      * 验证 验证码loading是否显示
      */
     public ObservableBoolean checkDidProgressVisible = new ObservableBoolean();
+    /**
+     * 是否显示邀请码布局
+     */
+    public ObservableBoolean showInvitationCode = new ObservableBoolean();
 
+    /**
+     * 邀请码
+     */
+    public ObservableField<String> invitationCode = new ObservableField<>();
     private Observable.OnPropertyChangedCallback submitableCallback = new Observable.OnPropertyChangedCallback() {
         @Override
         public void onPropertyChanged(Observable sender, int propertyId) {

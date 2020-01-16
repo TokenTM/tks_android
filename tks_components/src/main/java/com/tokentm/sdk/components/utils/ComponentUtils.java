@@ -50,12 +50,13 @@ public class ComponentUtils {
      *
      * @param activity
      * @param userPhone
-     * @param consumer  返回uDID
+     * @param showInvitationCode 是否显示邀请码
+     * @param consumer           返回uDID
      */
     @SuppressLint("CheckResult")
-    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, Consumer<BindUDID> consumer) {
+    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, boolean showInvitationCode, Consumer<BindUDID> consumer) {
         XXF.startActivityForResult(activity,
-                IdentityConfirmActivity.getLauncher(activity, userPhone),
+                IdentityConfirmActivity.getLauncher(activity, userPhone, showInvitationCode),
                 7000)
                 .filter(new Predicate<ActivityResult>() {
                     @Override
@@ -233,7 +234,7 @@ public class ComponentUtils {
                         return activityResult.isOk();
                     }
                 })
-                .map(new Function<ActivityResult,ChainCertResult<CertUserInfoStoreItem>>() {
+                .map(new Function<ActivityResult, ChainCertResult<CertUserInfoStoreItem>>() {
                     @Override
                     public ChainCertResult<CertUserInfoStoreItem> apply(ActivityResult activityResult) throws Exception {
                         return (ChainCertResult<CertUserInfoStoreItem>) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);

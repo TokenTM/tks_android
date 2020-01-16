@@ -1,5 +1,6 @@
 package com.tokentm.sdk.components.identitypwd.presenter;
 
+import android.annotation.SuppressLint;
 import android.databinding.ObservableField;
 import android.databinding.ObservableLong;
 
@@ -36,8 +37,8 @@ public interface IdentityPwdSetPresenter {
      * @param smsCode
      * @param identityPwd
      */
-    void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd);
-
+    @SuppressLint("CheckResult")
+    void onIdentitySet(ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd, ObservableField<String> invitationCode);
 
     /**
      * 解开身份密码
@@ -52,6 +53,5 @@ public interface IdentityPwdSetPresenter {
     /**
      * 选择身份密码操作类型
      */
-    void onIdentityChoice(ObservableField<IdentityLayout> identityLayout, ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd);
-
+    void onIdentityChoice(ObservableField<IdentityLayout> identityLayout, ObservableField<String> uDID, ObservableField<String> phone, ObservableField<String> smsCode, ObservableField<String> identityPwd, ObservableField<String> invitationCode);
 }
