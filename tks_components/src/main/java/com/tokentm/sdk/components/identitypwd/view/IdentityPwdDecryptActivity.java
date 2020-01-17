@@ -9,11 +9,13 @@ import android.databinding.Observable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.databinding.ObservableLong;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.common.BaseActivity;
@@ -21,6 +23,7 @@ import com.tokentm.sdk.components.databinding.TksComponentsActivityIdentityPwdDe
 import com.tokentm.sdk.components.identitypwd.model.StepModel;
 import com.tokentm.sdk.components.identitypwd.presenter.IdentityPwdDecryptPresenter;
 import com.tokentm.sdk.components.identitypwd.viewmodel.IdentityPwdDecryptVm;
+import com.tokentm.sdk.components.utils.SuperStatusBarUtils;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.model.NodeServiceDecryptedPartItem;
 import com.tokentm.sdk.model.NodeServiceEncryptedPartItem;
@@ -82,6 +85,11 @@ public class IdentityPwdDecryptActivity extends BaseActivity implements Identity
 
 
     private void initView() {
+        //状态栏以图片为背景
+        SuperStatusBarUtils.setTransparent(this, getDrawable(R.drawable.tks_components_bg_00cac0_00a6da));
+        //导航栏白色
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        getWindow().setNavigationBarColor(Color.WHITE);
         setTitle("身份密码找回");
         identityInfoStoreItem = (IdentityInfoStoreItem) getIntent().getSerializableExtra(KEY_DID_INFO);
         String phone = getIntent().getStringExtra(KEY_PHONE);
@@ -108,6 +116,7 @@ public class IdentityPwdDecryptActivity extends BaseActivity implements Identity
                 binding.getViewModel().smsCode.set("");
             }
         });
+
     }
 
     private List<StepModel> generateSteps(int stepCount) {

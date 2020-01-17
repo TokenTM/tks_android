@@ -38,6 +38,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/white"
                     android:orientation="vertical"
                     android:padding="15dp">
 
@@ -144,7 +145,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="25dp"
-                        android:layout_marginBottom="85dp"
+                        android:layout_marginBottom="25dp"
                         android:background="@drawable/tks_components_base_btn_bg_selector"
                         android:enabled="@{viewModel.submitable}"
                         android:onClick="@{()->presenter.onIdentityPwdDecrypt(viewModel.step,viewModel.phone,viewModel.smsCode,viewModel.decryptNodeName)}"
