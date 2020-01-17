@@ -11,7 +11,6 @@ import com.tokentm.sdk.components.cert.GoodsTransferRecordsActivity;
 import com.tokentm.sdk.components.cert.UserCertByIDCardActivity;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
-import com.tokentm.sdk.components.identitypwd.model.UDIDResult;
 import com.tokentm.sdk.components.identitypwd.model.CertificationResultWrapper;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationActivity;
 import com.tokentm.sdk.components.identitypwd.view.ChainCertificationOtherActivity;
@@ -23,7 +22,9 @@ import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.identitypwd.dialog.IdentityPwdInputDialog;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
+import com.tokentm.sdk.model.ChainSignedResult;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
+import com.tokentm.sdk.model.DIDSignature;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.IdentityService;
 import com.tokentm.sdk.source.TokenTmClient;
@@ -54,7 +55,7 @@ public class ComponentUtils {
      * @param consumer           返回uDID
      */
     @SuppressLint("CheckResult")
-    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, boolean showInvitationCode, Consumer<UDIDResult> consumer) {
+    public static void launchUserIdentityConfirmActivity(FragmentActivity activity, String userPhone, boolean showInvitationCode, Consumer<ChainSignedResult<DIDSignature>> consumer) {
         XXF.startActivityForResult(activity,
                 IdentityConfirmActivity.getLauncher(activity, userPhone, showInvitationCode),
                 7000)
@@ -64,10 +65,10 @@ public class ComponentUtils {
                         return activityResult.isOk();
                     }
                 })
-                .map(new Function<ActivityResult, UDIDResult>() {
+                .map(new Function<ActivityResult, ChainSignedResult<DIDSignature>>() {
                     @Override
-                    public UDIDResult apply(ActivityResult activityResult) throws Exception {
-                        return (UDIDResult) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
+                    public ChainSignedResult<DIDSignature> apply(ActivityResult activityResult) throws Exception {
+                        return (ChainSignedResult<DIDSignature>) activityResult.getData().getSerializableExtra(KEY_ACTIVITY_RESULT);
                     }
                 })
                 .take(1)

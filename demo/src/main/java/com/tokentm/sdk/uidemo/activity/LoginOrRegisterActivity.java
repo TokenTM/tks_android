@@ -7,8 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.tokentm.sdk.components.identitypwd.model.UDIDResult;
 import com.tokentm.sdk.components.utils.ComponentUtils;
+import com.tokentm.sdk.model.ChainSignedResult;
+import com.tokentm.sdk.model.DIDSignature;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityLoginBinding;
 
@@ -42,12 +43,11 @@ public class LoginOrRegisterActivity extends AppCompatActivity {
                 ComponentUtils.launchUserIdentityConfirmActivity(
                         LoginOrRegisterActivity.this,
                         binding.loginPhoneEt.getText().toString(), false,
-                        new Consumer<UDIDResult>() {
+                        new Consumer<ChainSignedResult<DIDSignature>>() {
                             @Override
-                            public void accept(UDIDResult udidResult) throws Exception {
+                            public void accept(ChainSignedResult<DIDSignature> didSignatureChainSignedResult) throws Exception {
                                 //TODO 中心化系统和userId进行绑定
-
-                                DemoSp.getInstance().login(binding.loginPhoneEt.getText().toString(), udidResult.getChainSignedResult().getDid());
+                                DemoSp.getInstance().login(binding.loginPhoneEt.getText().toString(), didSignatureChainSignedResult.getDid());
                                 startActivity(new Intent(LoginOrRegisterActivity.this, MainActivity.class));
                                 finish();
                             }
