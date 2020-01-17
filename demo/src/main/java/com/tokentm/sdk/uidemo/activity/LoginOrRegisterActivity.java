@@ -12,6 +12,7 @@ import com.tokentm.sdk.model.ChainSignedResult;
 import com.tokentm.sdk.model.DIDSignature;
 import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityLoginBinding;
+import com.xxf.arch.XXF;
 
 import io.reactivex.functions.Consumer;
 
@@ -46,6 +47,7 @@ public class LoginOrRegisterActivity extends AppCompatActivity {
                         new Consumer<ChainSignedResult<DIDSignature>>() {
                             @Override
                             public void accept(ChainSignedResult<DIDSignature> didSignatureChainSignedResult) throws Exception {
+                                XXF.getLogger().d("==========>didSignatureChainSignedResult:"+didSignatureChainSignedResult);
                                 //TODO 中心化系统和userId进行绑定
                                 DemoSp.getInstance().login(binding.loginPhoneEt.getText().toString(), didSignatureChainSignedResult.getDid());
                                 startActivity(new Intent(LoginOrRegisterActivity.this, MainActivity.class));

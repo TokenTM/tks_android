@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.NetworkOnMainThreadException;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.text.TextUtils;
 
 import com.google.gson.JsonParseException;
 import com.xxf.arch.http.ResponseException;
@@ -66,7 +67,7 @@ public class ThrowableConvertUtils {
             } else if (t instanceof IOException) {
                 return "服务器IO异常";
             } else if (t instanceof NullPointerException) {
-                return "服务器返回数据为null";
+                return TextUtils.isEmpty(t.getMessage()) ? "服务器返回数据为null" : t.getMessage();
             } else {
                 return t.getMessage();
             }
