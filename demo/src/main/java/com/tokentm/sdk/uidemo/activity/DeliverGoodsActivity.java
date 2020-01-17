@@ -87,7 +87,6 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
                                                 if (!TextUtils.isEmpty(transferInitResult.getId())) {
                                                     binding.tvShowGoodsId.setText(transferInitResult.getId());
                                                     ToastUtils.showToast("发货成功");
-                                                    finish();
                                                 } else {
                                                     ToastUtils.showToast("发货失败");
                                                 }

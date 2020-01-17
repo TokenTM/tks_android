@@ -7,8 +7,8 @@ android {
         applicationId "com.tokentm.sdk.ui.demo"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion 27
-        versionCode 3
-        versionName "1.1.2"
+        versionCode 5
+        versionName "1.1.4"
     }
     compileOptions {
         sourceCompatibility 1.8

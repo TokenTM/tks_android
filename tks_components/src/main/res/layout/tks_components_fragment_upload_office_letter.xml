@@ -19,12 +19,13 @@
                 tools:background="#f2f2f2" />
 
             <TextView
+                android:lineSpacingExtra="2dp"
                 android:id="@+id/upload_guide_notice_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/ll_bottom"
                 android:layout_margin="15dp"
-                android:text="备注：请下载以上模板（或手抄以上内容），填写并加盖公章，拍照后上传（照片清晰可见,不大于8MB，日期和签字必须为手写，内容真实有效）"
+                android:text="备注：请下载以上模板（或手抄以上内容），填写并加盖 公章，拍照后上传（照片清晰可见）日期和签字必须为手 写，内容真实有效"
                 android:textColor="#f6b64d"
                 android:textSize="13sp" />
 
