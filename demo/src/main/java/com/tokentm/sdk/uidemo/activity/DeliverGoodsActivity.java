@@ -53,7 +53,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
-        setTitle("发货");
+        setTitle("确认发货");
         did = getIntent().getStringExtra(KEY_DID);
         binding.tvSendGoods.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +87,7 @@ public class DeliverGoodsActivity extends BaseTitleBarActivity {
                                                 if (!TextUtils.isEmpty(transferInitResult.getId())) {
                                                     binding.tvShowGoodsId.setText(transferInitResult.getId());
                                                     ToastUtils.showToast("发货成功");
+                                                    finish();
                                                 } else {
                                                     ToastUtils.showToast("发货失败");
                                                 }

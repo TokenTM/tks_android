@@ -19,7 +19,7 @@ import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityCompanySubmitFileBinding;
-import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.dialog.IdentityPwdInputDialog;
 import com.tokentm.sdk.components.identitypwd.view.WebViewActivity;
 import com.tokentm.sdk.components.utils.IgnoreSpacesInputFilter;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
@@ -96,14 +96,13 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
             }
         });
         String companyName = companyCertParams.getCompanyName();
-        String companyCreditCode = companyCertParams.getCompanyCreditCode();
         //当传过来的值是空,那就可编辑,否则不可编辑
         binding.companyNameTv.setText(companyName);
         binding.companyNameTv.setFocusable(TextUtils.isEmpty(companyName));
         binding.companyNameTv.setFocusableInTouchMode(TextUtils.isEmpty(companyName));
 
-        //去空格和限制6个字
-        binding.legalPersonNameTv.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter(), new InputFilter.LengthFilter(6)});
+        //限制输入空格
+        binding.legalPersonNameTv.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter()});
 
         binding.radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -128,6 +127,9 @@ public class CompanyCertSubmitFileActivity extends BaseTitleBarActivity {
         binding.rbBusinessLicense.setChecked(true);
 
         binding.companyUserTypeTv.setText(companyCertParams.getCompanyType() == CompanyType.TYPE_COMPANY ? "法定代表人" : "姓名");
+
+        binding.companyNameTv.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter(), new InputFilter.LengthFilter(50)});
+        binding.legalPersonNameTv.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter(), new InputFilter.LengthFilter(50)});
     }
 
     private void loadData() {

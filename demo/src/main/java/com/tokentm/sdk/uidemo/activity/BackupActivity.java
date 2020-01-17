@@ -28,9 +28,10 @@ public class BackupActivity extends BaseTitleBarActivity {
 
     private String did;
 
-    public static void launch(Context context,String did) {
-        context.startActivity(getLauncher(context,did));
+    public static void launch(Context context, String did) {
+        context.startActivity(getLauncher(context, did));
     }
+
     private static Intent getLauncher(Context context, String did) {
         return new Intent(context, BackupActivity.class)
                 .putExtra(KEY_DID, did);
@@ -52,7 +53,7 @@ public class BackupActivity extends BaseTitleBarActivity {
         binding.tvBackup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!RAUtils.isLegalDefault()){
+                if (!RAUtils.isLegalDefault()) {
                     return;
                 }
                 StoreItem<String> storeItem = new StoreItem<>();
@@ -67,8 +68,8 @@ public class BackupActivity extends BaseTitleBarActivity {
                         .subscribe(new Consumer<Long>() {
                             @Override
                             public void accept(Long aLong) throws Exception {
+                                binding.etDataVersion.setText(String.valueOf(aLong));
                                 ToastUtils.showToast("备份成功");
-                                finish();
                             }
                         });
             }

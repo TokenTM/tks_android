@@ -15,7 +15,6 @@ import com.tokentm.sdk.model.SellerBuyerinfoDTO;
 import com.tokentm.sdk.model.TransferCommodityActionDTO;
 import com.tokentm.sdk.source.CommodityService;
 import com.tokentm.sdk.source.TokenTmClient;
-import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityReceiveGoodsBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -97,7 +96,7 @@ public class ReceiveGoodsActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
-        setTitle("收货");
+        setTitle("确认收货");
         did = getIntent().getStringExtra(KEY_DID);
         goodsId = getIntent().getStringExtra(KEY_GOODS_ID);
         binding.etToBuyerDid.setText("");

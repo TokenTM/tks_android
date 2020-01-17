@@ -135,7 +135,7 @@
             android:background="#ff00c1ce"
             android:gravity="center"
             android:padding="20dp"
-            android:text="确认发证"
+            android:text="确认证书"
             android:textColor="#fff"
             android:textSize="@dimen/base_dp_15" />
     </LinearLayout>

@@ -11,10 +11,10 @@
             android:orientation="vertical">
 
             <ImageView
+                android:padding="15dp"
                 android:id="@+id/pdfView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
                 android:minHeight="200dp"
                 tools:background="#f2f2f2" />
 

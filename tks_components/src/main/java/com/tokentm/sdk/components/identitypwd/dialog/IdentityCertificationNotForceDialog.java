@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd.view;
+package com.tokentm.sdk.components.identitypwd.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;

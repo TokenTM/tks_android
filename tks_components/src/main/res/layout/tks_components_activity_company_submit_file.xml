@@ -2,168 +2,170 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:showDividers="middle">
-
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="工商注册名字"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/company_name_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="必填"
+                    android:padding="15dp"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp"
+                    tools:text="北京投肯科技有限公司" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#fff1f1f1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="统一社会信用代码"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/company_credit_code_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:gravity="right|center_vertical"
+                    android:hint="必填"
+                    android:inputType="number"
+                    android:maxLength="18"
+                    android:padding="15dp"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp"
+                    tools:text="54611024598760863A" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#fff1f1f1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/company_user_type_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="姓名/法人"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/legal_person_name_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="必填"
+                    android:padding="15dp"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp"
+                    tools:text="诸葛亮" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="#fff1f1f1" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:paddingTop="12dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="12dp"
-                android:text="工商注册名字"
-                android:textColor="#ff374f66"
-                android:textSize="15sp" />
+                android:orientation="horizontal"
+                android:paddingRight="15dp">
 
-            <EditText
-                android:hint="必填"
-                android:maxWidth="10dp"
-                android:singleLine="true"
-                android:background="@null"
-                android:id="@+id/company_name_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ellipsize="middle"
-                android:gravity="right|center_vertical"
-                android:paddingRight="15dp"
-                android:textColor="#ff374f66"
-                android:textSize="15sp"
-                android:text="北京投肯科技有限公司" />
+                <RadioButton
+                    android:id="@+id/rb_business_license"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/tks_components_checked_selector"
+                    android:drawablePadding="5dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:text="证书认证"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp" />
+
+                <RadioButton
+                    android:id="@+id/rb_official_letter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:button="@null"
+                    android:drawableLeft="@drawable/tks_components_checked_selector"
+                    android:drawablePadding="5dp"
+                    android:paddingTop="14dp"
+                    android:paddingBottom="14dp"
+                    android:text="公函认证"
+                    android:textColor="#ff374f66"
+                    android:textSize="15dp" />
+            </RadioGroup>
+
+            <FrameLayout
+                android:id="@+id/fl_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/ok_btn"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/tks_components_base_btn_bg_selector"
+                android:text="认证"
+                android:textColor="@android:color/white"
+                android:textSize="18dp"
+                tools:text="认证" />
         </LinearLayout>
+    </ScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:paddingLeft="15dp"
-                android:paddingTop="12dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="12dp"
-                android:text="统一社会信用代码"
-                android:textColor="#ff374f66"
-                android:textSize="15sp" />
-
-            <EditText
-                android:inputType="number"
-                android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:maxLength="18"
-                android:id="@+id/company_credit_code_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@null"
-                android:ellipsize="end"
-                android:gravity="right|center_vertical"
-                android:hint="必填"
-                android:maxLines="1"
-                android:paddingRight="15dp"
-                android:textColor="#ff374f66"
-                android:textSize="15sp"
-                tools:text="54611024598760863A" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/company_user_type_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:paddingLeft="15dp"
-                android:paddingTop="12dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="12dp"
-                android:text="姓名/法人"
-                android:textColor="#ff374f66"
-                android:textSize="15sp" />
-
-            <EditText
-                android:hint="必填"
-                android:background="@null"
-                android:id="@+id/legal_person_name_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:gravity="right|center_vertical"
-                android:paddingRight="15dp"
-                android:textColor="#ff374f66"
-                android:textSize="15sp"
-                tools:text="诸葛亮" />
-        </LinearLayout>
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp">
-
-            <RadioButton
-                android:id="@+id/rb_business_license"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@null"
-                android:drawableLeft="@drawable/tks_components_checked_selector"
-                android:drawablePadding="5dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:text="证书认证"
-                android:textColor="#ff374f66"
-                android:textSize="15sp" />
-
-            <RadioButton
-                android:id="@+id/rb_official_letter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:button="@null"
-                android:drawableLeft="@drawable/tks_components_checked_selector"
-                android:drawablePadding="5dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp"
-                android:text="公函认证"
-                android:textColor="#ff374f66"
-                android:textSize="15sp" />
-        </RadioGroup>
-
-        <FrameLayout
-            android:id="@+id/fl_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/ok_btn"
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/tks_components_base_btn_bg_selector"
-            android:text="认证"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            tools:text="认证" />
-    </LinearLayout>
 </layout>

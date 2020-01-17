@@ -14,7 +14,7 @@
                 android:id="@+id/pdfView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
+                android:padding="15dp"
                 android:minHeight="408dp"
                 android:src="@mipmap/tks_components_business_license_upload_ic" />
 

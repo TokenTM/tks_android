@@ -13,6 +13,7 @@ import com.tokentm.sdk.source.TokenTmClient;
 import com.tokentm.sdk.uidemo.databinding.ActivityGetBackupBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
+import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -47,7 +48,7 @@ public class GetBackupActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
-        setTitle("获取备份");
+        setTitle("查询备份");
         did = getIntent().getStringExtra(KEY_DID);
         binding.tvGetBackup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +61,15 @@ public class GetBackupActivity extends BaseTitleBarActivity {
                         .subscribe(new Consumer<StoreItem<String>>() {
                             @Override
                             public void accept(StoreItem<String> stringStoreItem) throws Exception {
-                                binding.tvDataContent.setText(stringStoreItem.getData());
+                                if (stringStoreItem != null && stringStoreItem.getData() != null) {
+                                    binding.tvDataVersion.setText(String.valueOf(stringStoreItem.getVersion()));
+                                    binding.tvDataContent.setText(stringStoreItem.getData());
+                                    ToastUtils.showToast("查询成功");
+                                } else {
+                                    binding.tvDataVersion.setText("");
+                                    binding.tvDataContent.setText("");
+                                    ToastUtils.showToast("查询失败");
+                                }
                             }
                         });
             }

@@ -1,4 +1,4 @@
-package com.tokentm.sdk.components.identitypwd.view;
+package com.tokentm.sdk.components.identitypwd.dialog;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -10,12 +10,11 @@ import android.support.annotation.Nullable;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.components.databinding.TksComponentsDialogDecryptedByPwdWithStampAnimBinding;
 import com.tokentm.sdk.components.identitypwd.UserConfig;
+import com.tokentm.sdk.components.identitypwd.view.IdentityPwdDecryptActivity;
 import com.tokentm.sdk.components.utils.KeyboardUtils;
 import com.tokentm.sdk.components.utils.PropertyAnimUtils;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;

@@ -108,6 +108,7 @@ public class ConfirmCertificateActivity extends BaseTitleBarActivity {
                                                 if (chainResult.getTxHash() != null) {
                                                     ToastUtils.showToast("确认证书成功");
                                                     DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
+                                                    finish();
                                                 } else {
                                                     ToastUtils.showToast("确认证书失败");
                                                 }

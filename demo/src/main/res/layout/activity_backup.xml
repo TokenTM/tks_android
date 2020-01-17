@@ -87,8 +87,30 @@
             android:background="#ff00c1ce"
             android:gravity="center"
             android:padding="@dimen/base_dp_20"
-            android:text="备份"
+            android:text="备份数据"
             android:textColor="#fff"
             android:textSize="@dimen/base_dp_15" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="数据版本:"
+                android:textSize="@dimen/base_dp_15" />
+
+            <TextView
+                android:id="@+id/et_data_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/base_dp_20"
+                android:background="@null"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

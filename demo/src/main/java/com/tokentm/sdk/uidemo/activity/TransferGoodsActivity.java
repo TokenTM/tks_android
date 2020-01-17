@@ -94,7 +94,7 @@ public class TransferGoodsActivity extends BaseTitleBarActivity {
     }
 
     private void initView() {
-        setTitle("转移货物");
+        setTitle("转移物品");
         did = getIntent().getStringExtra(KEY_DID);
         goodsId = getIntent().getStringExtra(KEY_GOODS_ID);
         binding.tvTransferGoods.setOnClickListener(new View.OnClickListener() {

@@ -11,14 +11,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.text.InputFilter;
 
 import com.tokentm.sdk.components.R;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityCertByIdcardBinding;
-import com.tokentm.sdk.components.identitypwd.view.IdentityPwdInputDialog;
+import com.tokentm.sdk.components.identitypwd.dialog.IdentityPwdInputDialog;
 import com.tokentm.sdk.components.identitypwd.view.WebViewActivity;
 import com.tokentm.sdk.components.identitypwd.viewmodel.UserCertByIDCardVM;
+import com.tokentm.sdk.components.utils.IgnoreSpacesInputFilter;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
@@ -79,7 +81,7 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
                 .setTitleBarRightIcon(R.mipmap.tks_components_ic_help, new Action() {
                     @Override
                     public void run() throws Exception {
-                        WebViewActivity.launch(getActivity(),"https://bcard.tokentm.net/h5/share/auth-reason.html");
+                        WebViewActivity.launch(getActivity(), "https://bcard.tokentm.net/h5/share/auth-reason.html");
                     }
                 });
         viewModel = ViewModelProviders.of(this).get(UserCertByIDCardVM.class);
@@ -87,6 +89,8 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
         binding.setPresenter(this);
         viewModel.userName.set(certByIDCardParams.getUserName());
         viewModel.userIDCard.set(certByIDCardParams.getUserIDCard());
+        //禁止空格
+        binding.etIdentityName.setFilters(new InputFilter[]{new IgnoreSpacesInputFilter(), new InputFilter.LengthFilter(50)});
     }
 
     @Override

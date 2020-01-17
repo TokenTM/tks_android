@@ -88,7 +88,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/tks_components_bg_btn_ok"
-                android:text="确认"
+                android:text="去认证"
                 android:textColor="@android:color/white"
                 android:textSize="15sp" />
         </LinearLayout>

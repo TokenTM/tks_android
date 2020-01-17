@@ -21,8 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -32,21 +31,23 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="15dp"
                     android:text="姓名"
                     android:textColor="#ff374f66"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <EditText
-                    android:layout_width="wrap_content"
+                    android:id="@+id/et_identity_name"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入您的身份证姓名"
-                    android:maxLines="1"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:text="@={viewModel.userName}"
-                    android:textSize="15sp" />
+                    android:textSize="15dp"
+                    tools:text="迪丽热巴" />
             </LinearLayout>
 
             <View
@@ -62,23 +63,26 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="15dp"
                     android:text="身份证号"
                     android:textColor="#ff374f66"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <EditText
-                    android:inputType="number"
-                    android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:gravity="right"
                     android:hint="请输入您的身份证号"
+                    android:inputType="number"
+                    android:maxLength="18"
                     android:maxLines="1"
-                    android:padding="10dp"
+                    android:padding="15dp"
                     android:text="@={viewModel.userIDCard}"
-                    android:textSize="15sp" />
+                    android:textSize="15dp"
+                    tools:text="13112816611616263X" />
             </LinearLayout>
 
             <View
@@ -89,11 +93,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingStart="15dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:text="*上传证件照片"
                 android:textColor="#ff374f66"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <ImageView
                 android:layout_width="237dp"
@@ -138,7 +143,7 @@
                 android:onClick="@{()->presenter.onUserCert(viewModel.userName, viewModel.userIDCard, viewModel.userIDCardFrontPic, viewModel.userIDCardBackPic, viewModel.userIDCardHandedPic)}"
                 android:text="认证"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="18dp"
                 tools:text="认证" />
         </LinearLayout>
     </ScrollView>
