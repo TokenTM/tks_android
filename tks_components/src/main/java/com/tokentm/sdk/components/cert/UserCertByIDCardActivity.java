@@ -21,6 +21,7 @@ import com.tokentm.sdk.components.identitypwd.dialog.IdentityPwdInputDialog;
 import com.tokentm.sdk.components.identitypwd.view.WebViewActivity;
 import com.tokentm.sdk.components.identitypwd.viewmodel.UserCertByIDCardVM;
 import com.tokentm.sdk.components.utils.IgnoreSpacesInputFilter;
+import com.tokentm.sdk.components.utils.compress_picture.CompressPictureUtil;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
@@ -99,7 +100,8 @@ public class UserCertByIDCardActivity extends BaseTitleBarActivity implements Us
         SystemUtils.doTakePhoto(this, new Consumer<String>() {
             @Override
             public void accept(String url) throws Exception {
-                startUCrop(UserCertByIDCardActivity.this, url, pic);
+                File compressPictureWithSize = CompressPictureUtil.getCompressPictureWithSize(url, 1024 * 1000);
+                startUCrop(UserCertByIDCardActivity.this, compressPictureWithSize.getAbsolutePath(), pic);
             }
         });
         //弹出相册和拍照选框

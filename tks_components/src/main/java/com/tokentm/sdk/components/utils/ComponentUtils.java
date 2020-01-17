@@ -24,6 +24,7 @@ import com.tokentm.sdk.model.CertUserInfoStoreItem;
 import com.tokentm.sdk.model.ChainCertResult;
 import com.tokentm.sdk.model.ChainSignedResult;
 import com.tokentm.sdk.model.CompanyCertInfoStoreItem;
+import com.tokentm.sdk.model.CompanyType;
 import com.tokentm.sdk.model.DIDSignature;
 import com.tokentm.sdk.model.IdentityInfoStoreItem;
 import com.tokentm.sdk.source.IdentityService;
@@ -181,7 +182,8 @@ public class ComponentUtils {
                         public void accept(ChainCertResult<CertUserInfoStoreItem> certUserInfoStoreResult) throws Exception {
                             CertificationResultWrapper.Builder certificationResultParams = new CertificationResultWrapper.Builder();
                             certificationResultParams.setIdentityCertificationResult(certUserInfoStoreResult);
-                            launchCompanyCertActivity(activity, companyCertParams, new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
+                            CompanyCertParams companyCertParams1 = new CompanyCertParams.Builder(companyCertParams).setCompanyType(CompanyType.TYPE_COMPANY).build();
+                            launchCompanyCertActivity(activity, companyCertParams1, new Consumer<ChainCertResult<CompanyCertInfoStoreItem>>() {
                                 @Override
                                 public void accept(ChainCertResult<CompanyCertInfoStoreItem> companyCertInfoStoreItemChainCertResult) throws Exception {
                                     certificationResultParams.setCompanyCertificationResult(companyCertInfoStoreItemChainCertResult);

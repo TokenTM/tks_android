@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.common.BaseFragment;
 import com.tokentm.sdk.components.databinding.TksComponentsFragmentUploadOfficeLetterBinding;
+import com.tokentm.sdk.components.utils.compress_picture.CompressPictureUtil;
 import com.tokentm.sdk.crop.Crop;
 import com.tokentm.sdk.crop.util.CropUtils;
 import com.tokentm.sdk.model.CertUserInfoStoreItem;
@@ -189,7 +190,8 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
         SystemUtils.doTakePhoto(getActivity(), new Consumer<String>() {
             @Override
             public void accept(String imgPath) throws Exception {
-                XXF.startActivityForResult(getActivity(), CropUtils.getUCropLauncher(getActivity(), imgPath), Crop.REQUEST_CROP)
+                File compressPictureWithSize = CompressPictureUtil.getCompressPictureWithSize(imgPath, 1024 * 1000);
+                XXF.startActivityForResult(getActivity(), CropUtils.getUCropLauncher(getActivity(), compressPictureWithSize.getAbsolutePath()), Crop.REQUEST_CROP)
                         .filter(new Predicate<ActivityResult>() {
                             @Override
                             public boolean test(ActivityResult activityResult) throws Exception {
