@@ -5,10 +5,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseAlertDialog;
 import com.tokentm.sdk.uidemo.databinding.InputIdentityCompanyTxHashDidDialogBinding;
+import com.xxf.arch.utils.ToastUtils;
 
 import io.reactivex.functions.BiConsumer;
 
@@ -37,10 +39,19 @@ public class InputIdentityAndCompanyParamsDialog extends BaseAlertDialog<InputId
         binding.tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String etIdentityTxHash = binding.etIdentityTxHash.getText().toString().trim();
-                String etCompanyTxHash = binding.etCompanyTxHash.getText().toString().trim();
                 String etIdentityDid = binding.etIdentityDid.getText().toString().trim();
+                String etIdentityTxHash = binding.etIdentityTxHash.getText().toString().trim();
                 String etCompanyDid = binding.etCompanyDid.getText().toString().trim();
+                String etCompanyTxHash = binding.etCompanyTxHash.getText().toString().trim();
+                if (TextUtils.isEmpty(etIdentityDid) || TextUtils.isEmpty(etIdentityTxHash)) {
+                    ToastUtils.showToast("身份did和身份txHash缺一不可");
+                    return;
+                }
+
+                if (!TextUtils.isEmpty(etCompanyDid) || !TextUtils.isEmpty(etCompanyTxHash)){
+                    ToastUtils.showToast("企业did和企业txHash缺一不可");
+                    return;
+                }
                 InputIdentityCompanyParams inputIdentityCompanyParams = new InputIdentityCompanyParams(etIdentityTxHash, etCompanyTxHash, etIdentityDid, etCompanyDid);
                 setResult(inputIdentityCompanyParams);
                 dismiss();

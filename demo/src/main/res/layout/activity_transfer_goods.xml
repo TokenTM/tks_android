@@ -194,30 +194,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="20dp"
                     android:background="@null"
-                    android:hint="请输入收货人did"
-                    android:textSize="@dimen/base_dp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:text="链上hash"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <TextView
-                    android:id="@+id/et_chain_hash"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:textIsSelectable="true"
+                    android:hint="请输入收货人姓名"
                     android:textSize="@dimen/base_dp_15" />
             </LinearLayout>
 
@@ -233,6 +210,29 @@
                 android:padding="20dp"
                 android:text="转移物品"
                 android:textColor="#fff"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:text="链上hash"
+                android:textSize="@dimen/base_dp_15" />
+
+            <TextView
+                android:id="@+id/et_chain_hash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:textIsSelectable="true"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
     </ScrollView>

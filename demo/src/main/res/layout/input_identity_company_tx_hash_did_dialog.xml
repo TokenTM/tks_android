@@ -20,67 +20,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="用户txHash"
-                android:textSize="15dp" />
-
-            <EditText
-                android:id="@+id/et_identity_tx_hash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/base_dp_15"
-                android:background="@null"
-                android:hint="请输入用户txHash"
-                android:textSize="@dimen/base_dp_15" />
-        </LinearLayout>
-
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/base_dp_1"
-            android:background="@color/base_color_DDDDDD" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/base_dp_15"
-            android:layout_marginEnd="@dimen/base_dp_15"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/base_dp_10"
-            android:paddingBottom="@dimen/base_dp_10">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="企业txHash"
-                android:textSize="15dp" />
-
-            <EditText
-                android:id="@+id/et_company_tx_hash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/base_dp_15"
-                android:background="@null"
-                android:hint="请输入企业txHash"
-                android:textSize="@dimen/base_dp_15" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/base_dp_1"
-            android:background="@color/base_color_DDDDDD" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/base_dp_15"
-            android:layout_marginEnd="@dimen/base_dp_15"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/base_dp_10"
-            android:paddingBottom="@dimen/base_dp_10">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="用户did"
                 android:textSize="15dp" />
 
@@ -111,6 +50,37 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="用户txHash"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/et_identity_tx_hash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_dp_15"
+                android:background="@null"
+                android:hint="请输入用户txHash"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_dp_1"
+            android:background="@color/base_color_DDDDDD" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_dp_15"
+            android:layout_marginEnd="@dimen/base_dp_15"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/base_dp_10"
+            android:paddingBottom="@dimen/base_dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="企业did"
                 android:textSize="15dp" />
 
@@ -121,6 +91,36 @@
                 android:layout_marginStart="@dimen/base_dp_15"
                 android:background="@null"
                 android:hint="请输入企业did"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/base_dp_1"
+            android:background="@color/base_color_DDDDDD" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/base_dp_15"
+            android:layout_marginEnd="@dimen/base_dp_15"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/base_dp_10"
+            android:paddingBottom="@dimen/base_dp_10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="企业txHash"
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/et_company_tx_hash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/base_dp_15"
+                android:background="@null"
+                android:hint="请输入企业txHash"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 

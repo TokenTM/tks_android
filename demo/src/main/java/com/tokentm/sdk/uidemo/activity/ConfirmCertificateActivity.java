@@ -66,7 +66,6 @@ public class ConfirmCertificateActivity extends BaseTitleBarActivity {
                 String etCertificateId = binding.etCertificateId.getText().toString().trim();
                 String content = binding.etCertificateContent.getText().toString().trim();
                 String extraData = binding.etCertificateOtherContent.getText().toString().trim();
-                String toDid = binding.etToReceiveDid.getText().toString().trim();
                 if (TextUtils.isEmpty(etCertificateId)) {
                     ToastUtils.showToast("请输入证书id");
                     return;
@@ -83,7 +82,7 @@ public class ConfirmCertificateActivity extends BaseTitleBarActivity {
                             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                                 dialogInterface.dismiss();
                                 TokenTmClient.getService(CertificateService.class)
-                                        .confirm(did, identityPwd, etCertificateId, content, extraData, toDid)
+                                        .confirm(did, identityPwd, etCertificateId, content, extraData, did)
                                         .compose(XXF.bindToLifecycle(getActivity()))
                                         .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(ConfirmCertificateActivity.this)))
                                         .subscribe(new Consumer<ChainResult>() {

@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="收证人:"
+                    android:text="收证人did:"
                     android:textSize="@dimen/base_dp_15" />
 
                 <EditText
