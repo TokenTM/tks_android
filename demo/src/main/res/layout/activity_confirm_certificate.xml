@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:padding="@dimen/base_dp_30"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/base_dp_15">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/base_dp_30">
+            android:layout_marginTop="@dimen/base_dp_15">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -21,37 +21,14 @@
                 android:text="证书id:"
                 android:textSize="@dimen/base_dp_15" />
 
-            <TextView
+            <EditText
                 android:id="@+id/et_certificate_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:hint="请输入证书id"
-                android:textSize="@dimen/base_dp_15" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/base_dp_30">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="证书类型:"
-                android:textSize="@dimen/base_dp_15" />
-
-            <TextView
-                android:id="@+id/et_certificate_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
-                android:background="@null"
-                android:hint="请输入证书类型"
+                android:hint="必填"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
@@ -67,22 +44,22 @@
                 android:text="证书内容:"
                 android:textSize="@dimen/base_dp_15" />
 
-            <TextView
+            <EditText
                 android:id="@+id/et_certificate_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:hint="请输入证书内容"
+                android:hint="必填"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -91,14 +68,14 @@
                 android:text="证书额外内容:"
                 android:textSize="@dimen/base_dp_15" />
 
-            <TextView
+            <EditText
                 android:id="@+id/et_certificate_other_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:hint="证书附加内容"
+                android:hint="选填"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
@@ -114,14 +91,14 @@
                 android:text="收证人:"
                 android:textSize="@dimen/base_dp_15" />
 
-            <TextView
-                android:id="@+id/et_to_receive"
+            <EditText
+                android:id="@+id/et_to_receive_did"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="20dp"
                 android:background="@null"
-                android:hint="收证人did"
+                android:hint="选填"
                 android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
@@ -138,5 +115,30 @@
             android:text="确认证书"
             android:textColor="#fff"
             android:textSize="@dimen/base_dp_15" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="确认后的证书hash:"
+                android:textSize="@dimen/base_dp_15" />
+
+            <TextView
+                android:id="@+id/et_to_certificate_hash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="20dp"
+                android:background="@null"
+                android:textIsSelectable="true"
+                android:textSize="@dimen/base_dp_15" />
+        </LinearLayout>
+
     </LinearLayout>
 </layout>

@@ -2,7 +2,6 @@ package com.tokentm.sdk.uidemo.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.tokentm.sdk.components.cert.model.CompanyCertParams;
 import com.tokentm.sdk.components.cert.model.UserCertByIDCardParams;
@@ -188,22 +187,12 @@ public class MainActivity extends BaseTitleBarActivity implements IMainPresenter
 
     @Override
     public void onConfirmCertificate() {
-        String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID);
-        if (TextUtils.isEmpty(certificateId)) {
-            ToastUtils.showToast("请先发证");
-            return;
-        }
-        ConfirmCertificateActivity.launch(getActivity(), certificateId);
+        ConfirmCertificateActivity.launch(getActivity(), did);
     }
 
     @Override
     public void onDisabledCertificate() {
-        String certificateId = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID);
-        if (TextUtils.isEmpty(certificateId)) {
-            ToastUtils.showToast("请先发证");
-            return;
-        }
-        CancelCertificateActivity.launch(getActivity(), certificateId);
+        CancelCertificateActivity.launch(getActivity(), did);
     }
 
     @Override

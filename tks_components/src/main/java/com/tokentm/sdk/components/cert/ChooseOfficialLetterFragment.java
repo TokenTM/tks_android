@@ -155,6 +155,7 @@ public class ChooseOfficialLetterFragment extends BaseFragment implements PicSel
                     @Override
                     public ObservableSource<Bitmap> apply(CertUserInfoStoreItem certUserInfoStoreItem) throws Exception {
                         return TokenTmClient.getService(BasicService.class)
+                                //此处获取示例公函,不需要公司名称和法人身份证号码/和法人名字,所以传""
                                 .getOrgLetterImage(
                                         companyCertParams.getuDid(),
                                         "",

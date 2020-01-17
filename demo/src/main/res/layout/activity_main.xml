@@ -123,36 +123,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->presenter.onCertification()}"
-                android:text="发布证书"
-                android:visibility="gone" />
+                android:text="发布证书" />
 
-            <View
-                style="@style/MainPageLineStyle"
-                android:visibility="gone" />
+            <View style="@style/MainPageLineStyle" />
 
             <TextView
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->presenter.onConfirmCertificate()}"
-                android:text="确认证书"
-                android:visibility="gone" />
+                android:text="确认证书" />
 
-            <View
-                style="@style/MainPageLineStyle"
-                android:visibility="gone" />
+            <View style="@style/MainPageLineStyle" />
 
             <TextView
                 style="@style/MainPageTextViewStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->presenter.onDisabledCertificate()}"
-                android:text="取消证书"
-                android:visibility="gone" />
+                android:text="取消证书" />
 
-            <View
-                style="@style/MainPageDividerStyle"
-                android:visibility="gone" />
+            <View style="@style/MainPageDividerStyle" />
 
             <TextView
                 style="@style/MainPageTextViewStyle"

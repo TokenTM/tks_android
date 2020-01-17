@@ -6,15 +6,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.utils.ComponentUtils;
-import com.tokentm.sdk.model.CertificateInfoDTO;
 import com.tokentm.sdk.model.ChainResult;
 import com.tokentm.sdk.source.CertificateService;
 import com.tokentm.sdk.source.TokenTmClient;
-import com.tokentm.sdk.uidemo.DemoSp;
 import com.tokentm.sdk.uidemo.databinding.ActivityCancelCertificateBinding;
 import com.xxf.arch.XXF;
 import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
@@ -24,26 +23,23 @@ import com.xxf.view.utils.RAUtils;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT;
-import static com.tokentm.sdk.uidemo.DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA;
-
 /**
  * @author lqx  E-mail:herolqx@126.com
  * @Description 取消证书
  */
 public class CancelCertificateActivity extends BaseTitleBarActivity {
 
-    private static final String KEY_CERTIFICATE_ID = "certificate_id";
+    private static final String KEY_DID = "did";
 
-    private String certificateId;
+    private String did;
 
-    public static void launch(Context context, String certificateId) {
-        context.startActivity(getLauncher(context, certificateId));
+    public static void launch(Context context, String did) {
+        context.startActivity(getLauncher(context, did));
     }
 
-    private static Intent getLauncher(Context context, String certificateId) {
+    private static Intent getLauncher(Context context, String did) {
         return new Intent(context, CancelCertificateActivity.class)
-                .putExtra(KEY_CERTIFICATE_ID, certificateId);
+                .putExtra(KEY_DID, did);
     }
 
     ActivityCancelCertificateBinding binding;
@@ -54,43 +50,28 @@ public class CancelCertificateActivity extends BaseTitleBarActivity {
         binding = ActivityCancelCertificateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
-        initData();
-    }
-
-    private void initData() {
-        String content = DemoSp.getInstance().getString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
-        binding.etCertificateContent.setText(content);
-        TokenTmClient.getService(CertificateService.class)
-                .getCertificate(certificateId)
-                .compose(XXF.bindToLifecycle(getActivity()))
-                .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CancelCertificateActivity.this)))
-                .subscribe(new Consumer<CertificateInfoDTO>() {
-                    @Override
-                    public void accept(CertificateInfoDTO certificateInfoDTO) throws Exception {
-                        binding.etToReceive.setText(certificateInfoDTO.getDid());
-                        binding.etCertificateType.setText(certificateInfoDTO.getType());
-                        if (certificateInfoDTO.getSignature() != null && certificateInfoDTO.getSignature().size() > 0) {
-                            for (int i = 0; i < certificateInfoDTO.getSignature().size(); i++) {
-                                binding.etCertificateOtherContent.setText(certificateInfoDTO.getSignature().get(i).getData());
-                            }
-                        }
-                    }
-                });
-
     }
 
     private void initView() {
         setTitle("取消证书");
-        certificateId = getIntent().getStringExtra(KEY_CERTIFICATE_ID);
-        binding.etCertificateId.setText(certificateId);
+        did = getIntent().getStringExtra(KEY_DID);
         binding.tvCancelCertificate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!RAUtils.isLegalDefault()) {
                     return;
                 }
-                String did = DemoSp.getInstance().getLoginDID();
-                //弹出校验身份密码
+                String etCertificateId = binding.etCertificateId.getText().toString().trim();
+                String content = binding.etCertificateContent.getText().toString().trim();
+                String extraData = binding.etCertificateOtherContent.getText().toString().trim();
+                if (TextUtils.isEmpty(etCertificateId)) {
+                    ToastUtils.showToast("请输入证书id");
+                    return;
+                }
+                if (TextUtils.isEmpty(content)) {
+                    ToastUtils.showToast("请输入证书内容");
+                    return;
+                }
                 ComponentUtils.showIdentityPwdDialog(
                         getActivity(), did,
                         new BiConsumer<DialogInterface, String>() {
@@ -98,20 +79,18 @@ public class CancelCertificateActivity extends BaseTitleBarActivity {
                             @Override
                             public void accept(DialogInterface dialogInterface, String identityPwd) throws Exception {
                                 dialogInterface.dismiss();
-                                String content = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_CONTENT);
-                                String extraData = DemoSp.getInstance().getString(SP_KEY_CERTIFICATION_CERTIFICATE_EXTRA_DATA);
                                 TokenTmClient.getService(CertificateService.class)
-                                        .disabled(did, identityPwd, certificateId, content, extraData)
+                                        .disabled(did, identityPwd, etCertificateId, content, extraData)
                                         .compose(XXF.bindToLifecycle(getActivity()))
                                         .compose(XXF.bindToProgressHud(new ProgressHUDTransformerImpl.Builder(CancelCertificateActivity.this)))
                                         .subscribe(new Consumer<ChainResult>() {
                                             @Override
                                             public void accept(ChainResult chainResult) throws Exception {
                                                 if (chainResult.getTxHash() != null) {
+                                                    binding.etToCertificateHash.setText(chainResult.getTxHash());
                                                     ToastUtils.showToast("取消证书成功");
-                                                    DemoSp.getInstance().putString(DemoSp.SP_KEY_TX_HASH, chainResult.getTxHash());
-                                                    DemoSp.getInstance().putString(DemoSp.SP_KEY_CERTIFICATION_CERTIFICATE_ID, "");
                                                 } else {
+                                                    binding.etToCertificateHash.setText("");
                                                     ToastUtils.showToast("取消证书失败");
                                                 }
                                             }
