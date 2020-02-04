@@ -7,101 +7,214 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:orientation="vertical"
-            android:padding="@dimen/base_dp_15">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/base_dp_30">
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/base_dp_15">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/base_dp_30">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="商家名称:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <TextView
+                        android:id="@+id/et_seller_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:hint="请输入商家名称"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="商品名称:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <TextView
+                        android:id="@+id/et_commodity_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:hint="请输入商品名称"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="商品发货数量:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <TextView
+                        android:id="@+id/et_commodity_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:hint="请输入商品发货数量"
+                        android:inputType="number"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="收货人姓名:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <TextView
+                        android:id="@+id/et_to_buyer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:hint="请输入收货人姓名"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:text="收货人did:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <TextView
+                        android:id="@+id/et_to_buyer_did"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:hint="请输入收货人did"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:text="商品id:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <TextView
+                        android:id="@+id/et_goods_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:textIsSelectable="true"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:text="收货人did:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <EditText
+                        android:id="@+id/et_to_transfer_buyer_did"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:hint="请输入收货人did"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:text="收货人名字:"
+                        android:textSize="@dimen/base_dp_15" />
+
+                    <EditText
+                        android:id="@+id/et_to_transfer_buyer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="20dp"
+                        android:background="@null"
+                        android:hint="请输入收货人姓名"
+                        android:textSize="@dimen/base_dp_15" />
+                </LinearLayout>
+
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_transfer_goods"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="商家名称:"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <TextView
-                    android:id="@+id/et_seller_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:hint="请输入商家名称"
-                    android:textSize="@dimen/base_dp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="商品名称:"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <TextView
-                    android:id="@+id/et_commodity_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:hint="请输入商品名称"
-                    android:textSize="@dimen/base_dp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="商品发货数量:"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <TextView
-                    android:id="@+id/et_commodity_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:hint="请输入商品发货数量"
-                    android:inputType="number"
-                    android:textSize="@dimen/base_dp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="收货人姓名:"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <TextView
-                    android:id="@+id/et_to_buyer_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:hint="请输入收货人姓名"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="30dp"
+                    android:background="#ff00c1ce"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:text="转移物品"
+                    android:textColor="#fff"
                     android:textSize="@dimen/base_dp_15" />
             </LinearLayout>
 
@@ -114,34 +227,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:text="收货人did:"
+                    android:text="链上hash"
                     android:textSize="@dimen/base_dp_15" />
 
                 <TextView
-                    android:id="@+id/et_to_buyer_did"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:hint="请输入收货人did"
-                    android:textSize="@dimen/base_dp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:text="商品id:"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <TextView
-                    android:id="@+id/et_goods_id"
+                    android:id="@+id/et_chain_hash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -150,91 +240,8 @@
                     android:textIsSelectable="true"
                     android:textSize="@dimen/base_dp_15" />
             </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:text="收货人did:"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <EditText
-                    android:id="@+id/et_to_transfer_buyer_did"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:hint="请输入收货人did"
-                    android:textSize="@dimen/base_dp_15" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top"
-                    android:text="收货人名字:"
-                    android:textSize="@dimen/base_dp_15" />
-
-                <EditText
-                    android:id="@+id/et_to_transfer_buyer_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="20dp"
-                    android:background="@null"
-                    android:hint="请输入收货人姓名"
-                    android:textSize="@dimen/base_dp_15" />
-            </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/tv_transfer_goods"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="30dp"
-                android:background="#ff00c1ce"
-                android:gravity="center"
-                android:padding="20dp"
-                android:text="转移物品"
-                android:textColor="#fff"
-                android:textSize="@dimen/base_dp_15" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:text="链上hash"
-                android:textSize="@dimen/base_dp_15" />
-
-            <TextView
-                android:id="@+id/et_chain_hash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="20dp"
-                android:background="@null"
-                android:textIsSelectable="true"
-                android:textSize="@dimen/base_dp_15" />
-        </LinearLayout>
     </ScrollView>
 
 </layout>
