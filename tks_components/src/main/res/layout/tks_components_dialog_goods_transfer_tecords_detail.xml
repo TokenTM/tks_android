@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.tokentm.sdk.components.identitypwd.viewmodel.GoodsTransferRecordsDialogVm" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:background="#2000">
+
+        <LinearLayout
+            android:paddingBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="19dp"
+            android:background="@drawable/tks_components_goods_transfer_bg"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="交易哈希"
+                android:textColor="#ff374f66"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="3dp"
+                android:text="@{viewModel.txHash}"
+                android:textColor="#ff737785"
+                android:textIsSelectable="true"
+                android:textSize="13sp"
+                tools:text="0x0c8f89da973e6a130e29834af824f820x0c8f89da973e6a130e29834af824f82" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="认证状态"
+                android:textColor="#ff374f66"
+                android:textSize="14sp" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="#FFFEEDED"
+                    android:drawableLeft="@mipmap/tks_components_ic_chain_state_fail"
+                    android:drawablePadding="5dp"
+                    android:lineSpacingExtra="3dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="3dp"
+                    android:text="失败"
+                    android:textColor="#FFFA4343"
+                    android:textSize="12dp"
+                    android:visibility="@{viewModel.chainIdentityState?View.GONE:View.VISIBLE}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="#FFEEF9E9"
+                    android:drawableLeft="@mipmap/tks_components_icon_checked_green"
+                    android:drawablePadding="5dp"
+                    android:lineSpacingExtra="3dp"
+                    android:paddingStart="5dp"
+                    android:paddingTop="3dp"
+                    android:paddingEnd="5dp"
+                    android:paddingBottom="3dp"
+                    android:text="成功"
+                    android:textColor="#FF52C41B"
+                    android:textSize="12dp"
+                    android:visibility="@{viewModel.chainIdentityState ?View.VISIBLE:View.GONE}" />
+
+            </FrameLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="区块高度"
+                android:textColor="#ff374f66"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="3dp"
+                android:text="@{viewModel.blockNumber}"
+                android:textColor="#ff737785"
+                android:textIsSelectable="true"
+                android:textSize="13sp"
+                tools:text="7329742" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="时间戳"
+                android:textColor="#ff374f66"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="3dp"
+                android:text="@{viewModel.timesTamp}"
+                android:textColor="#ff737785"
+                android:textSize="13sp"
+                tools:text="2019.12.24  18:30:20" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="物品名称:"
+                android:textColor="#ff374f66"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="3dp"
+                android:text="@{viewModel.goodsName}"
+                android:textColor="#ff737785"
+                android:textIsSelectable="true"
+                android:textSize="13sp"
+                tools:text="2019.12.24  18:30:20" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="交易数量:"
+                android:textColor="#ff374f66"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:lineSpacingExtra="3dp"
+                android:text="@{viewModel.goodsNumber}"
+                android:textColor="#ff737785"
+                android:textIsSelectable="true"
+                android:textSize="13sp"
+                tools:text="2019.12.24  18:30:20" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btn_cancel"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
+            android:paddingStart="25dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="25dp"
+            android:src="@mipmap/tks_components_ic_goods_transfer_close" />
+
+    </LinearLayout>
+
+
+</layout>

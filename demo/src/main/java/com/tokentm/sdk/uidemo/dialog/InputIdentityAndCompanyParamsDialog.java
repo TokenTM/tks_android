@@ -34,6 +34,11 @@ public class InputIdentityAndCompanyParamsDialog extends BaseAlertDialog<InputId
         initView();
     }
 
+    @Override
+    protected double getWindowScale() {
+        return 0.72;
+    }
+
     private void initView() {
         setCancelable(false);
         binding.tvOk.setOnClickListener(new View.OnClickListener() {

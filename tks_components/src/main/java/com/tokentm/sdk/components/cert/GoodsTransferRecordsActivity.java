@@ -1,13 +1,18 @@
 package com.tokentm.sdk.components.cert;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.tokentm.sdk.components.cert.adapter.GoodsTransferRecordsAdapter;
 import com.tokentm.sdk.components.common.BaseTitleBarActivity;
 import com.tokentm.sdk.components.databinding.TksComponentsActivityGoodsTransferRecordsBinding;
+import com.tokentm.sdk.components.databinding.TksComponentsAdapterItemGoodsTransferRecordsBinding;
+import com.tokentm.sdk.components.identitypwd.dialog.GoodsTransferRecordsDetailDialog;
+import com.tokentm.sdk.components.utils.TimeUtils;
 import com.tokentm.sdk.model.SellerBuyerinfoDTO;
 import com.tokentm.sdk.model.TransferCommodityActionDTO;
 import com.tokentm.sdk.source.CommodityService;
@@ -17,11 +22,17 @@ import com.xxf.arch.rxjava.transformer.ProgressHUDTransformerImpl;
 import com.xxf.view.databinding.statelayout.IStateLayoutVM;
 import com.xxf.view.databinding.statelayout.StateLayoutVM;
 import com.xxf.view.loading.ViewState;
+import com.xxf.view.recyclerview.adapter.BaseRecyclerAdapter;
+import com.xxf.view.recyclerview.adapter.BaseViewHolder;
+import com.xxf.view.recyclerview.adapter.OnItemChildClickListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -41,6 +52,8 @@ public class GoodsTransferRecordsActivity extends BaseTitleBarActivity {
             loadData();
         }
     });
+    private String commodityName;
+    private int commodityCount;
 
     public static void launch(Context context, String goodsId) {
         context.startActivity(getLauncher(context, goodsId));
@@ -72,6 +85,32 @@ public class GoodsTransferRecordsActivity extends BaseTitleBarActivity {
                 stateLayoutVM.setLayoutState(userCertificationRecordAdapter.getDataSize() > 0 ? ViewState.VIEW_STATE_CONTENT : ViewState.VIEW_STATE_EMPTY);
             }
         });
+        userCertificationRecordAdapter.setOnItemChildClickListener(new OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseRecyclerAdapter adapter, BaseViewHolder holder, View childView, int index) {
+                TksComponentsAdapterItemGoodsTransferRecordsBinding binding = holder.getBinding();
+                TransferCommodityActionDTO item = (TransferCommodityActionDTO) adapter.getItem(index);
+                if (item == null || binding == null) {
+                    return;
+                }
+                if (binding.tvSigned == childView) {
+                    Map<String, Object> dataMap = new HashMap<>();
+                    dataMap.put("goodsName",commodityName);
+                    dataMap.put("goodsNumber",commodityCount);
+                    dataMap.put("state",true);
+                    dataMap.put("txHash",item.getTxHash());
+                    dataMap.put("time", TimeUtils.formatUtc(item.getTimestamp()));
+                    GoodsTransferRecordsDetailDialog goodsTransferRecordsDetailDialog = new GoodsTransferRecordsDetailDialog(getActivity(), new BiConsumer<DialogInterface, Boolean>() {
+                        @Override
+                        public void accept(DialogInterface dialogInterface, Boolean aBoolean) throws Exception {
+
+                        }
+                    });
+                    goodsTransferRecordsDetailDialog.show();
+                    goodsTransferRecordsDetailDialog.setData(dataMap);
+                }
+            }
+        });
     }
 
     /**
@@ -88,8 +127,10 @@ public class GoodsTransferRecordsActivity extends BaseTitleBarActivity {
                     public void accept(List<TransferCommodityActionDTO> transferCommodityActionDTOS) throws Exception {
                         if (transferCommodityActionDTOS != null && transferCommodityActionDTOS.size() > 0) {
                             SellerBuyerinfoDTO sellerBuyerinfo = transferCommodityActionDTOS.get(transferCommodityActionDTOS.size() - 1).getSellerBuyerinfo();
-                            binding.tvGoodsName.setText(String.format("物品名称 : %s",sellerBuyerinfo.getCommodityName()));
-                            binding.tvGoodsNumber.setText(String.format("交易数量 : %s",sellerBuyerinfo.getCommodityCount()));
+                            commodityName = sellerBuyerinfo.getCommodityName();
+                            binding.tvGoodsName.setText(String.format("物品名称 : %s", commodityName));
+                            commodityCount = sellerBuyerinfo.getCommodityCount();
+                            binding.tvGoodsNumber.setText(String.format("交易数量 : %s", commodityCount));
                             userCertificationRecordAdapter.bindData(true, transferCommodityActionDTOS);
                         }
                     }

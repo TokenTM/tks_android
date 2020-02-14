@@ -70,6 +70,10 @@ public class IdentityPwdInputDialog extends BaseAlertDialog<String> {
         initView();
     }
 
+    @Override
+    protected double getWindowScale() {
+        return 0.72;
+    }
 
     private void initView() {
         binding.identityPwdEt.setFilters(new InputFilter[]{new InputFilter.LengthFilter(UserConfig.MAX_LENTH_PWD)});

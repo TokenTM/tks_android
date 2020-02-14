@@ -5,6 +5,7 @@ import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.FloatRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.DisplayMetrics;
@@ -12,7 +13,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.xxf.arch.XXF;
 import com.xxf.arch.dialog.XXFAlertDialog;
 import com.xxf.arch.widget.progresshud.ProgressHUD;
 
@@ -52,7 +52,7 @@ public class BaseAlertDialog<R extends Serializable> extends XXFAlertDialog<R> {
         DisplayMetrics dm = new DisplayMetrics();
         getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
         WindowManager.LayoutParams params = dialogWindow.getAttributes();
-        params.width = (int) (dm.widthPixels * 0.72 + 0.5);
+        params.width = (int) (dm.widthPixels * getWindowScale() + 0.5);
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         dialogWindow.setAttributes(params);
         if (this.getOwnerActivity() != null) {
@@ -62,6 +62,16 @@ public class BaseAlertDialog<R extends Serializable> extends XXFAlertDialog<R> {
         } else {
             tokenProgressHUD = new TokenProgressHUDImpl(this.getContext());
         }
+    }
+
+    /**
+     * 显示的宽度 = 屏幕宽度*scale
+     *
+     * @return
+     */
+    @FloatRange(from = 0.0, to = 1.0)
+    protected double getWindowScale() {
+        return 1.0;
     }
 
     @Override

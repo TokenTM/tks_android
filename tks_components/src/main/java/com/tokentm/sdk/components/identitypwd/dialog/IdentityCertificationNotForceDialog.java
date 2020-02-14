@@ -32,6 +32,10 @@ public class IdentityCertificationNotForceDialog extends BaseAlertDialog<Boolean
         initView();
     }
 
+    @Override
+    protected double getWindowScale() {
+        return 0.72;
+    }
 
     private void initView() {
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {

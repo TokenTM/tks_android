@@ -32,6 +32,11 @@ public class InputGoodsIdDialog extends BaseAlertDialog<String> {
         initView();
     }
 
+    @Override
+    protected double getWindowScale() {
+        return 0.72;
+    }
+
     private void initView() {
         setCancelable(false);
         binding.tvOk.setOnClickListener(new View.OnClickListener() {

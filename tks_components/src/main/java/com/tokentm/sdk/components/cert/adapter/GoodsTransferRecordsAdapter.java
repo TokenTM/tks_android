@@ -54,16 +54,18 @@ public class GoodsTransferRecordsAdapter extends BaseBindableAdapter<TksComponen
         binding.tvGoodsTime.setText(TimeUtils.formatUtc(certificateCommodityActionDTO.getTimestamp()));
         //显示hash值
         binding.tvShowHash.setText(txHash);
-        String finalTxHash1 = txHash;
-        if (!TextUtils.isEmpty(finalTxHash1)){
+        if (!TextUtils.isEmpty(txHash)){
             binding.ivBarCode.post(new Runnable() {
                 @Override
                 public void run() {
-                    binding.ivBarCode.setImageBitmap(BarCodeUtil.createBarcode(finalTxHash1, binding.ivBarCode.getWidth()
+                    binding.ivBarCode.setImageBitmap(BarCodeUtil.createBarcode(txHash, binding.ivBarCode.getWidth()
                             , binding.ivBarCode.getHeight()));
                 }
             });
         }
+        //TODO 暂时隐藏弹窗
+//        holder.bindChildClick(binding.tvSigned);
+
 
 
 

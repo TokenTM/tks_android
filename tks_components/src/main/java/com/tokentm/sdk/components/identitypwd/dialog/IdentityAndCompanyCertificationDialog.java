@@ -33,6 +33,10 @@ public class IdentityAndCompanyCertificationDialog extends BaseAlertDialog<Boole
         initView();
     }
 
+    @Override
+    protected double getWindowScale() {
+        return 0.72;
+    }
 
     private void initView() {
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
